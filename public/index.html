@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WhaPay – WhatsApp Payments Dashboard for M-Pesa & Cards</title>
+<meta name="description" content="WhaPay lets Kenyan merchants accept payments via WhatsApp, M-Pesa, and credit cards. Real-time dashboard, optional QR/Barcode scanning, and weekly/monthly reports.">
+<meta name="keywords" content="WhatsApp payments, M-Pesa payments, Kenya, merchant dashboard, QR payments, card payments, mobile payment solutions">
+<meta name="robots" content="index, follow">
+
+<!-- Open Graph / Social Sharing -->
+<meta property="og:title" content="WhaPay – WhatsApp Payments Dashboard">
+<meta property="og:description" content="Accept M-Pesa and card payments via WhatsApp with WhaPay. Live dashboard, optional QR scanning, and weekly/monthly reports.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yourgithubusername.github.io/WhatPay/">
+<meta property="og:image" content="https://yourdomain.com/whapay-preview.png">
+
+<!-- Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "WhaPay",
+  "url": "https://yourgithubusername.github.io/WhatPay/",
+  "description": "WhatsApp payment dashboard for M-Pesa and credit cards in Kenya.",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "creator": {
+    "@type": "Organization",
+    "name": "WhaPay Solutions"
+  }
+}
+</script>
+
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
+
+  // Paste your Firebase config here
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "whapay.firebaseapp.com",
+    projectId: "whapay",
+    storageBucket: "whapay.appspot.com",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  window.db = db;
+  window.serverTimestamp = serverTimestamp;
+</script>
+
+<!-- React + Babel -->
+<script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+<!-- QR/Barcode Scanner library -->
+<script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
+
+</head>
+<body class="bg-gray-100 font-sans">
+
+<header class="bg-green-600 text-white p-6 rounded-b-lg shadow-md mb-6">
+  <h1 class="text-3xl font-bold mb-2">WhaPay – WhatsApp Payments Dashboard</h1>
+  <p class="text-lg">Accept M-Pesa & Card payments instantly, track transactions live, and scan QR codes optionally. Trusted by Kenyan merchants for easy mobile payments.</p>
+</header>
+
+<main class="container mx-auto px-4">
+
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useEffect } = React;
+
+// -------------------- SummaryCards --------------------
+function SummaryCards() {
+  const [transactions, setTransactions] = useState([]);
+
+  useEffect(() => {
+    const unsub = onSnapshot(collection(window.db, "whapay_transactions"), snapshot => {
+      setTransactions(snapshot.docs.map(doc => doc.data()));
+    });
+    return () => unsub();
+  }, []);
+
+  const totalPaid = transactions.filter(t => t.status === "paid").reduce((acc, t) => acc + t.amount, 0);
+  const pending = transactions.filter(t => t.status === "pending").length;
+
+  const now = new Date();
+  const weekPaid = transactions.filter(t => {
+    const ts = t.timestamp?.toDate ? t.timestamp.toDate() : new Date();
+    return (now - ts)/(1000*60*60*24) <= 7 && t.status === "paid";
+  }).reduce((acc, t) => acc + t.amount, 0);
+
+  const monthPaid = transactions.filter(t => {
+    const ts = t.timestamp?.toDate ? t.timestamp.toDate() : new Date();
+    return ts.getMonth() === now.getMonth() && t.status === "paid";
+  }).reduce((acc, t) => acc + t.amount, 0);
+
+  return (
+    <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      <div className="bg-white shadow rounded p-4 text-center">
+        <p className="text-gray-500">Total Paid</p>
+        <h2 className="text-2xl font-bold">KES {totalPaid}</h2>
+      </div>
+      <div className="bg-white shadow rounded p-4 text-center">
+        <p className="text-gray-500">Pending</p>
+        <h2 className="text-2xl font-bold">{pending}</h2>
+      </div>
+      <div className="bg-white shadow rounded p-4 text-center">
+        <p className="text-gray-500">Paid This Week</p>
+        <h2 className="text-2xl font-bold">KES {weekPaid}</h2>
+      </div>
+      <div className="bg-white shadow rounded p-4 text-center">
+        <p className="text-gray-500">Paid This Month</p>
+        <h2 className="text-2xl font-bold">KES {monthPaid}</h2>
+      </div>
+    </section>
+  );
+}
+
+// -------------------- TransactionsTable --------------------
+function TransactionsTable() {
+  const [transactions, setTransactions] = useState([]);
+
+  useEffect(() => {
+    const unsub = onSnapshot(collection(window.db, "whapay_transactions"), snapshot => {
+      setTransactions(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+    });
+    return () => unsub();
+  }, []);
+
+  return (
+    <section className="bg-white shadow rounded p-4 overflow-x-auto mb-6">
+      <h2 className="text-xl font-bold mb-4">Transactions</h2>
+      <table className="min-w-full border-collapse">
+        <thead>
+          <tr className="bg-gray-200 text-left">
+            <th className="px-4 py-2 border">Txn ID</th>
+            <th className="px-4 py-2 border">User</th>
+            <th className="px-4 py-2 border">Amount</th>
+            <th className="px-4 py-2 border">Method</th>
+            <th className="px-4 py-2 border">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {transactions.map(txn => (
+            <tr key={txn.id} className="hover:bg-gray-50">
+              <td className="px-4 py-2 border">{txn.id.slice(0,6)}</td>
+              <td className="px-4 py-2 border">{txn.userNumber}</td>
+              <td className="px-4 py-2 border">KES {txn.amount}</td>
+              <td className="px-4 py-2 border">{txn.paymentMethod}</td>
+              <td className="px-4 py-2 border">{txn.status}</td>
+            </tr>
+          ))}
+          {transactions.length === 0 && (
+            <tr>
+              <td colSpan={5} className="text-center py-4 text-gray-500">No transactions yet</td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </section>
+  );
+}
+
+// -------------------- PaymentGenerator --------------------
+function PaymentGenerator() {
+  const [userNumber, setUserNumber] = useState("");
+  const [amount, setAmount] = useState("");
+  const [method, setMethod] = useState("mpesa");
+  const [message, setMessage] = useState("");
+  const [scanning, setScanning] = useState(false);
+
+  const generatePayment = async () => {
+    if (!userNumber || !amount) return setMessage("Enter user number and amount!");
+
+    const paymentLink = method === "card"
+      ? `https://buy.stripe.com/test_xyz?amount=${amount}&customer=${userNumber}`
+      : `https://sandbox.safaricom.co.ke/mpesa/stkpush?amount=${amount}&phone=${userNumber}`;
+
+    await addDoc(collection(window.db, "whapay_transactions"), {
+      userNumber,
+      amount: parseFloat(amount),
+      paymentMethod: method,
+      paymentLink,
+      status: "pending",
+      timestamp: window.serverTimestamp()
+    });
+
+    setMessage(`Payment link generated: ${paymentLink}`);
+    setUserNumber(""); setAmount("");
+    setScanning(false);
+  };
+
+  const startScan = () => {
+    setScanning(true);
+    const html5QrCode = new Html5Qrcode("qr-reader");
+    html5QrCode.start(
+      { facingMode: "environment" },
+      { fps: 10, qrbox: 250 },
+      qrCodeMessage => {
+        const parts = qrCodeMessage.split(":");
+        if(parts.length === 2) setAmount(parts[1]);
+        html5QrCode.stop();
+        setScanning(false);
+      },
+      errorMessage => console.log("QR scan error:", errorMessage)
+    );
+  };
+
+  return (
+    <section className="bg-white shadow rounded p-4 mb-6">
+      <h2 className="text-xl font-bold mb-4">Generate Payment Link</h2>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+        <input type="text" placeholder="User Phone (+2547...)" className="border px-3 py-2 rounded w-full"
+          value={userNumber} onChange={(e) => setUserNumber(e.target.value)} />
+        <input type="number" placeholder="Amount (KES)" className="border px-3 py-2 rounded w-full"
+          value={amount} onChange={(e) => setAmount(e.target.value)} />
+        <select className="border px-3 py-2 rounded w-full" value={method} onChange={(e) => setMethod(e.target.value)}>
+          <option value="mpesa">M-Pesa</option>
+          <option value="card">Credit/Debit Card</option>
+        </select>
+      </div>
+      <div className="flex gap-4">
+        <button className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded" onClick={generatePayment}>
+          Generate Link
+        </button>
+        <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded" onClick={startScan}>
+          Scan QR / Barcode (Optional)
+        </button>
+      </div>
+      {scanning && <div id="qr-reader" className="mt-4 w-full h-64 bg-gray-200"></div>}
+      {message && <p className="mt-3 text-blue-600 break-all">{message}</p>}
+    </section>
+  );
+}
+
+// -------------------- App --------------------
+function App() {
+  return (
+    <main>
+      <SummaryCards />
+      <PaymentGenerator />
+      <TransactionsTable />
+      <section className="p-6 bg-white rounded shadow mb-6 text-center">
+        <h2 className="text-xl font-bold mb-2">Trusted by Kenyan Merchants</h2>
+        <p className="text-gray-600">Used by over 100+ small businesses across Nairobi and Mombasa for safe and fast WhatsApp payments.</p>
+      </section>
+    </main>
+  );
+}
+
+// -------------------- Render --------------------
+const container = document.getElementById("root");
+const root = ReactDOM.createRoot(container);
+root.render(<App />);
+</script>
+
+<footer class="bg-gray-800 text-white p-4 text-center mt-6 rounded-t-lg">
+  &copy; 2026 WhaPay Solutions | <a href="#" class="underline">Privacy</a> | <a href="#" class="underline">Terms</a>
+</footer>
+
+</body>
+</html>

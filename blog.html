@@ -42,7 +42,9 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const blogCol = collection(db, "blog_posts");
+
+// --- Ensure same collection name as admin ---
+const blogCol = collection(db, "blogs");
 
 // --- Get slug from URL ---
 const params = new URLSearchParams(window.location.search);
@@ -52,18 +54,23 @@ const postContainer = document.getElementById("blogPost");
 
 // --- Load post ---
 async function loadPost() {
+  if(!slug) {
+    postContainer.innerHTML = "<p class='text-red-500 text-center'>No post specified.</p>";
+    return;
+  }
+
   const q = query(blogCol, where("slug", "==", slug));
   const snapshot = await getDocs(q);
 
   if(!snapshot.empty){
     const post = snapshot.docs[0].data();
-    const date = post.date?.toDate?.() || new Date();
+    const date = post.createdAt?.toDate?.() || new Date();
     postContainer.innerHTML = `
       <h1 class="text-3xl font-bold mb-2">${post.title}</h1>
       <p class="text-gray-500 mb-4">
-        By ${post.author} | ${date.toLocaleDateString("en-KE")} | Category: ${post.category}
+        ${post.author || "Admin"} | ${date.toLocaleDateString("en-KE")} | ${post.category || "General"}
       </p>
-      <img src="${post.image || 'https://via.placeholder.com/800x400'}" alt="${post.title}" class="rounded mb-4 w-full object-cover">
+      ${post.image ? `<img src="${post.image}" alt="${post.title}" class="rounded mb-4 w-full object-cover">` : ""}
       <div class="text-gray-700 mb-4">${post.content}</div>
       ${post.tags ? `<p class="text-sm text-gray-500">Tags: ${post.tags.join(", ")}</p>` : ""}
     `;
@@ -77,3 +84,5 @@ loadPost();
 
 </body>
 </html>
+
+

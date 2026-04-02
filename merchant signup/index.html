@@ -3,14 +3,64 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Register as Merchant – WhaPay Kenya</title>
 <meta name="description" content="Register your business on WhaPay and start receiving payments via WhatsApp instantly in Kenya.">
+<meta name="keywords" content="WhaPay merchant registration, WhatsApp payments Kenya, M-Pesa payments, business payment code, WhatsApp merchant">
 
+<!-- Open Graph -->
+<meta property="og:title" content="Register as Merchant – WhaPay Kenya">
+<meta property="og:description" content="Register your business on WhaPay and start receiving payments via WhatsApp instantly in Kenya.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yourdomain.com/register.html">
+<meta property="og:image" content="https://yourdomain.com/logo.png">
+
+<!-- Tailwind CSS -->
 <script src="https://cdn.tailwindcss.com"></script>
 
-</head>
+<!-- Structured Data (JSON-LD) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Register as Merchant – WhaPay Kenya",
+  "description": "Register your business on WhaPay and start receiving payments via WhatsApp instantly in Kenya.",
+  "url": "https://yourdomain.com/register.html",
+  "inLanguage": "en",
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://yourdomain.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Register as Merchant",
+        "item": "https://yourdomain.com/register.html"
+      }
+    ]
+  },
+  "potentialAction": {
+    "@type": "RegisterAction",
+    "target": "https://yourdomain.com/register.html",
+    "name": "Register as WhaPay Merchant"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "WhaPay Solutions",
+    "url": "https://yourdomain.com",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://yourdomain.com/logo.png"
+    }
+  }
+}
+</script>
 
+</head>
 <body class="bg-gray-100 font-sans">
 
 <!-- HEADER -->
@@ -41,9 +91,7 @@
   <div id="result" class="hidden mt-6 text-center">
 
     <h3 class="text-lg font-bold mb-2">Your Merchant Code</h3>
-
     <p id="codeDisplay" class="text-2xl font-bold text-green-600 mb-4"></p>
-
     <canvas id="qrCanvas" class="mx-auto mb-4"></canvas>
 
     <button id="copyBtn"
@@ -107,18 +155,12 @@ function generateCode(name) {
 async function getUniqueCode(name) {
   let code;
   let exists = true;
-
   while (exists) {
     code = generateCode(name);
-
     const q = query(collection(db, "merchants"), where("code", "==", code));
     const snapshot = await getDocs(q);
-
-    if (snapshot.empty) {
-      exists = false;
-    }
+    if (snapshot.empty) exists = false;
   }
-
   return code;
 }
 
@@ -136,7 +178,6 @@ btn.addEventListener("click", async () => {
   status.textContent = "Creating your merchant account...";
 
   try {
-
     const code = await getUniqueCode(name);
 
     await addDoc(collection(db, "merchants"), {
@@ -152,7 +193,6 @@ btn.addEventListener("click", async () => {
 
     // Generate QR
     const url = `${window.location.origin}/pay.html?merchant=${code}`;
-
     QRCode.toCanvas(document.getElementById("qrCanvas"), url);
 
     status.textContent = "✅ Account created successfully";
@@ -170,12 +210,14 @@ btn.addEventListener("click", async () => {
     };
 
   } catch (err) {
-    status.textContent = "Error creating account";
+    console.error(err);
+    status.textContent = "❌ Error creating account";
   }
 
 });
-
 </script>
 
 </body>
 </html>
+
+

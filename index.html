@@ -180,26 +180,47 @@ function PaymentGenerator() {
   const [message, setMessage] = useState("");
   const [scanning, setScanning] = useState(false);
 
+  
   const generatePayment = async () => {
-    if (!userNumber || !amount) return setMessage("Enter user number and amount!");
+  if (!userNumber || !amount) {
+    return setMessage("Enter user number and amount!");
+  }
 
-    const paymentLink = method === "card"
-      ? `https://buy.stripe.com/test_xyz?amount=${amount}&customer=${userNumber}`
-      : `https://sandbox.safaricom.co.ke/mpesa/stkpush?amount=${amount}&phone=${userNumber}`;
+  const paymentLink = method === "card"
+    ? `https://buy.stripe.com/test_xyz?amount=${amount}&customer=${userNumber}`
+    : `https://sandbox.safaricom.co.ke/mpesa/stkpush?amount=${amount}&phone=${userNumber}`;
 
-    await addDoc(collection(window.db, "whapay_transactions"), {
-      userNumber,
-      amount: parseFloat(amount),
-      paymentMethod: method,
-      paymentLink,
-      status: "pending",
-      timestamp: window.serverTimestamp()
-    });
+  await addDoc(collection(window.db, "whapay_transactions"), {
+    userNumber,
+    amount: parseFloat(amount),
+    paymentMethod: method,
+    paymentLink,
+    status: "pending",
+    timestamp: window.serverTimestamp()
+  });
 
-    setMessage(`Payment link generated: ${paymentLink}`);
-    setUserNumber(""); setAmount("");
-    setScanning(false);
-  };
+  // ✅ WhatsApp message
+  const messageText = `Hello 👋\n\nYou have a payment request of KES ${amount}.\n\nClick below to pay:\n${paymentLink}\n\nPowered by WhaPay`;
+
+  // ✅ Format phone
+  let phone = userNumber.replace(/\D/g, "");
+  if (phone.startsWith("0")) phone = "254" + phone.substring(1);
+
+  if (!phone.startsWith("254")) {
+    setMessage("Invalid phone number!");
+    return;
+  }
+
+  // ✅ Open WhatsApp
+  const whatsappURL = `https://wa.me/${phone}?text=${encodeURIComponent(messageText)}`;
+  window.open(whatsappURL, "_blank");
+
+  setMessage("Payment sent to WhatsApp ✔");
+
+  setUserNumber("");
+  setAmount("");
+  setScanning(false);
+};
 
   const startScan = () => {
     setScanning(true);

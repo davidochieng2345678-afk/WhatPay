@@ -186,6 +186,107 @@ onSnapshot(transactionsCol, snapshot => {
 
 });
 </script>
+  <!-- --- Transactions Table & Export --- -->
+<section class="bg-white shadow rounded p-4 mb-6">
+  <div class="flex justify-between items-center mb-4">
+    <h2 class="text-xl font-bold">All Transactions</h2>
+    <button id="exportBtn" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Export CSV</button>
+  </div>
+
+  <!-- Optional Date Filter -->
+  <div class="flex gap-2 mb-4">
+    <input type="date" id="startDate" class="border px-3 py-2 rounded w-full">
+    <input type="date" id="endDate" class="border px-3 py-2 rounded w-full">
+    <button id="filterBtn" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Filter</button>
+  </div>
+
+  <div class="overflow-x-auto">
+    <table class="min-w-full bg-white text-gray-700">
+      <thead class="bg-gray-100">
+        <tr>
+          <th class="px-4 py-2">#</th>
+          <th class="px-4 py-2">User</th>
+          <th class="px-4 py-2">Amount</th>
+          <th class="px-4 py-2">Method</th>
+          <th class="px-4 py-2">Status</th>
+          <th class="px-4 py-2">Date</th>
+        </tr>
+      </thead>
+      <tbody id="transactionTable"></tbody>
+    </table>
+  </div>
+</section>
+
+<script type="module">
+// --- Table & CSV Export ---
+const transactionTable = document.getElementById("transactionTable");
+const exportBtn = document.getElementById("exportBtn");
+const startDateInput = document.getElementById("startDate");
+const endDateInput = document.getElementById("endDate");
+const filterBtn = document.getElementById("filterBtn");
+
+exportBtn.addEventListener("click", ()=>{
+  const rows = [["#", "User", "Amount", "Method", "Status", "Date"]];
+  transactionTable.querySelectorAll("tr").forEach((tr,i)=>{
+    if(i===0) return;
+    rows.push(Array.from(tr.children).map(td=>td.textContent));
+  });
+  const csvContent = "data:text/csv;charset=utf-8," + rows.map(e=>e.join(",")).join("\n");
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download","whapay_transactions.csv");
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+});
+
+// --- Function to fill table ---
+function populateTransactionTable(transactions, start=null, end=null){
+  transactionTable.innerHTML = "";
+  let filtered = transactions;
+  if(start) filtered = filtered.filter(t=>{
+    const ts = t.timestamp?.toDate ? t.timestamp.toDate() : new Date();
+    return ts >= start;
+  });
+  if(end) filtered = filtered.filter(t=>{
+    const ts = t.timestamp?.toDate ? t.timestamp.toDate() : new Date();
+    return ts <= end;
+  });
+
+  filtered.sort((a,b)=> (b.timestamp?.toDate ? b.timestamp.toDate() : new Date()) - (a.timestamp?.toDate ? a.timestamp.toDate() : new Date()))
+  .forEach((t,i)=>{
+    const ts = t.timestamp?.toDate ? t.timestamp.toDate() : new Date();
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td class="border px-2 py-1">${i+1}</td>
+      <td class="border px-2 py-1">${t.userNumber}</td>
+      <td class="border px-2 py-1">KES ${t.amount}</td>
+      <td class="border px-2 py-1 capitalize">${t.paymentMethod}</td>
+      <td class="border px-2 py-1 capitalize">${t.status}</td>
+      <td class="border px-2 py-1">${ts.toLocaleString("en-KE")}</td>
+    `;
+    transactionTable.appendChild(tr);
+  });
+}
+
+// --- Filter Button ---
+filterBtn.addEventListener("click", ()=>{
+  const start = startDateInput.value ? new Date(startDateInput.value) : null;
+  const end = endDateInput.value ? new Date(endDateInput.value+"T23:59:59") : null;
+  populateTransactionTable(window.allTransactions || [], start, end);
+});
+
+// --- Real-time Firestore ---
+import { onSnapshot, collection } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
+const transactionsCol = collection(window.db,"whapay_transactions");
+
+onSnapshot(transactionsCol, snapshot=>{
+  const transactions = snapshot.docs.map(doc=>doc.data());
+  window.allTransactions = transactions; // store globally for filtering
+  populateTransactionTable(transactions);
+});
+</script>
 
 </body>
 </html>

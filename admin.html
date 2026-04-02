@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WhaPay Admin Dashboard</title>
+<meta name="description" content="Admin dashboard for WhaPay WhatsApp payments. View reports, manage users, transactions, and payment stats in real-time.">
+<meta name="keywords" content="WhaPay admin, WhatsApp payments admin, M-Pesa dashboard, card payment reports, Kenya">
+<meta name="robots" content="noindex, nofollow">
+
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Firebase SDK -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
+import { getFirestore, collection, onSnapshot, addDoc, setDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
+
+// Firebase config
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "whapay.firebaseapp.com",
+  projectId: "whapay",
+  storageBucket: "whapay.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+window.db = db;
+window.serverTimestamp = serverTimestamp;
+</script>
+</head>
+
+<body class="bg-gray-100 font-sans">
+
+<header class="bg-green-600 text-white p-6 shadow-md text-center mb-6 rounded-b-lg">
+  <h1 class="text-3xl font-bold mb-2">WhaPay Admin Dashboard</h1>
+  <p>Monitor payments, users, and transactions in real-time.</p>
+</header>
+
+<main class="max-w-7xl mx-auto px-4">
+
+<!-- SUMMARY CARDS -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+  <div class="bg-white shadow rounded p-4 text-center">
+    <p class="text-gray-500">Total Paid</p>
+    <h2 id="totalPaid" class="text-2xl font-bold">KES 0</h2>
+  </div>
+  <div class="bg-white shadow rounded p-4 text-center">
+    <p class="text-gray-500">Pending Transactions</p>
+    <h2 id="pendingCount" class="text-2xl font-bold">0</h2>
+  </div>
+  <div class="bg-white shadow rounded p-4 text-center">
+    <p class="text-gray-500">Paid This Week</p>
+    <h2 id="weekPaid" class="text-2xl font-bold">KES 0</h2>
+  </div>
+  <div class="bg-white shadow rounded p-4 text-center">
+    <p class="text-gray-500">Paid This Month</p>
+    <h2 id="monthPaid" class="text-2xl font-bold">KES 0</h2>
+  </div>
+</section>
+
+<!-- CHARTS -->
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+  <div class="bg-white shadow rounded p-4">
+    <h2 class="text-xl font-bold mb-2">Weekly Payments (Last 7 Days)</h2>
+    <canvas id="weeklyChart" height="200"></canvas>
+  </div>
+  <div class="bg-white shadow rounded p-4">
+    <h2 class="text-xl font-bold mb-2">Monthly Payments (Current Month)</h2>
+    <canvas id="monthlyChart" height="200"></canvas>
+  </div>
+</section>
+
+<section class="bg-white shadow rounded p-4 mb-6">
+  <h2 class="text-xl font-bold mb-2">Payment Method Breakdown</h2>
+  <canvas id="methodChart" height="200"></canvas>
+</section>
+
+<!-- TOP USERS -->
+<section class="bg-white shadow rounded p-4 mb-6">
+  <h2 class="text-xl font-bold mb-2">Top Paying Users (Monthly)</h2>
+  <ul id="topUsers" class="list-disc list-inside text-gray-700"></ul>
+</section>
+
+<!-- TRANSACTIONS TABLE -->
+<section class="bg-white shadow rounded p-4 mb-6">
+  <div class="flex justify-between items-center mb-4">
+    <h2 class="text-xl font-bold">All Transactions</h2>
+    <button id="exportBtn" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Export CSV</button>
+  </div>
+
+  <div class="flex gap-2 mb-4">
+    <input type="date" id="startDate" class="border px-3 py-2 rounded w-full">
+    <input type="date" id="endDate" class="border px-3 py-2 rounded w-full">
+    <button id="filterBtn" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Filter</button>
+  </div>
+
+  <div class="overflow-x-auto">
+    <table class="min-w-full bg-white text-gray-700">
+      <thead class="bg-gray-100">
+        <tr>
+          <th class="px-4 py-2">#</th>
+          <th class="px-4 py-2">User</th>
+          <th class="px-4 py-2">Amount</th>
+          <th class="px-4 py-2">Method</th>
+          <th class="px-4 py-2">Status</th>
+          <th class="px-4 py-2">Date</th>
+        </tr>
+      </thead>
+      <tbody id="transactionTable"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- USER MANAGEMENT -->
+<section class="bg-white shadow rounded p-4 mb-6">
+  <h2 class="text-xl font-bold mb-4">User Management</h2>
+
+  <!-- Filters & Export -->
+  <div class="flex flex-col md:flex-row md:justify-between gap-2 mb-4">
+    <div class="flex gap-2">
+      <select id="userStatusFilter" class="border px-3 py-2 rounded">
+        <option value="all">All Statuses</option>
+        <option value="approved">Approved</option>
+        <option value="blocked">Blocked</option>
+      </select>
+      <input type="number" id="minPaidFilter" placeholder="Min Total Paid (KES)" class="border px-3 py-2 rounded">
+      <button id="filterUserBtn" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Filter</button>
+    </div>
+    <button id="exportUserBtn" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Export CSV</button>
+  </div>
+
+  <div class="overflow-x-auto">
+    <table class="min-w-full bg-white text-gray-700">
+      <thead class="bg-gray-100">
+        <tr>
+          <th class="px-4 py-2">#</th>
+          <th class="px-4 py-2">User</th>
+          <th class="px-4 py-2">Total Paid</th>
+          <th class="px-4 py-2">Status</th>
+          <th class="px-4 py-2">Actions</th>
+        </tr>
+      </thead>
+      <tbody id="userTable"></tbody>
+    </table>
+  </div>
+</section>
+
+<footer class="bg-gray-900 text-gray-300 p-6 text-center rounded-t-lg">
+  <p>&copy; 2026 WhaPay Solutions. All rights reserved.</p>
+</footer>
+
+<script type="module">
+import { collection, onSnapshot, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
+
+// --- GLOBALS ---
+const transactionTable = document.getElementById("transactionTable");
+const userTable = document.getElementById("userTable");
+
+// --- TRANSACTIONS REAL-TIME ---
+const transactionsCol = collection(window.db,"whapay_transactions");
+
+onSnapshot(transactionsCol, snapshot=>{
+  const transactions = snapshot.docs.map(doc=>doc.data());
+  window.allTransactions = transactions;
+
+  populateTransactionTable(transactions);
+  updateSummaryCards(transactions);
+  renderCharts(transactions);
+  renderTopUsers(transactions);
+  renderUserTable(transactions);
+});
+
+// --- SUMMARY CARDS ---
+function updateSummaryCards(transactions){
+  const now = new Date();
+  const paidTx = transactions.filter(t=>t.status==="paid");
+  const totalPaid = paidTx.reduce((a,b)=>a+b.amount,0);
+  const pendingCount = transactions.filter(t=>t.status==="pending").length;
+  const weekPaid = paidTx.filter(t=> (now - (t.timestamp?.toDate?.() || new Date()))/(1000*60*60*24) < 7).reduce((a,b)=>a+b.amount,0);
+  const monthPaid = paidTx.filter(t=> (t.timestamp?.toDate?.().getMonth()===now.getMonth())).reduce((a,b)=>a+b.amount,0);
+
+  document.getElementById("totalPaid").textContent = `KES ${totalPaid}`;
+  document.getElementById("pendingCount").textContent = pendingCount;
+  document.getElementById("weekPaid").textContent = `KES ${weekPaid}`;
+  document.getElementById("monthPaid").textContent = `KES ${monthPaid}`;
+}
+
+// --- CHARTS ---
+function renderCharts(transactions){
+  const now = new Date();
+  const paidTx = transactions.filter(t=>t.status==="paid");
+  const totalDaysMonth = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
+
+  // Weekly
+  const weeklyAmounts = Array(7).fill(0);
+  const weeklyLabels = [];
+  for(let i=6;i>=0;i--){ const d=new Date(); d.setDate(now.getDate()-i); weeklyLabels.push(d.toLocaleDateString("en-KE",{ weekday:"short", day:"numeric" })); }
+  paidTx.forEach(t=>{ const ts = t.timestamp?.toDate?.() || new Date(); const diffDays=Math.floor((now-ts)/(1000*60*60*24)); if(diffDays>=0 && diffDays<7) weeklyAmounts[6-diffDays]+=t.amount; });
+  new Chart(document.getElementById("weeklyChart"), { type:"bar", data:{ labels:weeklyLabels, datasets:[{ label:"KES Paid", data:weeklyAmounts, backgroundColor:"#16a34a", borderRadius:5 }]}, options:{responsive:true} });
+
+  // Monthly
+  const monthlyAmounts = Array(totalDaysMonth).fill(0);
+  paidTx.forEach(t=>{ const ts=t.timestamp?.toDate?.(); if(ts && ts.getMonth()===now.getMonth()) monthlyAmounts[ts.getDate()-1]+=t.amount; });
+  new Chart(document.getElementById("monthlyChart"), { type:"line", data:{ labels:Array.from({length:totalDaysMonth},(_,i)=>i+1), datasets:[{ label:"KES Paid", data:monthlyAmounts, borderColor:"#16a34a", backgroundColor:"rgba(22,163,74,0.2)", fill:true, tension:0.3, pointRadius:4 }]}, options:{responsive:true} });
+
+  // Payment Method
+  const methodTotals={mpesa:0,card:0};
+  paidTx.forEach(t=>methodTotals[t.paymentMethod]=(methodTotals[t.paymentMethod]||0)+t.amount);
+  new Chart(document.getElementById("methodChart"), { type:"doughnut", data:{ labels:["M-Pesa","Card"], datasets:[{ data:[methodTotals.mpesa,methodTotals.card], backgroundColor:["#16a34a","#10b981"] }] }, options:{responsive:true} });
+}
+
+// --- TOP USERS ---
+function renderTopUsers(transactions){
+  const paidTx = transactions.filter(t=>t.status==="paid");
+  const userTotals = {};
+  paidTx.forEach(t=>userTotals[t.userNumber]=(userTotals[t.userNumber]||0)+t.amount);
+  const topUsers = Object.entries(userTotals).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const topUsersUl = document.getElementById("topUsers");
+  topUsersUl.innerHTML="";
+  topUsers.forEach(([user,amount])=>{ const li=document.createElement("li"); li.textContent=`${user} – KES ${amount.toLocaleString()}`; topUsersUl.appendChild(li); });
+}
+
+// --- TRANSACTIONS TABLE ---
+function populateTransactionTable(transactions,start=null,end=null){
+  transactionTable.innerHTML="";
+  let filtered=transactions;
+  if(start) filtered=filtered.filter(t=>t.timestamp?.toDate?.()>=start);
+  if(end) filtered=filtered.filter(t=>t.timestamp?.toDate?.()<=end);
+  filtered.sort((a,b)=>(b.timestamp?.toDate?.()||new Date())-(a.timestamp?.toDate?.()||new Date()))
+  .forEach((t,i)=>{ const tr=document.createElement("tr"); const ts=t.timestamp?.toDate?.()||new Date(); tr.innerHTML=`<td class="border px-2 py-1">${i+1}</td><td class="border px-2 py-1">${t.userNumber}</td><td class="border px-2 py-1">KES ${t.amount}</td><td class="border px-2 py-1 capitalize">${t.paymentMethod}</td><td class="border px-2 py-1 capitalize">${t.status}</td><td class="border px-2 py-1">${ts.toLocaleString("en-KE")}</td>`; transactionTable.appendChild(tr); });
+}
+
+// --- TRANSACTIONS FILTER & EXPORT ---
+document.getElementById("filterBtn").addEventListener("click", ()=>{
+  const start=document.getElementById("startDate").value?new Date(document.getElementById("startDate").value):null;
+  const end=document.getElementById("endDate").value?new Date(document.getElementById("endDate").value+"T23:59:59"):null;
+  populateTransactionTable(window.allTransactions,start,end);
+});
+
+document.getElementById("exportBtn").addEventListener("click", ()=>{
+  const rows=[["#", "User", "Amount", "Method", "Status", "Date"]];
+  transactionTable.querySelectorAll("tr").forEach((tr,i)=>{ if(i===0) return; rows.push(Array.from(tr.children).map(td=>td.textContent)); });
+  const csvContent="data:text/csv;charset=utf-8,"+rows.map(r=>r.join(",")).join("\n");
+  const link=document.createElement("a"); link.setAttribute("href",csvContent); link.setAttribute("download","transactions.csv"); document.body.appendChild(link); link.click(); document.body.removeChild(link);
+});
+
+// --- USER MANAGEMENT ---
+function renderUserTable(transactions){
+  const users={};
+  transactions.forEach(t=>{ users[t.userNumber]={total:(users[t.userNumber]?.total||0)+t.amount,status:t.status||"approved"}; });
+  populateUserTableFromList(Object.entries(users).map(([user,u])=>({user,total:u.total,status:u.status})));
+}
+
+function populateUserTableFromList(users){
+  userTable.innerHTML="";
+  users.forEach((u,i)=>{
+    const tr=document.createElement("tr");
+    tr.innerHTML=`<td class="border px-2 py-1">${i+1}</td><td class="border px-2 py-1">${u.user}</td><td class="border px-2 py-1">KES ${u.total.toLocaleString()}</td><td class="border px-2 py-1" id="status-${u.user}">${u.status}</td><td class="border px-2 py-1 space-x-2"><button class="bg-green-500 hover:bg-green-600 text-white px-2 py-1 rounded approveBtn">Approve</button><button class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded blockBtn">Block</button></td>`;
+    userTable.appendChild(tr);
+    tr.querySelector(".approveBtn").addEventListener("click",async ()=>{ u.status="approved"; document.getElementById(`status-${u.user}`).textContent="approved"; await setDoc(doc(window.db,"whapay_users",u.user),{status:"approved"},{merge:true}); });
+    tr.querySelector(".blockBtn").addEventListener("click",async ()=>{ u.status="blocked"; document.getElementById(`status-${u.user}`).textContent="blocked"; await setDoc(doc(window.db,"whapay_users",u.user),{status:"blocked"},{merge:true}); });
+  });
+}
+
+// --- USER FILTER & EXPORT ---
+document.getElementById("filterUserBtn").addEventListener("click", ()=>{
+  const statusFilter=document.getElementById("userStatusFilter").value;
+  const minPaid=document.getElementById("minPaidFilter").value?parseFloat(document.getElementById("minPaidFilter").value):0;
+  const filtered=Object.entries(window.allTransactions.reduce((acc,t)=>{ acc[t.userNumber]=(acc[t.userNumber]||{total:0,status:t.status||"approved"}); acc[t.userNumber].total+=t.amount; return acc; },{}))
+    .map(([user,u])=>({user,total:u.total,status:u.status}))
+    .filter(u=>(statusFilter==="all"||u.status===statusFilter) && u.total>=minPaid);
+  populateUserTableFromList(filtered);
+});
+
+document.getElementById("exportUserBtn").addEventListener("click", ()=>{
+  const users=Array.from(userTable.querySelectorAll("tr")).map((tr,i)=>{ if(i===0) return null; const tds=tr.children; return [tds[0].textContent,tds[1].textContent,tds[2].textContent,tds[3].textContent]; }).filter(Boolean);
+  const rows=[["#", "User", "Total Paid", "Status"],...users];
+  const csvContent="data:text/csv;charset=utf-8,"+

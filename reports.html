@@ -106,24 +106,17 @@ onSnapshot(transactionsCol, snapshot => {
   const now = new Date();
   const totalDaysMonth = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
 
-  // ---- Summary ----
-  const totalPaid = transactions.filter(t=>t.status==="paid").reduce((a,b)=>a+b.amount,0);
+  // ---- Summary Cards ----
+  const paidTx = transactions.filter(t=>t.status==="paid");
+  const totalPaid = paidTx.reduce((a,b)=>a+b.amount,0);
   const pendingCount = transactions.filter(t=>t.status==="pending").length;
-  const weekPaid = transactions.filter(t=>{
-    if(t.status!=="paid") return false;
-    const ts = t.timestamp?.toDate ? t.timestamp.toDate() : new Date();
-    return (now - ts)/(1000*60*60*24) < 7;
-  }).reduce((a,b)=>a+b.amount,0);
-  const monthPaid = transactions.filter(t=>{
-    if(t.status!=="paid") return false;
-    const ts = t.timestamp?.toDate ? t.timestamp.toDate() : new Date();
-    return ts.getMonth() === now.getMonth();
-  }).reduce((a,b)=>a+b.amount,0);
+  const weekPaid = paidTx.filter(t=> (now - (t.timestamp?.toDate?.() || new Date()))/(1000*60*60*24) < 7).reduce((a,b)=>a+b.amount,0);
+  const monthPaid = paidTx.filter(t=> (t.timestamp?.toDate?.().getMonth()===now.getMonth())).reduce((a,b)=>a+b.amount,0);
 
   document.getElementById("totalPaid").textContent = `KES ${totalPaid}`;
   document.getElementById("pendingCount").textContent = pendingCount;
-  document.getElementById("weekPaid").textContent = `KES ${weekPaid}`;
-  document.getElementById("monthPaid").textContent = `KES ${monthPaid}`;
+  document.getElementById("weekPaid").textContent = `KES ${weekPaid} (${((weekPaid / totalPaid)*100 || 0).toFixed(1)}%)`;
+  document.getElementById("monthPaid").textContent = `KES ${monthPaid} (${((monthPaid / totalPaid)*100 || 0).toFixed(1)}%)`;
 
   // ---- Weekly Chart ----
   const weeklyAmounts = Array(7).fill(0);
@@ -132,60 +125,120 @@ onSnapshot(transactionsCol, snapshot => {
     const d = new Date(); d.setDate(now.getDate()-i);
     weeklyLabels.push(d.toLocaleDateString("en-KE",{ weekday:"short", day:"numeric" }));
   }
-
-  transactions.forEach(t=>{
-    if(t.status!=="paid") return;
-    const ts = t.timestamp?.toDate ? t.timestamp.toDate() : new Date();
+  paidTx.forEach(t=>{
+    const ts = t.timestamp?.toDate?.() || new Date();
     const diffDays = Math.floor((now-ts)/(1000*60*60*24));
-    if(diffDays>=0 && diffDays<7) weeklyAmounts[6-diffDays] += t.amount;
+    if(diffDays>=0 && diffDays<7) weeklyAmounts[6-diffDays]+=t.amount;
   });
-
   const weeklyCtx = document.getElementById("weeklyChart");
-  if(weeklyCtx) new Chart(weeklyCtx, {
-    type:"bar",
-    data:{ labels:weeklyLabels, datasets:[{ label:"KES Paid", data:weeklyAmounts, backgroundColor: weeklyAmounts.map(a=>`rgba(22,163,74,${Math.min(0.3+a/10000,0.9)})`), borderRadius:5 }]},
-    options:{ responsive:true, plugins:{legend:{display:true,position:"top"}}, scales:{x:{grid:{display:false}},y:{beginAtZero:true}}}
-  });
+  if(weeklyCtx){
+    new Chart(weeklyCtx, {
+      type:"bar",
+      data:{
+        labels:weeklyLabels,
+        datasets:[{
+          label:"KES Paid",
+          data:weeklyAmounts,
+          backgroundColor: weeklyAmounts.map(a=>`rgba(22,163,74,${Math.min(0.3+a/10000,0.9)})`),
+          borderRadius: 5
+        }]
+      },
+      options:{
+        responsive:true,
+        plugins:{
+          legend:{display:true, position:"top"},
+          tooltip:{
+            callbacks:{
+              label: ctx => `KES ${ctx.raw.toLocaleString()}`
+            }
+          }
+        },
+        scales:{ x:{grid:{display:false}}, y:{beginAtZero:true} }
+      }
+    });
+  }
 
   // ---- Monthly Chart ----
   const monthlyAmounts = Array(totalDaysMonth).fill(0);
-  for(let i=0;i<transactions.length;i++){
-    const t = transactions[i];
-    if(t.status!=="paid") continue;
-    const ts = t.timestamp?.toDate ? t.timestamp.toDate() : new Date();
-    if(ts.getMonth()===now.getMonth()) monthlyAmounts[ts.getDate()-1]+=t.amount;
-  }
-  const monthlyCtx = document.getElementById("monthlyChart");
-  if(monthlyCtx) new Chart(monthlyCtx, {
-    type:"line",
-    data:{ labels:Array.from({length:totalDaysMonth},(_,i)=>i+1), datasets:[{ label:"KES Paid", data:monthlyAmounts, borderColor:"#16a34a", backgroundColor:"rgba(22,163,74,0.2)", fill:true, tension:0.3, pointRadius:4 }]},
-    options:{ responsive:true, plugins:{legend:{display:true,position:"top"}}, scales:{x:{grid:{display:false}},y:{beginAtZero:true}}}
+  paidTx.forEach(t=>{
+    const ts = t.timestamp?.toDate?.();
+    if(ts && ts.getMonth()===now.getMonth()) monthlyAmounts[ts.getDate()-1]+=t.amount;
   });
+  const monthlyCtx = document.getElementById("monthlyChart");
+  if(monthlyCtx){
+    new Chart(monthlyCtx, {
+      type:"line",
+      data:{
+        labels:Array.from({length:totalDaysMonth},(_,i)=>i+1),
+        datasets:[{
+          label:"KES Paid",
+          data:monthlyAmounts,
+          borderColor:"#16a34a",
+          backgroundColor: ctx => {
+            const gradient = ctx.chart.ctx.createLinearGradient(0,0,0,200);
+            gradient.addColorStop(0,"rgba(22,163,74,0.4)");
+            gradient.addColorStop(1,"rgba(22,163,74,0.05)");
+            return gradient;
+          },
+          fill:true,
+          tension:0.3,
+          pointRadius:4
+        }]
+      },
+      options:{
+        responsive:true,
+        plugins:{
+          legend:{display:true, position:"top"},
+          tooltip:{
+            callbacks:{ label: ctx => `KES ${ctx.raw.toLocaleString()}` }
+          }
+        },
+        scales:{ x:{grid:{display:false}}, y:{beginAtZero:true} }
+      }
+    });
+  }
 
   // ---- Payment Method Breakdown ----
   const methodTotals = { mpesa:0, card:0 };
-  transactions.forEach(t=>{ if(t.status==="paid") methodTotals[t.paymentMethod] = (methodTotals[t.paymentMethod]||0)+t.amount; });
+  paidTx.forEach(t=> methodTotals[t.paymentMethod] = (methodTotals[t.paymentMethod]||0)+t.amount );
   const methodCtx = document.getElementById("methodChart");
-  if(methodCtx) new Chart(methodCtx, {
-    type:"doughnut",
-    data:{ labels:["M-Pesa","Card"], datasets:[{ data:[methodTotals.mpesa, methodTotals.card], backgroundColor:["#16a34a","#10b981"] }]},
-    options:{ responsive:true, plugins:{legend:{position:"bottom"}} }
-  });
+  if(methodCtx){
+    new Chart(methodCtx,{
+      type:"doughnut",
+      data:{
+        labels:["M-Pesa","Card"],
+        datasets:[{
+          data:[methodTotals.mpesa, methodTotals.card],
+          backgroundColor:["#16a34a","#10b981"]
+        }]
+      },
+      options:{
+        responsive:true,
+        plugins:{
+          legend:{position:"bottom"},
+          tooltip:{
+            callbacks:{ label: ctx => `${ctx.label}: KES ${ctx.raw.toLocaleString()}` }
+          }
+        }
+      }
+    });
+  }
 
   // ---- Top Paying Users ----
   const userTotals = {};
-  transactions.forEach(t=>{ if(t.status==="paid") userTotals[t.userNumber] = (userTotals[t.userNumber]||0)+t.amount; });
+  paidTx.forEach(t=> userTotals[t.userNumber]=(userTotals[t.userNumber]||0)+t.amount );
   const topUsersList = Object.entries(userTotals).sort((a,b)=>b[1]-a[1]).slice(0,5);
   const topUsersUl = document.getElementById("topUsers");
   topUsersUl.innerHTML = "";
   topUsersList.forEach(([user,amount])=>{
     const li = document.createElement("li");
-    li.textContent = `${user} – KES ${amount}`;
+    li.textContent = `${user} – KES ${amount.toLocaleString()}`;
     topUsersUl.appendChild(li);
   });
 
 });
 </script>
+  
   <!-- --- Transactions Table & Export --- -->
 <section class="bg-white shadow rounded p-4 mb-6">
   <div class="flex justify-between items-center mb-4">

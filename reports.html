@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WhaPay Reports – WhatsApp Payments Dashboard</title>
+<meta name="description" content="View advanced weekly and monthly WhatsApp payment reports for WhaPay. Track M-Pesa & Card payments, visualize transactions, and analyze top-paying users in Kenya.">
+<meta name="keywords" content="WhaPay reports, WhatsApp payments, M-Pesa payments, card payments, Kenya, merchant dashboard, mobile payment analytics">
+<meta name="robots" content="index, follow">
+
+<!-- Open Graph -->
+<meta property="og:title" content="WhaPay Reports – WhatsApp Payments">
+<meta property="og:description" content="Advanced WhatsApp payment dashboard showing weekly and monthly transactions, M-Pesa and card breakdowns.">
+<meta property="og:type" content="website">
+
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Firebase SDK -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
+import { getFirestore, collection, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
+
+// Firebase config
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "whapay.firebaseapp.com",
+  projectId: "whapay",
+  storageBucket: "whapay.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+window.db = db;
+window.serverTimestamp = serverTimestamp;
+</script>
+
+</head>
+<body class="bg-gray-100 font-sans">
+
+<header class="bg-green-600 text-white p-6 rounded-b-lg shadow-md mb-6 text-center">
+  <h1 class="text-3xl font-bold mb-2">WhaPay – Payment Reports</h1>
+  <p class="text-lg">Visualize weekly and monthly payments via WhatsApp. Track M-Pesa & Card transactions and top-paying users.</p>
+</header>
+
+<main class="max-w-6xl mx-auto px-4">
+
+<!-- Summary Cards -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+  <div class="bg-white shadow rounded p-4 text-center">
+    <p class="text-gray-500">Total Paid</p>
+    <h2 id="totalPaid" class="text-2xl font-bold">KES 0</h2>
+  </div>
+  <div class="bg-white shadow rounded p-4 text-center">
+    <p class="text-gray-500">Pending</p>
+    <h2 id="pendingCount" class="text-2xl font-bold">0</h2>
+  </div>
+  <div class="bg-white shadow rounded p-4 text-center">
+    <p class="text-gray-500">Paid This Week</p>
+    <h2 id="weekPaid" class="text-2xl font-bold">KES 0</h2>
+  </div>
+  <div class="bg-white shadow rounded p-4 text-center">
+    <p class="text-gray-500">Paid This Month</p>
+    <h2 id="monthPaid" class="text-2xl font-bold">KES 0</h2>
+  </div>
+</section>
+
+<!-- Charts -->
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+  <div class="bg-white shadow rounded p-4">
+    <h2 class="text-xl font-bold mb-2">Weekly Payments (Last 7 Days)</h2>
+    <canvas id="weeklyChart" height="200"></canvas>
+  </div>
+  <div class="bg-white shadow rounded p-4">
+    <h2 class="text-xl font-bold mb-2">Monthly Payments (Current Month)</h2>
+    <canvas id="monthlyChart" height="200"></canvas>
+  </div>
+</section>
+
+<section class="bg-white shadow rounded p-4 mb-6">
+  <h2 class="text-xl font-bold mb-2">Payment Method Breakdown (Monthly)</h2>
+  <canvas id="methodChart" height="200"></canvas>
+</section>
+
+<section class="bg-white shadow rounded p-4 mb-6">
+  <h2 class="text-xl font-bold mb-2">Top Paying Users (Monthly)</h2>
+  <ul id="topUsers" class="list-disc list-inside text-gray-700"></ul>
+</section>
+
+<footer class="bg-gray-900 text-gray-300 p-6 text-center rounded-t-lg">
+  <p>&copy; 2026 WhaPay Solutions. All rights reserved.</p>
+</footer>
+
+<script type="module">
+import { onSnapshot, collection } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
+
+const transactionsCol = collection(window.db, "whapay_transactions");
+
+onSnapshot(transactionsCol, snapshot => {
+  const transactions = snapshot.docs.map(doc => doc.data());
+  const now = new Date();
+  const totalDaysMonth = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
+
+  // ---- Summary ----
+  const totalPaid = transactions.filter(t=>t.status==="paid").reduce((a,b)=>a+b.amount,0);
+  const pendingCount = transactions.filter(t=>t.status==="pending").length;
+  const weekPaid = transactions.filter(t=>{
+    if(t.status!=="paid") return false;
+    const ts = t.timestamp?.toDate ? t.timestamp.toDate() : new Date();
+    return (now - ts)/(1000*60*60*24) < 7;
+  }).reduce((a,b)=>a+b.amount,0);
+  const monthPaid = transactions.filter(t=>{
+    if(t.status!=="paid") return false;
+    const ts = t.timestamp?.toDate ? t.timestamp.toDate() : new Date();
+    return ts.getMonth() === now.getMonth();
+  }).reduce((a,b)=>a+b.amount,0);
+
+  document.getElementById("totalPaid").textContent = `KES ${totalPaid}`;
+  document.getElementById("pendingCount").textContent = pendingCount;
+  document.getElementById("weekPaid").textContent = `KES ${weekPaid}`;
+  document.getElementById("monthPaid").textContent = `KES ${monthPaid}`;
+
+  // ---- Weekly Chart ----
+  const weeklyAmounts = Array(7).fill(0);
+  const weeklyLabels = [];
+  for(let i=6;i>=0;i--){
+    const d = new Date(); d.setDate(now.getDate()-i);
+    weeklyLabels.push(d.toLocaleDateString("en-KE",{ weekday:"short", day:"numeric" }));
+  }
+
+  transactions.forEach(t=>{
+    if(t.status!=="paid") return;
+    const ts = t.timestamp?.toDate ? t.timestamp.toDate() : new Date();
+    const diffDays = Math.floor((now-ts)/(1000*60*60*24));
+    if(diffDays>=0 && diffDays<7) weeklyAmounts[6-diffDays] += t.amount;
+  });
+
+  const weeklyCtx = document.getElementById("weeklyChart");
+  if(weeklyCtx) new Chart(weeklyCtx, {
+    type:"bar",
+    data:{ labels:weeklyLabels, datasets:[{ label:"KES Paid", data:weeklyAmounts, backgroundColor: weeklyAmounts.map(a=>`rgba(22,163,74,${Math.min(0.3+a/10000,0.9)})`), borderRadius:5 }]},
+    options:{ responsive:true, plugins:{legend:{display:true,position:"top"}}, scales:{x:{grid:{display:false}},y:{beginAtZero:true}}}
+  });
+
+  // ---- Monthly Chart ----
+  const monthlyAmounts = Array(totalDaysMonth).fill(0);
+  for(let i=0;i<transactions.length;i++){
+    const t = transactions[i];
+    if(t.status!=="paid") continue;
+    const ts = t.timestamp?.toDate ? t.timestamp.toDate() : new Date();
+    if(ts.getMonth()===now.getMonth()) monthlyAmounts[ts.getDate()-1]+=t.amount;
+  }
+  const monthlyCtx = document.getElementById("monthlyChart");
+  if(monthlyCtx) new Chart(monthlyCtx, {
+    type:"line",
+    data:{ labels:Array.from({length:totalDaysMonth},(_,i)=>i+1), datasets:[{ label:"KES Paid", data:monthlyAmounts, borderColor:"#16a34a", backgroundColor:"rgba(22,163,74,0.2)", fill:true, tension:0.3, pointRadius:4 }]},
+    options:{ responsive:true, plugins:{legend:{display:true,position:"top"}}, scales:{x:{grid:{display:false}},y:{beginAtZero:true}}}
+  });
+
+  // ---- Payment Method Breakdown ----
+  const methodTotals = { mpesa:0, card:0 };
+  transactions.forEach(t=>{ if(t.status==="paid") methodTotals[t.paymentMethod] = (methodTotals[t.paymentMethod]||0)+t.amount; });
+  const methodCtx = document.getElementById("methodChart");
+  if(methodCtx) new Chart(methodCtx, {
+    type:"doughnut",
+    data:{ labels:["M-Pesa","Card"], datasets:[{ data:[methodTotals.mpesa, methodTotals.card], backgroundColor:["#16a34a","#10b981"] }]},
+    options:{ responsive:true, plugins:{legend:{position:"bottom"}} }
+  });
+
+  // ---- Top Paying Users ----
+  const userTotals = {};
+  transactions.forEach(t=>{ if(t.status==="paid") userTotals[t.userNumber] = (userTotals[t.userNumber]||0)+t.amount; });
+  const topUsersList = Object.entries(userTotals).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const topUsersUl = document.getElementById("topUsers");
+  topUsersUl.innerHTML = "";
+  topUsersList.forEach(([user,amount])=>{
+    const li = document.createElement("li");
+    li.textContent = `${user} – KES ${amount}`;
+    topUsersUl.appendChild(li);
+  });
+
+});
+</script>
+
+</body>
+</html>

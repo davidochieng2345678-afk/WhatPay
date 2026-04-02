@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pay via WhaPay – WhatsApp Payments</title>
+<meta name="description" content="Complete your payment via WhatsApp with WhaPay. Pay instantly with M-Pesa or credit/debit card in Kenya.">
+<meta name="keywords" content="WhatsApp payment, M-Pesa payment, card payment, Kenya, mobile payments, WhaPay">
+<meta name="robots" content="index, follow">
+
+<!-- Open Graph -->
+<meta property="og:title" content="Pay via WhaPay">
+<meta property="og:description" content="Secure WhatsApp payments in Kenya. Pay with M-Pesa or Card instantly.">
+<meta property="og:type" content="website">
+
+<!-- Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "WhaPay Payment Page",
+  "url": "https://yourgithubusername.github.io/WhatPay/payment.html",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "creator": { "@type": "Organization", "name": "WhaPay Solutions" }
+}
+</script>
+
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Firebase SDK -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
+import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
+
+// Firebase config
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "whapay.firebaseapp.com",
+  projectId: "whapay",
+  storageBucket: "whapay.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+window.db = db;
+window.serverTimestamp = serverTimestamp;
+</script>
+
+</head>
+<body class="bg-gray-100 font-sans">
+
+<header class="bg-green-600 text-white p-6 rounded-b-lg shadow-md mb-6 text-center">
+  <h1 class="text-3xl font-bold mb-2">Complete Your Payment</h1>
+  <p class="text-lg">Pay instantly with M-Pesa or credit/debit card via WhaPay.</p>
+</header>
+
+<main class="max-w-xl mx-auto px-4">
+
+<section class="bg-white shadow rounded p-6 mb-6">
+  <h2 class="text-xl font-bold mb-4 text-center">Payment Details</h2>
+
+  <div class="space-y-4">
+    <input type="text" placeholder="Your Phone (+2547...)" id="userNumber"
+      class="w-full border px-3 py-2 rounded">
+
+    <input type="number" placeholder="Amount (KES)" id="amount"
+      class="w-full border px-3 py-2 rounded">
+
+    <select id="method" class="w-full border px-3 py-2 rounded">
+      <option value="mpesa">M-Pesa</option>
+      <option value="card">Credit/Debit Card</option>
+    </select>
+
+    <button id="payBtn" class="w-full bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded font-semibold">
+      Pay Now
+    </button>
+
+    <p id="message" class="text-center text-blue-600 break-words"></p>
+  </div>
+</section>
+
+<footer class="bg-gray-900 text-gray-300 p-6 text-center rounded-t-lg">
+  <p>&copy; 2026 WhaPay Solutions. All rights reserved.</p>
+  <p class="mt-2">Need help? <a href="https://wa.me/254700000000" class="underline text-green-400">Chat on WhatsApp</a></p>
+</footer>
+
+<script type="module">
+const payBtn = document.getElementById("payBtn");
+const message = document.getElementById("message");
+
+payBtn.addEventListener("click", async () => {
+  const userNumber = document.getElementById("userNumber").value.trim();
+  const amount = document.getElementById("amount").value.trim();
+  const method = document.getElementById("method").value;
+
+  if (!userNumber || !amount) {
+    message.textContent = "Please enter phone number and amount.";
+    return;
+  }
+
+  const paymentLink = method === "card"
+    ? `https://buy.stripe.com/test_xyz?amount=${amount}&customer=${userNumber}`
+    : `https://sandbox.safaricom.co.ke/mpesa/stkpush?amount=${amount}&phone=${userNumber}`;
+
+  // Save to Firebase
+  await addDoc(collection(window.db, "whapay_transactions"), {
+    userNumber,
+    amount: parseFloat(amount),
+    paymentMethod: method,
+    paymentLink,
+    status: "pending",
+    timestamp: window.serverTimestamp()
+  });
+
+  message.innerHTML = `Payment link generated: <a href="${paymentLink}" target="_blank" class="underline text-green-600">Click to Pay</a>`;
+
+  // Clear inputs
+  document.getElementById("userNumber").value = "";
+  document.getElementById("amount").value = "";
+});
+</script>
+
+</body>
+</html>

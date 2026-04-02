@@ -265,6 +265,8 @@ const root = ReactDOM.createRoot(container);
 root.render(<App />);
 </script>
 
+
+  <!-- ================= FOOTER ================= -->
 <footer class="bg-gray-900 text-gray-300 pt-12 pb-6 mt-10">
 
   <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
@@ -275,7 +277,6 @@ root.render(<App />);
       <p class="text-gray-400 text-sm leading-relaxed mb-4">
         WhaPay is a modern WhatsApp payment solution helping Kenyan merchants accept M-Pesa and card payments seamlessly. Built for speed, simplicity, and growth.
       </p>
-
       <p class="text-sm text-gray-500">
         Trusted by businesses across Kenya 🇰🇪
       </p>
@@ -293,27 +294,27 @@ root.render(<App />);
       </ul>
     </div>
 
-    <!-- SERVICES / SEO BOOST -->
+    <!-- SERVICES -->
     <div>
       <h3 class="text-white font-semibold mb-4">Solutions</h3>
       <ul class="space-y-2 text-sm">
         <li>WhatsApp Payments Kenya</li>
         <li>M-Pesa Payment Integration</li>
         <li>QR & Barcode Payments</li>
-        <li>Merchant Payment Dashboard</li>
+        <li>Merchant Dashboard</li>
         <li>Weekly & Monthly Reports</li>
       </ul>
     </div>
 
-    <!-- CONTACT + CTA -->
+    <!-- CONTACT -->
     <div>
       <h3 class="text-white font-semibold mb-4">Get Started</h3>
-
       <p class="text-sm text-gray-400 mb-3">
         Start accepting payments via WhatsApp today.
       </p>
 
-      <a href="https://wa.me/254700000000" target="_blank"
+      <a href="https://wa.me/254700000000?text=Hello%20I%20want%20to%20use%20WhaPay"
+         target="_blank"
          class="block bg-green-500 hover:bg-green-600 text-white text-center py-2 px-4 rounded mb-3">
          Chat on WhatsApp
       </a>
@@ -340,7 +341,7 @@ root.render(<App />);
     </div>
   </div>
 
-  <!-- BOTTOM BAR -->
+  <!-- BOTTOM -->
   <div class="border-t border-gray-800 mt-10 pt-6 text-center text-sm text-gray-500">
     <p>&copy; 2026 WhaPay Solutions. All rights reserved.</p>
     <div class="mt-2 space-x-4">
@@ -351,6 +352,19 @@ root.render(<App />);
   </div>
 
 </footer>
+
+<!-- ================= FLOATING WHATSAPP BUTTON ================= -->
+<a href="https://wa.me/254700000000?text=Hello%20I%20want%20to%20use%20WhaPay"
+   target="_blank"
+   class="fixed bottom-5 right-5 z-50 flex items-center gap-3 bg-green-500 hover:bg-green-600 text-white px-4 py-3 rounded-full shadow-lg transition-all duration-300">
+
+  <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+    <path d="M20.52 3.48A11.91 11.91 0 0 0 12.05 0C5.45 0 .07 5.38.07 11.98c0 2.11.55 4.17 1.6 5.99L0 24l6.2-1.63a11.94 11.94 0 0 0 5.85 1.5h.01c6.6 0 11.98-5.38 11.98-11.98 0-3.2-1.25-6.21-3.52-8.41z"/>
+  </svg>
+
+  <span class="hidden md:inline text-sm font-semibold">Chat with us</span>
+</a>
+
 
 </body>
 </html>

@@ -496,6 +496,14 @@
     const code = document.getElementById('user-code-display').innerText;
     navigator.clipboard.writeText(code); showToast(`Copied ${code}`);
   });
+// Add this to every page
+const currentPage = window.location.pathname.split('/').pop();
+document.querySelectorAll('nav a').forEach(link => {
+  if (link.getAttribute('href') === currentPage) {
+    link.classList.add('text-green-300', 'font-bold', 'underline');
+  }
+});
+  
 </script>
 </body>
 </html>

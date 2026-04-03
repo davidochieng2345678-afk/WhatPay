@@ -2,57 +2,101 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>About WhaPay – WhatsApp Payments Kenya</title>
-<meta name="description" content="Learn about WhaPay, Kenya's modern WhatsApp payment solution. Discover our mission, vision, team, and how we help businesses accept M-Pesa and card payments.">
-<meta name="keywords" content="WhaPay Kenya, WhatsApp payments Kenya, M-Pesa integration, card payments, WhatsApp payment solution, Kenyan fintech">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>About WhaPay – WhatsApp Payments Kenya | M-Pesa & Card Solutions</title>
+<meta name="description" content="WhaPay is Kenya's innovative WhatsApp payment solution. Accept M-Pesa & card payments seamlessly. Learn about our mission, team, and values.">
+<meta name="keywords" content="WhaPay Kenya, WhatsApp payments Kenya, M-Pesa integration, card payments, Kenyan fintech, about WhaPay">
+<meta name="author" content="WhaPay Solutions">
 <meta name="robots" content="index, follow">
+<link rel="canonical" href="https://whapay.space/about.html">
 
-<!-- Open Graph -->
+<!-- Open Graph / Social Media -->
 <meta property="og:title" content="About WhaPay – WhatsApp Payments Kenya">
-<meta property="og:description" content="WhaPay is Kenya's innovative WhatsApp payment solution. Accept M-Pesa & card payments seamlessly. Learn more about our mission and team.">
+<meta property="og:description" content="WhaPay is Kenya's modern WhatsApp payment solution. Accept M-Pesa & card payments seamlessly. Learn about our mission and team.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://yourgithubusername.github.io/WhatPay/about.html">
-<meta property="og:image" content="https://yourdomain.com/whapay-about-preview.png">
+<meta property="og:url" content="https://whapay.space/about.html">
+<meta property="og:image" content="https://whapay.space/images/whapay-og.jpg">
+<meta property="og:site_name" content="WhaPay">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="About WhaPay – WhatsApp Payments Kenya">
+<meta name="twitter:description" content="Learn about WhaPay, Kenya's trusted WhatsApp payment solution.">
 
-<!-- Structured Data -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "WhaPay Solutions",
-  "url": "https://yourgithubusername.github.io/WhatPay/about.html",
-  "logo": "https://yourdomain.com/logo.png",
-  "sameAs": [
-    "https://wa.me/254700000000",
-    "https://www.linkedin.com/company/whapay-solutions",
-    "https://twitter.com/whapay"
-  ],
-  "contactPoint": {
-    "@type": "ContactPoint",
-    "telephone": "+254700000000",
-    "contactType": "Customer Support",
-    "email": "support@whapay.com"
-  }
-}
-</script>
-
-<!-- Tailwind CSS -->
+<!-- Tailwind CSS + Font Awesome -->
 <script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<!-- Firebase SDKs -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  
+  const firebaseConfig = {
+    apiKey: "AIzaSyDPAvq6BgpdfZAkfoEwdwmHrWedHgzjRSk",
+    authDomain: "whapay-c93ab.firebaseapp.com",
+    projectId: "whapay-c93ab",
+    storageBucket: "whapay-c93ab.firebasestorage.app",
+    messagingSenderId: "205456952458",
+    appId: "1:205456952458:web:6533921ca10a2988417173"
+  };
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  window.db = db;
+
+  // Toast helper (consistent with other pages)
+  window.showToast = function(msg, duration = 3000) {
+    let toast = document.getElementById('toast-msg');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'toast-msg';
+      toast.className = 'fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white px-5 py-2 rounded-full text-sm z-50 hidden';
+      document.body.appendChild(toast);
+    }
+    toast.innerText = msg;
+    toast.classList.remove('hidden');
+    setTimeout(() => toast.classList.add('hidden'), duration);
+  };
+
+  // Store contact form messages in Firebase Firestore
+  window.storeContactMessage = async (name, email, message) => {
+    try {
+      await addDoc(collection(db, 'contact_messages'), {
+        name: name,
+        email: email,
+        message: message,
+        page: 'about',
+        createdAt: serverTimestamp()
+      });
+      return true;
+    } catch (error) {
+      console.error("Firestore error:", error);
+      return false;
+    }
+  };
+
+  // Track page view (optional analytics)
+  window.trackPageView = async () => {
+    try {
+      await addDoc(collection(db, 'page_views'), {
+        page: 'about',
+        timestamp: serverTimestamp(),
+        userAgent: navigator.userAgent
+      });
+    } catch(e) { console.log("Analytics not critical"); }
+  };
+  trackPageView();
+</script>
+<style>
+  .toast { transition: all 0.2s ease; }
+</style>
 </head>
 <body class="bg-gray-100 font-sans text-gray-800">
 
-  <header class="bg-green-600 text-white p-4 shadow-md">
+<!-- Header (identical to other pages) -->
+<header class="bg-green-600 text-white p-4 shadow-md">
   <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:justify-between items-center">
-    <!-- Logo / Site Name -->
-    <h1 class="text-2xl font-bold mb-2 md:mb-0">
-      <a href="index.html">WhaPay</a>
-    </h1>
-
-    <!-- Navigation Links -->
+    <h1 class="text-2xl font-bold mb-2 md:mb-0"><a href="index.html">WhaPay</a></h1>
     <nav class="flex flex-wrap justify-center gap-2 md:gap-4">
       <a href="index.html" class="hover:underline">Home</a>
-      <a href="about.html" class="hover:underline">About</a>
+      <a href="about.html" class="hover:underline text-green-300 font-bold underline">About</a>
       <a href="features.html" class="hover:underline">Features</a>
       <a href="pricing.html" class="hover:underline">Pricing</a>
       <a href="merchant.html" class="hover:underline">Merchant</a>
@@ -65,122 +109,154 @@
   </div>
 </header>
 
-<!-- HEADER -->
-<header class="bg-green-600 text-white p-8 rounded-b-lg shadow-md text-center">
-  <h1 class="text-4xl font-bold mb-2">About WhaPay</h1>
-  <p class="text-lg">Kenya’s modern WhatsApp payment solution for seamless M-Pesa & card transactions.</p>
-</header>
+<!-- Hero Section -->
+<section class="bg-gradient-to-r from-green-700 to-green-500 text-white py-16 px-4 text-center">
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-4xl md:text-5xl font-bold mb-4">About WhaPay</h1>
+    <p class="text-xl md:text-2xl">Kenya’s modern WhatsApp payment solution for seamless M-Pesa & card transactions.</p>
+  </div>
+</section>
 
-<main class="max-w-6xl mx-auto px-4 mt-12">
+<main class="max-w-6xl mx-auto px-4 py-12">
 
-<!-- MISSION & VISION -->
-<section class="bg-white shadow-lg rounded-lg p-8 mb-12">
+<!-- Mission & Vision -->
+<section class="bg-white shadow-lg rounded-lg p-6 md:p-8 mb-12">
   <h2 class="text-3xl font-bold mb-6 text-green-600 text-center">Our Mission & Vision</h2>
   <div class="grid md:grid-cols-2 gap-8">
-    <div>
+    <div class="text-center md:text-left">
+      <i class="fas fa-bullseye text-4xl text-green-500 mb-3"></i>
       <h3 class="text-xl font-semibold mb-2">Our Mission</h3>
-      <p>To simplify payments in Kenya by enabling businesses and individuals to pay securely via WhatsApp, M-Pesa, and card payments with ease and transparency.</p>
+      <p class="text-gray-600">To simplify payments in Kenya by enabling businesses and individuals to pay securely via WhatsApp, M-Pesa, and card payments with ease and transparency.</p>
     </div>
-    <div>
+    <div class="text-center md:text-left">
+      <i class="fas fa-eye text-4xl text-green-500 mb-3"></i>
       <h3 class="text-xl font-semibold mb-2">Our Vision</h3>
-      <p>To become the most trusted and widely used WhatsApp payment platform in Kenya, transforming how businesses and consumers transact digitally.</p>
+      <p class="text-gray-600">To become the most trusted and widely used WhatsApp payment platform in Kenya, transforming how businesses and consumers transact digitally.</p>
     </div>
   </div>
 </section>
 
-<!-- VALUES -->
+<!-- Core Values -->
 <section class="mb-12">
   <h2 class="text-3xl font-bold mb-6 text-green-600 text-center">Our Core Values</h2>
   <div class="grid md:grid-cols-3 gap-8">
-    <div class="bg-white p-6 rounded-lg shadow text-center">
+    <div class="bg-white p-6 rounded-lg shadow text-center hover:shadow-lg transition">
+      <i class="fas fa-shield-alt text-4xl text-green-500 mb-3"></i>
       <h3 class="text-xl font-semibold mb-2">Security</h3>
-      <p>We prioritize safe and secure transactions for all users.</p>
+      <p class="text-gray-600">We prioritize safe and secure transactions for all users.</p>
     </div>
-    <div class="bg-white p-6 rounded-lg shadow text-center">
+    <div class="bg-white p-6 rounded-lg shadow text-center hover:shadow-lg transition">
+      <i class="fas fa-lightbulb text-4xl text-green-500 mb-3"></i>
       <h3 class="text-xl font-semibold mb-2">Innovation</h3>
-      <p>Constantly improving and integrating cutting-edge payment solutions.</p>
+      <p class="text-gray-600">Constantly improving and integrating cutting-edge payment solutions.</p>
     </div>
-    <div class="bg-white p-6 rounded-lg shadow text-center">
+    <div class="bg-white p-6 rounded-lg shadow text-center hover:shadow-lg transition">
+      <i class="fas fa-heart text-4xl text-green-500 mb-3"></i>
       <h3 class="text-xl font-semibold mb-2">Customer Focus</h3>
-      <p>Providing support and solutions that truly meet our users' needs.</p>
+      <p class="text-gray-600">Providing support and solutions that truly meet our users' needs.</p>
     </div>
   </div>
 </section>
 
-<!-- TEAM -->
-<section class="bg-white shadow-lg rounded-lg p-8 mb-12">
+<!-- Team Section (with real icons instead of placeholders) -->
+<section class="bg-white shadow-lg rounded-lg p-6 md:p-8 mb-12">
   <h2 class="text-3xl font-bold mb-6 text-green-600 text-center">Meet Our Team</h2>
   <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-8 text-center">
     <div>
-      <img src="https://via.placeholder.com/150" alt="David Ochieng - Founder & CEO" class="mx-auto rounded-full mb-3">
+      <div class="w-32 h-32 mx-auto bg-green-100 rounded-full flex items-center justify-center mb-3">
+        <i class="fas fa-user-circle text-6xl text-green-600"></i>
+      </div>
       <h3 class="font-semibold text-lg">David Ochieng</h3>
       <p class="text-gray-500 text-sm">Founder & CEO</p>
     </div>
     <div>
-      <img src="https://via.placeholder.com/150" alt="Jane Mwangi - CTO" class="mx-auto rounded-full mb-3">
+      <div class="w-32 h-32 mx-auto bg-green-100 rounded-full flex items-center justify-center mb-3">
+        <i class="fas fa-user-circle text-6xl text-green-600"></i>
+      </div>
       <h3 class="font-semibold text-lg">Jane Mwangi</h3>
       <p class="text-gray-500 text-sm">CTO</p>
     </div>
     <div>
-      <img src="https://via.placeholder.com/150" alt="Mark Otieno - COO" class="mx-auto rounded-full mb-3">
+      <div class="w-32 h-32 mx-auto bg-green-100 rounded-full flex items-center justify-center mb-3">
+        <i class="fas fa-user-circle text-6xl text-green-600"></i>
+      </div>
       <h3 class="font-semibold text-lg">Mark Otieno</h3>
       <p class="text-gray-500 text-sm">COO</p>
     </div>
     <div>
-      <img src="https://via.placeholder.com/150" alt="Mary Wanjiru - Customer Support Lead" class="mx-auto rounded-full mb-3">
+      <div class="w-32 h-32 mx-auto bg-green-100 rounded-full flex items-center justify-center mb-3">
+        <i class="fas fa-user-circle text-6xl text-green-600"></i>
+      </div>
       <h3 class="font-semibold text-lg">Mary Wanjiru</h3>
       <p class="text-gray-500 text-sm">Customer Support Lead</p>
     </div>
   </div>
 </section>
 
-<!-- ACHIEVEMENTS -->
+<!-- Achievements -->
 <section class="mb-12">
   <h2 class="text-3xl font-bold mb-6 text-green-600 text-center">Our Achievements</h2>
   <div class="grid md:grid-cols-3 gap-8">
     <div class="bg-white p-6 rounded-lg shadow text-center">
-      <h3 class="text-xl font-semibold mb-2">10,000+</h3>
-      <p>Successful Transactions Processed</p>
+      <i class="fas fa-chart-line text-4xl text-green-500 mb-2"></i>
+      <h3 class="text-2xl font-bold text-green-700">10,000+</h3>
+      <p class="text-gray-600">Successful Transactions Processed</p>
     </div>
     <div class="bg-white p-6 rounded-lg shadow text-center">
-      <h3 class="text-xl font-semibold mb-2">500+</h3>
-      <p>Businesses Using WhaPay</p>
+      <i class="fas fa-store text-4xl text-green-500 mb-2"></i>
+      <h3 class="text-2xl font-bold text-green-700">500+</h3>
+      <p class="text-gray-600">Businesses Using WhaPay</p>
     </div>
     <div class="bg-white p-6 rounded-lg shadow text-center">
-      <h3 class="text-xl font-semibold mb-2">24/7</h3>
-      <p>Customer Support Availability</p>
+      <i class="fas fa-headset text-4xl text-green-500 mb-2"></i>
+      <h3 class="text-2xl font-bold text-green-700">24/7</h3>
+      <p class="text-gray-600">Customer Support Availability</p>
     </div>
   </div>
 </section>
 
+<!-- Contact Form (stores messages in Firebase) -->
+<section class="bg-white shadow-lg rounded-lg p-6 md:p-8 mb-12">
+  <h2 class="text-3xl font-bold mb-4 text-green-600 text-center">Send Us a Message</h2>
+  <p class="text-center text-gray-600 mb-6">Your feedback helps us improve. We'll get back to you within 24 hours.</p>
+  <form id="about-contact-form" class="max-w-2xl mx-auto space-y-4">
+    <div>
+      <label class="block text-sm font-medium mb-1">Full Name *</label>
+      <input type="text" id="contact-name" required class="w-full border rounded-lg px-4 py-2 focus:ring-green-500 focus:border-green-500">
+    </div>
+    <div>
+      <label class="block text-sm font-medium mb-1">Email Address *</label>
+      <input type="email" id="contact-email" required class="w-full border rounded-lg px-4 py-2 focus:ring-green-500 focus:border-green-500">
+    </div>
+    <div>
+      <label class="block text-sm font-medium mb-1">Message *</label>
+      <textarea id="contact-message" rows="4" required class="w-full border rounded-lg px-4 py-2 focus:ring-green-500 focus:border-green-500"></textarea>
+    </div>
+    <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded-lg transition">Send Message</button>
+    <div id="contact-form-status" class="text-center text-sm"></div>
+  </form>
+</section>
+
 </main>
 
-<!-- FOOTER -->
+<!-- Footer (consistent with other pages) -->
 <footer class="bg-gray-900 text-gray-300 pt-12 pb-6 mt-10">
   <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-
-    <!-- BRAND -->
     <div>
       <h2 class="text-2xl font-bold text-white mb-3">WhaPay</h2>
-      <p class="text-gray-400 text-sm leading-relaxed mb-4">
-        Kenya's WhatsApp payment solution. Accept M-Pesa & card payments seamlessly.
-      </p>
+      <p class="text-gray-400 text-sm leading-relaxed mb-4">Kenya's WhatsApp payment solution. Accept M-Pesa & card payments seamlessly.</p>
       <p class="text-sm text-gray-500">Trusted by businesses across Kenya 🇰🇪</p>
     </div>
-
-    <!-- QUICK LINKS -->
     <div>
       <h3 class="text-white font-semibold mb-4">Quick Links</h3>
       <ul class="space-y-2 text-sm">
-        <li><a href="index.html" class="hover:text-green-400 transition-colors">Home</a></li>
-        <li><a href="features.html" class="hover:text-green-400 transition-colors">Features</a></li>
-        <li><a href="pricing.html" class="hover:text-green-400 transition-colors">Pricing</a></li>
-        <li><a href="reports.html" class="hover:text-green-400 transition-colors">Reports</a></li>
-        <li><a href="contact.html" class="hover:text-green-400 transition-colors">Contact</a></li>
+        <li><a href="index.html" class="hover:text-green-400">Home</a></li>
+        <li><a href="features.html" class="hover:text-green-400">Features</a></li>
+        <li><a href="pricing.html" class="hover:text-green-400">Pricing</a></li>
+        <li><a href="reports.html" class="hover:text-green-400">Reports</a></li>
+        <li><a href="contact.html" class="hover:text-green-400">Contact</a></li>
       </ul>
     </div>
-
-    <!-- SUPPORT -->
     <div>
       <h3 class="text-white font-semibold mb-4">Support</h3>
       <ul class="space-y-2 text-sm">
@@ -190,34 +266,68 @@
         <li>Live Dashboard Help</li>
       </ul>
     </div>
-
-    <!-- CONTACT -->
     <div>
       <h3 class="text-white font-semibold mb-4">Get in Touch</h3>
       <p class="text-sm text-gray-400 mb-3">Chat on WhatsApp or send us an email:</p>
-      <a href="https://wa.me/254700000000" target="_blank" rel="noopener" class="block bg-green-500 hover:bg-green-600 text-white text-center py-2 px-4 rounded mb-3 transition-colors">Chat on WhatsApp</a>
+      <a href="https://wa.me/254710346425" target="_blank" rel="noopener" class="block bg-green-500 hover:bg-green-600 text-white text-center py-2 px-4 rounded mb-3">Chat on WhatsApp</a>
       <p class="text-sm text-gray-400">Email: <a href="mailto:support@whapay.com" class="hover:text-green-400">support@whapay.com</a></p>
-      <p class="text-sm text-gray-400">Phone: <a href="tel:+254700000000" class="hover:text-green-400">+254 700 000000</a></p>
+      <p class="text-sm text-gray-400">Phone: <a href="tel:+254710346425" class="hover:text-green-400">+254 710 346425</a></p>
     </div>
-
   </div>
-
-  <!-- COPYRIGHT -->
   <div class="border-t border-gray-800 mt-10 pt-6 text-center text-sm text-gray-500">
     <p>&copy; 2026 WhaPay Solutions. All rights reserved.</p>
     <div class="mt-2 space-x-4">
-      <a href="#" class="hover:text-green-400 transition-colors">Privacy Policy</a>
-      <a href="#" class="hover:text-green-400 transition-colors">Terms of Service</a>
-      <a href="#" class="hover:text-green-400 transition-colors">Cookies</a>
+      <a href="#" class="hover:text-green-400">Privacy Policy</a>
+      <a href="#" class="hover:text-green-400">Terms of Service</a>
+      <a href="#" class="hover:text-green-400">Cookies</a>
     </div>
   </div>
 </footer>
 
-<!-- FLOATING WHATSAPP BUTTON -->
-<a href="https://wa.me/254700000000" target="_blank" rel="noopener"
-   class="fixed bottom-5 right-5 z-50 flex items-center gap-3 bg-green-500 hover:bg-green-600 text-white px-4 py-3 rounded-full shadow-lg transition-all duration-300">
-  <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-    <path d="M20.52 3.48A11.91 11.91 0 0 0 12.05 0C5.45 0 .07 5.38.07 11.98c0 2.11.55 4.17 1.6 5.99L0 24l6.2-1.63a11.94 11.94 0 0 0 5.85 1.5h.01c6.6 0 11.98-5.38 11.98-11.98 0-3.2-1.25-6.21-3.52-8.41z"/>
-  </svg>
+<!-- Floating WhatsApp Button -->
+<a href="https://wa.me/254710346425" target="_blank" rel="noopener" class="fixed bottom-5 right-5 z-50 flex items-center gap-3 bg-green-500 hover:bg-green-600 text-white px-4 py-3 rounded-full shadow-lg transition-all duration-300">
+  <i class="fab fa-whatsapp text-xl"></i>
   <span class="hidden md:inline text-sm font-semibold">Chat with us</span>
 </a>
+
+<!-- Form submission handler (stores data in Firebase) -->
+<script type="module">
+  const form = document.getElementById('about-contact-form');
+  const statusDiv = document.getElementById('contact-form-status');
+  
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = document.getElementById('contact-name').value.trim();
+    const email = document.getElementById('contact-email').value.trim();
+    const message = document.getElementById('contact-message').value.trim();
+    
+    if (!name || !email || !message) {
+      statusDiv.innerHTML = '<span class="text-red-600">All fields are required.</span>';
+      return;
+    }
+    
+    statusDiv.innerHTML = '<span class="text-gray-600">Sending...</span>';
+    const success = await window.storeContactMessage(name, email, message);
+    if (success) {
+      statusDiv.innerHTML = '<span class="text-green-600">✅ Message sent! We will respond within 24 hours.</span>';
+      form.reset();
+      setTimeout(() => statusDiv.innerHTML = '', 5000);
+    } else {
+      statusDiv.innerHTML = '<span class="text-red-600">❌ Error sending message. Please try again or contact us directly on WhatsApp.</span>';
+    }
+  });
+</script>
+
+<!-- Active link highlighting for other pages (if they don't have it) -->
+<script>
+  // Highlight current page in nav (for pages that don't have it)
+  const currentPage = window.location.pathname.split('/').pop();
+  document.querySelectorAll('nav a').forEach(link => {
+    const href = link.getAttribute('href');
+    if (href === currentPage || (currentPage === '' && href === 'index.html')) {
+      link.classList.add('text-green-300', 'font-bold', 'underline');
+    }
+  });
+</script>
+</body>
+</html>

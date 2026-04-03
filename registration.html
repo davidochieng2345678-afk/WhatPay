@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>WhaPay | Pay Anyone in Kenya – Online & Offline Payments</title>
+  <!-- Tailwind CSS CDN + basic interceptor for smooth behaviour -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- custom override for any extra styling (smooth, QR badge) -->
+  <style>
+    body {
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, sans-serif;
+    }
+    .qr-badge {
+      transition: transform 0.1s ease;
+    }
+    .qr-badge:hover {
+      transform: scale(1.02);
+    }
+    .shadow-soft {
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+    }
+  </style>
+</head>
+<body class="bg-white text-gray-800 antialiased">
+
+  <!-- HERO (HIGH CONVERSION) -->
+  <section class="bg-green-600 text-white py-16 text-center">
+    <h1 class="text-4xl md:text-5xl font-bold mb-4 tracking-tight">
+      Pay Anyone in Kenya — With or Without Internet
+    </h1>
+    <p class="max-w-2xl mx-auto text-lg mb-6 px-4">
+      Use WhatsApp, QR codes, or simple USSD codes to send payments instantly. 
+      No apps. No stress. Works online and offline with M-Pesa & card support.
+    </p>
+
+    <div class="flex flex-col md:flex-row justify-center gap-4">
+      <a href="https://wa.me/254710346425?text=Hello%20I%20want%20to%20register%20on%20WhaPay"
+         class="bg-white text-green-600 px-6 py-3 rounded-xl font-semibold hover:bg-gray-100 transition shadow-md">
+         Start on WhatsApp
+      </a>
+
+      <div class="bg-green-500 backdrop-blur-sm px-6 py-3 rounded-xl font-semibold shadow-md">
+        Dial <strong>*789#</strong> (Offline)
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST SIGNAL -->
+  <section class="py-5 text-center bg-gray-50 border-b border-gray-100">
+    <p class="text-gray-600 text-sm md:text-base">
+      ✅ Trusted for fast, secure WhatsApp & offline payments across Kenya 🇰🇪 
+      <span class="hidden md:inline-block mx-2">•</span> <span>⭐ 4.9/5 from 2,000+ users</span>
+    </p>
+  </section>
+
+  <!-- REGISTRATION – get unique code + QR -->
+  <section class="py-14 max-w-6xl mx-auto px-4">
+    <h2 class="text-3xl font-bold text-center mb-10">
+      Create Your Account in Seconds – Get Code + QR
+    </h2>
+
+    <div class="grid md:grid-cols-2 gap-10">
+
+      <!-- ONLINE: WhatsApp registration -->
+      <div class="bg-gray-50 p-8 rounded-2xl shadow-soft border border-gray-100">
+        <h3 class="text-xl font-semibold mb-4 flex items-center gap-2">
+          <span>📱</span> Register via WhatsApp
+        </h3>
+        <p class="text-gray-600 mb-4">
+          Fastest way to get started. No forms, no downloads.
+        </p>
+
+        <ul class="space-y-2 text-gray-600 mb-6">
+          <li>✔ Chat on WhatsApp</li>
+          <li>✔ Enter your name & phone</li>
+          <li>✔ Get your unique ID (e.g. <strong>DK001</strong>)</li>
+          <li>✔ <span class="font-medium text-green-700">Receive personal QR code</span> – scan to pay/receive on WhatsApp</li>
+          <li>✔ Start paying immediately online or offline</li>
+        </ul>
+
+        <a href="https://wa.me/254710346425?text=Register%20me%20on%20WhaPay"
+           class="block bg-green-600 text-white text-center py-3 rounded-xl font-semibold hover:bg-green-700 transition shadow">
+           📲 Register Now on WhatsApp
+        </a>
+        <div class="mt-3 text-xs text-gray-500 text-center flex justify-center items-center gap-1">
+          <span class="inline-block w-2 h-2 bg-green-500 rounded-full"></span> QR code sent instantly after registration
+        </div>
+      </div>
+
+      <!-- OFFLINE: USSD Registration (updated to *789#) -->
+      <div class="bg-gray-50 p-8 rounded-2xl shadow-soft border border-gray-100">
+        <h3 class="text-xl font-semibold mb-4 flex items-center gap-2">
+          <span>📶</span> Register Without Internet
+        </h3>
+        <p class="text-gray-600 mb-4">
+          No data? Use simple phone code and get your credentials.
+        </p>
+
+        <ul class="space-y-2 text-gray-600 mb-6">
+          <li>✔ Dial <strong class="bg-white px-2 py-0.5 rounded-md border">*789#</strong></li>
+          <li>✔ Select "Register" → Choose User type</li>
+          <li>✔ Enter your full name</li>
+          <li>✔ Receive your <strong>User ID (e.g. DK001)</strong> via SMS</li>
+          <li>✔ <strong>QR code link</strong> sent via SMS – save & scan on WhatsApp later</li>
+        </ul>
+
+        <div class="bg-white p-3 rounded-xl text-center font-semibold text-gray-700 shadow-sm border border-green-100">
+          📟 Works on any phone (feature phone or smartphone – no internet needed)
+        </div>
+        <div class="mt-3 text-xs text-gray-500 text-center">
+          *789# offline registration → instant ID + QR code via SMS
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Extra QR highlight (unique selling) -->
+    <div class="mt-10 bg-green-50 rounded-2xl p-5 flex flex-col md:flex-row items-center justify-between gap-4 border border-green-200">
+      <div class="flex items-center gap-3">
+        <div class="bg-white p-2 rounded-xl shadow-sm">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+          </svg>
+        </div>
+        <div>
+          <p class="font-bold text-gray-800">✨ Every user gets a unique QR code</p>
+          <p class="text-gray-600 text-sm">Scan on WhatsApp to pay, request money, or add contacts instantly. No need to type long codes.</p>
+        </div>
+      </div>
+      <div class="bg-white px-4 py-2 rounded-full text-green-700 text-sm font-mono shadow-inner">
+        Your QR = wa.me/2547...?code=DK001
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS (updated with QR dimension) -->
+  <section class="py-14 bg-gray-50">
+    <div class="max-w-6xl mx-auto px-4 text-center">
+      <h2 class="text-3xl font-bold mb-10">How Payments Work (Online + Offline)</h2>
+
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="bg-white p-6 rounded-2xl shadow-md">
+          <div class="bg-green-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-green-700 font-bold text-xl">1</div>
+          <h3 class="font-semibold text-lg mb-2">Get Your Code & QR</h3>
+          <p class="text-gray-600">Register via WhatsApp or dial <strong>*789#</strong>. Receive ID like <strong>DK001</strong> + personal QR code.</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl shadow-md">
+          <div class="bg-green-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-green-700 font-bold text-xl">2</div>
+          <h3 class="font-semibold text-lg mb-2">Enter Merchant Code / Scan QR</h3>
+          <p class="text-gray-600">Use business code, share your QR, or scan theirs on WhatsApp to send payment instantly.</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl shadow-md">
+          <div class="bg-green-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-green-700 font-bold text-xl">3</div>
+          <h3 class="font-semibold text-lg mb-2">Confirm Payment</h3>
+          <p class="text-gray-600">Pay via M-Pesa, card, or offline USSD. Receive instant confirmation via SMS or WhatsApp.</p>
+        </div>
+      </div>
+
+      <div class="mt-10 text-center text-sm text-gray-500 max-w-2xl mx-auto">
+        💡 <span class="font-medium">QR shortcut:</span> Open WhatsApp → scan WhaPay QR code → auto-fill amount & pay with M-Pesa/Card. No typing!
+      </div>
+    </div>
+  </section>
+
+  <!-- ONLINE VS OFFLINE (updated dial code, QR mention) -->
+  <section class="py-14 max-w-6xl mx-auto px-4">
+    <h2 class="text-3xl font-bold text-center mb-10">
+      Pay Online or Offline — Your Choice
+    </h2>
+
+    <div class="grid md:grid-cols-2 gap-10">
+
+      <div class="bg-green-50 p-8 rounded-2xl border border-green-200">
+        <h3 class="text-xl font-semibold mb-4 flex items-center gap-2">🌐 Online Payments</h3>
+        <ul class="space-y-2 text-gray-700">
+          <li>✔ Pay directly via WhatsApp (chat or QR scan)</li>
+          <li>✔ M-Pesa STK Push & card payments (Visa/Mastercard)</li>
+          <li>✔ Instant confirmation + receipt via WhatsApp</li>
+          <li>✔ Scan any WhaPay QR code to pay in 2 seconds</li>
+        </ul>
+      </div>
+
+      <div class="bg-green-50 p-8 rounded-2xl border border-green-200">
+        <h3 class="text-xl font-semibold mb-4 flex items-center gap-2">📡 Offline Payments (USSD)</h3>
+        <ul class="space-y-2 text-gray-700">
+          <li>✔ Dial <strong class="bg-white px-2 py-0.5 rounded-md">*789#</strong> and enter receiver's code (e.g. DK001)</li>
+          <li>✔ Pay via M-Pesa on USSD menu (no internet needed)</li>
+          <li>✔ SMS confirmation with transaction details</li>
+          <li>✔ Works on any phone, even without smartphone</li>
+        </ul>
+        <div class="mt-4 text-sm text-gray-600 bg-white p-3 rounded-lg">
+          📱 Offline payments automatically sync when you're back online.
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- AUTO SYNC (UNIQUE SELLING POINT) + QR data sync -->
+  <section class="py-14 bg-green-600 text-white text-center">
+    <h2 class="text-3xl font-bold mb-4">
+      Everything Syncs Automatically – Even QR Codes
+    </h2>
+
+    <p class="max-w-2xl mx-auto mb-8 px-4">
+      Any registration, QR scan, or payment done offline is saved securely and updated automatically 
+      once your phone connects to the internet or WhatsApp. Your QR code remains the same across all channels.
+    </p>
+
+    <div class="bg-white text-gray-800 inline-block px-6 py-3 rounded-xl font-semibold shadow-lg">
+      Offline → Saved → Internet → Auto Sync → Updated Balance & QR history
+    </div>
+    <p class="text-green-100 text-sm mt-6 max-w-md mx-auto">✅ Offline payments using *789# → instantly reflect when you're online.</p>
+  </section>
+
+  <!-- BENEFITS (including QR advantage) -->
+  <section class="py-14 max-w-6xl mx-auto px-4">
+    <h2 class="text-3xl font-bold text-center mb-10">
+      Why Users Choose WhaPay
+    </h2>
+
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="bg-gray-50 p-6 rounded-xl shadow-sm">
+        <div class="text-3xl mb-2">📴</div>
+        <h3 class="font-semibold text-lg mb-2">Works Without Internet</h3>
+        <p class="text-gray-600">Use *789# USSD for payments and registration anywhere, anytime.</p>
+      </div>
+
+      <div class="bg-gray-50 p-6 rounded-xl shadow-sm">
+        <div class="text-3xl mb-2">🔲</div>
+        <h3 class="font-semibold text-lg mb-2">QR for WhatsApp</h3>
+        <p class="text-gray-600">Instant scan to pay or request money – no manual codes, no mistakes.</p>
+      </div>
+
+      <div class="bg-gray-50 p-6 rounded-xl shadow-sm">
+        <div class="text-3xl mb-2">📱</div>
+        <h3 class="font-semibold text-lg mb-2">No App Needed</h3>
+        <p class="text-gray-600">Use WhatsApp, QR codes, or simple USSD. Zero storage required.</p>
+      </div>
+
+      <div class="bg-gray-50 p-6 rounded-xl shadow-sm">
+        <div class="text-3xl mb-2">🔐</div>
+        <h3 class="font-semibold text-lg mb-2">Secure Payments</h3>
+        <p class="text-gray-600">Encrypted transactions & fraud protection. M-Pesa & card security.</p>
+      </div>
+
+      <div class="bg-gray-50 p-6 rounded-xl shadow-sm">
+        <div class="text-3xl mb-2">⚡</div>
+        <h3 class="font-semibold text-lg mb-2">Lightning Fast</h3>
+        <p class="text-gray-600">Complete payments in seconds – online or offline.</p>
+      </div>
+
+      <div class="bg-gray-50 p-6 rounded-xl shadow-sm">
+        <div class="text-3xl mb-2">📨</div>
+        <h3 class="font-semibold text-lg mb-2">Instant Alerts</h3>
+        <p class="text-gray-600">Get confirmations via SMS, WhatsApp or both.</p>
+      </div>
+    </div>
+    
+    <!-- extra QR callout -->
+    <div class="mt-12 bg-green-100 rounded-2xl p-5 text-center">
+      <p class="font-semibold text-green-800">🎯 QR code advantage: share your WhaPay QR on WhatsApp status or print it at your shop → customers pay without asking for IDs.</p>
+    </div>
+  </section>
+
+  <!-- FINAL CTA with QR mention -->
+  <section class="bg-green-600 text-white py-16 text-center">
+    <h2 class="text-3xl font-bold mb-4">
+      Start Paying the Smart Way Today
+    </h2>
+
+    <p class="mb-6 max-w-xl mx-auto px-4">
+      Join thousands of users across Kenya using WhatsApp, QR codes & offline USSD. Get your unique ID + QR code instantly.
+    </p>
+
+    <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+      <a href="https://wa.me/254710346425?text=Register%20me%20on%20WhaPay"
+         class="bg-white text-green-600 px-8 py-3 rounded-xl font-semibold hover:bg-gray-100 transition shadow-md">
+         📲 Get Started on WhatsApp
+      </a>
+      <div class="bg-green-500 px-5 py-3 rounded-xl font-medium text-white border border-white/30">
+        Or dial <strong class="text-white">*789#</strong> (offline)
+      </div>
+    </div>
+    <p class="text-green-100 text-sm mt-5">✨ Receive your personal QR code in seconds. No app, no limits.</p>
+  </section>
+
+  <!-- Footer with extra reassurance -->
+  <footer class="py-8 text-center text-gray-500 text-sm border-t border-gray-100 bg-white">
+    <div class="max-w-5xl mx-auto px-4">
+      <p>© 2025 WhaPay – Seamless payments in Kenya • M-Pesa & card payments • USSD code *789# • QR for WhatsApp</p>
+      <p class="mt-2">Need help? Chat with support on WhatsApp <a href="https://wa.me/254710346425" class="text-green-600 underline">+254 710 346425</a></p>
+    </div>
+  </footer>
+
+  <!-- optional small script to simulate QR copy interaction (just visual demo) -->
+  <script>
+    // purely cosmetic console log to confirm QR feature update - no actual backend
+    (function() {
+      console.log("WhaPay page updated: USSD *789#, QR code integration for WhatsApp registration.");
+      // any click tracking can be added but not needed
+    })();
+  </script>
+</body>
+</html>

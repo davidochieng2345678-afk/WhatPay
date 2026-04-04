@@ -282,11 +282,95 @@
          📲 Get Started on WhatsApp
       </a>
       <div class="bg-green-500 px-5 py-3 rounded-xl font-medium text-white border border-white/30">
-        Or dial <strong class="text-white">*789#</strong> (offline)
+        Or dial <strong class="text-white">0705728896</strong> (offline)
       </div>
     </div>
     <p class="text-green-100 text-sm mt-5">✨ Receive your personal QR code in seconds. No app, no limits.</p>
   </section>
+  <!-- ===== OFFLINE FEATURES SECTION (SMS + WhatsApp + M-PESA) ===== -->
+<section id="offline-features" class="py-16 px-4 max-w-4xl mx-auto">
+  <div class="text-center mb-10">
+    <h2 class="text-3xl font-bold text-green-700 mb-3">Use WhaPay Even Without Internet</h2>
+    <p class="text-gray-600 text-lg">Register, pay, and complete transactions anytime — even offline. Perfect for low‑network areas.</p>
+  </div>
+
+  <div class="grid md:grid-cols-3 gap-6">
+    
+    <!-- Card 1: Offline Registration (SMS + WhatsApp) -->
+    <div class="bg-white rounded-2xl shadow-lg p-5 border-t-4 border-green-500 hover:shadow-xl transition">
+      <i class="fas fa-user-plus text-3xl text-green-600 mb-3"></i>
+      <h3 class="text-xl font-bold text-gray-800 mb-2">Offline Registration</h3>
+      <p class="text-gray-600 text-sm mb-3">Register without internet – via SMS or WhatsApp.</p>
+      <ul class="text-sm space-y-2 text-gray-700">
+        <li><strong>SMS:</strong> Send <span class="font-mono bg-gray-100 px-1">REG Your Name</span> to <strong>+254705728896</strong></li>
+        <li><strong>WhatsApp:</strong> Send "REGISTER" to <strong>+254710346425</strong> (may require internet)</li>
+        <li>You receive a <strong>Temporary Code</strong> (e.g., TMP5821)</li>
+        <li>When online: send <span class="font-mono bg-gray-100 px-1">ACTIVATE TMP5821</span> via WhatsApp</li>
+        <li>Get permanent <strong>Member Code + QR</strong> via WhatsApp/SMS</li>
+      </ul>
+      <button onclick="trackOfflineFeature('registration')" class="mt-4 text-green-600 text-sm font-semibold hover:underline">Learn more →</button>
+    </div>
+
+    <!-- Card 2: Offline Payment (Merchant Code via M-PESA) -->
+    <div class="bg-white rounded-2xl shadow-lg p-5 border-t-4 border-green-500 hover:shadow-xl transition">
+      <i class="fas fa-money-bill-wave text-3xl text-green-600 mb-3"></i>
+      <h3 class="text-xl font-bold text-gray-800 mb-2">Offline Payment (Code)</h3>
+      <p class="text-gray-600 text-sm mb-3">Pay using merchant’s code – no internet required.</p>
+      <ul class="text-sm space-y-2 text-gray-700">
+        <li>Customer gets merchant code (e.g., <span class="font-mono">DK10245</span>)</li>
+        <li>Go to M-PESA → Lipa na M-PESA → Paybill/Till</li>
+        <li>Enter Account = Merchant Code, amount, confirm</li>
+        <li>Both receive SMS – keep as proof</li>
+        <li>When online: send <span class="font-mono bg-gray-100 px-1">SYNC</span> via WhatsApp to update balance</li>
+      </ul>
+      <button onclick="trackOfflineFeature('payment')" class="mt-4 text-green-600 text-sm font-semibold hover:underline">How to sync →</button>
+    </div>
+
+    <!-- Card 3: Offline QR (Printed) -->
+    <div class="bg-white rounded-2xl shadow-lg p-5 border-t-4 border-green-500 hover:shadow-xl transition">
+      <i class="fas fa-qrcode text-3xl text-green-600 mb-3"></i>
+      <h3 class="text-xl font-bold text-gray-800 mb-2">Printed QR Code</h3>
+      <p class="text-gray-600 text-sm mb-3">Display your QR – customers scan and pay, even offline.</p>
+      <ul class="text-sm space-y-2 text-gray-700">
+        <li>Print your unique QR (sent after registration)</li>
+        <li>Customer scans with phone → sees merchant code + Till</li>
+        <li>Opens M-PESA manually (no internet needed)</li>
+        <li>Pays using the details shown</li>
+        <li>SMS receipt is saved; sync later via WhatsApp</li>
+      </ul>
+      <button onclick="trackOfflineFeature('qr')" class="mt-4 text-green-600 text-sm font-semibold hover:underline">Get your QR →</button>
+    </div>
+
+  </div>
+
+  <!-- Summary / CTA -->
+  <div class="mt-12 bg-green-50 rounded-xl p-6 text-center border border-green-200">
+    <h3 class="font-bold text-green-800 text-lg mb-2">💡 Why Offline Matters</h3>
+    <p class="text-green-700">With WhaPay, you are not limited by internet connection. Register, pay, and run your business anytime, anywhere – using M-PESA’s SMS network. Sync automatically when back online.</p>
+    <a href="merchant.html" class="inline-block mt-4 bg-green-600 hover:bg-green-700 text-white font-semibold px-5 py-2 rounded-lg transition">Start Offline Registration →</a>
+  </div>
+</section>
+
+<!-- Firebase Tracking Script (add to your existing Firebase module) -->
+<script type="module">
+  // Assumes Firebase is already initialized (window.db exists)
+  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  const db = window.db;
+
+  window.trackOfflineFeature = async (feature) => {
+    try {
+      await addDoc(collection(db, "offline_feature_clicks"), {
+        feature: feature,
+        timestamp: serverTimestamp(),
+        page: "offline-features",
+        userAgent: navigator.userAgent
+      });
+      if (feature === 'registration') window.location.href = 'merchant.html';
+      if (feature === 'payment') window.location.href = 'payment.html';
+      if (feature === 'qr') window.location.href = 'merchant.html';
+    } catch (e) { console.error("Tracking error", e); }
+  };
+</script>
 
   <!-- Footer with extra reassurance -->
   <footer class="py-8 text-center text-gray-500 text-sm border-t border-gray-100 bg-white">

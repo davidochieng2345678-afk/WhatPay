@@ -2,18 +2,18 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Features – WhaPay WhatsApp Payment Solutions</title>
-<meta name="description" content="Discover WhaPay features: WhatsApp payments, M-Pesa & card integration, QR scanning, live dashboard, weekly/monthly reports. Simplify payments in Kenya.">
-<meta name="keywords" content="WhatsApp payments Kenya, M-Pesa payments, QR code payments, card payments, merchant dashboard, WhaPay features, Kenyan fintech">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Features – WhaPay WhatsApp Payment Solutions Kenya</title>
+<meta name="description" content="Discover WhaPay features: WhatsApp payments, M-Pesa & card integration, QR scanning, live dashboard, weekly/monthly reports, offline payments, and 24/7 support. Simplify payments in Kenya.">
+<meta name="keywords" content="WhatsApp payments Kenya, M-Pesa payments, QR code payments, card payments, merchant dashboard, WhaPay features, Kenyan fintech, offline payments, USSD payments">
 <meta name="robots" content="index, follow">
 
 <!-- Open Graph / Social Sharing -->
-<meta property="og:title" content="WhaPay Features – WhatsApp Payment Solutions">
-<meta property="og:description" content="Accept M-Pesa & card payments, scan QR codes, and get weekly/monthly reports with WhaPay. Trusted by Kenyan merchants.">
+<meta property="og:title" content="WhaPay Features – Complete WhatsApp Payment Solution">
+<meta property="og:description" content="Accept M-Pesa & card payments, scan QR codes, get live reports, and accept payments even offline. Trusted by 500+ Kenyan merchants.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://yourgithubusername.github.io/WhatPay/features.html">
-<meta property="og:image" content="https://yourdomain.com/whapay-features-preview.png">
+<meta property="og:url" content="https://whapay.space/features.html">
+<meta property="og:image" content="https://whapay.space/images/whapay-features-og.jpg">
 
 <!-- Structured Data -->
 <script type="application/ld+json">
@@ -21,31 +21,89 @@
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "WhaPay Features",
-  "url": "https://yourgithubusername.github.io/WhatPay/features.html",
-  "description": "Advanced features of WhaPay: WhatsApp payments, M-Pesa & card integration, QR/barcode scanning, live dashboard, weekly/monthly reports.",
+  "url": "https://whapay.space/features.html",
+  "description": "Complete WhatsApp payment solution for Kenyan merchants. Features include M-Pesa & card payments, QR scanning, live dashboard, offline payments, and detailed reports.",
   "applicationCategory": "FinanceApplication",
   "operatingSystem": "Web",
   "creator": { "@type": "Organization", "name": "WhaPay Solutions" }
 }
 </script>
 
-<!-- Tailwind CSS CDN -->
+<!-- Tailwind CSS + Font Awesome -->
 <script src="https://cdn.tailwindcss.com"></script>
-</head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDPAvq6BgpdfZAkfoEwdwmHrWedHgzjRSk",
+    authDomain: "whapay-c93ab.firebaseapp.com",
+    projectId: "whapay-c93ab",
+    storageBucket: "whapay-c93ab.firebasestorage.app",
+    messagingSenderId: "205456952458",
+    appId: "1:205456952458:web:6533921ca10a2988417173"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  window.db = db;
+
+  // Toast helper
+  window.showToast = function(msg, isError = false) {
+    let toast = document.getElementById('toast-msg');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'toast-msg';
+      toast.className = 'fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white px-5 py-2 rounded-full text-sm z-50 hidden';
+      document.body.appendChild(toast);
+    }
+    toast.innerText = msg;
+    toast.classList.remove('hidden');
+    setTimeout(() => toast.classList.add('hidden'), 4000);
+  };
+
+  // Store lead from CTA form
+  window.storeFeatureLead = async (name, email) => {
+    try {
+      await addDoc(collection(db, "feature_leads"), {
+        name: name,
+        email: email,
+        page: "features",
+        createdAt: serverTimestamp()
+      });
+      return true;
+    } catch (error) {
+      console.error("Firestore error:", error);
+      return false;
+    }
+  };
+
+  // Track page view (optional analytics)
+  window.trackPageView = async () => {
+    try {
+      await addDoc(collection(db, "page_views"), {
+        page: "features",
+        timestamp: serverTimestamp(),
+        userAgent: navigator.userAgent
+      });
+    } catch(e) { console.log("Analytics not critical"); }
+  };
+  trackPageView();
+</script>
+</head>
 <body class="bg-gray-100 font-sans">
 
-<!-- NAVIGATION -->
+<!-- Header (consistent with all pages) -->
 <header class="bg-green-600 text-white p-4 shadow-md">
   <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:justify-between items-center">
-    <h1 class="text-2xl font-bold mb-2 md:mb-0">
-      <a href="index.html">WhaPay</a>
-    </h1>
-    <!-- Navigation Links -->
+    <h1 class="text-2xl font-bold mb-2 md:mb-0"><a href="index.html">WhaPay</a></h1>
     <nav class="flex flex-wrap justify-center gap-2 md:gap-4">
       <a href="index.html" class="hover:underline">Home</a>
       <a href="about.html" class="hover:underline">About</a>
-      <a href="features.html" class="hover:underline font-bold">Features</a>
+      <a href="features.html" class="hover:underline text-green-300 font-bold underline">Features</a>
       <a href="pricing.html" class="hover:underline">Pricing</a>
       <a href="merchant.html" class="hover:underline">Merchant</a>
       <a href="payment.html" class="hover:underline">Payment</a>
@@ -57,88 +115,138 @@
   </div>
 </header>
 
-<!-- PAGE HEADER -->
-<section class="bg-green-600 text-white p-6 rounded-b-lg shadow-md mb-6 text-center">
-  <h1 class="text-3xl font-bold mb-2">WhaPay Features</h1>
-  <p class="text-lg">Powerful WhatsApp payment solutions for Kenyan merchants. Accept M-Pesa & card payments, scan QR codes, track transactions live, and generate detailed weekly and monthly reports with insights to grow your business.</p>
+<!-- Hero Section -->
+<section class="bg-gradient-to-r from-green-700 to-green-500 text-white py-12 px-4 text-center">
+  <h1 class="text-3xl md:text-4xl font-bold mb-2">Powerful Features for Kenyan Merchants</h1>
+  <p class="text-lg max-w-3xl mx-auto">Accept M-Pesa & card payments, scan QR codes, track transactions live, generate detailed reports, and accept payments even without internet. WhaPay is built for real‑world Kenyan businesses.</p>
 </section>
 
-<main class="max-w-7xl mx-auto px-4">
+<main class="max-w-7xl mx-auto px-4 py-8">
 
-<!-- FEATURES GRID -->
-<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-  <div class="bg-white shadow rounded-lg p-6 hover:shadow-lg transition">
-    <h3 class="text-xl font-bold mb-2 text-green-600">WhatsApp Payments</h3>
-    <p class="text-gray-600">Generate payment links instantly within WhatsApp. Customers pay securely using M-Pesa or cards without leaving the chat, ensuring a seamless experience.</p>
-  </div>
-  <div class="bg-white shadow rounded-lg p-6 hover:shadow-lg transition">
-    <h3 class="text-xl font-bold mb-2 text-green-600">M-Pesa Integration</h3>
-    <p class="text-gray-600">Seamlessly accept M-Pesa payments via STK Push. Track successful and pending transactions in real-time from your merchant dashboard with complete transparency.</p>
-  </div>
-  <div class="bg-white shadow rounded-lg p-6 hover:shadow-lg transition">
-    <h3 class="text-xl font-bold mb-2 text-green-600">Credit & Debit Cards</h3>
-    <p class="text-gray-600">Enable card payments through secure Stripe integration. Accept Visa, Mastercard, and local debit cards safely, allowing more customers to pay conveniently.</p>
-  </div>
-  <div class="bg-white shadow rounded-lg p-6 hover:shadow-lg transition">
-    <h3 class="text-xl font-bold mb-2 text-green-600">QR & Barcode Scanning</h3>
-    <p class="text-gray-600">Optional QR/barcode scanning for fast in-store payments. Reduce errors, speed up transactions, and improve the overall customer experience.</p>
-  </div>
-  <div class="bg-white shadow rounded-lg p-6 hover:shadow-lg transition">
-    <h3 class="text-xl font-bold mb-2 text-green-600">Live Dashboard</h3>
-    <p class="text-gray-600">Monitor all payments in real-time. View totals, pending transactions, weekly and monthly summaries, and trend analysis to make informed business decisions.</p>
-  </div>
-  <div class="bg-white shadow rounded-lg p-6 hover:shadow-lg transition">
-    <h3 class="text-xl font-bold mb-2 text-green-600">Detailed Reports</h3>
-    <p class="text-gray-600">Automated weekly and monthly reports. Identify top-paying customers, payment methods, revenue trends, and get actionable insights to optimize your sales.</p>
-  </div>
-  <div class="bg-white shadow rounded-lg p-6 hover:shadow-lg transition">
-    <h3 class="text-xl font-bold mb-2 text-green-600">Merchant Friendly</h3>
-    <p class="text-gray-600">Designed specifically for small and medium Kenyan businesses. Enjoy a simple interface, quick onboarding, and secure payment processing for peace of mind.</p>
-  </div>
-  <div class="bg-white shadow rounded-lg p-6 hover:shadow-lg transition">
-    <h3 class="text-xl font-bold mb-2 text-green-600">Secure & Compliant</h3>
-    <p class="text-gray-600">All transactions are fully encrypted and compliant with local regulations. Protect both merchants and customers with top-tier security standards.</p>
-  </div>
-  <div class="bg-white shadow rounded-lg p-6 hover:shadow-lg transition">
-    <h3 class="text-xl font-bold mb-2 text-green-600">WhatsApp Chat Support</h3>
-    <p class="text-gray-600">Direct WhatsApp support accessible from your dashboard. Quickly resolve issues and respond to customer queries with ease.</p>
-  </div>
-</section>
+  <!-- Features Grid (Enhanced) -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+    
+    <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition">
+      <i class="fab fa-whatsapp text-4xl text-green-600 mb-3"></i>
+      <h3 class="text-xl font-bold text-gray-800 mb-2">WhatsApp Payment Links</h3>
+      <p class="text-gray-600">Generate instant payment links directly in WhatsApp chats. Customers pay with M-Pesa or card without leaving the conversation – no app switching, no friction.</p>
+      <div class="mt-3 text-sm text-green-600 font-semibold">✔ 2‑click checkout</div>
+    </div>
 
-<!-- CTA -->
-<section class="bg-green-500 text-white p-12 rounded-lg mb-12 text-center">
-  <h2 class="text-3xl font-bold mb-4">Start Accepting WhatsApp Payments Today</h2>
-  <p class="text-lg mb-6">Join hundreds of Kenyan merchants already using WhaPay to simplify payments, increase customer satisfaction, and grow revenue efficiently.</p>
-  
-  <form class="max-w-xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-3 mb-6">
-    <input type="text" placeholder="Your Name" required class="p-3 rounded text-gray-900">
-    <input type="email" placeholder="Email Address" required class="p-3 rounded text-gray-900">
-    <button type="submit" class="bg-white text-green-600 font-bold px-6 py-3 rounded shadow hover:shadow-lg transition">Get Started</button>
-  </form>
+    <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition">
+      <i class="fas fa-phone-alt text-4xl text-green-600 mb-3"></i>
+      <h3 class="text-xl font-bold text-gray-800 mb-2">M-Pesa STK Push</h3>
+      <p class="text-gray-600">Seamless M-Pesa integration via Daraja API. Customers receive a payment prompt on their phone – they enter PIN and pay instantly. No manual reference numbers.</p>
+      <div class="mt-3 text-sm text-green-600 font-semibold">✔ Real‑time confirmation</div>
+    </div>
 
-  <a href="https://wa.me/254710346425?text=Hello%20I%20want%20to%20use%20WhaPay"
-     target="_blank" rel="noopener" class="bg-white text-green-600 font-bold px-6 py-3 rounded shadow hover:shadow-lg transition">
-     Chat on WhatsApp
-  </a>
-</section>
+    <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition">
+      <i class="fas fa-credit-card text-4xl text-green-600 mb-3"></i>
+      <h3 class="text-xl font-bold text-gray-800 mb-2">Card Payments (Visa/Mastercard)</h3>
+      <p class="text-gray-600">Accept credit and debit cards via Stripe. Ideal for customers who prefer cards over mobile money. Works for local and international cards.</p>
+      <div class="mt-3 text-sm text-green-600 font-semibold">✔ Secure & PCI compliant</div>
+    </div>
 
-<!-- FOOTER -->
+    <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition">
+      <i class="fas fa-qrcode text-4xl text-green-600 mb-3"></i>
+      <h3 class="text-xl font-bold text-gray-800 mb-2">QR & Barcode Payments</h3>
+      <p class="text-gray-600">Each merchant gets a unique QR code. Customers scan with their phone – amount is pre‑filled, payment is instant. Perfect for retail counters and takeaways.</p>
+      <div class="mt-3 text-sm text-green-600 font-semibold">✔ Zero typing errors</div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition">
+      <i class="fas fa-chart-line text-4xl text-green-600 mb-3"></i>
+      <h3 class="text-xl font-bold text-gray-800 mb-2">Live Dashboard</h3>
+      <p class="text-gray-600">Real‑time overview of total revenue, pending payments, weekly/monthly trends, and top customers. Know your business health at a glance.</p>
+      <div class="mt-3 text-sm text-green-600 font-semibold">✔ Exportable reports</div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition">
+      <i class="fas fa-file-alt text-4xl text-green-600 mb-3"></i>
+      <h3 class="text-xl font-bold text-gray-800 mb-2">Automated Reports</h3>
+      <p class="text-gray-600">Weekly and monthly reports sent directly to your WhatsApp. See top‑paying customers, most used payment methods, and revenue growth.</p>
+      <div class="mt-3 text-sm text-green-600 font-semibold">✔ Actionable insights</div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition">
+      <i class="fas fa-wifi-slash text-4xl text-green-600 mb-3"></i>
+      <h3 class="text-xl font-bold text-gray-800 mb-2">Offline Payments</h3>
+      <p class="text-gray-600">No internet? No problem. Customers pay using your merchant code via M-PESA Paybill/Till. SMS receipts are saved and synced automatically when back online.</p>
+      <div class="mt-3 text-sm text-green-600 font-semibold">✔ Works in low‑network areas</div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition">
+      <i class="fas fa-robot text-4xl text-green-600 mb-3"></i>
+      <h3 class="text-xl font-bold text-gray-800 mb-2">WhatsApp Bot Commands</h3>
+      <p class="text-gray-600">Customers can pay by sending simple text commands like <span class="font-mono bg-gray-100 px-1">PAY DK10245 500</span>. Also check balance, view history, and register – all via WhatsApp.</p>
+      <div class="mt-3 text-sm text-green-600 font-semibold">✔ No app needed</div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition">
+      <i class="fas fa-headset text-4xl text-green-600 mb-3"></i>
+      <h3 class="text-xl font-bold text-gray-800 mb-2">24/7 WhatsApp Support</h3>
+      <p class="text-gray-600">Direct support line to our team. Get help with registration, payments, or technical issues within minutes – not days.</p>
+      <div class="mt-3 text-sm text-green-600 font-semibold">✔ Real human assistance</div>
+    </div>
+  </div>
+
+  <!-- Benefits Section (Real‑world use cases) -->
+  <div class="bg-white rounded-2xl shadow-lg p-6 mb-12">
+    <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Why Kenyan Merchants Choose WhaPay</h2>
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="flex gap-3">
+        <i class="fas fa-check-circle text-green-600 text-xl mt-1"></i>
+        <div><strong class="font-semibold">Works everywhere</strong><br>Online, offline, low‑network areas – payments always work.</div>
+      </div>
+      <div class="flex gap-3">
+        <i class="fas fa-check-circle text-green-600 text-xl mt-1"></i>
+        <div><strong class="font-semibold">No coding required</strong><br>Set up in minutes. No technical skills needed.</div>
+      </div>
+      <div class="flex gap-3">
+        <i class="fas fa-check-circle text-green-600 text-xl mt-1"></i>
+        <div><strong class="font-semibold">Trusted by 500+ merchants</strong><br>From small kiosks to large retailers across Kenya.</div>
+      </div>
+      <div class="flex gap-3">
+        <i class="fas fa-check-circle text-green-600 text-xl mt-1"></i>
+        <div><strong class="font-semibold">Safaricom approved</strong><br>Uses official M-PESA APIs – secure and compliant.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA Section with Firebase form -->
+  <div class="bg-gradient-to-r from-green-600 to-green-700 text-white rounded-2xl p-8 text-center">
+    <h2 class="text-2xl md:text-3xl font-bold mb-3">Ready to simplify your payments?</h2>
+    <p class="mb-6">Join hundreds of Kenyan merchants already using WhaPay. Get started today – no setup fee.</p>
+    
+    <form id="featureLeadForm" class="max-w-xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-3 mb-6">
+      <input type="text" id="leadName" placeholder="Your Name" required class="rounded-lg px-4 py-2 text-gray-900">
+      <input type="email" id="leadEmail" placeholder="Email Address" required class="rounded-lg px-4 py-2 text-gray-900">
+      <button type="submit" class="bg-white text-green-700 font-bold px-6 py-2 rounded-lg hover:shadow-lg transition">Get Started →</button>
+    </form>
+    <div id="formStatus" class="text-sm mb-4"></div>
+
+    <a href="https://wa.me/254710346425?text=Hello%20I%20want%20to%20use%20WhaPay" target="_blank" 
+       class="inline-block bg-white text-green-700 font-semibold px-6 py-2 rounded-lg hover:shadow-lg transition">
+      <i class="fab fa-whatsapp mr-2"></i> Chat on WhatsApp
+    </a>
+  </div>
+</main>
+
+<!-- Footer (consistent) -->
 <footer class="bg-gray-900 text-gray-300 pt-12 pb-6 mt-10">
   <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
     <div>
       <h2 class="text-2xl font-bold text-white mb-3">WhaPay</h2>
-      <p class="text-gray-400 text-sm leading-relaxed mb-4">
-        WhaPay is the modern WhatsApp payment solution for Kenyan merchants. Accept M-Pesa & card payments seamlessly and grow your business with fast, reliable, and secure transactions.
-      </p>
+      <p class="text-gray-400 text-sm leading-relaxed mb-4">Kenya's modern WhatsApp payment solution. Accept M-Pesa & card payments seamlessly, even offline.</p>
       <p class="text-sm text-gray-500">Trusted by businesses across Kenya 🇰🇪</p>
     </div>
     <div>
       <h3 class="text-white font-semibold mb-4">Quick Links</h3>
       <ul class="space-y-2 text-sm">
         <li><a href="index.html" class="hover:text-green-400">Home</a></li>
+        <li><a href="about.html" class="hover:text-green-400">About</a></li>
         <li><a href="features.html" class="hover:text-green-400 font-bold">Features</a></li>
         <li><a href="pricing.html" class="hover:text-green-400">Pricing</a></li>
-        <li><a href="reports.html" class="hover:text-green-400">Reports</a></li>
         <li><a href="contact.html" class="hover:text-green-400">Contact</a></li>
       </ul>
     </div>
@@ -146,7 +254,7 @@
       <h3 class="text-white font-semibold mb-4">Solutions</h3>
       <ul class="space-y-2 text-sm">
         <li>WhatsApp Payments Kenya</li>
-        <li>M-Pesa Payment Integration</li>
+        <li>M-Pesa Integration</li>
         <li>QR & Barcode Payments</li>
         <li>Live Dashboard</li>
         <li>Weekly & Monthly Reports</li>
@@ -154,13 +262,10 @@
     </div>
     <div>
       <h3 class="text-white font-semibold mb-4">Get Started</h3>
-      <p class="text-sm text-gray-400 mb-3">Start accepting payments via WhatsApp today and enjoy instant transaction updates, real-time insights, and customer support.</p>
-      <a href="https://wa.me/254710346425?text=Hello%20I%20want%20to%20use%20WhaPay"
-         target="_blank" rel="noopener" class="block bg-green-500 hover:bg-green-600 text-white text-center py-2 px-4 rounded mb-3">
-         Chat on WhatsApp
-      </a>
-      <p class="text-sm text-gray-400">Email: support.whapay@gmail.com</p>
-      <p class="text-sm text-gray-400">Phone: +254 710 346425</p>
+      <p class="text-sm text-gray-400 mb-3">Start accepting payments via WhatsApp today.</p>
+      <a href="https://wa.me/254710346425" target="_blank" class="block bg-green-500 hover:bg-green-600 text-white text-center py-2 px-4 rounded mb-3">Chat on WhatsApp</a>
+      <p class="text-sm text-gray-400">Email: <a href="mailto:support@whapay.com" class="hover:text-green-400">support@whapay.com</a></p>
+      <p class="text-sm text-gray-400">Phone: <a href="tel:+254710346425" class="hover:text-green-400">+254 710 346425</a></p>
     </div>
   </div>
   <div class="border-t border-gray-800 mt-10 pt-6 text-center text-sm text-gray-500">
@@ -173,14 +278,54 @@
   </div>
 </footer>
 
-<!-- FLOATING WHATSAPP BUTTON -->
-<a href="https://wa.me/254710346425?text=Hello%20I%20want%20to%20use%20WhaPay"
-   target="_blank" rel="noopener"
+<!-- Floating WhatsApp Button -->
+<a href="https://wa.me/254710346425?text=Hello%20I%20want%20to%20use%20WhaPay" target="_blank" 
    class="fixed bottom-5 right-5 z-50 flex items-center gap-3 bg-green-500 hover:bg-green-600 text-white px-4 py-3 rounded-full shadow-lg transition-all duration-300">
-  <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-    <path d="M20.52 3.48A11.91 11.91 0 0 0 12.05 0C5.45 0 .07 5.38.07 11.98c0 2.11.55 4.17 1.6 5.99L0 24l6.2-1.63a11.94 11.94 0 0 0 5.85 1.5h.01c6.6 0 11.98-5.38 11.98-11.98 0-3.2-1.25-6.21-3.52-8.41z"/>
-  </svg>
+  <i class="fab fa-whatsapp text-xl"></i>
   <span class="hidden md:inline text-sm font-semibold">Chat with us</span>
 </a>
 
+<script type="module">
+  // Form submission handler
+  const form = document.getElementById('featureLeadForm');
+  const statusDiv = document.getElementById('formStatus');
+  
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = document.getElementById('leadName').value.trim();
+    const email = document.getElementById('leadEmail').value.trim();
+    
+    if (!name || !email) {
+      statusDiv.innerHTML = '<span class="text-yellow-200">Please fill in both fields.</span>';
+      return;
+    }
+    
+    const submitBtn = form.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    submitBtn.innerText = 'Submitting...';
+    statusDiv.innerHTML = '<span class="text-white">Saving your request...</span>';
+    
+    const success = await window.storeFeatureLead(name, email);
+    if (success) {
+      statusDiv.innerHTML = '<span class="text-green-300">✅ Thanks! We will contact you shortly.</span>';
+      form.reset();
+      setTimeout(() => statusDiv.innerHTML = '', 5000);
+    } else {
+      statusDiv.innerHTML = '<span class="text-red-300">❌ Error. Please try again or WhatsApp us.</span>';
+    }
+    submitBtn.disabled = false;
+    submitBtn.innerText = 'Get Started →';
+  });
+
+  // Active link highlighting
+  const currentPage = window.location.pathname.split('/').pop();
+  document.querySelectorAll('nav a').forEach(link => {
+    const href = link.getAttribute('href');
+    if (href === currentPage || (currentPage === '' && href === 'index.html')) {
+      link.classList.add('text-green-300', 'font-bold', 'underline');
+    }
+  });
+</script>
 </body>
+</html>
+    

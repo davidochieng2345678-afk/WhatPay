@@ -2,74 +2,99 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pay via WhaPay – WhatsApp Payments</title>
-<meta name="description" content="Complete your payment via WhatsApp with WhaPay. Pay instantly with M-Pesa or credit/debit card in Kenya.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Pay via WhaPay – Secure WhatsApp Payments Kenya</title>
+<meta name="description" content="Complete your payment via WhatsApp with WhaPay. Pay instantly with M-Pesa or credit/debit card in Kenya. All data stored securely.">
 <meta name="keywords" content="WhatsApp payment, M-Pesa payment, card payment, Kenya, mobile payments, WhaPay">
 <meta name="robots" content="index, follow">
 
 <!-- Open Graph -->
-<meta property="og:title" content="Pay via WhaPay">
+<meta property="og:title" content="Pay via WhaPay – Instant M-Pesa & Card Payments">
 <meta property="og:description" content="Secure WhatsApp payments in Kenya. Pay with M-Pesa or Card instantly.">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://whapay.space/payment.html">
+<meta property="og:image" content="https://whapay.space/images/whapay-payment-og.jpg">
 
-<!-- Structured Data -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "WhaPay Payment Page",
-  "url": "https://yourgithubusername.github.io/WhatPay/payment.html",
-  "applicationCategory": "FinanceApplication",
-  "operatingSystem": "Web",
-  "creator": { "@type": "Organization", "name": "WhaPay Solutions" }
-}
-</script>
-
-<!-- Tailwind CSS -->
+<!-- Tailwind CSS + Font Awesome + QR Scanner -->
 <script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<script src="https://unpkg.com/html5-qrcode@2.3.8/minified/html5-qrcode.min.js"></script>
 
-<!-- Firebase SDK -->
+<!-- Firebase SDK (v10.8.0) -->
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
-import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "whapay.firebaseapp.com",
-  projectId: "whapay",
-  storageBucket: "whapay.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
-};
+  // Your real Firebase config (from previous messages)
+  const firebaseConfig = {
+    apiKey: "AIzaSyDPAvq6BgpdfZAkfoEwdwmHrWedHgzjRSk",
+    authDomain: "whapay-c93ab.firebaseapp.com",
+    projectId: "whapay-c93ab",
+    storageBucket: "whapay-c93ab.firebasestorage.app",
+    messagingSenderId: "205456952458",
+    appId: "1:205456952458:web:6533921ca10a2988417173"
+  };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-window.db = db;
-window.serverTimestamp = serverTimestamp;
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  window.db = db;
+
+  // Helper: show toast message
+  window.showToast = function(msg, isError = false) {
+    let toast = document.getElementById('toast-msg');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'toast-msg';
+      toast.className = 'fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white px-5 py-2 rounded-full text-sm z-50 hidden';
+      document.body.appendChild(toast);
+    }
+    toast.innerText = msg;
+    toast.classList.remove('hidden');
+    setTimeout(() => toast.classList.add('hidden'), 4000);
+  };
+
+  // Send WhatsApp message (opens WhatsApp Web/app with pre-filled text)
+  window.sendWhatsApp = function(phone, message) {
+    let cleanPhone = phone.replace(/\D/g, '');
+    if (cleanPhone.startsWith('0')) cleanPhone = '254' + cleanPhone.substring(1);
+    if (!cleanPhone.startsWith('254')) cleanPhone = '254' + cleanPhone;
+    const url = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank');
+  };
+
+  // Save transaction to Firestore
+  window.saveTransaction = async (customerPhone, amount, method, paymentLink) => {
+    try {
+      const docRef = await addDoc(collection(db, "transactions"), {
+        customerPhone: customerPhone,
+        amount: parseFloat(amount),
+        method: method,
+        paymentLink: paymentLink,
+        status: "pending",
+        createdAt: serverTimestamp()
+      });
+      return docRef.id;
+    } catch (error) {
+      console.error("Firestore error:", error);
+      window.showToast("Failed to save transaction. Please try again.", true);
+      return null;
+    }
+  };
 </script>
-
-<!-- QR Code Scanner -->
-<script type="module" src="https://unpkg.com/html5-qrcode@2.3.8/minified/html5-qrcode.min.js"></script>
-
 </head>
 <body class="bg-gray-100 font-sans">
 
-  <header class="bg-green-600 text-white p-4 shadow-md">
+<!-- Header (consistent with other pages) -->
+<header class="bg-green-600 text-white p-4 shadow-md">
   <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:justify-between items-center">
-    <!-- Logo / Site Name -->
-    <h1 class="text-2xl font-bold mb-2 md:mb-0">
-      <a href="index.html">WhaPay</a>
-    </h1>
-
-    <!-- Navigation Links -->
+    <h1 class="text-2xl font-bold mb-2 md:mb-0"><a href="index.html">WhaPay</a></h1>
     <nav class="flex flex-wrap justify-center gap-2 md:gap-4">
       <a href="index.html" class="hover:underline">Home</a>
       <a href="about.html" class="hover:underline">About</a>
       <a href="features.html" class="hover:underline">Features</a>
       <a href="pricing.html" class="hover:underline">Pricing</a>
       <a href="merchant.html" class="hover:underline">Merchant</a>
-      <a href="payment.html" class="hover:underline">Payment</a>
+      <a href="payment.html" class="hover:underline text-green-300 font-bold underline">Payment</a>
       <a href="reports.html" class="hover:underline">Reports</a>
       <a href="blog.html" class="hover:underline">Blogs</a>
       <a href="contact.html" class="hover:underline">Contact</a>
@@ -78,121 +103,238 @@ window.serverTimestamp = serverTimestamp;
   </div>
 </header>
 
-<header class="bg-green-600 text-white p-6 rounded-b-lg shadow-md mb-6 text-center">
-  <h1 class="text-3xl font-bold mb-2">Complete Your Payment</h1>
-  <p class="text-lg">Pay instantly with M-Pesa or credit/debit card via WhaPay.</p>
-</header>
-
-<main class="max-w-xl mx-auto px-4">
-
-<section class="bg-white shadow rounded p-6 mb-6">
-  <h2 class="text-xl font-bold mb-4 text-center">Payment Details</h2>
-
-  <div class="space-y-4">
-    <input type="text" placeholder="Your Phone (+2547...)" id="userNumber"
-      class="w-full border px-3 py-2 rounded">
-
-    <input type="number" placeholder="Amount (KES)" id="amount"
-      class="w-full border px-3 py-2 rounded">
-
-    <select id="method" class="w-full border px-3 py-2 rounded">
-      <option value="mpesa">M-Pesa</option>
-      <option value="card">Credit/Debit Card</option>
-    </select>
-
-    <div class="mb-4">
-      <button id="scanBtn" class="w-full bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded mb-2">
-        Scan QR / Barcode (Optional)
-      </button>
-      <div id="qr-reader" class="w-full h-64 bg-gray-200 hidden rounded-lg"></div>
-    </div>
-
-    <button id="payBtn" class="w-full bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded font-semibold">
-      Pay Now
-    </button>
-
-    <p id="message" class="text-center text-blue-600 break-words mt-2"></p>
-  </div>
+<!-- Hero -->
+<section class="bg-gradient-to-r from-green-700 to-green-500 text-white py-12 px-4 text-center">
+  <h1 class="text-3xl md:text-4xl font-bold mb-2">Complete Your Payment</h1>
+  <p class="text-lg">Pay instantly with M-Pesa or credit/debit card via WhaPay. Secure and fast.</p>
 </section>
 
-<footer class="bg-gray-900 text-gray-300 p-6 text-center rounded-t-lg">
-  <p>&copy; 2026 WhaPay Solutions. All rights reserved.</p>
-  <p class="mt-2">Need help? <a href="https://wa.me/254700000000" class="underline text-green-400">Chat on WhatsApp</a></p>
+<main class="max-w-xl mx-auto px-4 py-8">
+
+  <!-- Payment Form -->
+  <div class="bg-white rounded-2xl shadow-xl p-6">
+    <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">Payment Details</h2>
+
+    <div class="space-y-4">
+      <!-- Phone Number -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Your Phone Number (M-Pesa)</label>
+        <input type="tel" id="userNumber" placeholder="+254712345678" 
+               class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-green-500 focus:border-green-500">
+        <p class="text-xs text-gray-500 mt-1">We'll send payment confirmation via WhatsApp.</p>
+      </div>
+
+      <!-- Amount -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Amount (KES)</label>
+        <input type="number" id="amount" placeholder="e.g., 500" 
+               class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-green-500 focus:border-green-500">
+      </div>
+
+      <!-- Payment Method -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Payment Method</label>
+        <select id="method" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+          <option value="mpesa">M-Pesa (STK Push simulation)</option>
+          <option value="card">Credit / Debit Card (Stripe – coming soon)</option>
+        </select>
+        <p class="text-xs text-gray-500 mt-1">For M-Pesa, you will receive a WhatsApp instruction. For card, enter your details on the Stripe page.</p>
+      </div>
+
+      <!-- QR Scanner (optional) -->
+      <div>
+        <button id="scanBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-lg transition flex items-center justify-center gap-2">
+          <i class="fas fa-qrcode"></i> Scan QR / Barcode (Auto-fill Amount)
+        </button>
+        <div id="qr-reader" class="mt-3 w-full h-64 bg-gray-100 hidden rounded-lg overflow-hidden"></div>
+      </div>
+
+      <!-- Pay Button -->
+      <button id="payBtn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition text-lg shadow">
+        <i class="fas fa-credit-card mr-2"></i> Pay Now
+      </button>
+
+      <!-- Message Area -->
+      <div id="message" class="text-center text-sm text-gray-600 mt-3"></div>
+    </div>
+  </div>
+
+  <!-- Trust Badge -->
+  <div class="text-center text-gray-500 text-sm mt-6">
+    <i class="fas fa-lock mr-1"></i> Secure payment – Data stored in Firebase cloud
+  </div>
+</main>
+
+<!-- Footer -->
+<footer class="bg-gray-900 text-gray-300 py-8 mt-10">
+  <div class="max-w-6xl mx-auto px-4 text-center">
+    <p>&copy; 2026 WhaPay Solutions. All rights reserved.</p>
+    <p class="mt-2">Need help? <a href="https://wa.me/254710346425" target="_blank" class="text-green-400 hover:underline">Chat on WhatsApp</a></p>
+  </div>
 </footer>
 
+<!-- Floating WhatsApp Button -->
+<a href="https://wa.me/254710346425" target="_blank" rel="noopener" 
+   class="fixed bottom-5 right-5 z-50 flex items-center gap-3 bg-green-500 hover:bg-green-600 text-white px-4 py-3 rounded-full shadow-lg transition-all duration-300">
+  <i class="fab fa-whatsapp text-xl"></i>
+  <span class="hidden md:inline text-sm font-semibold">Chat with us</span>
+</a>
+
 <script type="module">
-import { Html5Qrcode } from "https://unpkg.com/html5-qrcode@2.3.8/minified/html5-qrcode.min.js";
+  import { Html5Qrcode } from "https://unpkg.com/html5-qrcode@2.3.8/minified/html5-qrcode.min.js";
 
-const payBtn = document.getElementById("payBtn");
-const message = document.getElementById("message");
+  const userNumberInput = document.getElementById("userNumber");
+  const amountInput = document.getElementById("amount");
+  const methodSelect = document.getElementById("method");
+  const payBtn = document.getElementById("payBtn");
+  const messageDiv = document.getElementById("message");
+  const scanBtn = document.getElementById("scanBtn");
+  const qrReaderDiv = document.getElementById("qr-reader");
 
-const scanBtn = document.getElementById("scanBtn");
-const qrReader = document.getElementById("qr-reader");
+  let html5QrCode = null;
 
-scanBtn.addEventListener("click", () => {
-  qrReader.classList.toggle("hidden");
-  if (!qrReader.classList.contains("hidden")) {
-    const html5QrCode = new Html5Qrcode("qr-reader");
-    html5QrCode.start(
-      { facingMode: "environment" },
-      { fps: 10, qrbox: 250 },
-      (decodedText) => {
-        document.getElementById("amount").value = decodedText;
-        html5QrCode.stop();
-        qrReader.classList.add("hidden");
+  // QR Scanner toggle
+  scanBtn.addEventListener("click", async () => {
+    if (qrReaderDiv.classList.contains("hidden")) {
+      qrReaderDiv.classList.remove("hidden");
+      try {
+        html5QrCode = new Html5Qrcode("qr-reader");
+        await html5QrCode.start(
+          { facingMode: "environment" },
+          { fps: 10, qrbox: 250 },
+          (decodedText) => {
+            // Auto-fill amount if QR contains a number
+            const amountMatch = decodedText.match(/\d+(?:\.\d+)?/);
+            if (amountMatch) amountInput.value = amountMatch[0];
+            window.showToast(`Scanned: ${decodedText.substring(0, 30)}...`);
+            html5QrCode.stop();
+            qrReaderDiv.classList.add("hidden");
+          },
+          (errorMessage) => { console.log(errorMessage); }
+        );
+      } catch (err) {
+        console.error(err);
+        window.showToast("Camera error. Please check permissions.", true);
+        qrReaderDiv.classList.add("hidden");
       }
-    ).catch(err => console.log(err));
-  }
-});
-
-payBtn.addEventListener("click", async () => {
-  const userNumber = document.getElementById("userNumber").value.trim();
-  const amount = document.getElementById("amount").value.trim();
-  const method = document.getElementById("method").value;
-
-  // Validation
-  if (!/^\+2547\d{8}$/.test(userNumber)) {
-    message.textContent = "Enter a valid Kenyan phone number (+2547XXXXXXXX).";
-    return;
-  }
-  if (!amount || parseFloat(amount) <= 0) {
-    message.textContent = "Enter a valid payment amount.";
-    return;
-  }
-
-  message.textContent = "Generating payment link...";
-
-  const paymentLink = method === "card"
-    ? `https://buy.stripe.com/test_xyz?amount=${amount}&customer=${userNumber}`
-    : `https://sandbox.safaricom.co.ke/mpesa/stkpush?amount=${amount}&phone=${userNumber}`;
-
-  // Save transaction to Firebase
-  await addDoc(collection(window.db, "whapay_transactions"), {
-    userNumber,
-    amount: parseFloat(amount),
-    paymentMethod: method,
-    paymentLink,
-    status: "pending",
-    timestamp: window.serverTimestamp()
+    } else {
+      if (html5QrCode) { html5QrCode.stop(); }
+      qrReaderDiv.classList.add("hidden");
+    }
   });
 
-  // WhatsApp optional link
-  const whatsappLink = `https://wa.me/254700000000?text=Hi,%20I%20want%20to%20pay%20KES%20${amount}%20via%20${method}`;
+  // Helper: validate Kenyan phone number
+  function validatePhone(phone) {
+    const cleaned = phone.replace(/\D/g, '');
+    if (cleaned.startsWith('0') && cleaned.length === 10) return true;
+    if (cleaned.startsWith('254') && cleaned.length === 12) return true;
+    if (cleaned.length === 9 && cleaned.startsWith('7')) return true; // local without 0
+    return false;
+  }
 
-  message.innerHTML = `
-    Payment link generated: 
-    <a href="${paymentLink}" target="_blank" class="underline text-green-600">Click to Pay</a>
-    <br>
-    Or pay via WhatsApp: 
-    <a href="${whatsappLink}" target="_blank" class="underline text-green-600">Send Payment Request</a>
-  `;
+  function normalizePhone(phone) {
+    let cleaned = phone.replace(/\D/g, '');
+    if (cleaned.startsWith('0')) cleaned = '254' + cleaned.substring(1);
+    if (!cleaned.startsWith('254')) cleaned = '254' + cleaned;
+    return cleaned;
+  }
 
-  document.getElementById("userNumber").value = "";
-  document.getElementById("amount").value = "";
-});
+  // Payment handler
+  payBtn.addEventListener("click", async () => {
+    const rawPhone = userNumberInput.value.trim();
+    const amount = amountInput.value.trim();
+    const method = methodSelect.value;
+
+    if (!rawPhone) {
+      window.showToast("Please enter your phone number.", true);
+      return;
+    }
+    if (!validatePhone(rawPhone)) {
+      window.showToast("Enter a valid Kenyan phone number (e.g., 0712345678 or +254712345678).", true);
+      return;
+    }
+    if (!amount || parseFloat(amount) <= 0) {
+      window.showToast("Enter a valid amount (KES).", true);
+      return;
+    }
+
+    const normalizedPhone = normalizePhone(rawPhone);
+    const amountValue = parseFloat(amount);
+    const adminPhone = "254710346425"; // your WhatsApp number
+
+    // Disable button during processing
+    payBtn.disabled = true;
+    payBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Processing...';
+    messageDiv.innerHTML = "";
+
+    try {
+      let paymentLink = "";
+      let transactionId = null;
+
+      if (method === "mpesa") {
+        // For M-Pesa: We simulate by sending WhatsApp to admin + customer
+        const adminMsg = `💰 NEW M-PESA PAYMENT REQUEST\n\nCustomer: ${normalizedPhone}\nAmount: KES ${amountValue}\nMethod: M-Pesa\n\nTo complete, send STK push manually or use Paybill/Till. Once paid, mark as paid in admin dashboard.`;
+        const customerMsg = `You requested to pay KES ${amountValue} via M-Pesa. Please complete payment using M-Pesa Paybill/Till. Transaction will be confirmed manually. Thank you for using WhaPay.`;
+
+        window.sendWhatsApp(adminPhone, adminMsg);
+        window.sendWhatsApp(normalizedPhone, customerMsg);
+
+        paymentLink = `https://wa.me/${adminPhone}?text=Confirm%20payment%20for%20${normalizedPhone}%20KES%20${amountValue}`;
+        transactionId = await window.saveTransaction(normalizedPhone, amountValue, "mpesa", paymentLink);
+
+        messageDiv.innerHTML = `
+          <div class="bg-green-50 border border-green-200 rounded-lg p-3 text-green-800">
+            <i class="fas fa-check-circle mr-1"></i> Payment request sent to admin.<br>
+            You will receive a WhatsApp confirmation once processed.<br>
+            Transaction ID: <strong>${transactionId?.slice(-8) || "pending"}</strong>
+          </div>
+        `;
+      } 
+      else if (method === "card") {
+        // For card: We redirect to Stripe Checkout (live) – user must replace with their own publishable key and backend.
+        // Since the user hasn't provided a Stripe backend, we'll simulate via WhatsApp as well but with a note.
+        const adminMsg = `💳 NEW CARD PAYMENT REQUEST\n\nCustomer: ${normalizedPhone}\nAmount: KES ${amountValue}\nMethod: Card\n\nCustomer needs to complete card payment via Stripe. Once paid, mark as paid in admin.`;
+        const customerMsg = `You requested to pay KES ${amountValue} via Card. Please complete payment using the Stripe link below (demo mode – replace with live key).\n\nDemo link: https://buy.stripe.com/test_xyz`;
+
+        window.sendWhatsApp(adminPhone, adminMsg);
+        window.sendWhatsApp(normalizedPhone, customerMsg);
+
+        paymentLink = "https://buy.stripe.com/test_xyz"; // placeholder – user must replace
+        transactionId = await window.saveTransaction(normalizedPhone, amountValue, "card", paymentLink);
+
+        messageDiv.innerHTML = `
+          <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-3 text-yellow-800">
+            <i class="fas fa-exclamation-triangle mr-1"></i> Card payments are in demo mode.<br>
+            To enable live cards: replace Stripe publishable key and backend.<br>
+            Transaction saved as pending. Admin notified.
+          </div>
+        `;
+      }
+
+      // Clear form
+      userNumberInput.value = "";
+      amountInput.value = "";
+
+    } catch (error) {
+      console.error(error);
+      window.showToast("Payment request failed. Please try again.", true);
+    } finally {
+      payBtn.disabled = false;
+      payBtn.innerHTML = '<i class="fas fa-credit-card mr-2"></i> Pay Now';
+    }
+  });
 </script>
 
+<!-- Active link highlighting script (for all pages) -->
+<script>
+  const currentPage = window.location.pathname.split('/').pop();
+  document.querySelectorAll('nav a').forEach(link => {
+    const href = link.getAttribute('href');
+    if (href === currentPage || (currentPage === '' && href === 'index.html')) {
+      link.classList.add('text-green-300', 'font-bold', 'underline');
+    }
+  });
+</script>
 </body>
 </html>
-
 

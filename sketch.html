@@ -1,1 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>WhaPay Process Flows – Registration, Purchase, Merchant</title>
+<meta name="description" content="Step-by-step diagrams showing how WhaPay works: user registration (online or offline via voice/SMS), customer purchase, and merchant payment flow.">
+<meta name="keywords" content="WhaPay process, registration diagram, purchase flow, merchant flow, offline registration voice SMS">
+<meta name="robots" content="index, follow">
 
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDPAvq6BgpdfZAkfoEwdwmHrWedHgzjRSk",
+    authDomain: "whapay-c93ab.firebaseapp.com",
+    projectId: "whapay-c93ab",
+    storageBucket: "whapay-c93ab.firebasestorage.app",
+    messagingSenderId: "205456952458",
+    appId: "1:205456952458:web:6533921ca10a2988417173"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  async function trackPageView() {
+    try {
+      await addDoc(collection(db, "page_views"), { page: "process", timestamp: serverTimestamp(), userAgent: navigator.userAgent });
+    } catch (e) { console.log("Analytics not critical"); }
+  }
+  trackPageView();
+
+  window.trackDiagramClick = async (diagramName) => {
+    try {
+      await addDoc(collection(db, "diagram_clicks"), { diagram: diagramName, timestamp: serverTimestamp(), page: "process" });
+    } catch (e) { console.log(e); }
+  };
+</script>
+<style>
+  .step-arrow { text-align: center; font-size: 1.5rem; color: #16a34a; margin: 0.25rem 0; }
+  .step-card { background: white; border-radius: 1rem; padding: 1rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border-left: 4px solid #16a34a; transition: transform 0.2s; }
+  .step-card:hover { transform: translateX(4px); }
+</style>
+</head>
+<body class="bg-gray-100 font-sans">
+
+<header class="bg-green-600 text-white p-4 shadow-md">
+  <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:justify-between items-center">
+    <h1 class="text-2xl font-bold mb-2 md:mb-0"><a href="index.html">WhaPay</a></h1>
+    <nav class="flex flex-wrap justify-center gap-2 md:gap-4">
+      <a href="index.html" class="hover:underline">Home</a>
+      <a href="about.html" class="hover:underline">About</a>
+      <a href="features.html" class="hover:underline">Features</a>
+      <a href="pricing.html" class="hover:underline">Pricing</a>
+      <a href="merchant.html" class="hover:underline">Merchant</a>
+      <a href="payment.html" class="hover:underline">Payment</a>
+      <a href="reports.html" class="hover:underline">Reports</a>
+      <a href="blog.html" class="hover:underline">Blogs</a>
+      <a href="contact.html" class="hover:underline">Contact</a>
+      <a href="admin.html" class="hover:underline">Admin</a>
+    </nav>
+  </div>
+</header>
+
+<section class="bg-gradient-to-r from-green-700 to-green-500 text-white py-12 px-4 text-center">
+  <h1 class="text-3xl md:text-4xl font-bold mb-2">How WhaPay Works</h1>
+  <p class="text-lg max-w-2xl mx-auto">Simple, step‑by‑step processes for registration, purchases, and merchant payments. Accept payments online or offline – no internet? Use Member Code with M‑Pesa.</p>
+</section>
+
+<main class="max-w-7xl mx-auto px-4 py-8">
+
+  <div class="grid md:grid-cols-3 gap-8">
+    
+    <!-- DIAGRAM 1: REGISTRATION (Online + Offline voice/SMS) -->
+    <div class="bg-white rounded-2xl shadow-lg p-4 hover:shadow-xl transition" onclick="window.trackDiagramClick('registration')">
+      <h2 class="text-xl font-bold text-center text-green-600 mb-4">📝 Registration Process</h2>
+      <div class="space-y-1">
+        <div class="step-card">1️⃣ Choose method: <strong>Online (WhatsApp)</strong> or <strong>Offline (Voice/SMS)</strong></div>
+        <div class="step-arrow">↓</div>
+        <div class="step-card"><strong>Online:</strong> Send <span class="font-mono bg-gray-100 px-1">REGISTER</span> to +254710346425 (WhatsApp)</div>
+        <div class="step-card"><strong>Offline Voice:</strong> Dial <span class="font-mono">+254705728896</span> → follow prompts</div>
+        <div class="step-card"><strong>Offline SMS:</strong> Send <span class="font-mono">REG YourName</span> to +254705728896 → get temporary code</div>
+        <div class="step-arrow">↓</div>
+        <div class="step-card">2️⃣ Provide name (user) or business name (merchant) + phone number</div>
+        <div class="step-arrow">↓</div>
+        <div class="step-card">3️⃣ System generates unique <strong>Member Code</strong> (e.g., DK12345) & QR</div>
+        <div class="step-arrow">↓</div>
+        <div class="step-card">✅ Registration complete – ready to transact</div>
+      </div>
+      <p class="text-xs text-gray-500 text-center mt-3">*Offline: voice call or SMS to +254705728896 – no internet needed.</p>
+    </div>
+
+    <!-- DIAGRAM 2: PURCHASE (Customer pays) -->
+    <div class="bg-white rounded-2xl shadow-lg p-4 hover:shadow-xl transition" onclick="window.trackDiagramClick('purchase')">
+      <h2 class="text-xl font-bold text-center text-green-600 mb-4">🛍️ User Purchase Process</h2>
+      <div class="space-y-1">
+        <div class="step-card">1️⃣ Customer scans merchant QR or gets Member Code</div>
+        <div class="step-arrow">↓</div>
+        <div class="step-card">2️⃣ Opens WhatsApp → sends <span class="font-mono bg-gray-100 px-1">PAY [CODE] [AMOUNT]</span></div>
+        <div class="step-arrow">↓</div>
+        <div class="step-card">3️⃣ WhaPay generates payment request (M-Pesa or card link)</div>
+        <div class="step-arrow">↓</div>
+        <div class="step-card">4️⃣ Customer clicks link → pays via M-Pesa STK Push or card</div>
+        <div class="step-arrow">↓</div>
+        <div class="step-card">5️⃣ Payment confirmation sent to both customer & merchant</div>
+        <div class="step-arrow">↓</div>
+        <div class="step-card">✅ Transaction recorded in dashboard – merchant receives money</div>
+      </div>
+      <p class="text-xs text-gray-500 text-center mt-4">*Offline alternative: Use M-PESA Paybill with merchant code as account number + SMS proof.</p>
+    </div>
+
+    <!-- DIAGRAM 3: MERCHANT FLOW -->
+    <div class="bg-white rounded-2xl shadow-lg p-4 hover:shadow-xl transition" onclick="window.trackDiagramClick('merchant')">
+      <h2 class="text-xl font-bold text-center text-green-600 mb-4">🏪 Merchant Process to Completion</h2>
+      <div class="space-y-1">
+        <div class="step-card">1️⃣ Merchant registers (gets code & QR via WhatsApp, voice, or SMS)</div>
+        <div class="step-arrow">↓</div>
+        <div class="step-card">2️⃣ Shares QR / code with customers (in‑store or online)</div>
+        <div class="step-arrow">↓</div>
+        <div class="step-card">3️⃣ Customer initiates payment (see purchase process)</div>
+        <div class="step-arrow">↓</div>
+        <div class="step-card">4️⃣ Merchant receives instant WhatsApp notification (or SMS)</div>
+        <div class="step-arrow">↓</div>
+        <div class="step-card">5️⃣ Logs into live dashboard → views transaction history</div>
+        <div class="step-arrow">↓</div>
+        <div class="step-card">6️⃣ Generates weekly/monthly reports, tracks growth</div>
+        <div class="step-arrow">↓</div>
+        <div class="step-card">✅ Full payment lifecycle – from request to analytics</div>
+      </div>
+      <p class="text-xs text-gray-500 text-center mt-4">*Offline: merchant keeps SMS receipts, later syncs via WhatsApp command <span class="font-mono">SYNC</span>.</p>
+    </div>
+
+  </div>
+
+  <!-- End-to-End Flow Summary -->
+  <div class="mt-12 bg-green-50 rounded-xl p-6 text-center border border-green-200">
+    <h3 class="font-bold text-green-800 text-lg mb-2">🔄 End‑to‑End Flow</h3>
+    <p class="text-green-700">Merchant registers (online or offline voice/SMS) → Customer pays via WhatsApp or offline M-PESA → Payment processed → Both receive confirmation → Merchant tracks in dashboard → Reports & insights for growth</p>
+  </div>
+
+  <div class="mt-8 text-center">
+    <a href="merchant.html" class="inline-block bg-green-600 hover:bg-green-700 text-white font-bold px-6 py-3 rounded-lg shadow transition">Start Your Registration →</a>
+  </div>
+
+  <!-- ===== OFFLINE FEATURES SECTION (UPDATED: Voice + SMS) ===== -->
+  <section id="offline-features" class="py-16 px-4 max-w-4xl mx-auto">
+    <div class="text-center mb-10">
+      <h2 class="text-3xl font-bold text-green-700 mb-3">Use WhaPay Even Without Internet</h2>
+      <p class="text-gray-600 text-lg">Register via voice call or SMS, pay using Member Code – no internet required.</p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+      
+      <!-- Offline Registration (Voice + SMS) -->
+      <div class="bg-white rounded-2xl shadow-lg p-5 border-t-4 border-green-500 hover:shadow-xl transition">
+        <i class="fas fa-phone-volume text-3xl text-blue-600 mb-3"></i>
+        <h3 class="text-xl font-bold text-gray-800 mb-2">Offline Registration</h3>
+        <p class="text-gray-600 text-sm mb-3">Two ways – no internet needed.</p>
+        <ul class="text-sm space-y-2 text-gray-700">
+          <li><strong>Voice Call:</strong> Dial <span class="font-mono">+254705728896</span> → follow prompts (name/phone) → get Member Code & QR instantly.</li>
+          <li><strong>SMS:</strong> Send <span class="font-mono bg-gray-100 px-1">REG YourName</span> to <strong>+254705728896</strong> → receive temporary code → activate via WhatsApp to get permanent Member Code + QR.</li>
+        </ul>
+        <div class="mt-3 flex gap-2">
+          <a href="tel:+254705728896" class="inline-block bg-blue-600 text-white text-sm px-3 py-1 rounded">📞 Call</a>
+          <a href="sms:+254705728896?body=REG%20YourName" class="inline-block bg-purple-600 text-white text-sm px-3 py-1 rounded">📱 Send SMS</a>
+        </div>
+      </div>
+
+      <!-- Offline Payment (Member Code via M-Pesa) -->
+      <div class="bg-white rounded-2xl shadow-lg p-5 border-t-4 border-green-500 hover:shadow-xl transition">
+        <i class="fas fa-key text-3xl text-green-600 mb-3"></i>
+        <h3 class="text-xl font-bold text-gray-800 mb-2">Offline Payment (Code)</h3>
+        <p class="text-gray-600 text-sm mb-3">Pay using merchant’s Member Code – no internet required.</p>
+        <ul class="text-sm space-y-2 text-gray-700">
+          <li>Get merchant code (e.g., <span class="font-mono">DK12345</span>)</li>
+          <li>Open M-PESA → Lipa na M-PESA → Paybill/Till</li>
+          <li>Enter Account = Merchant Code, amount, PIN → Confirm</li>
+          <li>Both receive SMS – keep as proof</li>
+          <li>When online: send <span class="font-mono bg-gray-100 px-1">SYNC</span> via WhatsApp to update dashboard</li>
+        </ul>
+      </div>
+
+      <!-- Printed QR -->
+      <div class="bg-white rounded-2xl shadow-lg p-5 border-t-4 border-green-500 hover:shadow-xl transition">
+        <i class="fas fa-qrcode text-3xl text-green-600 mb-3"></i>
+        <h3 class="text-xl font-bold text-gray-800 mb-2">Printed QR Code</h3>
+        <p class="text-gray-600 text-sm mb-3">Display your QR – customers scan and pay offline.</p>
+        <ul class="text-sm space-y-2 text-gray-700">
+          <li>Print your unique QR (sent after registration)</li>
+          <li>Customer scans with phone → sees merchant code + Till number</li>
+          <li>Opens M-PESA manually (no internet)</li>
+          <li>Pays using the details shown</li>
+          <li>SMS receipt saved; sync later via WhatsApp</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="mt-12 bg-green-50 rounded-xl p-6 text-center border border-green-200">
+      <h3 class="font-bold text-green-800 text-lg mb-2">💡 Why Offline Matters</h3>
+      <p class="text-green-700">With WhaPay, you are not limited by internet connection. Register via voice call or SMS, pay using M-PESA’s SMS network, and sync automatically when back online.</p>
+      <div class="flex justify-center gap-3 mt-4">
+        <a href="tel:+254705728896" class="bg-blue-600 text-white px-4 py-2 rounded-lg">📞 Voice Registration</a>
+        <a href="sms:+254705728896?body=REG%20YourName" class="bg-purple-600 text-white px-4 py-2 rounded-lg">📱 SMS Registration</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Footer (consistent) -->
+<footer class="bg-gray-900 text-gray-300 pt-12 pb-6 mt-10">
+  <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+    <div><h2 class="text-2xl font-bold text-white mb-3">WhaPay</h2><p class="text-gray-400 text-sm">Kenya's modern payment solution. Accept M-Pesa & card payments seamlessly.</p></div>
+    <div><h3 class="text-white font-semibold mb-4">Quick Links</h3><ul class="space-y-2 text-sm"><li><a href="index.html" class="hover:text-green-400">Home</a></li><li><a href="about.html" class="hover:text-green-400">About</a></li><li><a href="features.html" class="hover:text-green-400">Features</a></li><li><a href="pricing.html" class="hover:text-green-400">Pricing</a></li><li><a href="contact.html" class="hover:text-green-400">Contact</a></li></ul></div>
+    <div><h3 class="text-white font-semibold mb-4">Solutions</h3><ul class="space-y-2 text-sm"><li>WhatsApp Payments</li><li>M-Pesa Integration</li><li>QR & Barcode Payments</li><li>Live Dashboard</li><li>Weekly & Monthly Reports</li></ul></div>
+    <div><h3 class="text-white font-semibold mb-4">Get Started</h3><p class="text-sm text-gray-400 mb-3">Start accepting payments today.</p><a href="https://wa.me/254710346425" target="_blank" class="block bg-green-500 hover:bg-green-600 text-white text-center py-2 px-4 rounded mb-3">Chat on WhatsApp</a><p class="text-sm text-gray-400">Offline registration: <a href="tel:+254705728896" class="hover:text-green-400">+254705728896</a> (voice or SMS)</p></div>
+  </div>
+  <div class="border-t border-gray-800 mt-10 pt-6 text-center text-sm text-gray-500">
+    <p>&copy; 2026 WhaPay Solutions. All rights reserved.</p>
+  </div>
+</footer>
+
+<!-- Floating WhatsApp Button -->
+<a href="https://wa.me/254710346425?text=Hello%20I%20want%20to%20learn%20about%20WhaPay" target="_blank" class="fixed bottom-5 right-5 z-50 flex items-center gap-3 bg-green-500 hover:bg-green-600 text-white px-4 py-3 rounded-full shadow-lg"><i class="fab fa-whatsapp text-xl"></i><span class="hidden md:inline text-sm font-semibold">Chat with us</span></a>
+
+<script type="module">
+  // Highlight current page
+  const currentPage = window.location.pathname.split('/').pop();
+  document.querySelectorAll('nav a').forEach(link => {
+    const href = link.getAttribute('href');
+    if (href === currentPage || (currentPage === '' && href === 'index.html')) {
+      link.classList.add('text-green-300', 'font-bold', 'underline');
+    }
+  });
+
+  // Offline feature tracking (preserved from your version)
+  window.trackOfflineFeature = async (feature) => {
+    try {
+      await addDoc(collection(db, "offline_feature_clicks"), { feature, timestamp: serverTimestamp(), page: "offline-features", userAgent: navigator.userAgent });
+      if (feature === 'registration') window.location.href = 'merchant.html';
+      if (feature === 'payment') window.location.href = 'payment.html';
+      if (feature === 'qr') window.location.href = 'merchant.html';
+    } catch (e) { console.error(e); }
+  };
+</script>
+</body>
+</html>

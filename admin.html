@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WhaPay Admin Dashboard – Live Data</title>
+<title>WhaPay Admin Dashboard – Live Data & Management</title>
 <meta name="description" content="Admin dashboard for WhaPay. Real‑time payments, user management, blog posts, and analytics.">
 <meta name="robots" content="noindex, nofollow">
 
@@ -12,7 +12,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-<!-- Firebase SDKs -->
+<!-- Firebase SDKs (modular) -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
   import { 
@@ -20,7 +20,7 @@
     query, orderBy, serverTimestamp, where, getDocs 
   } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-  // Your Firebase config (real – from previous messages)
+  // Firebase config (same as other pages)
   const firebaseConfig = {
     apiKey: "AIzaSyDPAvq6BgpdfZAkfoEwdwmHrWedHgzjRSk",
     authDomain: "whapay-c93ab.firebaseapp.com",
@@ -34,13 +34,7 @@
   const db = getFirestore(app);
   window.db = db;
 
-  // References to collections
-  const transactionsRef = collection(db, "transactions");
-  const usersRef = collection(db, "users");
-  const merchantsRef = collection(db, "merchants");
-  const blogsRef = collection(db, "blogs");
-  const contactRef = collection(db, "contact_messages");
-
+  // Toast helper
   window.showToast = function(msg, isError = false) {
     let toast = document.getElementById('toast-msg');
     if (!toast) {
@@ -54,14 +48,10 @@
     setTimeout(() => toast.classList.add('hidden'), 4000);
   };
 
-  // Expose necessary functions globally
+  // Expose CRUD for blogs, user status updates
   window.addBlog = async (title, slug, content) => {
     try {
-      await addDoc(blogsRef, {
-        title, slug, content,
-        createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp()
-      });
+      await addDoc(collection(db, "blogs"), { title, slug, content, createdAt: serverTimestamp(), updatedAt: serverTimestamp() });
       showToast("Blog post added successfully");
       return true;
     } catch (e) { showToast("Error adding blog: " + e.message, true); return false; }
@@ -100,10 +90,10 @@
 </head>
 <body class="bg-gray-100 font-sans">
 
-<!-- Header (same as other pages) -->
-<header class="bg-green-600 text-white p-4 shadow-md">
+<!-- Header (consistent with all pages) -->
+<header class="bg-green-600 text-white p-4 shadow-md sticky top-0 z-50">
   <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:justify-between items-center">
-    <h1 class="text-2xl font-bold mb-2 md:mb-0"><a href="index.html">WhaPay</a></h1>
+    <h1 class="text-2xl font-bold mb-2 md:mb-0"><a href="index.html">WhaPay Admin</a></h1>
     <nav class="flex flex-wrap justify-center gap-2 md:gap-4">
       <a href="index.html" class="hover:underline">Home</a>
       <a href="about.html" class="hover:underline">About</a>
@@ -112,161 +102,93 @@
       <a href="merchant.html" class="hover:underline">Merchant</a>
       <a href="payment.html" class="hover:underline">Payment</a>
       <a href="reports.html" class="hover:underline">Reports</a>
-      <a href="blog.html" class="hover:underline">Blogs</a>
+      <a href="blog.html" class="hover:underline">Blog</a>
       <a href="contact.html" class="hover:underline">Contact</a>
-      <a href="admin.html" class="hover:underline text-green-300 font-bold underline">Admin</a>
+      <a href="admin.html" class="hover:underline font-bold text-green-200">Admin</a>
     </nav>
   </div>
 </header>
 
 <main class="max-w-7xl mx-auto px-4 py-6">
 
-  <!-- Summary Cards -->
+  <!-- Summary Cards (real-time from transactions) -->
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-    <div class="bg-white shadow rounded p-4 text-center">
-      <p class="text-gray-500">Total Paid (KES)</p>
-      <h2 id="totalPaid" class="text-2xl font-bold">0</h2>
-    </div>
-    <div class="bg-white shadow rounded p-4 text-center">
-      <p class="text-gray-500">Pending Transactions</p>
-      <h2 id="pendingCount" class="text-2xl font-bold">0</h2>
-    </div>
-    <div class="bg-white shadow rounded p-4 text-center">
-      <p class="text-gray-500">Paid This Week</p>
-      <h2 id="weekPaid" class="text-2xl font-bold">0</h2>
-    </div>
-    <div class="bg-white shadow rounded p-4 text-center">
-      <p class="text-gray-500">Paid This Month</p>
-      <h2 id="monthPaid" class="text-2xl font-bold">0</h2>
-    </div>
+    <div class="bg-white shadow rounded p-4 text-center"><p class="text-gray-500">Total Paid (KES)</p><h2 id="totalPaid" class="text-2xl font-bold">0</h2></div>
+    <div class="bg-white shadow rounded p-4 text-center"><p class="text-gray-500">Pending Transactions</p><h2 id="pendingCount" class="text-2xl font-bold">0</h2></div>
+    <div class="bg-white shadow rounded p-4 text-center"><p class="text-gray-500">Paid This Week</p><h2 id="weekPaid" class="text-2xl font-bold">0</h2></div>
+    <div class="bg-white shadow rounded p-4 text-center"><p class="text-gray-500">Paid This Month</p><h2 id="monthPaid" class="text-2xl font-bold">0</h2></div>
   </div>
 
   <!-- Charts -->
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-    <div class="bg-white shadow rounded p-4">
-      <h2 class="text-xl font-bold mb-2">Weekly Payments (Last 7 Days)</h2>
-      <canvas id="weeklyChart" height="200"></canvas>
-    </div>
-    <div class="bg-white shadow rounded p-4">
-      <h2 class="text-xl font-bold mb-2">Monthly Payments (Current Month)</h2>
-      <canvas id="monthlyChart" height="200"></canvas>
-    </div>
+    <div class="bg-white shadow rounded p-4"><h2 class="text-xl font-bold mb-2">Weekly Payments (Last 7 Days)</h2><canvas id="weeklyChart" height="200"></canvas></div>
+    <div class="bg-white shadow rounded p-4"><h2 class="text-xl font-bold mb-2">Monthly Payments (Current Month)</h2><canvas id="monthlyChart" height="200"></canvas></div>
   </div>
-  <div class="bg-white shadow rounded p-4 mb-6">
-    <h2 class="text-xl font-bold mb-2">Payment Method Breakdown</h2>
-    <canvas id="methodChart" height="150"></canvas>
-  </div>
+  <div class="bg-white shadow rounded p-4 mb-6"><h2 class="text-xl font-bold mb-2">Payment Method Breakdown</h2><canvas id="methodChart" height="150"></canvas></div>
 
-  <!-- Top Users -->
-  <div class="bg-white shadow rounded p-4 mb-6">
-    <h2 class="text-xl font-bold mb-2">🏆 Top Paying Users (All Time)</h2>
-    <ul id="topUsers" class="list-disc list-inside text-gray-700"></ul>
-  </div>
+  <!-- Top Paying Customers -->
+  <div class="bg-white shadow rounded p-4 mb-6"><h2 class="text-xl font-bold mb-2">🏆 Top Paying Customers (All Time)</h2><ul id="topUsers" class="list-disc list-inside text-gray-700"></ul></div>
 
   <!-- Transactions Table with Filter & Export -->
   <div class="bg-white shadow rounded p-4 mb-6">
-    <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
-      <h2 class="text-xl font-bold">📋 All Transactions</h2>
-      <button id="exportTransactionsBtn" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm">Export CSV</button>
-    </div>
-    <div class="flex flex-wrap gap-2 mb-4">
-      <input type="date" id="startDate" class="border px-3 py-2 rounded text-sm">
-      <input type="date" id="endDate" class="border px-3 py-2 rounded text-sm">
-      <button id="filterBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm">Filter</button>
-      <button id="resetFilterBtn" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded text-sm">Reset</button>
-    </div>
-    <div class="overflow-x-auto">
-      <table class="min-w-full bg-white border">
-        <thead class="bg-gray-100">
-          <tr><th class="px-4 py-2 border">#</th><th class="px-4 py-2 border">Customer</th><th class="px-4 py-2 border">Amount (KES)</th><th class="px-4 py-2 border">Method</th><th class="px-4 py-2 border">Status</th><th class="px-4 py-2 border">Date</th></tr>
-        </thead>
-        <tbody id="transactionTableBody"></tbody>
-      </table>
-    </div>
+    <div class="flex flex-wrap justify-between items-center mb-4 gap-2"><h2 class="text-xl font-bold">📋 All Transactions</h2><button id="exportTransactionsBtn" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm">Export CSV</button></div>
+    <div class="flex flex-wrap gap-2 mb-4"><input type="date" id="startDate" class="border px-3 py-2 rounded text-sm"><input type="date" id="endDate" class="border px-3 py-2 rounded text-sm"><button id="filterBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm">Filter</button><button id="resetFilterBtn" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded text-sm">Reset</button></div>
+    <div class="overflow-x-auto"><table class="min-w-full bg-white border"><thead class="bg-gray-100"><tr><th class="px-4 py-2 border">#</th><th class="px-4 py-2 border">Customer</th><th class="px-4 py-2 border">Amount (KES)</th><th class="px-4 py-2 border">Method</th><th class="px-4 py-2 border">Status</th><th class="px-4 py-2 border">Date</th></tr></thead><tbody id="transactionTableBody"></tbody></table></div>
   </div>
 
   <!-- User Management (Customers + Merchants) -->
   <div class="bg-white shadow rounded p-4 mb-6">
     <h2 class="text-xl font-bold mb-4">👥 User Management (Customers & Merchants)</h2>
-    <div class="flex flex-wrap gap-2 mb-4">
-      <select id="userTypeFilter" class="border px-3 py-2 rounded text-sm">
-        <option value="all">All Users</option>
-        <option value="user">Customers</option>
-        <option value="merchant">Merchants</option>
-      </select>
-      <input type="text" id="userSearch" placeholder="Search by name/phone" class="border px-3 py-2 rounded text-sm flex-1">
-      <button id="exportUsersBtn" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm">Export CSV</button>
-    </div>
-    <div class="overflow-x-auto">
-      <table class="min-w-full bg-white border">
-        <thead class="bg-gray-100">
-          <tr><th class="px-4 py-2 border">#</th><th class="px-4 py-2 border">Name / Business</th><th class="px-4 py-2 border">Phone</th><th class="px-4 py-2 border">Type</th><th class="px-4 py-2 border">Total Paid (KES)</th><th class="px-4 py-2 border">Status</th><th class="px-4 py-2 border">Actions</th></tr>
-        </thead>
-        <tbody id="userTableBody"></tbody>
-      </table>
-    </div>
+    <div class="flex flex-wrap gap-2 mb-4"><select id="userTypeFilter" class="border px-3 py-2 rounded text-sm"><option value="all">All Users</option><option value="user">Customers</option><option value="merchant">Merchants</option></select><input type="text" id="userSearch" placeholder="Search by name/phone" class="border px-3 py-2 rounded text-sm flex-1"><button id="exportUsersBtn" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm">Export CSV</button></div>
+    <div class="overflow-x-auto"><table class="min-w-full bg-white border"><thead class="bg-gray-100"><tr><th class="px-4 py-2 border">#</th><th class="px-4 py-2 border">Name / Business</th><th class="px-4 py-2 border">Phone</th><th class="px-4 py-2 border">Type</th><th class="px-4 py-2 border">Total Paid (KES)</th><th class="px-4 py-2 border">Status</th><th class="px-4 py-2 border">Actions</th></tr></thead><tbody id="userTableBody"></tbody></table></div>
   </div>
 
   <!-- Blog Management -->
   <div class="bg-white shadow rounded p-4 mb-6">
     <h2 class="text-xl font-bold mb-4">📝 Blog Management</h2>
-    <div class="grid md:grid-cols-3 gap-3 mb-4">
-      <input type="text" id="blogTitle" placeholder="Title" class="border px-3 py-2 rounded">
-      <input type="text" id="blogSlug" placeholder="Slug (unique, e.g., welcome-to-whapay)" class="border px-3 py-2 rounded">
-      <textarea id="blogContent" placeholder="Content (HTML allowed)" rows="2" class="border px-3 py-2 rounded"></textarea>
-      <button id="addBlogBtn" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">+ Add Blog</button>
-    </div>
-    <div class="overflow-x-auto">
-      <table class="min-w-full bg-white border">
-        <thead class="bg-gray-100">
-          <tr><th class="px-4 py-2 border">Title</th><th class="px-4 py-2 border">Slug</th><th class="px-4 py-2 border">Actions</th></tr>
-        </thead>
-        <tbody id="blogTableBody"></tbody>
-      </table>
-    </div>
+    <div class="grid md:grid-cols-3 gap-3 mb-4"><input type="text" id="blogTitle" placeholder="Title" class="border px-3 py-2 rounded"><input type="text" id="blogSlug" placeholder="Slug (unique, e.g., welcome-to-whapay)" class="border px-3 py-2 rounded"><textarea id="blogContent" placeholder="Content (HTML allowed)" rows="2" class="border px-3 py-2 rounded"></textarea><button id="addBlogBtn" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">+ Add Blog</button></div>
+    <div class="overflow-x-auto"><table class="min-w-full bg-white border"><thead class="bg-gray-100"><tr><th class="px-4 py-2 border">Title</th><th class="px-4 py-2 border">Slug</th><th class="px-4 py-2 border">Actions</th></tr></thead><tbody id="blogTableBody"></tbody></table></div>
   </div>
 
-  <!-- Contact Messages (Read Only) -->
-  <div class="bg-white shadow rounded p-4 mb-6">
-    <h2 class="text-xl font-bold mb-4">📬 Contact Messages</h2>
-    <div class="overflow-x-auto">
-      <table class="min-w-full bg-white border">
-        <thead class="bg-gray-100">
-          <tr><th class="px-4 py-2 border">Name</th><th class="px-4 py-2 border">Email</th><th class="px-4 py-2 border">Message</th><th class="px-4 py-2 border">Date</th></tr>
-        </thead>
-        <tbody id="contactTableBody"></tbody>
-      </table>
-    </div>
-  </div>
-
+  <!-- Contact Messages -->
+  <div class="bg-white shadow rounded p-4 mb-6"><h2 class="text-xl font-bold mb-4">📬 Contact Messages</h2><div class="overflow-x-auto"><table class="min-w-full bg-white border"><thead class="bg-gray-100"><tr><th class="px-4 py-2 border">Name</th><th class="px-4 py-2 border">Email</th><th class="px-4 py-2 border">Message</th><th class="px-4 py-2 border">Date</th></tr></thead><tbody id="contactTableBody"></tbody></table></div></div>
 </main>
 
-<footer class="bg-gray-900 text-gray-300 text-center p-6 mt-6">
-  <p>&copy; 2026 WhaPay Solutions. All rights reserved.</p>
+<footer class="bg-gray-900 text-gray-300 pt-8 pb-4 mt-8 text-center text-sm">
+  <div class="max-w-7xl mx-auto px-6">
+    <p>© 2026 WhaPay Solutions – Admin Dashboard. Offline registration: voice call or SMS to <strong class="font-mono">+254705728896</strong> | WhatsApp: <strong>+254710346425</strong></p>
+  </div>
 </footer>
 
+<!-- Floating Admin Note (optional) -->
+<div class="fixed bottom-5 left-5 bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded shadow">Admin Mode</div>
+
 <script type="module">
-  import { 
-    collection, onSnapshot, addDoc, updateDoc, deleteDoc, doc, 
-    query, orderBy, serverTimestamp, where, getDocs 
-  } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { collection, onSnapshot, doc, updateDoc, query, orderBy, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
   const db = window.db;
   let allTransactions = [];
   let allUsers = [];
   let allMerchants = [];
 
-  // --- 1. Load Transactions ---
-  const qTransactions = query(collection(db, "transactions"), orderBy("createdAt", "desc"));
-  onSnapshot(qTransactions, (snapshot) => {
-    allTransactions = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  // Helper: format date
+  function formatDate(timestamp) {
+    if (!timestamp) return "N/A";
+    const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+    return date.toLocaleString("en-KE");
+  }
+
+  // --- Load Transactions ---
+  const qTx = query(collection(db, "transactions"), orderBy("createdAt", "desc"));
+  onSnapshot(qTx, (snap) => {
+    allTransactions = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     updateSummaryCards();
     updateCharts();
     updateTopUsers();
     renderTransactionTable();
   });
 
-  // --- 2. Load Users & Merchants ---
+  // --- Load Users & Merchants ---
   onSnapshot(collection(db, "users"), (snap) => {
     allUsers = snap.docs.map(doc => ({ id: doc.id, ...doc.data(), type: "user" }));
     renderUserTable();
@@ -276,24 +198,15 @@
     renderUserTable();
   });
 
-  // --- 3. Load Blogs ---
+  // --- Load Blogs ---
   onSnapshot(query(collection(db, "blogs"), orderBy("createdAt", "desc")), (snap) => {
-    const blogs = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    renderBlogTable(blogs);
+    renderBlogTable(snap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
   });
 
-  // --- 4. Load Contact Messages ---
+  // --- Load Contact Messages ---
   onSnapshot(query(collection(db, "contact_messages"), orderBy("createdAt", "desc")), (snap) => {
-    const msgs = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    renderContactTable(msgs);
+    renderContactTable(snap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
   });
-
-  // Helper: format date
-  function formatDate(timestamp) {
-    if (!timestamp) return "N/A";
-    const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
-    return date.toLocaleString("en-KE");
-  }
 
   // Summary Cards
   function updateSummaryCards() {
@@ -315,106 +228,72 @@
     document.getElementById("monthPaid").innerText = monthPaid.toLocaleString();
   }
 
-  // Charts (simple version)
+  // Charts
   let weeklyChart, monthlyChart, methodChart;
   function updateCharts() {
     const now = new Date();
     const paid = allTransactions.filter(t => t.status === "paid");
-    // Weekly (last 7 days)
-    const weekLabels = [];
-    const weekData = Array(7).fill(0);
-    for (let i = 6; i >= 0; i--) {
-      const d = new Date(); d.setDate(now.getDate() - i);
-      weekLabels.push(d.toLocaleDateString("en-KE", { weekday: "short", day:"numeric" }));
-    }
-    paid.forEach(t => {
-      const d = t.createdAt?.toDate ? t.createdAt.toDate() : new Date(t.createdAt);
-      const diff = Math.floor((now - d) / (24*3600*1000));
-      if (diff >= 0 && diff < 7) weekData[6-diff] += (t.amount || 0);
-    });
+    // Weekly
+    const weekLabels = []; const weekData = Array(7).fill(0);
+    for (let i = 6; i >= 0; i--) { const d = new Date(); d.setDate(now.getDate() - i); weekLabels.push(d.toLocaleDateString("en-KE", { weekday: "short", day: "numeric" })); }
+    paid.forEach(t => { const d = t.createdAt?.toDate ? t.createdAt.toDate() : new Date(t.createdAt); const diff = Math.floor((now - d) / (24*3600*1000)); if (diff >= 0 && diff < 7) weekData[6-diff] += (t.amount || 0); });
     if (weeklyChart) weeklyChart.destroy();
     weeklyChart = new Chart(document.getElementById("weeklyChart"), { type: "bar", data: { labels: weekLabels, datasets: [{ label: "KES", data: weekData, backgroundColor: "#16a34a" }] } });
-    
-    // Monthly (current month)
+    // Monthly
     const daysInMonth = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
     const monthLabels = Array.from({ length: daysInMonth }, (_, i) => i+1);
     const monthData = Array(daysInMonth).fill(0);
-    paid.forEach(t => {
-      const d = t.createdAt?.toDate ? t.createdAt.toDate() : new Date(t.createdAt);
-      if (d.getMonth() === now.getMonth()) monthData[d.getDate()-1] += (t.amount || 0);
-    });
+    paid.forEach(t => { const d = t.createdAt?.toDate ? t.createdAt.toDate() : new Date(t.createdAt); if (d.getMonth() === now.getMonth()) monthData[d.getDate()-1] += (t.amount || 0); });
     if (monthlyChart) monthlyChart.destroy();
     monthlyChart = new Chart(document.getElementById("monthlyChart"), { type: "line", data: { labels: monthLabels, datasets: [{ label: "KES", data: monthData, borderColor: "#16a34a", fill: false }] } });
-    
     // Method breakdown
-    let mpesaTotal = 0, cardTotal = 0;
-    paid.forEach(t => {
-      if (t.method === "mpesa") mpesaTotal += (t.amount || 0);
-      else if (t.method === "card") cardTotal += (t.amount || 0);
-    });
+    let mpesa = 0, card = 0;
+    paid.forEach(t => { if (t.method === "mpesa") mpesa += (t.amount || 0); else if (t.method === "card") card += (t.amount || 0); });
     if (methodChart) methodChart.destroy();
-    methodChart = new Chart(document.getElementById("methodChart"), { type: "doughnut", data: { labels: ["M-Pesa", "Card"], datasets: [{ data: [mpesaTotal, cardTotal], backgroundColor: ["#16a34a", "#10b981"] }] } });
+    methodChart = new Chart(document.getElementById("methodChart"), { type: "doughnut", data: { labels: ["M-Pesa", "Card"], datasets: [{ data: [mpesa, card], backgroundColor: ["#16a34a", "#10b981"] }] } });
   }
 
   // Top users
   function updateTopUsers() {
-    const userTotals = {};
-    allTransactions.filter(t => t.status === "paid").forEach(t => {
-      const phone = t.customerPhone;
-      if (phone) userTotals[phone] = (userTotals[phone] || 0) + (t.amount || 0);
-    });
-    const sorted = Object.entries(userTotals).sort((a,b) => b[1] - a[1]).slice(0,5);
+    const totals = {};
+    allTransactions.filter(t => t.status === "paid").forEach(t => { if (t.customerPhone) totals[t.customerPhone] = (totals[t.customerPhone] || 0) + (t.amount || 0); });
+    const sorted = Object.entries(totals).sort((a,b) => b[1] - a[1]).slice(0,5);
     const ul = document.getElementById("topUsers");
     ul.innerHTML = "";
-    sorted.forEach(([phone, amt]) => {
-      const li = document.createElement("li");
-      li.textContent = `${phone} – KES ${amt.toLocaleString()}`;
-      ul.appendChild(li);
-    });
+    sorted.forEach(([phone, amt]) => { const li = document.createElement("li"); li.textContent = `${phone} – KES ${amt.toLocaleString()}`; ul.appendChild(li); });
   }
 
-  // Transaction table with filtering
-  let transactionFilter = { start: null, end: null };
+  // Transaction table with filter
+  let txFilter = { start: null, end: null };
   function renderTransactionTable() {
     let filtered = [...allTransactions];
-    if (transactionFilter.start) filtered = filtered.filter(t => {
-      const d = t.createdAt?.toDate ? t.createdAt.toDate() : new Date(t.createdAt);
-      return d >= transactionFilter.start;
-    });
-    if (transactionFilter.end) filtered = filtered.filter(t => {
-      const d = t.createdAt?.toDate ? t.createdAt.toDate() : new Date(t.createdAt);
-      return d <= transactionFilter.end;
-    });
+    if (txFilter.start) filtered = filtered.filter(t => { const d = t.createdAt?.toDate ? t.createdAt.toDate() : new Date(t.createdAt); return d >= txFilter.start; });
+    if (txFilter.end) filtered = filtered.filter(t => { const d = t.createdAt?.toDate ? t.createdAt.toDate() : new Date(t.createdAt); return d <= txFilter.end; });
     const tbody = document.getElementById("transactionTableBody");
     tbody.innerHTML = "";
     filtered.forEach((tx, idx) => {
-      const row = tbody.insertRow();
-      row.insertCell(0).innerText = idx+1;
-      row.insertCell(1).innerText = tx.customerPhone || "—";
-      row.insertCell(2).innerText = (tx.amount || 0).toLocaleString();
-      row.insertCell(3).innerText = tx.method || "mpesa";
-      row.insertCell(4).innerHTML = `<span class="px-2 py-1 rounded text-xs ${tx.status === 'paid' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}">${tx.status || 'pending'}</span>`;
-      row.insertCell(5).innerText = formatDate(tx.createdAt);
+      const row = `<tr class="hover:bg-gray-50"><td class="border px-4 py-2">${idx+1}</td><td class="border px-4 py-2">${tx.customerPhone || "—"}</td><td class="border px-4 py-2">${(tx.amount || 0).toLocaleString()}</td><td class="border px-4 py-2">${tx.method || "mpesa"}</td><td class="border px-4 py-2"><span class="px-2 py-1 rounded text-xs ${tx.status === 'paid' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}">${tx.status || "pending"}</span></td><td class="border px-4 py-2">${formatDate(tx.createdAt)}</td></tr>`;
+      tbody.insertAdjacentHTML('beforeend', row);
     });
   }
   document.getElementById("filterBtn").onclick = () => {
     const start = document.getElementById("startDate").value;
     const end = document.getElementById("endDate").value;
-    transactionFilter.start = start ? new Date(start) : null;
-    transactionFilter.end = end ? new Date(end + "T23:59:59") : null;
+    txFilter.start = start ? new Date(start) : null;
+    txFilter.end = end ? new Date(end + "T23:59:59") : null;
     renderTransactionTable();
   };
   document.getElementById("resetFilterBtn").onclick = () => {
     document.getElementById("startDate").value = "";
     document.getElementById("endDate").value = "";
-    transactionFilter = { start: null, end: null };
+    txFilter = { start: null, end: null };
     renderTransactionTable();
   };
   document.getElementById("exportTransactionsBtn").onclick = () => {
     const rows = [["#","Customer","Amount","Method","Status","Date"]];
     document.querySelectorAll("#transactionTableBody tr").forEach((tr, i) => {
-      const cols = tr.querySelectorAll("td");
-      rows.push([i+1, cols[0]?.innerText, cols[1]?.innerText, cols[2]?.innerText, cols[3]?.innerText, cols[4]?.innerText]);
+      const cells = tr.querySelectorAll("td");
+      rows.push([i+1, cells[0]?.innerText, cells[1]?.innerText, cells[2]?.innerText, cells[3]?.innerText, cells[4]?.innerText]);
     });
     const csv = rows.map(r => r.join(",")).join("\n");
     const blob = new Blob([csv], {type: "text/csv"});
@@ -424,52 +303,34 @@
     a.click();
   };
 
-  // User table (customers + merchants)
+  // User table
   let userFilter = { type: "all", search: "" };
   function renderUserTable() {
-    let combined = [...allUsers.map(u => ({ ...u, type: "user", name: u.fullName || u.name, phone: u.phone })),
-                    ...allMerchants.map(m => ({ ...m, type: "merchant", name: m.businessName, phone: m.phone }))];
+    let combined = [
+      ...allUsers.map(u => ({ ...u, type: "user", displayName: u.fullName || u.name || u.phone, phone: u.phone, status: u.status || "active" })),
+      ...allMerchants.map(m => ({ ...m, type: "merchant", displayName: m.businessName || m.name, phone: m.phone, status: m.status || "active" }))
+    ];
     if (userFilter.type !== "all") combined = combined.filter(u => u.type === userFilter.type);
-    if (userFilter.search) {
-      const s = userFilter.search.toLowerCase();
-      combined = combined.filter(u => (u.name?.toLowerCase().includes(s) || u.phone?.includes(s)));
-    }
-    // calculate total paid per user from transactions
+    if (userFilter.search) { const s = userFilter.search.toLowerCase(); combined = combined.filter(u => (u.displayName?.toLowerCase().includes(s) || u.phone?.includes(s))); }
     const paidTx = allTransactions.filter(t => t.status === "paid");
     const userTotal = {};
-    paidTx.forEach(tx => { if (tx.customerPhone) userTotal[tx.customerPhone] = (userTotal[tx.customerPhone] || 0) + (tx.amount || 0); });
+    paidTx.forEach(t => { if (t.customerPhone) userTotal[t.customerPhone] = (userTotal[t.customerPhone] || 0) + (t.amount || 0); });
     const tbody = document.getElementById("userTableBody");
     tbody.innerHTML = "";
     combined.forEach((u, idx) => {
       const total = userTotal[u.phone] || 0;
-      const status = u.status || "active";
-      const row = tbody.insertRow();
-      row.insertCell(0).innerText = idx+1;
-      row.insertCell(1).innerText = u.name || "—";
-      row.insertCell(2).innerText = u.phone || "—";
-      row.insertCell(3).innerText = u.type === "user" ? "Customer" : "Merchant";
-      row.insertCell(4).innerText = total.toLocaleString();
-      row.insertCell(5).innerHTML = `<span class="px-2 py-1 rounded text-xs ${status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">${status}</span>`;
-      const actions = row.insertCell(6);
-      if (status === "active") {
-        const blockBtn = document.createElement("button");
-        blockBtn.innerText = "Block";
-        blockBtn.className = "bg-red-500 text-white px-2 py-1 rounded text-xs mr-1";
-        blockBtn.onclick = () => {
-          if (u.type === "user") window.updateUserStatus(u.id, "blocked");
-          else window.updateMerchantStatus(u.id, "blocked");
-        };
-        actions.appendChild(blockBtn);
-      } else {
-        const activateBtn = document.createElement("button");
-        activateBtn.innerText = "Activate";
-        activateBtn.className = "bg-green-500 text-white px-2 py-1 rounded text-xs";
-        activateBtn.onclick = () => {
-          if (u.type === "user") window.updateUserStatus(u.id, "active");
-          else window.updateMerchantStatus(u.id, "active");
-        };
-        actions.appendChild(activateBtn);
-      }
+      const row = `<tr><td class="border px-4 py-2">${idx+1}</td><td class="border px-4 py-2">${u.displayName || "—"}</td><td class="border px-4 py-2">${u.phone || "—"}</td><td class="border px-4 py-2 capitalize">${u.type}</td><td class="border px-4 py-2">KES ${total.toLocaleString()}</td><td class="border px-4 py-2"><span class="px-2 py-1 rounded text-xs ${u.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">${u.status}</span></td><td class="border px-4 py-2"><button class="toggle-status bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs" data-id="${u.id}" data-type="${u.type}" data-status="${u.status}">Toggle Status</button></td></tr>`;
+      tbody.insertAdjacentHTML('beforeend', row);
+    });
+    document.querySelectorAll(".toggle-status").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        const id = btn.getAttribute("data-id");
+        const type = btn.getAttribute("data-type");
+        const current = btn.getAttribute("data-status");
+        const newStatus = current === "active" ? "suspended" : "active";
+        if (type === "user") await window.updateUserStatus(id, newStatus);
+        else await window.updateMerchantStatus(id, newStatus);
+      });
     });
   }
   document.getElementById("userTypeFilter").onchange = (e) => { userFilter.type = e.target.value; renderUserTable(); };
@@ -477,8 +338,8 @@
   document.getElementById("exportUsersBtn").onclick = () => {
     const rows = [["#","Name","Phone","Type","Total Paid (KES)","Status"]];
     document.querySelectorAll("#userTableBody tr").forEach((tr, i) => {
-      const cols = tr.querySelectorAll("td");
-      rows.push([i+1, cols[0]?.innerText, cols[1]?.innerText, cols[2]?.innerText, cols[3]?.innerText, cols[4]?.innerText]);
+      const cells = tr.querySelectorAll("td");
+      rows.push([i+1, cells[0]?.innerText, cells[1]?.innerText, cells[2]?.innerText, cells[3]?.innerText, cells[4]?.innerText]);
     });
     const csv = rows.map(r => r.join(",")).join("\n");
     const blob = new Blob([csv], {type: "text/csv"});
@@ -493,50 +354,47 @@
     const tbody = document.getElementById("blogTableBody");
     tbody.innerHTML = "";
     blogs.forEach(blog => {
-      const row = tbody.insertRow();
-      row.insertCell(0).innerText = blog.title || "Untitled";
-      row.insertCell(1).innerText = blog.slug || "—";
-      const actions = row.insertCell(2);
-      const editBtn = document.createElement("button");
-      editBtn.innerText = "Edit";
-      editBtn.className = "bg-blue-500 text-white px-2 py-1 rounded text-xs mr-1";
-      editBtn.onclick = () => {
-        const newTitle = prompt("New title:", blog.title);
-        const newSlug = prompt("New slug:", blog.slug);
-        const newContent = prompt("New content:", blog.content);
-        if (newTitle && newSlug && newContent) window.updateBlog(blog.id, newTitle, newSlug, newContent);
-      };
-      const delBtn = document.createElement("button");
-      delBtn.innerText = "Delete";
-      delBtn.className = "bg-red-500 text-white px-2 py-1 rounded text-xs";
-      delBtn.onclick = () => window.deleteBlog(blog.id);
-      actions.appendChild(editBtn);
-      actions.appendChild(delBtn);
+      const row = `<tr><td class="border px-4 py-2">${blog.title}</td><td class="border px-4 py-2">${blog.slug}</td><td class="border px-4 py-2"><button class="edit-blog bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs mr-2" data-id="${blog.id}" data-title="${blog.title}" data-slug="${blog.slug}" data-content="${blog.content.replace(/"/g, '&quot;')}">Edit</button><button class="delete-blog bg-red-100 text-red-700 px-2 py-1 rounded text-xs" data-id="${blog.id}">Delete</button></td></tr>`;
+      tbody.insertAdjacentHTML('beforeend', row);
+    });
+    document.querySelectorAll(".edit-blog").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const id = btn.getAttribute("data-id");
+        const title = btn.getAttribute("data-title");
+        const slug = btn.getAttribute("data-slug");
+        const content = btn.getAttribute("data-content");
+        document.getElementById("blogTitle").value = title;
+        document.getElementById("blogSlug").value = slug;
+        document.getElementById("blogContent").value = content;
+        const addBtn = document.getElementById("addBlogBtn");
+        addBtn.innerText = "Update Blog";
+        addBtn.onclick = async () => {
+          await window.updateBlog(id, document.getElementById("blogTitle").value, document.getElementById("blogSlug").value, document.getElementById("blogContent").value);
+          addBtn.innerText = "+ Add Blog";
+          addBtn.onclick = () => window.addBlog(document.getElementById("blogTitle").value, document.getElementById("blogSlug").value, document.getElementById("blogContent").value);
+          document.getElementById("blogTitle").value = "";
+          document.getElementById("blogSlug").value = "";
+          document.getElementById("blogContent").value = "";
+        };
+      });
+    });
+    document.querySelectorAll(".delete-blog").forEach(btn => {
+      btn.addEventListener("click", () => window.deleteBlog(btn.getAttribute("data-id")));
     });
   }
-  document.getElementById("addBlogBtn").onclick = async () => {
-    const title = document.getElementById("blogTitle").value.trim();
-    const slug = document.getElementById("blogSlug").value.trim();
-    const content = document.getElementById("blogContent").value.trim();
-    if (!title || !slug || !content) return window.showToast("All fields required", true);
-    await window.addBlog(title, slug, content);
-    document.getElementById("blogTitle").value = "";
-    document.getElementById("blogSlug").value = "";
-    document.getElementById("blogContent").value = "";
-  };
+  document.getElementById("addBlogBtn").onclick = () => window.addBlog(document.getElementById("blogTitle").value, document.getElementById("blogSlug").value, document.getElementById("blogContent").value);
 
   // Contact messages table
   function renderContactTable(messages) {
     const tbody = document.getElementById("contactTableBody");
     tbody.innerHTML = "";
     messages.forEach(msg => {
-      const row = tbody.insertRow();
-      row.insertCell(0).innerText = msg.name || "—";
-      row.insertCell(1).innerText = msg.email || "—";
-      row.insertCell(2).innerText = msg.message || "—";
-      row.insertCell(3).innerText = formatDate(msg.createdAt);
+      const row = `<tr><td class="border px-4 py-2">${msg.name || "—"}</td><td class="border px-4 py-2">${msg.email || "—"}</td><td class="border px-4 py-2">${msg.message || "—"}</td><td class="border px-4 py-2">${formatDate(msg.createdAt)}</td></tr>`;
+      tbody.insertAdjacentHTML('beforeend', row);
     });
   }
 </script>
 </body>
 </html>
+
+

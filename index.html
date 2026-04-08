@@ -164,5 +164,53 @@
     guideDiv.classList.remove('hidden');
   };
 </script>
+  const axios = require('axios');
+
+async function getAccessToken() {
+  const auth = Buffer.from(`${functions.config().safaricom.consumer_key}:${functions.config().safaricom.consumer_secret}`).toString('base64');
+  const res = await axios.get('https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials', {
+    headers: { Authorization: `Basic ${auth}` }
+  });
+  return res.data.access_token;
+}
+
+exports.stkPush = functions.https.onRequest(async (req, res) => {
+  const { phone, amount, accountReference = 'WhaPay', transactionDesc = 'Payment' } = req.body;
+  const token = await getAccessToken();
+  const timestamp = new Date().toISOString().replace(/[^0-9]/g, '').slice(0, 14);
+  const password = Buffer.from(`${functions.config().safaricom.shortcode}${functions.config().safaricom.passkey}${timestamp}`).toString('base64');
+  const data = {
+    BusinessShortCode: functions.config().safaricom.shortcode,
+    Password: password,
+    Timestamp: timestamp,
+    TransactionType: 'CustomerPayBillOnline',
+    Amount: amount,
+    PartyA: phone,
+    PartyB: functions.config().safaricom.shortcode,
+    PhoneNumber: phone,
+    CallBackURL: 'https://your-region-whapay.cloudfunctions.net/mpesaCallback',
+    AccountReference: accountReference,
+    TransactionDesc: transactionDesc
+  };
+  try {
+    const response = await axios.post('https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest', data, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    res.json(response.data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+exports.mpesaCallback = functions.https.onRequest(async (req, res) => {
+  const { Body } = req.body;
+  if (Body && Body.stkCallback) {
+    const { ResultCode, ResultDesc, CallbackMetadata } = Body.stkCallback;
+    const transactionId = CallbackMetadata?.Item?.find(i => i.Name === 'MpesaReceiptNumber')?.Value;
+    // Update your Firestore transaction
+    await admin.firestore().collection('transactions').doc(transactionId).update({ status: ResultCode === 0 ? 'paid' : 'failed' });
+  }
+  res.json({ ResultCode: 0 });
+});
 </body>
 </html>

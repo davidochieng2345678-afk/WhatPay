@@ -182,3 +182,74 @@
     </form>
   </div>
 </main>
+  <footer class="bg-gray-900 text-gray-300 pt-12 pb-6 mt-10">
+  <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+    <div><h2 class="text-2xl font-bold text-white mb-3">WhaPay</h2><p class="text-gray-400 text-sm">The world’s smartest payment platform – AI fraud, unified commerce, offline registration.</p></div>
+    <div><h3 class="text-white font-semibold mb-4">Quick Links</h3><ul class="space-y-2 text-sm"><li><a href="index.html" class="hover:text-green-400">Home</a></li><li><a href="features.html" class="hover:text-green-400">Features</a></li><li><a href="pricing.html" class="hover:text-green-400">Pricing</a></li><li><a href="contact.html" class="hover:text-green-400">Contact</a></li></ul></div>
+    <div><h3 class="text-white font-semibold mb-4">Offline Registration</h3><ul class="space-y-2 text-sm"><li>Voice: <a href="tel:+254705728896" class="hover:text-green-400">+254705728896</a></li><li>SMS: <span class="font-mono">REG YourName</span> to <span class="font-mono">+254705728896</span></li><li>WhatsApp: <a href="https://wa.me/254710346425" class="hover:text-green-400">+254710346425</a></li></ul></div>
+    <div><h3 class="text-white font-semibold mb-4">Legal</h3><ul class="space-y-2 text-sm"><li><a href="privacy.html" class="hover:text-green-400">Privacy Policy</a></li><li><a href="terms.html" class="hover:text-green-400">Terms of Service</a></li><li><a href="#" class="hover:text-green-400">Security</a></li></ul></div>
+  </div>
+  <div class="border-t border-gray-800 mt-10 pt-6 text-center text-sm text-gray-500">
+    <p>© 2026 WhaPay Solutions – Empowering businesses worldwide.</p>
+    <div class="mt-2 space-x-4">
+      <a href="privacy.html" class="hover:text-green-400">Privacy</a>
+      <a href="terms.html" class="hover:text-green-400">Terms</a>
+      <a href="#" class="hover:text-green-400">Cookies</a>
+    </div>
+  </div>
+</footer>
+
+<!-- Floating WhatsApp Button -->
+<a href="https://wa.me/254710346425?text=Hello%2C%20I%20want%20to%20learn%20about%20WhaPay" target="_blank" class="fixed bottom-5 right-5 bg-green-500 text-white p-3 rounded-full shadow-lg hover:bg-green-600 z-50"><i class="fab fa-whatsapp text-2xl"></i></a>
+
+<!-- JavaScript for animated stats + contact form -->
+<script type="module">
+  // Animated counters
+  const counters = document.querySelectorAll('.stat-number');
+  const animateStats = () => {
+    counters.forEach(counter => {
+      const target = +counter.getAttribute('data-target');
+      const updateCount = () => {
+        const current = +counter.innerText;
+        const increment = target / 50;
+        if (current < target) {
+          counter.innerText = Math.ceil(current + increment);
+          setTimeout(updateCount, 30);
+        } else {
+          counter.innerText = target;
+        }
+      };
+      updateCount();
+    });
+  };
+  // Trigger when in viewport
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) { animateStats(); observer.disconnect(); } });
+  }, { threshold: 0.5 });
+  const statsSection = document.querySelector('.stat-number')?.parentElement?.parentElement;
+  if (statsSection) observer.observe(statsSection);
+
+  // Contact form submission
+  const form = document.getElementById('about-contact-form');
+  const statusDiv = document.getElementById('contact-form-status');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = document.getElementById('contact-name').value.trim();
+    const email = document.getElementById('contact-email').value.trim();
+    const message = document.getElementById('contact-message').value.trim();
+    if (!name || !email || !message) {
+      statusDiv.innerHTML = '<span class="text-red-600">All fields are required.</span>';
+      return;
+    }
+    statusDiv.innerHTML = '<span class="text-gray-600">Sending...</span>';
+    const success = await window.storeContactMessage(name, email, message);
+    if (success) {
+      statusDiv.innerHTML = '<span class="text-green-600">✅ Message sent! We’ll reply within 24 hours.</span>';
+      form.reset();
+    } else {
+      statusDiv.innerHTML = '<span class="text-red-600">❌ Failed to send. Please try again or WhatsApp us.</span>';
+    }
+  });
+</script>
+</body>
+</html>

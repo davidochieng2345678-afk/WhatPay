@@ -213,3 +213,44 @@
     </div>
   </section>
 </main>
+
+<footer class="bg-gray-900 text-gray-300 pt-12 pb-6 mt-10">
+  <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+    <div><h2 class="text-2xl font-bold text-white mb-3">WhaPay</h2><p class="text-gray-400 text-sm">Kenya's modern payment solution. Accept M-Pesa & card payments seamlessly.</p></div>
+    <div><h3 class="text-white font-semibold mb-4">Quick Links</h3><ul class="space-y-2 text-sm"><li><a href="index.html" class="hover:text-green-400">Home</a></li><li><a href="about.html" class="hover:text-green-400">About</a></li><li><a href="features.html" class="hover:text-green-400">Features</a></li><li><a href="pricing.html" class="hover:text-green-400">Pricing</a></li><li><a href="contact.html" class="hover:text-green-400">Contact</a></li></ul></div>
+    <div><h3 class="text-white font-semibold mb-4">Solutions</h3><ul class="space-y-2 text-sm"><li>WhatsApp Payments</li><li>M-Pesa Integration</li><li>QR & Barcode Payments</li><li>Live Dashboard</li><li>Weekly & Monthly Reports</li></ul></div>
+    <div><h3 class="text-white font-semibold mb-4">Get Started</h3><p class="text-sm text-gray-400 mb-3">Start accepting payments today.</p><a href="https://wa.me/254710346425" target="_blank" class="block bg-green-500 hover:bg-green-600 text-white text-center py-2 px-4 rounded mb-3">Chat on WhatsApp</a><p class="text-sm text-gray-400">Offline registration: <a href="tel:+254705728896" class="hover:text-green-400">+254705728896</a> (voice or SMS)</p></div>
+  </div>
+  <div class="border-t border-gray-800 mt-10 pt-6 text-center text-sm text-gray-500">
+    <p>&copy; 2026 WhaPay Solutions. All rights reserved.</p>
+    <div class="mt-2 space-x-4"><a href="privacy.html" class="hover:text-green-400">Privacy Policy</a><a href="terms.html" class="hover:text-green-400">Terms of Service</a><a href="#" class="hover:text-green-400">Cookies</a></div>
+  </div>
+</footer>
+
+<!-- Floating WhatsApp Button -->
+<a href="https://wa.me/254710346425?text=Hello%20I%20want%20to%20learn%20about%20WhaPay" target="_blank" class="fixed bottom-5 right-5 z-50 flex items-center gap-3 bg-green-500 hover:bg-green-600 text-white px-4 py-3 rounded-full shadow-lg"><i class="fab fa-whatsapp text-xl"></i><span class="hidden md:inline text-sm font-semibold">Chat with us</span></a>
+
+<script type="module">
+  // Highlight current page
+  const currentPage = window.location.pathname.split('/').pop();
+  document.querySelectorAll('nav a').forEach(link => {
+    const href = link.getAttribute('href');
+    if (href === currentPage || (currentPage === '' && href === 'index.html')) {
+      link.classList.add('text-green-300', 'font-bold', 'underline');
+    }
+  });
+
+  // Offline feature tracking
+  window.trackOfflineFeature = async (feature) => {
+    try {
+      await addDoc(collection(db, "offline_feature_clicks"), { feature, timestamp: serverTimestamp(), page: "offline-features", userAgent: navigator.userAgent });
+      if (feature === 'registration') window.location.href = 'merchant.html';
+      if (feature === 'payment') window.location.href = 'payment.html';
+      if (feature === 'qr') window.location.href = 'merchant.html';
+    } catch (e) { console.error(e); }
+  };
+</script>
+</body>
+</html>
+
+  

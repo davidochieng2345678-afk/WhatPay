@@ -140,4 +140,102 @@
       <iframe class="w-full h-full" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.123456!2d36.8219!3d-1.2921!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f1a0abcd12345%3A0x123456789abcdef!2sNairobi%2C%20Kenya!5e0!3m2!1sen!2sus!4v1612345678901!5m2!1sen!2sus" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
   </section>
+
+<footer class="bg-gray-900 text-gray-300 pt-12 pb-6 mt-10">
+  <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+    <div>
+      <h2 class="text-2xl font-bold text-white mb-3">WhaPay</h2>
+      <p class="text-gray-400 text-sm leading-relaxed mb-4">Kenya's modern WhatsApp payment solution. Accept M-Pesa & card payments seamlessly, even offline.</p>
+      <p class="text-sm text-gray-500">Trusted by businesses across Kenya 🇰🇪</p>
+    </div>
+    <div>
+      <h3 class="text-white font-semibold mb-4">Quick Links</h3>
+      <ul class="space-y-2 text-sm">
+        <li><a href="index.html" class="hover:text-green-400">Home</a></li>
+        <li><a href="about.html" class="hover:text-green-400">About</a></li>
+        <li><a href="features.html" class="hover:text-green-400">Features</a></li>
+        <li><a href="pricing.html" class="hover:text-green-400">Pricing</a></li>
+        <li><a href="contact.html" class="hover:text-green-400">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3 class="text-white font-semibold mb-4">Solutions</h3>
+      <ul class="space-y-2 text-sm">
+        <li>WhatsApp Payments Kenya</li>
+        <li>M-Pesa Integration</li>
+        <li>QR & Barcode Payments</li>
+        <li>Live Dashboard</li>
+        <li>Weekly & Monthly Reports</li>
+      </ul>
+    </div>
+    <div>
+      <h3 class="text-white font-semibold mb-4">Get Started</h3>
+      <p class="text-sm text-gray-400 mb-3">Start accepting payments via WhatsApp today.</p>
+      <a href="https://wa.me/254710346425" target="_blank" class="block bg-green-500 hover:bg-green-600 text-white text-center py-2 px-4 rounded mb-3">Chat on WhatsApp</a>
+      <p class="text-sm text-gray-400">Email: <a href="mailto:support@whapay.com" class="hover:text-green-400">support@whapay.com</a></p>
+      <p class="text-sm text-gray-400">Offline registration: <a href="tel:+254705728896" class="hover:text-green-400">+254705728896</a> (voice/SMS)</p>
+    </div>
+  </div>
+  <div class="border-t border-gray-800 mt-10 pt-6 text-center text-sm text-gray-500">
+    <p>&copy; 2026 WhaPay Solutions. All rights reserved.</p>
+    <div class="mt-2 space-x-4">
+      <a href="privacy.html" class="hover:text-green-400">Privacy Policy</a>
+      <a href="terms.html" class="hover:text-green-400">Terms of Service</a>
+      <a href="#" class="hover:text-green-400">Cookies</a>
+    </div>
+  </div>
+</footer>
+
+<!-- Floating WhatsApp Button -->
+<a href="https://wa.me/254710346425?text=Hello%20WhaPay%20Support" target="_blank" class="fixed bottom-5 right-5 bg-green-500 text-white p-3 rounded-full shadow-lg hover:bg-green-600 z-50 transition"><i class="fab fa-whatsapp text-xl"></i></a>
+
+<script type="module">
+  // Contact form submission to Firebase
+  const form = document.getElementById('contactForm');
+  const formMessage = document.getElementById('formMessage');
+  const { getFirestore, collection, addDoc, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
+  const db = window.db;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const message = document.getElementById('message').value.trim();
+
+    if (!name || !email || !message) {
+      formMessage.innerHTML = '<span class="text-red-500">Please fill in all required fields.</span>';
+      return;
+    }
+
+    const submitBtn = form.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    submitBtn.innerText = 'Sending...';
+
+    try {
+      await addDoc(collection(db, "contact_messages"), {
+        name, email, phone, message, timestamp: serverTimestamp()
+      });
+      formMessage.innerHTML = '<span class="text-green-600">✅ Message sent successfully! We will get back to you soon.</span>';
+      form.reset();
+    } catch (error) {
+      formMessage.innerHTML = '<span class="text-red-500">❌ Oops! Something went wrong. Please try again or WhatsApp us.</span>';
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerText = 'Send Message';
+    }
+  });
+
+  // Active link highlighting
+  const currentPage = window.location.pathname.split('/').pop();
+  document.querySelectorAll('nav a').forEach(link => {
+    const href = link.getAttribute('href');
+    if (href === currentPage || (currentPage === '' && href === 'index.html')) {
+      link.classList.add('text-green-300', 'font-bold', 'underline');
+    }
+  });
+</script>
+</body>
+</html>
+  
 </main>

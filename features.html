@@ -32,6 +32,9 @@
 <!-- Tailwind CSS + Font Awesome -->
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#16a34a">
+<script>if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js');}</script>
 
 <!-- Firebase SDK -->
 <script type="module">
@@ -232,100 +235,3 @@
   </div>
 </main>
 
-<!-- Footer (consistent) -->
-<footer class="bg-gray-900 text-gray-300 pt-12 pb-6 mt-10">
-  <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-    <div>
-      <h2 class="text-2xl font-bold text-white mb-3">WhaPay</h2>
-      <p class="text-gray-400 text-sm leading-relaxed mb-4">Kenya's modern WhatsApp payment solution. Accept M-Pesa & card payments seamlessly, even offline.</p>
-      <p class="text-sm text-gray-500">Trusted by businesses across Kenya 🇰🇪</p>
-    </div>
-    <div>
-      <h3 class="text-white font-semibold mb-4">Quick Links</h3>
-      <ul class="space-y-2 text-sm">
-        <li><a href="index.html" class="hover:text-green-400">Home</a></li>
-        <li><a href="about.html" class="hover:text-green-400">About</a></li>
-        <li><a href="features.html" class="hover:text-green-400 font-bold">Features</a></li>
-        <li><a href="pricing.html" class="hover:text-green-400">Pricing</a></li>
-        <li><a href="contact.html" class="hover:text-green-400">Contact</a></li>
-      </ul>
-    </div>
-    <div>
-      <h3 class="text-white font-semibold mb-4">Solutions</h3>
-      <ul class="space-y-2 text-sm">
-        <li>WhatsApp Payments Kenya</li>
-        <li>M-Pesa Integration</li>
-        <li>QR & Barcode Payments</li>
-        <li>Live Dashboard</li>
-        <li>Weekly & Monthly Reports</li>
-      </ul>
-    </div>
-    <div>
-      <h3 class="text-white font-semibold mb-4">Get Started</h3>
-      <p class="text-sm text-gray-400 mb-3">Start accepting payments via WhatsApp today.</p>
-      <a href="https://wa.me/254710346425" target="_blank" class="block bg-green-500 hover:bg-green-600 text-white text-center py-2 px-4 rounded mb-3">Chat on WhatsApp</a>
-      <p class="text-sm text-gray-400">Email: <a href="mailto:support@whapay.com" class="hover:text-green-400">support@whapay.com</a></p>
-      <p class="text-sm text-gray-400">Phone: <a href="tel:+254710346425" class="hover:text-green-400">+254 710 346425</a></p>
-    </div>
-  </div>
-  <div class="border-t border-gray-800 mt-10 pt-6 text-center text-sm text-gray-500">
-    <p>&copy; 2026 WhaPay Solutions. All rights reserved.</p>
-    <div class="mt-2 space-x-4">
-      <a href="#" class="hover:text-green-400">Privacy Policy</a>
-      <a href="#" class="hover:text-green-400">Terms of Service</a>
-      <a href="#" class="hover:text-green-400">Cookies</a>
-    </div>
-  </div>
-</footer>
-
-<!-- Floating WhatsApp Button -->
-<a href="https://wa.me/254710346425?text=Hello%20I%20want%20to%20use%20WhaPay" target="_blank" 
-   class="fixed bottom-5 right-5 z-50 flex items-center gap-3 bg-green-500 hover:bg-green-600 text-white px-4 py-3 rounded-full shadow-lg transition-all duration-300">
-  <i class="fab fa-whatsapp text-xl"></i>
-  <span class="hidden md:inline text-sm font-semibold">Chat with us</span>
-</a>
-
-<script type="module">
-  // Form submission handler
-  const form = document.getElementById('featureLeadForm');
-  const statusDiv = document.getElementById('formStatus');
-  
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const name = document.getElementById('leadName').value.trim();
-    const email = document.getElementById('leadEmail').value.trim();
-    
-    if (!name || !email) {
-      statusDiv.innerHTML = '<span class="text-yellow-200">Please fill in both fields.</span>';
-      return;
-    }
-    
-    const submitBtn = form.querySelector('button[type="submit"]');
-    submitBtn.disabled = true;
-    submitBtn.innerText = 'Submitting...';
-    statusDiv.innerHTML = '<span class="text-white">Saving your request...</span>';
-    
-    const success = await window.storeFeatureLead(name, email);
-    if (success) {
-      statusDiv.innerHTML = '<span class="text-green-300">✅ Thanks! We will contact you shortly.</span>';
-      form.reset();
-      setTimeout(() => statusDiv.innerHTML = '', 5000);
-    } else {
-      statusDiv.innerHTML = '<span class="text-red-300">❌ Error. Please try again or WhatsApp us.</span>';
-    }
-    submitBtn.disabled = false;
-    submitBtn.innerText = 'Get Started →';
-  });
-
-  // Active link highlighting
-  const currentPage = window.location.pathname.split('/').pop();
-  document.querySelectorAll('nav a').forEach(link => {
-    const href = link.getAttribute('href');
-    if (href === currentPage || (currentPage === '' && href === 'index.html')) {
-      link.classList.add('text-green-300', 'font-bold', 'underline');
-    }
-  });
-</script>
-</body>
-</html>
-    

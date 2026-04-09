@@ -194,6 +194,204 @@
     <p class="text-green-100 text-sm mt-5">✨ Receive your personal QR code in seconds. No app, no limits.</p>
   </section>
 
+  <!-- ===== REGISTER & PAY IN ONE STEP SECTION ===== -->
+<section class="py-16 bg-gray-50">
+  <div class="max-w-xl mx-auto px-4">
+    <div class="bg-white rounded-2xl shadow-xl p-6">
+      <h2 class="text-2xl font-bold text-center text-green-700 mb-2">Register & Pay in One Step</h2>
+      <p class="text-center text-gray-600 text-sm mb-6">Enter your details, complete payment, and optionally get your permanent WhaPay Member Code.</p>
+
+      <form id="oneStepForm" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium mb-1">Full Name *</label>
+          <input type="text" id="osName" required class="w-full border rounded-lg px-4 py-2">
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Phone Number (WhatsApp) *</label>
+          <input type="tel" id="osPhone" required placeholder="+254712345678" class="w-full border rounded-lg px-4 py-2">
+          <p class="text-xs text-gray-500 mt-1">We'll send payment confirmation via WhatsApp.</p>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Amount to Pay (KES) *</label>
+          <input type="number" id="osAmount" required placeholder="e.g., 500" class="w-full border rounded-lg px-4 py-2">
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Payment Method</label>
+          <select id="osMethod" class="w-full border rounded-lg px-4 py-2">
+            <option value="mpesa">M-Pesa (STK Push)</option>
+            <option value="card">Credit / Debit Card (Stripe)</option>
+          </select>
+        </div>
+
+        <!-- Registration option -->
+        <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+          <input type="checkbox" id="osRegister" checked class="w-5 h-5 text-green-600 rounded">
+          <label for="osRegister" class="text-sm font-medium text-gray-700">Register me as a WhaPay user (get Member Code + QR for future payments)</label>
+        </div>
+        <p id="osGuestNote" class="text-xs text-gray-500 hidden">You will pay as a guest. No account will be created. You won't receive a Member Code.</p>
+
+        <button type="submit" id="osSubmitBtn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition">Pay Now</button>
+        <div id="osErrorMsg" class="text-red-500 text-sm text-center"></div>
+      </form>
+
+      <!-- Result after payment -->
+      <div id="osResult" class="hidden mt-6 text-center border-t pt-4">
+        <i class="fas fa-check-circle text-5xl text-green-600 mb-2"></i>
+        <h2 class="text-xl font-bold">Payment Successful!</h2>
+        <div id="osRegResult" class="hidden">
+          <p class="mt-2">Your WhaPay Member Code:</p>
+          <p id="osMemberCode" class="text-3xl font-bold text-green-600 my-2"></p>
+          <div id="osQRCanvas" class="flex justify-center my-3"></div>
+          <p class="text-sm text-gray-600">We've also sent your code and QR to your WhatsApp. Use this code for future payments.</p>
+          <a href="merchant.html" class="inline-block mt-4 bg-green-600 text-white px-4 py-2 rounded-lg">Go to Dashboard</a>
+        </div>
+        <div id="osGuestResult" class="hidden">
+          <p class="text-gray-600">You have completed your payment as a guest. No account was created.</p>
+          <a href="index.html" class="inline-block mt-4 bg-green-600 text-white px-4 py-2 rounded-lg">Return Home</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+<script type="module">
+  // Import Firebase (already exists on your pages – if not, add this)
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  
+  // Use your existing Firebase config (if window.db already exists, reuse; otherwise init)
+  const firebaseConfig = {
+    apiKey: "AIzaSyDPAvq6BgpdfZAkfoEwdwmHrWedHgzjRSk",
+    authDomain: "whapay-c93ab.firebaseapp.com",
+    projectId: "whapay-c93ab",
+    storageBucket: "whapay-c93ab.firebasestorage.app",
+    messagingSenderId: "205456952458",
+    appId: "1:205456952458:web:6533921ca10a2988417173"
+  };
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // Helper: generate unique member code
+  function generateMemberCode(name) {
+    const prefix = name.replace(/[^a-zA-Z0-9]/g, '').substring(0, 3).toUpperCase() || 'NEW';
+    const random = Math.floor(10000 + Math.random() * 90000);
+    return `${prefix}${random}`;
+  }
+
+  // Save user to Firestore
+  async function saveUser(name, phone, memberCode) {
+    await addDoc(collection(db, "users"), {
+      fullName: name, phone, memberCode, status: "active", createdAt: serverTimestamp()
+    });
+  }
+
+  // Save transaction
+  async function saveTransaction(phone, amount, method, status = "completed") {
+    await addDoc(collection(db, "transactions"), {
+      customerPhone: phone, amount, method, status, createdAt: serverTimestamp()
+    });
+  }
+
+  // DOM elements
+  const form = document.getElementById('oneStepForm');
+  const nameInput = document.getElementById('osName');
+  const phoneInput = document.getElementById('osPhone');
+  const amountInput = document.getElementById('osAmount');
+  const methodSelect = document.getElementById('osMethod');
+  const registerCheck = document.getElementById('osRegister');
+  const guestNote = document.getElementById('osGuestNote');
+  const submitBtn = document.getElementById('osSubmitBtn');
+  const errorDiv = document.getElementById('osErrorMsg');
+  const resultDiv = document.getElementById('osResult');
+  const regResultDiv = document.getElementById('osRegResult');
+  const guestResultDiv = document.getElementById('osGuestResult');
+  const memberCodeSpan = document.getElementById('osMemberCode');
+  const qrCanvas = document.getElementById('osQRCanvas');
+
+  // Toggle guest note
+  registerCheck.addEventListener('change', () => {
+    guestNote.classList.toggle('hidden', registerCheck.checked);
+  });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = nameInput.value.trim();
+    let phoneRaw = phoneInput.value.trim();
+    const amount = parseInt(amountInput.value);
+    const method = methodSelect.value;
+    const shouldRegister = registerCheck.checked;
+
+    if (!name || !phoneRaw || !amount) {
+      errorDiv.innerText = 'All fields required';
+      return;
+    }
+    let phone = phoneRaw.replace(/\D/g, '');
+    if (phone.startsWith('0')) phone = '254' + phone.substring(1);
+    if (!phone.startsWith('254')) phone = '254' + phone;
+
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="spinner"></span> Processing payment...';
+    errorDiv.innerText = '';
+
+    try {
+      // --- Payment integration (replace with real API calls) ---
+      if (method === 'mpesa') {
+        // Call your M-Pesa STK Push Firebase Function
+        const response = await fetch('https://your-region-whapay.cloudfunctions.net/stkPush', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ phone, amount, accountReference: 'WhaPay' })
+        });
+        const data = await response.json();
+        if (data.ResponseCode !== '0') throw new Error(data.ResponseDescription || 'M-Pesa failed');
+        alert('Check your phone for M-Pesa prompt. Complete payment.');
+        await new Promise(r => setTimeout(r, 3000)); // simulate wait
+      } else if (method === 'card') {
+        const stripe = Stripe('pk_test_YOUR_STRIPE_PUBLISHABLE_KEY'); // replace
+        const resp = await fetch('https://your-region-whapay.cloudfunctions.net/createCheckoutSession', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ amount, customerPhone: phone })
+        });
+        const { sessionId } = await resp.json();
+        await stripe.redirectToCheckout({ sessionId });
+        return; // redirect happens
+      }
+
+      // After successful payment
+      await saveTransaction(phone, amount, method, 'completed');
+
+      if (shouldRegister) {
+        const memberCode = generateMemberCode(name);
+        await saveUser(name, phone, memberCode);
+        // Generate QR code
+        QRCode.toCanvas(qrCanvas, `https://whapay.space/pay.html?merchant=${memberCode}`, { width: 150 });
+        memberCodeSpan.innerText = memberCode;
+        regResultDiv.classList.remove('hidden');
+        guestResultDiv.classList.add('hidden');
+        // Send WhatsApp with code & QR
+        const waMsg = `🎉 Welcome to WhaPay!\n\nYour Member Code: ${memberCode}\nPayment link: https://whapay.space/pay.html?merchant=${memberCode}\nUse this code to receive payments or pay others.`;
+        window.open(`https://wa.me/${phone}?text=${encodeURIComponent(waMsg)}`, '_blank');
+      } else {
+        regResultDiv.classList.add('hidden');
+        guestResultDiv.classList.remove('hidden');
+        const waMsg = `✅ Payment of KES ${amount} completed successfully via WhaPay. Thank you!`;
+        window.open(`https://wa.me/${phone}?text=${encodeURIComponent(waMsg)}`, '_blank');
+      }
+
+      form.classList.add('hidden');
+      resultDiv.classList.remove('hidden');
+    } catch (err) {
+      errorDiv.innerText = err.message;
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = 'Pay Now';
+    }
+  });
+</script>
+<style>
+  .spinner{border:2px solid #f3f3f3;border-top:2px solid #16a34a;border-radius:50%;width:24px;height:24px;animation:spin 1s linear infinite;display:inline-block;}@keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
+</style>
+
   <!-- FULL FOOTER (consistent with other pages) -->
   <footer class="bg-gray-900 text-gray-300 pt-12 pb-6">
     <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">

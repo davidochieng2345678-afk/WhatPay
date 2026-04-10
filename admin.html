@@ -96,3 +96,368 @@
     <button id="showLoginBtn" class="mt-4 bg-green-600 text-white px-4 py-2 rounded">Login</button>
   </div>
 </main>
+<footer class="bg-gray-900 text-gray-300 pt-8 pb-4 text-center text-sm">
+  <p>© 2026 WhaPay – <strong>Offline registration: call <span class="font-mono">0140933042</span> (voicemail) or SMS to same number</strong> | WhatsApp: <strong>+254710346425</strong></p>
+  <div class="mt-2 space-x-4"><a href="privacy.html" class="hover:text-green-400">Privacy Policy</a> | <a href="terms.html" class="hover:text-green-400">Terms of Service</a> | <a href="contact.html" class="hover:text-green-400">Contact</a></div>
+</footer>
+
+<a href="https://wa.me/254710346425?text=Hello%20WhaPay" target="_blank" class="fixed bottom-5 right-5 bg-green-500 text-white p-3 rounded-full shadow-lg hover:bg-green-600 z-50"><i class="fab fa-whatsapp text-2xl"></i></a>
+
+<script type="module" src="/auth.js"></script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc, addDoc, serverTimestamp, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  const firebaseConfig = {
+    apiKey: "AIzaSyDPAvq6BgpdfZAkfoEwdwmHrWedHgzjRSk",
+    authDomain: "whapay-c93ab.firebaseapp.com",
+    projectId: "whapay-c93ab",
+    storageBucket: "whapay-c93ab.firebasestorage.app",
+    messagingSenderId: "205456952458",
+    appId: "1:205456952458:web:6533921ca10a2988417173"
+  };
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  window.db = db;
+
+  const adminEmail = "davidochieng99@gmail.com";
+  let allTransactions = [], allMerchants = [], allUsers = [], allBlogs = [];
+
+  // Helper: generate member code (for adding merchants/users)
+  function generateMemberCode(name) {
+    const prefix = name.replace(/[^a-zA-Z0-9]/g, '').substring(0, 3).toUpperCase() || 'NEW';
+    const random = Math.floor(10000 + Math.random() * 90000);
+    return `${prefix}${random}`;
+  }
+
+  // Show toast
+  function showToast(msg, isErr = false) {
+    let toast = document.getElementById('adminToast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'adminToast';
+      toast.className = 'fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-full text-sm z-50 hidden';
+      document.body.appendChild(toast);
+    }
+    toast.innerText = msg;
+    toast.classList.remove('hidden');
+    setTimeout(() => toast.classList.add('hidden'), 3000);
+  }
+
+  // Modal for add/edit (generic)
+  function showModal(title, fields, onSubmit) {
+    let modal = document.getElementById('genericModal');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'genericModal';
+      modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden';
+      modal.innerHTML = `
+        <div class="bg-white rounded-xl p-6 max-w-md w-full mx-4">
+          <h3 class="text-xl font-bold mb-4"></h3>
+          <div id="modalFields" class="space-y-3"></div>
+          <div class="flex justify-end gap-2 mt-4">
+            <button id="modalCancel" class="px-4 py-2 bg-gray-300 rounded">Cancel</button>
+            <button id="modalSubmit" class="px-4 py-2 bg-green-600 text-white rounded">Save</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    }
+    modal.querySelector('h3').innerText = title;
+    const fieldsDiv = modal.querySelector('#modalFields');
+    fieldsDiv.innerHTML = '';
+    fields.forEach(f => {
+      const div = document.createElement('div');
+      div.innerHTML = `<label class="block text-sm font-medium mb-1">${f.label}</label><input type="${f.type || 'text'}" id="modal_${f.id}" class="w-full border rounded p-2" value="${f.value || ''}">`;
+      fieldsDiv.appendChild(div);
+    });
+    modal.classList.remove('hidden');
+    const submitBtn = modal.querySelector('#modalSubmit');
+    const cancelBtn = modal.querySelector('#modalCancel');
+    const newSubmit = async () => {
+      const values = {};
+      fields.forEach(f => { values[f.id] = document.getElementById(`modal_${f.id}`).value; });
+      await onSubmit(values);
+      modal.classList.add('hidden');
+    };
+    submitBtn.onclick = newSubmit;
+    cancelBtn.onclick = () => modal.classList.add('hidden');
+  }
+
+  // Load data
+  async function loadData() {
+    // Transactions
+    onSnapshot(query(collection(db, "transactions"), orderBy("createdAt", "desc")), (snap) => {
+      allTransactions = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      renderTransactions();
+      updateCharts();
+    });
+    // Merchants
+    onSnapshot(collection(db, "merchants"), (snap) => {
+      allMerchants = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      document.getElementById('merchantCount').innerText = allMerchants.length;
+      renderMerchants();
+    });
+    // Users
+    onSnapshot(collection(db, "users"), (snap) => {
+      allUsers = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      document.getElementById('userCount').innerText = allUsers.length;
+      renderUsers();
+    });
+    // Blogs
+    onSnapshot(query(collection(db, "blogs"), orderBy("createdAt", "desc")), (snap) => {
+      allBlogs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      renderBlogs();
+    });
+  }
+
+  function renderTransactions() {
+    const tbody = document.getElementById('txTableBody');
+    tbody.innerHTML = '';
+    let totalPaid = 0, pending = 0;
+    allTransactions.forEach(tx => {
+      const amt = tx.amount || 0;
+      if (tx.status === 'completed') totalPaid += amt;
+      else pending++;
+      tbody.innerHTML += `<tr class="border-b"><td class="p-2">${tx.id.slice(0,6)}</td><td class="p-2">${tx.customer || '-'}</td><td class="p-2">KES ${amt}</td><td class="p-2">${tx.method || '-'}</td><td class="p-2"><span class="px-2 py-1 rounded text-xs ${tx.status === 'completed' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}">${tx.status || 'pending'}</span></td><td class="p-2">${tx.merchantPhone || '-'}</td><td class="p-2">${tx.createdAt?.toDate().toLocaleString() || '-'}</td><td class="p-2"><button class="updateTxStatus bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs" data-id="${tx.id}" data-status="${tx.status}">Mark Completed</button></td></tr>`;
+    });
+    document.getElementById('totalPaid').innerText = totalPaid.toLocaleString();
+    document.getElementById('pendingCount').innerText = pending;
+    // attach status update handlers
+    document.querySelectorAll('.updateTxStatus').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const id = btn.getAttribute('data-id');
+        await updateDoc(doc(db, 'transactions', id), { status: 'completed' });
+        showToast('Transaction marked completed');
+      });
+    });
+  }
+
+  function renderMerchants() {
+    const tbody = document.getElementById('merchantTableBody');
+    tbody.innerHTML = '';
+    allMerchants.forEach(m => {
+      tbody.innerHTML += `<tr class="border-b"><td class="p-2">${m.businessName || '-'}</td><td class="p-2">${m.phone || '-'}</td><td class="p-2">${m.code || '-'}</td><td class="p-2"><span class="px-2 py-1 rounded text-xs ${m.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">${m.status || 'active'}</span></td><td class="p-2">${m.createdAt?.toDate().toLocaleDateString() || '-'}</td><td class="p-2"><button class="editMerchant bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs mr-1" data-id="${m.id}" data-name="${m.businessName}" data-phone="${m.phone}" data-code="${m.code}" data-status="${m.status}">Edit</button><button class="deleteMerchant bg-red-100 text-red-700 px-2 py-1 rounded text-xs" data-id="${m.id}">Delete</button></td></tr>`;
+    });
+    attachMerchantActions();
+  }
+
+  function attachMerchantActions() {
+    document.querySelectorAll('.editMerchant').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id');
+        const name = btn.getAttribute('data-name');
+        const phone = btn.getAttribute('data-phone');
+        const code = btn.getAttribute('data-code');
+        const status = btn.getAttribute('data-status');
+        showModal('Edit Merchant', [
+          { id: 'businessName', label: 'Business Name', value: name },
+          { id: 'phone', label: 'Phone', value: phone },
+          { id: 'code', label: 'Member Code', value: code },
+          { id: 'status', label: 'Status', value: status }
+        ], async (vals) => {
+          await updateDoc(doc(db, 'merchants', id), { businessName: vals.businessName, phone: vals.phone, code: vals.code, status: vals.status });
+          showToast('Merchant updated');
+        });
+      });
+    });
+    document.querySelectorAll('.deleteMerchant').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        if (confirm('Delete this merchant?')) {
+          await deleteDoc(doc(db, 'merchants', btn.getAttribute('data-id')));
+          showToast('Merchant deleted');
+        }
+      });
+    });
+  }
+
+  function renderUsers() {
+    const tbody = document.getElementById('userTableBody');
+    tbody.innerHTML = '';
+    allUsers.forEach(u => {
+      tbody.innerHTML += `<tr class="border-b"><td class="p-2">${u.fullName || u.name || '-'}</td><td class="p-2">${u.phone || '-'}</td><td class="p-2">${u.memberCode || '-'}</td><td class="p-2"><span class="px-2 py-1 rounded text-xs ${u.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">${u.status || 'active'}</span></td><td class="p-2">${u.createdAt?.toDate().toLocaleDateString() || '-'}</td><td class="p-2"><button class="editUser bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs mr-1" data-id="${u.id}" data-name="${u.fullName || u.name}" data-phone="${u.phone}" data-code="${u.memberCode}" data-status="${u.status}">Edit</button><button class="deleteUser bg-red-100 text-red-700 px-2 py-1 rounded text-xs" data-id="${u.id}">Delete</button></td></tr>`;
+    });
+    attachUserActions();
+  }
+
+  function attachUserActions() {
+    document.querySelectorAll('.editUser').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id');
+        const name = btn.getAttribute('data-name');
+        const phone = btn.getAttribute('data-phone');
+        const code = btn.getAttribute('data-code');
+        const status = btn.getAttribute('data-status');
+        showModal('Edit User', [
+          { id: 'fullName', label: 'Full Name', value: name },
+          { id: 'phone', label: 'Phone', value: phone },
+          { id: 'memberCode', label: 'Member Code', value: code },
+          { id: 'status', label: 'Status', value: status }
+        ], async (vals) => {
+          await updateDoc(doc(db, 'users', id), { fullName: vals.fullName, phone: vals.phone, memberCode: vals.memberCode, status: vals.status });
+          showToast('User updated');
+        });
+      });
+    });
+    document.querySelectorAll('.deleteUser').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        if (confirm('Delete this user?')) {
+          await deleteDoc(doc(db, 'users', btn.getAttribute('data-id')));
+          showToast('User deleted');
+        }
+      });
+    });
+  }
+
+  function renderBlogs() {
+    const tbody = document.getElementById('blogTableBody');
+    tbody.innerHTML = '';
+    allBlogs.forEach(b => {
+      tbody.innerHTML += `<tr class="border-b"><td class="p-2">${b.title || '-'}</td><td class="p-2">${b.slug || '-'}</td><td class="p-2">${b.createdAt?.toDate().toLocaleDateString() || '-'}</td><td class="p-2"><button class="editBlog bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs mr-1" data-id="${b.id}" data-title="${b.title}" data-slug="${b.slug}" data-content="${b.content.replace(/"/g, '&quot;')}">Edit</button><button class="deleteBlog bg-red-100 text-red-700 px-2 py-1 rounded text-xs" data-id="${b.id}">Delete</button></td></tr>`;
+    });
+    attachBlogActions();
+  }
+
+  function attachBlogActions() {
+    document.querySelectorAll('.editBlog').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id');
+        const title = btn.getAttribute('data-title');
+        const slug = btn.getAttribute('data-slug');
+        const content = btn.getAttribute('data-content');
+        showModal('Edit Blog', [
+          { id: 'title', label: 'Title', value: title },
+          { id: 'slug', label: 'Slug', value: slug },
+          { id: 'content', label: 'Content (HTML)', value: content }
+        ], async (vals) => {
+          await updateDoc(doc(db, 'blogs', id), { title: vals.title, slug: vals.slug, content: vals.content, updatedAt: serverTimestamp() });
+          showToast('Blog updated');
+        });
+      });
+    });
+    document.querySelectorAll('.deleteBlog').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        if (confirm('Delete this blog post?')) {
+          await deleteDoc(doc(db, 'blogs', btn.getAttribute('data-id')));
+          showToast('Blog deleted');
+        }
+      });
+    });
+  }
+
+  // Add handlers for add buttons
+  document.getElementById('addMerchantBtn')?.addEventListener('click', () => {
+    showModal('Add Merchant', [
+      { id: 'businessName', label: 'Business Name' },
+      { id: 'phone', label: 'Phone' }
+    ], async (vals) => {
+      const code = generateMemberCode(vals.businessName);
+      await addDoc(collection(db, 'merchants'), {
+        businessName: vals.businessName,
+        phone: vals.phone,
+        code: code,
+        status: 'active',
+        createdAt: serverTimestamp()
+      });
+      showToast('Merchant added with code: ' + code);
+    });
+  });
+  document.getElementById('addUserBtn')?.addEventListener('click', () => {
+    showModal('Add User', [
+      { id: 'fullName', label: 'Full Name' },
+      { id: 'phone', label: 'Phone' }
+    ], async (vals) => {
+      const code = generateMemberCode(vals.fullName);
+      await addDoc(collection(db, 'users'), {
+        fullName: vals.fullName,
+        phone: vals.phone,
+        memberCode: code,
+        status: 'active',
+        createdAt: serverTimestamp()
+      });
+      showToast('User added with code: ' + code);
+    });
+  });
+  document.getElementById('addBlogBtn')?.addEventListener('click', () => {
+    showModal('Add Blog', [
+      { id: 'title', label: 'Title' },
+      { id: 'slug', label: 'Slug' },
+      { id: 'content', label: 'Content (HTML)' }
+    ], async (vals) => {
+      await addDoc(collection(db, 'blogs'), {
+        title: vals.title,
+        slug: vals.slug,
+        content: vals.content,
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp()
+      });
+      showToast('Blog added');
+    });
+  });
+
+  // Export CSV for transactions
+  document.getElementById('exportTxBtn')?.addEventListener('click', () => {
+    const rows = [['ID','Customer','Amount','Method','Status','Merchant Phone','Date']];
+    allTransactions.forEach(tx => {
+      rows.push([tx.id, tx.customer || '', tx.amount || 0, tx.method || '', tx.status || '', tx.merchantPhone || '', tx.createdAt?.toDate().toLocaleString() || '']);
+    });
+    const csv = rows.map(r => r.join(',')).join('\n');
+    const blob = new Blob([csv], {type: 'text/csv'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'transactions.csv';
+    a.click();
+  });
+
+  // Tab switching
+  const tabs = document.querySelectorAll('.tab-btn');
+  const panes = document.querySelectorAll('.tab-pane');
+  tabs.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tabId = btn.getAttribute('data-tab');
+      panes.forEach(pane => pane.classList.add('hidden'));
+      document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+      tabs.forEach(b => b.classList.remove('text-green-600', 'border-b-2', 'border-green-600'));
+      btn.classList.add('text-green-600', 'border-b-2', 'border-green-600');
+    });
+  });
+
+  // Charts (simplified)
+  let weeklyChart, monthlyChart;
+  function updateCharts() {
+    const now = new Date();
+    const paid = allTransactions.filter(t => t.status === 'completed');
+    // weekly
+    const weekLabels = [], weekData = Array(7).fill(0);
+    for (let i=6; i>=0; i--) { let d = new Date(); d.setDate(now.getDate()-i); weekLabels.push(d.toLocaleDateString('en-KE', {weekday:'short', day:'numeric'})); }
+    paid.forEach(t => { let d = t.createdAt?.toDate(); if(d) { let diff = Math.floor((now-d)/(24*3600*1000)); if(diff>=0 && diff<7) weekData[6-diff] += (t.amount||0); } });
+    // monthly
+    const daysInMonth = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
+    const monthLabels = Array.from({length: daysInMonth}, (_,i)=>i+1);
+    const monthData = Array(daysInMonth).fill(0);
+    paid.forEach(t => { let d = t.createdAt?.toDate(); if(d && d.getMonth()===now.getMonth()) monthData[d.getDate()-1] += (t.amount||0); });
+    if (weeklyChart) weeklyChart.destroy();
+    weeklyChart = new Chart(document.getElementById('weeklyChart'), { type:'bar', data:{ labels:weekLabels, datasets:[{ label:'KES Paid', data:weekData, backgroundColor:'rgba(22,163,74,0.6)' }] } });
+    if (monthlyChart) monthlyChart.destroy();
+    monthlyChart = new Chart(document.getElementById('monthlyChart'), { type:'line', data:{ labels:monthLabels, datasets:[{ label:'KES Paid', data:monthData, borderColor:'#16a34a', fill:false }] } });
+  }
+
+  // Authentication check
+  function checkAdmin() {
+    if (window.currentUser && window.currentUser.email === adminEmail) {
+      document.getElementById('adminContent').classList.remove('hidden');
+      document.getElementById('loginRequired').classList.add('hidden');
+      loadData();
+    } else {
+      document.getElementById('adminContent').classList.add('hidden');
+      document.getElementById('loginRequired').classList.remove('hidden');
+    }
+  }
+  window.addEventListener('authStateChanged', checkAdmin);
+  const authInterval = setInterval(() => {
+    if (window.currentUser !== undefined) { clearInterval(authInterval); checkAdmin(); }
+  }, 100);
+  document.getElementById('showLoginBtn')?.addEventListener('click', () => window.showLoginModal());
+  document.getElementById('navLogoutBtn')?.addEventListener('click', () => window.logoutUser());
+</script>
+</body>
+</html>

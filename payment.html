@@ -39,27 +39,13 @@
   </div>
 </header>
 
-<!-- Login Overlay (Email/Password) -->
-<div id="loginOverlay" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-  <div class="bg-white rounded-xl p-6 max-w-md w-full">
-    <h2 class="text-xl font-bold mb-4">Admin Login</h2>
-    <input type="email" id="loginEmail" placeholder="Email" class="w-full border p-2 rounded mb-3">
-    <input type="password" id="loginPassword" placeholder="Password" class="w-full border p-2 rounded mb-3">
-    <button id="loginBtn" class="bg-green-600 text-white w-full py-2 rounded">Login</button>
-    <div id="loginError" class="text-red-500 text-sm mt-2 text-center"></div>
-    <p class="text-xs text-gray-500 text-center mt-3">Demo credentials: davidochieng99@gmail.com / your password</p>
-  </div>
-</div>
-
 <main class="max-w-4xl mx-auto px-4 py-8">
-  <!-- Hero -->
   <div class="bg-gradient-to-r from-green-700 to-green-500 text-white p-6 rounded-2xl shadow-lg mb-8 text-center">
     <h1 class="text-3xl md:text-4xl font-bold mb-2">Complete Your Payment</h1>
     <p class="text-lg">Pay with M-Pesa or credit/debit card. <strong>New? Register & pay in one step – get your Member Code instantly.</strong></p>
     <div class="mt-3 text-sm">Offline registration: <span class="font-mono font-bold">0140933042</span> (voice or SMS)</div>
   </div>
 
-  <!-- Two payment options as tabs or cards -->
   <div class="flex flex-wrap gap-2 mb-6 border-b">
     <button id="tabQuickPay" class="tab-btn px-4 py-2 font-semibold text-gray-600 hover:text-green-600 border-b-2 border-transparent">Quick Pay (I have a Member Code)</button>
     <button id="tabRegisterPay" class="tab-btn px-4 py-2 font-semibold text-gray-600 hover:text-green-600 border-b-2 border-transparent">Register & Pay (New user)</button>
@@ -80,7 +66,7 @@
     </div>
   </div>
 
-  <!-- Register & Pay Section (full form) -->
+  <!-- Register & Pay Section -->
   <div id="registerPaySection" class="hidden bg-white rounded-2xl shadow-xl p-6">
     <h2 class="text-2xl font-bold text-center text-green-700 mb-2">Register & Pay in One Step</h2>
     <p class="text-center text-gray-600 text-sm mb-6">Enter your details, complete payment, and get your permanent WhaPay Member Code and QR code – <strong>no separate registration needed</strong>.</p>
@@ -113,10 +99,10 @@
 <a href="https://wa.me/254710346425?text=Hello%20WhaPay%20Payment" target="_blank" class="fixed bottom-5 right-5 bg-green-500 text-white p-3 rounded-full shadow-lg hover:bg-green-600 z-50"><i class="fab fa-whatsapp text-2xl"></i></a>
 
 <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+<script type="module" src="/auth.js"></script>
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
   import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-  import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyDPAvq6BgpdfZAkfoEwdwmHrWedHgzjRSk",
@@ -128,39 +114,28 @@
   };
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
-  const auth = getAuth(app);
 
-  // Authentication
-  const loginOverlay = document.getElementById('loginOverlay');
+  // Auth UI (from auth.js)
   const userEmailDisplay = document.getElementById('userEmailDisplay');
   const logoutBtn = document.getElementById('logoutBtn');
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      userEmailDisplay.innerText = user.email;
+  function updateAuthUI() {
+    if (window.currentUser) {
+      userEmailDisplay.innerText = window.currentUser.email;
       userEmailDisplay.classList.remove('hidden');
       logoutBtn.classList.remove('hidden');
-      loginOverlay.classList.add('hidden');
     } else {
       userEmailDisplay.classList.add('hidden');
       logoutBtn.classList.add('hidden');
-      loginOverlay.classList.remove('hidden');
     }
-  });
-  document.getElementById('loginBtn').onclick = async () => {
-    const email = document.getElementById('loginEmail').value.trim();
-    const password = document.getElementById('loginPassword').value.trim();
-    const errorDiv = document.getElementById('loginError');
-    try { await signInWithEmailAndPassword(auth, email, password); errorDiv.innerText = ''; }
-    catch (err) { errorDiv.innerText = err.message; }
-  };
-  logoutBtn.onclick = async () => { await signOut(auth); };
+  }
+  setInterval(() => { if (window.currentUser !== undefined) updateAuthUI(); }, 200);
+  logoutBtn.onclick = () => window.logoutUser && window.logoutUser();
 
-  // ---- Shared helpers ----
   function validatePhone(phone) { const cleaned = phone.replace(/\D/g,''); return (cleaned.startsWith('0') && cleaned.length===10) || (cleaned.startsWith('254') && cleaned.length===12) || (cleaned.length===9 && cleaned.startsWith('7')); }
   function normalizePhone(phone) { let cleaned = phone.replace(/\D/g,''); if(cleaned.startsWith('0')) cleaned = '254' + cleaned.substring(1); if(!cleaned.startsWith('254')) cleaned = '254' + cleaned; return cleaned; }
   function showToast(msg, isErr = false) { let toast = document.getElementById('toast'); if(!toast){ toast = document.createElement('div'); toast.id = 'toast'; toast.className = 'fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-full text-sm z-50 hidden'; document.body.appendChild(toast); } toast.innerText = msg; toast.classList.remove('hidden'); setTimeout(()=>toast.classList.add('hidden'),4000); }
 
-  // ---- Tab switching ----
+  // Tab switching
   const quickSection = document.getElementById('quickPaySection');
   const regSection = document.getElementById('registerPaySection');
   const tabQuick = document.getElementById('tabQuickPay');
@@ -169,9 +144,9 @@
   function showReg() { quickSection.classList.add('hidden'); regSection.classList.remove('hidden'); tabReg.classList.add('border-green-600', 'text-green-600'); tabQuick.classList.remove('border-green-600', 'text-green-600'); }
   tabQuick.addEventListener('click', showQuick);
   tabReg.addEventListener('click', showReg);
-  showQuick(); // default
+  showQuick();
 
-  // ---- QR Scanner (shared logic for both sections) ----
+  // QR scanners
   let activeScanner = null;
   function initScanner(buttonId, readerId, targetInput) {
     const btn = document.getElementById(buttonId);
@@ -200,14 +175,13 @@
   initScanner('scanBtnQuick', 'qr-reader-quick', 'amount');
   initScanner('scanBtnRegister', 'qr-reader-register', 'osAmount');
 
-  // ---- Quick Pay Logic ----
+  // Quick Pay
   const payBtn = document.getElementById('payBtn');
   const merchantCodeInput = document.getElementById('merchantCode');
   const userNumberInput = document.getElementById('userNumber');
   const amountInput = document.getElementById('amount');
   const methodSelect = document.getElementById('method');
   const messageDiv = document.getElementById('message');
-
   payBtn.addEventListener('click', async () => {
     const merchantCode = merchantCodeInput.value.trim();
     const rawPhone = userNumberInput.value.trim();
@@ -232,7 +206,7 @@
           messageDiv.innerHTML = '<div class="bg-green-50 p-2 rounded text-green-800">✅ Check your phone for M-Pesa prompt.</div>';
         } else throw new Error(data.ResponseDescription || 'M-Pesa failed');
       } else if (method === 'card') {
-        const stripe = Stripe('pk_live_YOUR_STRIPE_PUBLISHABLE_KEY'); // replace
+        const stripe = Stripe('pk_live_YOUR_STRIPE_PUBLISHABLE_KEY');
         const resp = await fetch('https://your-region-whapay.cloudfunctions.net/createCheckoutSession', {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ amount, customerPhone: phone, merchantCode })
@@ -249,7 +223,7 @@
     }
   });
 
-  // ---- Register & Pay Logic ----
+  // Register & Pay
   const form = document.getElementById('oneStepForm');
   const nameInput = document.getElementById('osName');
   const phoneInput = document.getElementById('osPhone');
@@ -264,9 +238,7 @@
   const guestResultDiv = document.getElementById('osGuestResult');
   const memberCodeSpan = document.getElementById('osMemberCode');
   const qrCanvas = document.getElementById('osQRCanvas');
-
   registerCheck.addEventListener('change', () => { guestNote.classList.toggle('hidden', registerCheck.checked); });
-
   function generateMemberCode(name) {
     const prefix = name.replace(/[^a-zA-Z0-9]/g, '').substring(0,3).toUpperCase() || 'NEW';
     const random = Math.floor(10000 + Math.random() * 90000);
@@ -278,7 +250,6 @@
   async function saveTransaction(phone, amount, method, status = "completed", merchantCode = null) {
     await addDoc(collection(db, "transactions"), { customerPhone: phone, amount, method, status, merchantCode, createdAt: serverTimestamp() });
   }
-
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const name = nameInput.value.trim();

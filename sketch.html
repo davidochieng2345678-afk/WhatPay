@@ -185,3 +185,159 @@
       </div>
     </div>
   </div>
+  <!-- ==================== 5. REPORTS DASHBOARD WIREFRAME ==================== -->
+  <div class="bg-white rounded-2xl shadow-lg p-6 mb-10">
+    <h2 class="text-2xl font-bold mb-4 flex items-center"><i class="fas fa-chart-bar text-green-600 mr-2"></i> 5. Reports Dashboard Wireframe</h2>
+    <div class="grid md:grid-cols-2 gap-6">
+      <div>
+        <h3 class="font-bold mb-2">Summary Cards</h3>
+        <div class="wireframe-row">
+          <div class="wireframe-box flex-1">Total Completed<br>KES 0</div>
+          <div class="wireframe-box flex-1">Pending<br>0</div>
+          <div class="wireframe-box flex-1">This Week<br>KES 0</div>
+          <div class="wireframe-box flex-1">This Month<br>KES 0</div>
+        </div>
+        <div class="wireframe-box">Weekly Payments Chart (Bar)</div>
+        <div class="wireframe-box">Monthly Payments Chart (Line)</div>
+        <div class="wireframe-box">Payment Method Doughnut (M-Pesa vs Card)</div>
+        <div class="wireframe-box">Top Paying Customers (List)</div>
+      </div>
+      <div>
+        <h3 class="font-bold mb-2">Transactions Table with Filters</h3>
+        <div class="wireframe-box">Date Range: [Start] [End] [Filter] [Reset]</div>
+        <div class="wireframe-box">Export CSV button</div>
+        <div class="wireframe-box">Table: #, Customer, Amount, Method, Status, Date</div>
+        <div class="wireframe-box bg-yellow-50">Offline payments appear after SYNC command</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 6. FIRST-TIME PAY FLOW (REGISTER & PAY) ==================== -->
+  <div class="bg-white rounded-2xl shadow-lg p-6 mb-10">
+    <h2 class="text-2xl font-bold mb-4 flex items-center"><i class="fas fa-gem text-green-600 mr-2"></i> 6. First-Time Pay Flow (Register & Pay in One Step)</h2>
+    <div class="grid md:grid-cols-2 gap-6">
+      <div>
+        <h3 class="font-bold mb-2">Step-by-Step</h3>
+        <div class="space-y-2">
+          <div class="wireframe-box">User lands on <span class="font-mono">first-time-pay.html</span></div>
+          <div class="wireframe-box">Fills: Full Name, Phone, Amount, Payment Method</div>
+          <div class="wireframe-box">Clicks "Complete Registration & Payment"</div>
+          <div class="wireframe-box">Pays via M-Pesa or Card (real API)</div>
+          <div class="wireframe-box bg-green-50">✅ After success: system generates Member Code + QR</div>
+          <div class="wireframe-box">User receives WhatsApp with code & QR</div>
+          <div class="wireframe-box">User is redirected to merchant dashboard</div>
+        </div>
+      </div>
+      <div>
+        <h3 class="font-bold mb-2">Form Wireframe</h3>
+        <div class="bg-gray-50 p-3 rounded-lg">
+          <div class="wireframe-box bg-white">📛 Full Name: [______________]</div>
+          <div class="wireframe-box bg-white">📞 Phone: [______________]</div>
+          <div class="wireframe-box bg-white">💰 Amount (KES): [______________]</div>
+          <div class="wireframe-box bg-white">💳 Method: [M-Pesa ▼] or [Card ▼]</div>
+          <div class="wireframe-box bg-green-600 text-white">Complete Registration & Payment</div>
+        </div>
+        <div class="wireframe-box bg-green-50 mt-2">Result screen shows Member Code + QR code</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 7. OFFLINE REGISTRATION FLOW DIAGRAM ==================== -->
+  <div class="bg-white rounded-2xl shadow-lg p-6 mb-10">
+    <h2 class="text-2xl font-bold mb-4 flex items-center"><i class="fas fa-project-diagram text-green-600 mr-2"></i> 7. Offline Registration Flow Diagram</h2>
+    <div class="flex flex-wrap justify-center items-center gap-2 text-sm">
+      <div class="bg-gray-100 p-2 rounded-lg text-center">User dials<br><strong class="font-mono">0140933042</strong></div>
+      <i class="fas fa-arrow-right text-green-600"></i>
+      <div class="bg-gray-100 p-2 rounded-lg text-center">Voicemail:<br>"Send SMS with REG YourName"</div>
+      <i class="fas fa-arrow-right text-green-600"></i>
+      <div class="bg-gray-100 p-2 rounded-lg text-center">User sends SMS:<br><span class="font-mono">REG John Doe</span></div>
+      <i class="fas fa-arrow-right text-green-600"></i>
+      <div class="bg-gray-100 p-2 rounded-lg text-center">System replies:<br>Temporary code (e.g., TMP5821)</div>
+      <i class="fas fa-arrow-right text-green-600"></i>
+      <div class="bg-gray-100 p-2 rounded-lg text-center">User goes online → WhatsApp:<br><span class="font-mono">ACTIVATE TMP5821</span></div>
+      <i class="fas fa-arrow-right text-green-600"></i>
+      <div class="bg-green-100 p-2 rounded-lg text-center">✅ Receives permanent<br>Member Code + QR</div>
+    </div>
+  </div>
+
+  <!-- ==================== 8. END-TO-END FLOW (USER JOURNEY) ==================== -->
+  <div class="bg-white rounded-2xl shadow-lg p-6 mb-10">
+    <h2 class="text-2xl font-bold mb-4 flex items-center"><i class="fas fa-road text-green-600 mr-2"></i> 8. End-to-End User Journey (Merchant & Customer)</h2>
+    <div class="grid md:grid-cols-2 gap-8">
+      <div>
+        <h3 class="font-bold text-lg mb-2">Merchant Journey</h3>
+        <div class="space-y-1">
+          <div class="wireframe-box">1. Registers via WhatsApp, voice (0140933042), or SMS</div>
+          <div class="wireframe-box">2. Receives Member Code & QR code</div>
+          <div class="wireframe-box">3. Displays QR at shop / shares WhatsApp link</div>
+          <div class="wireframe-box">4. Customer pays (online or offline)</div>
+          <div class="wireframe-box">5. Merchant receives SMS/WhatsApp confirmation</div>
+          <div class="wireframe-box">6. Views live dashboard, reports, exports CSV</div>
+        </div>
+      </div>
+      <div>
+        <h3 class="font-bold text-lg mb-2">Customer Journey</h3>
+        <div class="space-y-1">
+          <div class="wireframe-box">1. Receives merchant's QR or Member Code</div>
+          <div class="wireframe-box">2. If online: scans QR or clicks WhatsApp link → pays with card/M-Pesa</div>
+          <div class="wireframe-box">3. If offline: opens M-Pesa → Paybill → enters merchant's Member Code → pays</div>
+          <div class="wireframe-box">4. Receives SMS confirmation</div>
+          <div class="wireframe-box">5. Can optionally register as a user via first-time pay</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 9. ADMIN CRUD FLOW ==================== -->
+  <div class="bg-white rounded-2xl shadow-lg p-6 mb-10">
+    <h2 class="text-2xl font-bold mb-4 flex items-center"><i class="fas fa-database text-green-600 mr-2"></i> 9. Admin CRUD Operations Flow</h2>
+    <div class="grid md:grid-cols-3 gap-4 text-center">
+      <div class="wireframe-card">
+        <i class="fas fa-store text-2xl text-blue-600"></i>
+        <h3 class="font-bold">Merchants</h3>
+        <div class="text-sm">List → Add (auto‑generate code) → Edit → Delete</div>
+        <div class="text-xs text-gray-500">Modal forms for Add/Edit</div>
+      </div>
+      <div class="wireframe-card">
+        <i class="fas fa-users text-2xl text-blue-600"></i>
+        <h3 class="font-bold">Users</h3>
+        <div class="text-sm">List → Add (auto‑generate code) → Edit → Delete</div>
+        <div class="text-xs text-gray-500">Same modal pattern</div>
+      </div>
+      <div class="wireframe-card">
+        <i class="fas fa-newspaper text-2xl text-blue-600"></i>
+        <h3 class="font-bold">Blogs</h3>
+        <div class="text-sm">List → Add (title, slug, HTML content) → Edit → Delete</div>
+        <div class="text-xs text-gray-500">Rich text allowed</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 10. RESPONSIVE LAYOUT NOTES ==================== -->
+  <div class="bg-white rounded-2xl shadow-lg p-6">
+    <h2 class="text-2xl font-bold mb-4 flex items-center"><i class="fas fa-mobile-alt text-green-600 mr-2"></i> 10. Responsive Design Notes</h2>
+    <ul class="list-disc pl-6 space-y-1 text-gray-700">
+      <li>Tailwind CSS breakpoints: mobile (default), md: (768px), lg: (1024px)</li>
+      <li>Tables scroll horizontally on mobile (<code class="bg-gray-100 px-1">overflow-x-auto</code>)</li>
+      <li>Navigation collapses to wrap on small screens</li>
+      <li>Forms and cards are full-width on mobile, grid on desktop</li>
+      <li>Floating WhatsApp button fixed on bottom-right, scales down on mobile</li>
+      <li>All interactive elements have hover states and touch-friendly tap targets (min 44px)</li>
+    </ul>
+  </div>
+</main>
+
+<footer class="bg-gray-900 text-gray-300 pt-8 pb-4 text-center text-sm mt-8">
+  <p>© 2026 WhaPay – <strong>Offline registration: call <span class="font-mono">0140933042</span> (voicemail) or SMS to same number</strong> | WhatsApp: <strong>+254710346425</strong></p>
+  <div class="mt-2 space-x-4"><a href="privacy.html" class="hover:text-green-400">Privacy Policy</a> | <a href="terms.html" class="hover:text-green-400">Terms of Service</a> | <a href="contact.html" class="hover:text-green-400">Contact</a></div>
+</footer>
+
+<a href="https://wa.me/254710346425?text=Hello%20WhaPay" target="_blank" class="fixed bottom-5 right-5 bg-green-500 text-white p-3 rounded-full shadow-lg hover:bg-green-600 z-50"><i class="fab fa-whatsapp text-2xl"></i></a>
+
+<script type="module" src="/auth.js"></script>
+<script type="module">
+  document.getElementById('navLoginBtn')?.addEventListener('click', () => window.showLoginModal());
+  document.getElementById('navLogoutBtn')?.addEventListener('click', () => window.logoutUser());
+</script>
+</body>
+</html>

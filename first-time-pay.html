@@ -81,3 +81,81 @@
     </div>
   </div>
 </main>
+<footer class="bg-gray-900 text-gray-300 pt-8 pb-4 text-center text-sm">
+  <p>© 2026 WhaPay – <strong>Offline registration: call <span class="font-mono">0140933042</span> (voicemail) or SMS to same number</strong> | WhatsApp: <strong>+254710346425</strong></p>
+  <div class="mt-2 space-x-4"><a href="privacy.html" class="hover:text-green-400">Privacy Policy</a> | <a href="terms.html" class="hover:text-green-400">Terms of Service</a> | <a href="contact.html" class="hover:text-green-400">Contact</a></div>
+</footer>
+
+<a href="https://wa.me/254710346425?text=Hello%20WhaPay" target="_blank" class="fixed bottom-5 right-5 bg-green-500 text-white p-3 rounded-full shadow-lg hover:bg-green-600 z-50"><i class="fab fa-whatsapp text-2xl"></i></a>
+
+<script type="module" src="/auth.js"></script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  const firebaseConfig = {
+    apiKey: "AIzaSyDPAvq6BgpdfZAkfoEwdwmHrWedHgzjRSk",
+    authDomain: "whapay-c93ab.firebaseapp.com",
+    projectId: "whapay-c93ab",
+    storageBucket: "whapay-c93ab.firebasestorage.app",
+    messagingSenderId: "205456952458",
+    appId: "1:205456952458:web:6533921ca10a2988417173"
+  };
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  window.db = db;
+  document.getElementById('navLoginBtn')?.addEventListener('click', () => window.showLoginModal());
+  document.getElementById('navLogoutBtn')?.addEventListener('click', () => window.logoutUser());
+
+  const form = document.getElementById('registerPayForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const errorDiv = document.getElementById('errorMsg');
+  const resultDiv = document.getElementById('result');
+  const memberCodeSpan = document.getElementById('memberCodeDisplay');
+  const qrDiv = document.getElementById('qrCanvas');
+
+  function generateMemberCode(name) {
+    const prefix = name.replace(/[^a-zA-Z0-9]/g, '').substring(0, 3).toUpperCase() || 'NEW';
+    const random = Math.floor(10000 + Math.random() * 90000);
+    return `${prefix}${random}`;
+  }
+
+  async function saveUser(name, phone, memberCode) {
+    try {
+      await addDoc(collection(db, "users"), { fullName: name, phone, memberCode, status: "active", createdAt: serverTimestamp() });
+      return true;
+    } catch(e) { return false; }
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = document.getElementById('name').value.trim();
+    let phoneRaw = document.getElementById('phone').value.trim();
+    const amount = parseInt(document.getElementById('amount').value);
+    const method = document.getElementById('method').value;
+    if (!name || !phoneRaw || !amount) { errorDiv.innerText = 'All fields required'; return; }
+    let phone = phoneRaw.replace(/\D/g,'');
+    if (phone.startsWith('0')) phone = '254' + phone.substring(1);
+    if (!phone.startsWith('254')) phone = '254' + phone;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="spinner"></span> Processing payment...';
+    errorDiv.innerText = '';
+    try {
+      // Simulate payment – replace with real API calls
+      await new Promise(r => setTimeout(r, 2000));
+      const memberCode = generateMemberCode(name);
+      await saveUser(name, phone, memberCode);
+      QRCode.toCanvas(qrDiv, `https://whapay.space/pay.html?merchant=${memberCode}`, { width: 150 }, (err) => { if (err) console.error(err); });
+      memberCodeSpan.innerText = memberCode;
+      resultDiv.classList.remove('hidden');
+      form.classList.add('hidden');
+      const waMsg = `🎉 Welcome to WhaPay!\n\nYour Member Code: ${memberCode}\nPayment link: https://whapay.space/pay.html?merchant=${memberCode}\nUse this code to receive payments or pay others, even without internet.`;
+      window.open(`https://wa.me/${phone}?text=${encodeURIComponent(waMsg)}`, '_blank');
+    } catch (err) {
+      errorDiv.innerText = err.message;
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = 'Complete Registration & Payment';
+    }
+  });
+</script>
+</body>
+</html>

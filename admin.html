@@ -2,399 +2,97 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WhaPay Admin Dashboard – Live Data & Management</title>
-<meta name="description" content="Admin dashboard for WhaPay. Real‑time payments, user management, blog posts, and analytics.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Admin Dashboard – WhaPay | Full Management</title>
+<meta name="description" content="Complete admin dashboard for WhaPay. Manage merchants, users, transactions, and blog posts. Add, edit, delete, and view real-time data.">
 <meta name="robots" content="noindex, nofollow">
-
-<!-- Tailwind CSS + Chart.js + Font Awesome -->
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
-<!-- Firebase SDKs (modular) -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { 
-    getFirestore, collection, onSnapshot, addDoc, updateDoc, deleteDoc, doc, 
-    query, orderBy, serverTimestamp, where, getDocs 
-  } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-  // Firebase config (same as other pages)
-  const firebaseConfig = {
-    apiKey: "AIzaSyDPAvq6BgpdfZAkfoEwdwmHrWedHgzjRSk",
-    authDomain: "whapay-c93ab.firebaseapp.com",
-    projectId: "whapay-c93ab",
-    storageBucket: "whapay-c93ab.firebasestorage.app",
-    messagingSenderId: "205456952458",
-    appId: "1:205456952458:web:6533921ca10a2988417173"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  window.db = db;
-
-  // Toast helper
-  window.showToast = function(msg, isError = false) {
-    let toast = document.getElementById('toast-msg');
-    if (!toast) {
-      toast = document.createElement('div');
-      toast.id = 'toast-msg';
-      toast.className = 'fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white px-5 py-2 rounded-full text-sm z-50 hidden';
-      document.body.appendChild(toast);
-    }
-    toast.innerText = msg;
-    toast.classList.remove('hidden');
-    setTimeout(() => toast.classList.add('hidden'), 4000);
-  };
-
-  // Expose CRUD for blogs, user status updates
-  window.addBlog = async (title, slug, content) => {
-    try {
-      await addDoc(collection(db, "blogs"), { title, slug, content, createdAt: serverTimestamp(), updatedAt: serverTimestamp() });
-      showToast("Blog post added successfully");
-      return true;
-    } catch (e) { showToast("Error adding blog: " + e.message, true); return false; }
-  };
-
-  window.updateBlog = async (id, title, slug, content) => {
-    try {
-      await updateDoc(doc(db, "blogs", id), { title, slug, content, updatedAt: serverTimestamp() });
-      showToast("Blog updated");
-      return true;
-    } catch (e) { showToast("Error updating blog", true); return false; }
-  };
-
-  window.deleteBlog = async (id) => {
-    if (!confirm("Delete this blog post?")) return;
-    try {
-      await deleteDoc(doc(db, "blogs", id));
-      showToast("Blog deleted");
-    } catch (e) { showToast("Error deleting blog", true); }
-  };
-
-  window.updateUserStatus = async (userId, newStatus) => {
-    try {
-      await updateDoc(doc(db, "users", userId), { status: newStatus });
-      showToast(`User ${userId} status changed to ${newStatus}`);
-    } catch (e) { showToast("Error updating user status", true); }
-  };
-
-  window.updateMerchantStatus = async (merchantId, newStatus) => {
-    try {
-      await updateDoc(doc(db, "merchants", merchantId), { status: newStatus });
-      showToast(`Merchant ${merchantId} status changed to ${newStatus}`);
-    } catch (e) { showToast("Error updating merchant status", true); }
-  };
-</script>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#16a34a">
+<script>if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js');}</script>
+<style>
+  .modal { transition: opacity 0.2s; }
+  .admin-card:hover { transform: translateY(-2px); transition: 0.2s; }
+</style>
 </head>
 <body class="bg-gray-100 font-sans">
 
-<!-- Header (consistent with all pages) -->
 <header class="bg-green-600 text-white p-4 shadow-md sticky top-0 z-50">
-  <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:justify-between items-center">
-    <h1 class="text-2xl font-bold mb-2 md:mb-0"><a href="index.html">WhaPay Admin</a></h1>
-    <nav class="flex flex-wrap justify-center gap-2 md:gap-4">
-      <a href="index.html" class="hover:underline">Home</a>
-      <a href="about.html" class="hover:underline">About</a>
-      <a href="features.html" class="hover:underline">Features</a>
-      <a href="pricing.html" class="hover:underline">Pricing</a>
-      <a href="merchant.html" class="hover:underline">Merchant</a>
-      <a href="payment.html" class="hover:underline">Payment</a>
-      <a href="reports.html" class="hover:underline">Reports</a>
-      <a href="blog.html" class="hover:underline">Blog</a>
-      <a href="contact.html" class="hover:underline">Contact</a>
-      <a href="admin.html" class="hover:underline font-bold text-green-200">Admin</a>
-    </nav>
+  <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
+    <h1 class="text-2xl font-bold">WhaPay Admin</h1>
+    <div class="flex flex-wrap items-center gap-2 md:gap-4">
+      <nav class="flex flex-wrap gap-2">
+        <a href="index.html" class="hover:underline">Home</a>
+        <a href="merchant.html" class="hover:underline">Merchant</a>
+        <a href="payment.html" class="hover:underline">Payments</a>
+        <a href="reports.html" class="hover:underline">Reports</a>
+        <a href="contact.html" class="hover:underline">Contact</a>
+        <a href="admin.html" class="hover:underline font-bold text-green-200">Admin</a>
+      </nav>
+      <div class="flex items-center gap-2">
+        <span id="navUserDisplay" class="text-sm hidden md:inline"></span>
+        <button id="navLogoutBtn" class="bg-red-500 text-white px-3 py-1 rounded text-sm font-semibold hover:bg-red-600 hidden">Logout</button>
+      </div>
+    </div>
   </div>
 </header>
 
-<main class="max-w-7xl mx-auto px-4 py-6">
+<main class="max-w-7xl mx-auto px-4 py-8">
+  <div id="adminContent" class="hidden">
+    <!-- Summary Cards -->
+    <div class="grid md:grid-cols-4 gap-4 mb-6">
+      <div class="bg-white rounded-xl shadow p-4 text-center admin-card"><h3 class="text-gray-500">Total Paid (KES)</h3><p id="totalPaid" class="text-2xl font-bold text-green-700">0</p></div>
+      <div class="bg-white rounded-xl shadow p-4 text-center admin-card"><h3 class="text-gray-500">Pending</h3><p id="pendingCount" class="text-2xl font-bold text-yellow-700">0</p></div>
+      <div class="bg-white rounded-xl shadow p-4 text-center admin-card"><h3 class="text-gray-500">Merchants</h3><p id="merchantCount" class="text-2xl font-bold text-blue-700">0</p></div>
+      <div class="bg-white rounded-xl shadow p-4 text-center admin-card"><h3 class="text-gray-500">Users</h3><p id="userCount" class="text-2xl font-bold text-purple-700">0</p></div>
+    </div>
 
-  <!-- Summary Cards (real-time from transactions) -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-    <div class="bg-white shadow rounded p-4 text-center"><p class="text-gray-500">Total Paid (KES)</p><h2 id="totalPaid" class="text-2xl font-bold">0</h2></div>
-    <div class="bg-white shadow rounded p-4 text-center"><p class="text-gray-500">Pending Transactions</p><h2 id="pendingCount" class="text-2xl font-bold">0</h2></div>
-    <div class="bg-white shadow rounded p-4 text-center"><p class="text-gray-500">Paid This Week</p><h2 id="weekPaid" class="text-2xl font-bold">0</h2></div>
-    <div class="bg-white shadow rounded p-4 text-center"><p class="text-gray-500">Paid This Month</p><h2 id="monthPaid" class="text-2xl font-bold">0</h2></div>
+    <!-- Charts -->
+    <div class="grid lg:grid-cols-2 gap-6 mb-6">
+      <div class="bg-white rounded-xl shadow p-4"><h2 class="text-xl font-bold mb-2">Weekly Payments</h2><canvas id="weeklyChart" height="200"></canvas></div>
+      <div class="bg-white rounded-xl shadow p-4"><h2 class="text-xl font-bold mb-2">Monthly Payments</h2><canvas id="monthlyChart" height="200"></canvas></div>
+    </div>
+
+    <!-- Tabs for Management -->
+    <div class="bg-white rounded-xl shadow mb-6">
+      <div class="flex border-b">
+        <button class="tab-btn px-4 py-2 font-semibold text-gray-600 hover:text-green-600" data-tab="transactions">Transactions</button>
+        <button class="tab-btn px-4 py-2 font-semibold text-gray-600 hover:text-green-600" data-tab="merchants">Merchants</button>
+        <button class="tab-btn px-4 py-2 font-semibold text-gray-600 hover:text-green-600" data-tab="users">Users</button>
+        <button class="tab-btn px-4 py-2 font-semibold text-gray-600 hover:text-green-600" data-tab="blogs">Blogs</button>
+      </div>
+      <div class="p-4">
+        <!-- Transactions Tab -->
+        <div id="tab-transactions" class="tab-pane active">
+          <div class="flex justify-between items-center mb-3"><h2 class="text-xl font-bold">All Transactions</h2><button id="exportTxBtn" class="bg-green-600 text-white px-3 py-1 rounded text-sm">Export CSV</button></div>
+          <div class="overflow-x-auto"><table class="min-w-full border text-sm"><thead class="bg-gray-100"><tr><th class="p-2 border">ID</th><th class="p-2 border">Customer</th><th class="p-2 border">Amount</th><th class="p-2 border">Method</th><th class="p-2 border">Status</th><th class="p-2 border">Merchant Phone</th><th class="p-2 border">Date</th><th class="p-2 border">Action</th></tr></thead><tbody id="txTableBody"></tbody></table></div>
+        </div>
+        <!-- Merchants Tab -->
+        <div id="tab-merchants" class="tab-pane hidden">
+          <div class="flex justify-between items-center mb-3"><h2 class="text-xl font-bold">Merchants</h2><button id="addMerchantBtn" class="bg-blue-600 text-white px-3 py-1 rounded text-sm"><i class="fas fa-plus"></i> Add Merchant</button></div>
+          <div class="overflow-x-auto"><table class="min-w-full border text-sm"><thead class="bg-gray-100"><tr><th class="p-2 border">Business Name</th><th class="p-2 border">Phone</th><th class="p-2 border">Member Code</th><th class="p-2 border">Status</th><th class="p-2 border">Created</th><th class="p-2 border">Actions</th></tr></thead><tbody id="merchantTableBody"></tbody></table></div>
+        </div>
+        <!-- Users Tab -->
+        <div id="tab-users" class="tab-pane hidden">
+          <div class="flex justify-between items-center mb-3"><h2 class="text-xl font-bold">Users</h2><button id="addUserBtn" class="bg-blue-600 text-white px-3 py-1 rounded text-sm"><i class="fas fa-plus"></i> Add User</button></div>
+          <div class="overflow-x-auto"><table class="min-w-full border text-sm"><thead class="bg-gray-100"><tr><th class="p-2 border">Name</th><th class="p-2 border">Phone</th><th class="p-2 border">Member Code</th><th class="p-2 border">Status</th><th class="p-2 border">Created</th><th class="p-2 border">Actions</th></tr></thead><tbody id="userTableBody"></tbody></table></div>
+        </div>
+        <!-- Blogs Tab -->
+        <div id="tab-blogs" class="tab-pane hidden">
+          <div class="flex justify-between items-center mb-3"><h2 class="text-xl font-bold">Blog Posts</h2><button id="addBlogBtn" class="bg-blue-600 text-white px-3 py-1 rounded text-sm"><i class="fas fa-plus"></i> Add Blog</button></div>
+          <div class="overflow-x-auto"><table class="min-w-full border text-sm"><thead class="bg-gray-100"><tr><th class="p-2 border">Title</th><th class="p-2 border">Slug</th><th class="p-2 border">Created</th><th class="p-2 border">Actions</th></tr></thead><tbody id="blogTableBody"></tbody></table></div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <!-- Charts -->
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-    <div class="bg-white shadow rounded p-4"><h2 class="text-xl font-bold mb-2">Weekly Payments (Last 7 Days)</h2><canvas id="weeklyChart" height="200"></canvas></div>
-    <div class="bg-white shadow rounded p-4"><h2 class="text-xl font-bold mb-2">Monthly Payments (Current Month)</h2><canvas id="monthlyChart" height="200"></canvas></div>
+  <!-- Login Required Overlay -->
+  <div id="loginRequired" class="text-center py-20">
+    <i class="fas fa-lock text-5xl text-gray-400 mb-4"></i>
+    <h2 class="text-2xl font-bold">Admin Access Only</h2>
+    <p class="text-gray-600">Please login with your admin credentials.</p>
+    <button id="showLoginBtn" class="mt-4 bg-green-600 text-white px-4 py-2 rounded">Login</button>
   </div>
-  <div class="bg-white shadow rounded p-4 mb-6"><h2 class="text-xl font-bold mb-2">Payment Method Breakdown</h2><canvas id="methodChart" height="150"></canvas></div>
-
-  <!-- Top Paying Customers -->
-  <div class="bg-white shadow rounded p-4 mb-6"><h2 class="text-xl font-bold mb-2">🏆 Top Paying Customers (All Time)</h2><ul id="topUsers" class="list-disc list-inside text-gray-700"></ul></div>
-
-  <!-- Transactions Table with Filter & Export -->
-  <div class="bg-white shadow rounded p-4 mb-6">
-    <div class="flex flex-wrap justify-between items-center mb-4 gap-2"><h2 class="text-xl font-bold">📋 All Transactions</h2><button id="exportTransactionsBtn" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm">Export CSV</button></div>
-    <div class="flex flex-wrap gap-2 mb-4"><input type="date" id="startDate" class="border px-3 py-2 rounded text-sm"><input type="date" id="endDate" class="border px-3 py-2 rounded text-sm"><button id="filterBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm">Filter</button><button id="resetFilterBtn" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded text-sm">Reset</button></div>
-    <div class="overflow-x-auto"><table class="min-w-full bg-white border"><thead class="bg-gray-100"><tr><th class="px-4 py-2 border">#</th><th class="px-4 py-2 border">Customer</th><th class="px-4 py-2 border">Amount (KES)</th><th class="px-4 py-2 border">Method</th><th class="px-4 py-2 border">Status</th><th class="px-4 py-2 border">Date</th></tr></thead><tbody id="transactionTableBody"></tbody></table></div>
-  </div>
-
-  <!-- User Management (Customers + Merchants) -->
-  <div class="bg-white shadow rounded p-4 mb-6">
-    <h2 class="text-xl font-bold mb-4">👥 User Management (Customers & Merchants)</h2>
-    <div class="flex flex-wrap gap-2 mb-4"><select id="userTypeFilter" class="border px-3 py-2 rounded text-sm"><option value="all">All Users</option><option value="user">Customers</option><option value="merchant">Merchants</option></select><input type="text" id="userSearch" placeholder="Search by name/phone" class="border px-3 py-2 rounded text-sm flex-1"><button id="exportUsersBtn" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm">Export CSV</button></div>
-    <div class="overflow-x-auto"><table class="min-w-full bg-white border"><thead class="bg-gray-100"><tr><th class="px-4 py-2 border">#</th><th class="px-4 py-2 border">Name / Business</th><th class="px-4 py-2 border">Phone</th><th class="px-4 py-2 border">Type</th><th class="px-4 py-2 border">Total Paid (KES)</th><th class="px-4 py-2 border">Status</th><th class="px-4 py-2 border">Actions</th></tr></thead><tbody id="userTableBody"></tbody></table></div>
-  </div>
-
-  <!-- Blog Management -->
-  <div class="bg-white shadow rounded p-4 mb-6">
-    <h2 class="text-xl font-bold mb-4">📝 Blog Management</h2>
-    <div class="grid md:grid-cols-3 gap-3 mb-4"><input type="text" id="blogTitle" placeholder="Title" class="border px-3 py-2 rounded"><input type="text" id="blogSlug" placeholder="Slug (unique, e.g., welcome-to-whapay)" class="border px-3 py-2 rounded"><textarea id="blogContent" placeholder="Content (HTML allowed)" rows="2" class="border px-3 py-2 rounded"></textarea><button id="addBlogBtn" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">+ Add Blog</button></div>
-    <div class="overflow-x-auto"><table class="min-w-full bg-white border"><thead class="bg-gray-100"><tr><th class="px-4 py-2 border">Title</th><th class="px-4 py-2 border">Slug</th><th class="px-4 py-2 border">Actions</th></tr></thead><tbody id="blogTableBody"></tbody></table></div>
-  </div>
-
-  <!-- Contact Messages -->
-  <div class="bg-white shadow rounded p-4 mb-6"><h2 class="text-xl font-bold mb-4">📬 Contact Messages</h2><div class="overflow-x-auto"><table class="min-w-full bg-white border"><thead class="bg-gray-100"><tr><th class="px-4 py-2 border">Name</th><th class="px-4 py-2 border">Email</th><th class="px-4 py-2 border">Message</th><th class="px-4 py-2 border">Date</th></tr></thead><tbody id="contactTableBody"></tbody></table></div></div>
 </main>
-
-<footer class="bg-gray-900 text-gray-300 pt-8 pb-4 mt-8 text-center text-sm">
-  <div class="max-w-7xl mx-auto px-6">
-    <p>© 2026 WhaPay Solutions – Admin Dashboard. Offline registration: voice call or SMS to <strong class="font-mono">+254705728896</strong> | WhatsApp: <strong>+254710346425</strong></p>
-  </div>
-</footer>
-
-<!-- Floating Admin Note (optional) -->
-<div class="fixed bottom-5 left-5 bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded shadow">Admin Mode</div>
-
-<script type="module">
-  import { collection, onSnapshot, doc, updateDoc, query, orderBy, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-  const db = window.db;
-  let allTransactions = [];
-  let allUsers = [];
-  let allMerchants = [];
-
-  // Helper: format date
-  function formatDate(timestamp) {
-    if (!timestamp) return "N/A";
-    const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
-    return date.toLocaleString("en-KE");
-  }
-
-  // --- Load Transactions ---
-  const qTx = query(collection(db, "transactions"), orderBy("createdAt", "desc"));
-  onSnapshot(qTx, (snap) => {
-    allTransactions = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    updateSummaryCards();
-    updateCharts();
-    updateTopUsers();
-    renderTransactionTable();
-  });
-
-  // --- Load Users & Merchants ---
-  onSnapshot(collection(db, "users"), (snap) => {
-    allUsers = snap.docs.map(doc => ({ id: doc.id, ...doc.data(), type: "user" }));
-    renderUserTable();
-  });
-  onSnapshot(collection(db, "merchants"), (snap) => {
-    allMerchants = snap.docs.map(doc => ({ id: doc.id, ...doc.data(), type: "merchant" }));
-    renderUserTable();
-  });
-
-  // --- Load Blogs ---
-  onSnapshot(query(collection(db, "blogs"), orderBy("createdAt", "desc")), (snap) => {
-    renderBlogTable(snap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
-  });
-
-  // --- Load Contact Messages ---
-  onSnapshot(query(collection(db, "contact_messages"), orderBy("createdAt", "desc")), (snap) => {
-    renderContactTable(snap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
-  });
-
-  // Summary Cards
-  function updateSummaryCards() {
-    const now = new Date();
-    const paid = allTransactions.filter(t => t.status === "paid");
-    const totalPaid = paid.reduce((s, t) => s + (t.amount || 0), 0);
-    const pending = allTransactions.filter(t => t.status !== "paid").length;
-    const weekPaid = paid.filter(t => {
-      const d = t.createdAt?.toDate ? t.createdAt.toDate() : new Date(t.createdAt);
-      return (now - d) <= 7*24*3600*1000;
-    }).reduce((s, t) => s + (t.amount || 0), 0);
-    const monthPaid = paid.filter(t => {
-      const d = t.createdAt?.toDate ? t.createdAt.toDate() : new Date(t.createdAt);
-      return d.getMonth() === now.getMonth();
-    }).reduce((s, t) => s + (t.amount || 0), 0);
-    document.getElementById("totalPaid").innerText = totalPaid.toLocaleString();
-    document.getElementById("pendingCount").innerText = pending;
-    document.getElementById("weekPaid").innerText = weekPaid.toLocaleString();
-    document.getElementById("monthPaid").innerText = monthPaid.toLocaleString();
-  }
-
-  // Charts
-  let weeklyChart, monthlyChart, methodChart;
-  function updateCharts() {
-    const now = new Date();
-    const paid = allTransactions.filter(t => t.status === "paid");
-    // Weekly
-    const weekLabels = []; const weekData = Array(7).fill(0);
-    for (let i = 6; i >= 0; i--) { const d = new Date(); d.setDate(now.getDate() - i); weekLabels.push(d.toLocaleDateString("en-KE", { weekday: "short", day: "numeric" })); }
-    paid.forEach(t => { const d = t.createdAt?.toDate ? t.createdAt.toDate() : new Date(t.createdAt); const diff = Math.floor((now - d) / (24*3600*1000)); if (diff >= 0 && diff < 7) weekData[6-diff] += (t.amount || 0); });
-    if (weeklyChart) weeklyChart.destroy();
-    weeklyChart = new Chart(document.getElementById("weeklyChart"), { type: "bar", data: { labels: weekLabels, datasets: [{ label: "KES", data: weekData, backgroundColor: "#16a34a" }] } });
-    // Monthly
-    const daysInMonth = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
-    const monthLabels = Array.from({ length: daysInMonth }, (_, i) => i+1);
-    const monthData = Array(daysInMonth).fill(0);
-    paid.forEach(t => { const d = t.createdAt?.toDate ? t.createdAt.toDate() : new Date(t.createdAt); if (d.getMonth() === now.getMonth()) monthData[d.getDate()-1] += (t.amount || 0); });
-    if (monthlyChart) monthlyChart.destroy();
-    monthlyChart = new Chart(document.getElementById("monthlyChart"), { type: "line", data: { labels: monthLabels, datasets: [{ label: "KES", data: monthData, borderColor: "#16a34a", fill: false }] } });
-    // Method breakdown
-    let mpesa = 0, card = 0;
-    paid.forEach(t => { if (t.method === "mpesa") mpesa += (t.amount || 0); else if (t.method === "card") card += (t.amount || 0); });
-    if (methodChart) methodChart.destroy();
-    methodChart = new Chart(document.getElementById("methodChart"), { type: "doughnut", data: { labels: ["M-Pesa", "Card"], datasets: [{ data: [mpesa, card], backgroundColor: ["#16a34a", "#10b981"] }] } });
-  }
-
-  // Top users
-  function updateTopUsers() {
-    const totals = {};
-    allTransactions.filter(t => t.status === "paid").forEach(t => { if (t.customerPhone) totals[t.customerPhone] = (totals[t.customerPhone] || 0) + (t.amount || 0); });
-    const sorted = Object.entries(totals).sort((a,b) => b[1] - a[1]).slice(0,5);
-    const ul = document.getElementById("topUsers");
-    ul.innerHTML = "";
-    sorted.forEach(([phone, amt]) => { const li = document.createElement("li"); li.textContent = `${phone} – KES ${amt.toLocaleString()}`; ul.appendChild(li); });
-  }
-
-  // Transaction table with filter
-  let txFilter = { start: null, end: null };
-  function renderTransactionTable() {
-    let filtered = [...allTransactions];
-    if (txFilter.start) filtered = filtered.filter(t => { const d = t.createdAt?.toDate ? t.createdAt.toDate() : new Date(t.createdAt); return d >= txFilter.start; });
-    if (txFilter.end) filtered = filtered.filter(t => { const d = t.createdAt?.toDate ? t.createdAt.toDate() : new Date(t.createdAt); return d <= txFilter.end; });
-    const tbody = document.getElementById("transactionTableBody");
-    tbody.innerHTML = "";
-    filtered.forEach((tx, idx) => {
-      const row = `<tr class="hover:bg-gray-50"><td class="border px-4 py-2">${idx+1}</td><td class="border px-4 py-2">${tx.customerPhone || "—"}</td><td class="border px-4 py-2">${(tx.amount || 0).toLocaleString()}</td><td class="border px-4 py-2">${tx.method || "mpesa"}</td><td class="border px-4 py-2"><span class="px-2 py-1 rounded text-xs ${tx.status === 'paid' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}">${tx.status || "pending"}</span></td><td class="border px-4 py-2">${formatDate(tx.createdAt)}</td></tr>`;
-      tbody.insertAdjacentHTML('beforeend', row);
-    });
-  }
-  document.getElementById("filterBtn").onclick = () => {
-    const start = document.getElementById("startDate").value;
-    const end = document.getElementById("endDate").value;
-    txFilter.start = start ? new Date(start) : null;
-    txFilter.end = end ? new Date(end + "T23:59:59") : null;
-    renderTransactionTable();
-  };
-  document.getElementById("resetFilterBtn").onclick = () => {
-    document.getElementById("startDate").value = "";
-    document.getElementById("endDate").value = "";
-    txFilter = { start: null, end: null };
-    renderTransactionTable();
-  };
-  document.getElementById("exportTransactionsBtn").onclick = () => {
-    const rows = [["#","Customer","Amount","Method","Status","Date"]];
-    document.querySelectorAll("#transactionTableBody tr").forEach((tr, i) => {
-      const cells = tr.querySelectorAll("td");
-      rows.push([i+1, cells[0]?.innerText, cells[1]?.innerText, cells[2]?.innerText, cells[3]?.innerText, cells[4]?.innerText]);
-    });
-    const csv = rows.map(r => r.join(",")).join("\n");
-    const blob = new Blob([csv], {type: "text/csv"});
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "transactions.csv";
-    a.click();
-  };
-
-  // User table
-  let userFilter = { type: "all", search: "" };
-  function renderUserTable() {
-    let combined = [
-      ...allUsers.map(u => ({ ...u, type: "user", displayName: u.fullName || u.name || u.phone, phone: u.phone, status: u.status || "active" })),
-      ...allMerchants.map(m => ({ ...m, type: "merchant", displayName: m.businessName || m.name, phone: m.phone, status: m.status || "active" }))
-    ];
-    if (userFilter.type !== "all") combined = combined.filter(u => u.type === userFilter.type);
-    if (userFilter.search) { const s = userFilter.search.toLowerCase(); combined = combined.filter(u => (u.displayName?.toLowerCase().includes(s) || u.phone?.includes(s))); }
-    const paidTx = allTransactions.filter(t => t.status === "paid");
-    const userTotal = {};
-    paidTx.forEach(t => { if (t.customerPhone) userTotal[t.customerPhone] = (userTotal[t.customerPhone] || 0) + (t.amount || 0); });
-    const tbody = document.getElementById("userTableBody");
-    tbody.innerHTML = "";
-    combined.forEach((u, idx) => {
-      const total = userTotal[u.phone] || 0;
-      const row = `<tr><td class="border px-4 py-2">${idx+1}</td><td class="border px-4 py-2">${u.displayName || "—"}</td><td class="border px-4 py-2">${u.phone || "—"}</td><td class="border px-4 py-2 capitalize">${u.type}</td><td class="border px-4 py-2">KES ${total.toLocaleString()}</td><td class="border px-4 py-2"><span class="px-2 py-1 rounded text-xs ${u.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">${u.status}</span></td><td class="border px-4 py-2"><button class="toggle-status bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs" data-id="${u.id}" data-type="${u.type}" data-status="${u.status}">Toggle Status</button></td></tr>`;
-      tbody.insertAdjacentHTML('beforeend', row);
-    });
-    document.querySelectorAll(".toggle-status").forEach(btn => {
-      btn.addEventListener("click", async () => {
-        const id = btn.getAttribute("data-id");
-        const type = btn.getAttribute("data-type");
-        const current = btn.getAttribute("data-status");
-        const newStatus = current === "active" ? "suspended" : "active";
-        if (type === "user") await window.updateUserStatus(id, newStatus);
-        else await window.updateMerchantStatus(id, newStatus);
-      });
-    });
-  }
-  document.getElementById("userTypeFilter").onchange = (e) => { userFilter.type = e.target.value; renderUserTable(); };
-  document.getElementById("userSearch").oninput = (e) => { userFilter.search = e.target.value; renderUserTable(); };
-  document.getElementById("exportUsersBtn").onclick = () => {
-    const rows = [["#","Name","Phone","Type","Total Paid (KES)","Status"]];
-    document.querySelectorAll("#userTableBody tr").forEach((tr, i) => {
-      const cells = tr.querySelectorAll("td");
-      rows.push([i+1, cells[0]?.innerText, cells[1]?.innerText, cells[2]?.innerText, cells[3]?.innerText, cells[4]?.innerText]);
-    });
-    const csv = rows.map(r => r.join(",")).join("\n");
-    const blob = new Blob([csv], {type: "text/csv"});
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "users.csv";
-    a.click();
-  };
-
-  // Blog table
-  function renderBlogTable(blogs) {
-    const tbody = document.getElementById("blogTableBody");
-    tbody.innerHTML = "";
-    blogs.forEach(blog => {
-      const row = `<tr><td class="border px-4 py-2">${blog.title}</td><td class="border px-4 py-2">${blog.slug}</td><td class="border px-4 py-2"><button class="edit-blog bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs mr-2" data-id="${blog.id}" data-title="${blog.title}" data-slug="${blog.slug}" data-content="${blog.content.replace(/"/g, '&quot;')}">Edit</button><button class="delete-blog bg-red-100 text-red-700 px-2 py-1 rounded text-xs" data-id="${blog.id}">Delete</button></td></tr>`;
-      tbody.insertAdjacentHTML('beforeend', row);
-    });
-    document.querySelectorAll(".edit-blog").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const id = btn.getAttribute("data-id");
-        const title = btn.getAttribute("data-title");
-        const slug = btn.getAttribute("data-slug");
-        const content = btn.getAttribute("data-content");
-        document.getElementById("blogTitle").value = title;
-        document.getElementById("blogSlug").value = slug;
-        document.getElementById("blogContent").value = content;
-        const addBtn = document.getElementById("addBlogBtn");
-        addBtn.innerText = "Update Blog";
-        addBtn.onclick = async () => {
-          await window.updateBlog(id, document.getElementById("blogTitle").value, document.getElementById("blogSlug").value, document.getElementById("blogContent").value);
-          addBtn.innerText = "+ Add Blog";
-          addBtn.onclick = () => window.addBlog(document.getElementById("blogTitle").value, document.getElementById("blogSlug").value, document.getElementById("blogContent").value);
-          document.getElementById("blogTitle").value = "";
-          document.getElementById("blogSlug").value = "";
-          document.getElementById("blogContent").value = "";
-        };
-      });
-    });
-    document.querySelectorAll(".delete-blog").forEach(btn => {
-      btn.addEventListener("click", () => window.deleteBlog(btn.getAttribute("data-id")));
-    });
-  }
-  document.getElementById("addBlogBtn").onclick = () => window.addBlog(document.getElementById("blogTitle").value, document.getElementById("blogSlug").value, document.getElementById("blogContent").value);
-
-  // Contact messages table
-  function renderContactTable(messages) {
-    const tbody = document.getElementById("contactTableBody");
-    tbody.innerHTML = "";
-    messages.forEach(msg => {
-      const row = `<tr><td class="border px-4 py-2">${msg.name || "—"}</td><td class="border px-4 py-2">${msg.email || "—"}</td><td class="border px-4 py-2">${msg.message || "—"}</td><td class="border px-4 py-2">${formatDate(msg.createdAt)}</td></tr>`;
-      tbody.insertAdjacentHTML('beforeend', row);
-    });
-  }
-</script>
-</body>
-</html>
-
-

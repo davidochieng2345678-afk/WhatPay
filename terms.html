@@ -102,3 +102,19 @@
     </div>
   </div>
 </main>
+
+<footer class="bg-gray-900 text-gray-300 pt-8 pb-4 text-center text-sm">
+  <p>© 2026 WhaPay – <strong>Offline registration: call <span class="font-mono">0140933042</span> (voicemail) or SMS to same number</strong> | WhatsApp: <strong>+254710346425</strong></p>
+  <div class="mt-2 space-x-4"><a href="privacy.html" class="hover:text-green-400">Privacy Policy</a> | <a href="terms.html" class="hover:text-green-400 font-bold">Terms of Service</a> | <a href="contact.html" class="hover:text-green-400">Contact</a></div>
+</footer>
+
+<a href="https://wa.me/254710346425?text=Hello%20WhaPay" target="_blank" class="fixed bottom-5 right-5 bg-green-500 text-white p-3 rounded-full shadow-lg hover:bg-green-600 z-50"><i class="fab fa-whatsapp text-2xl"></i></a>
+
+<script type="module" src="/auth.js"></script>
+<script type="module">
+  document.getElementById('navLoginBtn')?.addEventListener('click', () => window.showLoginModal());
+  document.getElementById('navLogoutBtn')?.addEventListener('click', () => window.logoutUser());
+</script>
+</body>
+</html>
+  

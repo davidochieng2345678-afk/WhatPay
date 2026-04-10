@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>My WhaPay Account – Customer Dashboard</title>
+<meta name="description" content="View your WhaPay Member Code, QR code, and transaction history. Access your personal dashboard with your phone number and Member Code.">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#16a34a">
+<script>if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js');}</script>
+<style>
+  .qr-canvas canvas { margin: 0 auto; display: block; }
+  .spinner{border:2px solid #f3f3f3;border-top:2px solid #16a34a;border-radius:50%;width:24px;height:24px;animation:spin 1s linear infinite;display:inline-block;}@keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
+</style>
+</head>
+<body class="bg-gray-100">
+
+<header class="bg-green-600 text-white p-4 shadow-md sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
+    <h1 class="text-2xl font-bold mb-2 md:mb-0"><a href="index.html">WhaPay</a></h1>
+    <nav class="flex flex-wrap justify-center gap-2 md:gap-4">
+      <a href="index.html" class="hover:underline">Home</a>
+      <a href="merchant.html" class="hover:underline">Merchant</a>
+      <a href="payment.html" class="hover:underline">Payments</a>
+      <a href="users.html" class="hover:underline font-bold text-green-200">My Account</a>
+      <a href="reports.html" class="hover:underline">Reports</a>
+      <a href="contact.html" class="hover:underline">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main class="max-w-4xl mx-auto px-4 py-8">
+  <!-- Login / Verification Section -->
+  <div id="loginSection" class="bg-white rounded-2xl shadow-xl p-6">
+    <h1 class="text-2xl font-bold text-center text-green-700 mb-2">Customer Dashboard</h1>
+    <p class="text-center text-gray-600 mb-6">Enter your phone number and Member Code to view your account.</p>
+    <form id="userLoginForm" class="space-y-4 max-w-md mx-auto">
+      <div><label class="block text-sm font-medium mb-1">Phone Number *</label><input type="tel" id="userPhone" placeholder="+254712345678" class="w-full border rounded-lg px-4 py-2"></div>
+      <div><label class="block text-sm font-medium mb-1">Member Code *</label><input type="text" id="userCode" placeholder="e.g., DK12345" class="w-full border rounded-lg px-4 py-2"></div>
+      <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 rounded-lg">Access Dashboard</button>
+      <div id="loginError" class="text-red-500 text-sm text-center"></div>
+    </form>
+    <p class="text-xs text-gray-500 text-center mt-4">Don't have a Member Code? <a href="registration.html" class="text-green-600">Register here</a> – it's free.</p>
+  </div>
+
+  <!-- Dashboard Section (hidden until login) -->
+  <div id="dashboardSection" class="hidden bg-white rounded-2xl shadow-xl p-6">
+    <div class="flex justify-between items-center mb-4">
+      <h1 class="text-2xl font-bold text-green-700">My WhaPay Account</h1>
+      <button id="logoutDashboardBtn" class="text-red-500 hover:text-red-700 text-sm">Logout</button>
+    </div>
+    <div class="grid md:grid-cols-2 gap-6">
+      <!-- Profile Card -->
+      <div class="bg-gray-50 rounded-xl p-4">
+        <h2 class="text-xl font-bold mb-3">Profile</h2>
+        <p><strong>Name:</strong> <span id="profileName"></span></p>
+        <p><strong>Phone:</strong> <span id="profilePhone"></span></p>
+        <p><strong>Member Code:</strong> <span id="profileCode" class="font-mono"></span></p>
+        <p><strong>Status:</strong> <span id="profileStatus" class="px-2 py-0.5 rounded text-xs bg-green-100 text-green-800">active</span></p>
+      </div>
+      <!-- QR Code Card -->
+      <div class="bg-gray-50 rounded-xl p-4 text-center">
+        <h2 class="text-xl font-bold mb-3">Your QR Code</h2>
+        <div id="userQR" class="qr-canvas flex justify-center"></div>
+        <button id="downloadQRBtn" class="mt-2 bg-blue-600 text-white px-3 py-1 rounded text-sm">Download QR</button>
+        <p class="text-xs text-gray-500 mt-2">Scan to pay or receive money instantly.</p>
+      </div>
+    </div>
+    <!-- Transaction History -->
+    <div class="mt-6">
+      <h2 class="text-xl font-bold mb-3">Your Payment History</h2>
+      <div class="overflow-x-auto">
+        <table class="min-w-full border text-sm">
+          <thead class="bg-gray-100"><tr><th class="p-2 border">Amount (KES)</th><th class="p-2 border">Method</th><th class="p-2 border">Status</th><th class="p-2 border">Date</th></tr></thead>
+          <tbody id="userTxBody"><tr><td colspan="4" class="text-center p-4 text-gray-400">Loading transactions...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="mt-4 text-sm text-gray-500 bg-yellow-50 p-3 rounded-lg">
+      <i class="fas fa-info-circle"></i> Your Member Code works both online and offline. To pay without internet, give your code to the merchant – they will use it with M-Pesa Paybill.
+    </div>
+  </div>
+</main>
+
+<footer class="bg-gray-900 text-gray-300 pt-8 pb-4 text-center text-sm">
+  <p>© 2026 WhaPay – <strong>Offline registration: call <span class="font-mono">0140933042</span> (voicemail) or SMS to same number</strong> | WhatsApp: <strong>+254710346425</strong></p>
+  <div class="mt-2 space-x-4"><a href="privacy.html" class="hover:text-green-400">Privacy</a> | <a href="terms.html" class="hover:text-green-400">Terms</a> | <a href="contact.html" class="hover:text-green-400">Contact</a></div>
+</footer>
+
+<a href="https://wa.me/254710346425?text=Hello%20WhaPay" target="_blank" class="fixed bottom-5 right-5 bg-green-500 text-white p-3 rounded-full shadow-lg hover:bg-green-600 z-50"><i class="fab fa-whatsapp text-2xl"></i></a>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getFirestore, collection, query, where, getDocs, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDPAvq6BgpdfZAkfoEwdwmHrWedHgzjRSk",
+    authDomain: "whapay-c93ab.firebaseapp.com",
+    projectId: "whapay-c93ab",
+    storageBucket: "whapay-c93ab.firebasestorage.app",
+    messagingSenderId: "205456952458",
+    appId: "1:205456952458:web:6533921ca10a2988417173"
+  };
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const loginSection = document.getElementById('loginSection');
+  const dashboardSection = document.getElementById('dashboardSection');
+  const userLoginForm = document.getElementById('userLoginForm');
+  const loginError = document.getElementById('loginError');
+  const logoutDashboardBtn = document.getElementById('logoutDashboardBtn');
+
+  let currentUserData = null;
+
+  async function verifyUser(phone, memberCode) {
+    let normalizedPhone = phone.replace(/\D/g, '');
+    if (normalizedPhone.startsWith('0')) normalizedPhone = '254' + normalizedPhone.substring(1);
+    if (!normalizedPhone.startsWith('254')) normalizedPhone = '254' + normalizedPhone;
+    // Check in users collection
+    const q = query(collection(db, "users"), where("phone", "==", normalizedPhone), where("memberCode", "==", memberCode));
+    const snap = await getDocs(q);
+    if (!snap.empty) {
+      return { ...snap.docs[0].data(), id: snap.docs[0].id, type: 'user' };
+    }
+    // Also check merchants (if a merchant logs in as user)
+    const qMerchant = query(collection(db, "merchants"), where("phone", "==", normalizedPhone), where("code", "==", memberCode));
+    const snapMerchant = await getDocs(qMerchant);
+    if (!snapMerchant.empty) {
+      return { ...snapMerchant.docs[0].data(), id: snapMerchant.docs[0].id, type: 'merchant', code: snapMerchant.docs[0].data().code };
+    }
+    return null;
+  }
+
+  userLoginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const phone = document.getElementById('userPhone').value.trim();
+    const memberCode = document.getElementById('userCode').value.trim();
+    if (!phone || !memberCode) {
+      loginError.innerText = 'Both phone and Member Code are required';
+      return;
+    }
+    loginError.innerText = '';
+    const userData = await verifyUser(phone, memberCode);
+    if (!userData) {
+      loginError.innerText = 'Invalid phone number or Member Code. Please check and try again.';
+      return;
+    }
+    currentUserData = userData;
+    // Populate dashboard
+    document.getElementById('profileName').innerText = userData.fullName || userData.businessName || 'N/A';
+    document.getElementById('profilePhone').innerText = userData.phone;
+    const displayCode = userData.memberCode || userData.code;
+    document.getElementById('profileCode').innerText = displayCode;
+    document.getElementById('profileStatus').innerText = userData.status || 'active';
+    // Generate QR
+    const qrDiv = document.getElementById('userQR');
+    qrDiv.innerHTML = '';
+    const paymentLink = `https://whapay.space/pay.html?merchant=${displayCode}`;
+    QRCode.toCanvas(qrDiv, paymentLink, { width: 150 }, (err) => { if (err) console.error(err); });
+    document.getElementById('downloadQRBtn').onclick = () => {
+      const canvas = qrDiv.querySelector('canvas');
+      if (canvas) {
+        const link = document.createElement('a');
+        link.download = 'whapay-qr.png';
+        link.href = canvas.toDataURL();
+        link.click();
+      }
+    };
+    // Load transactions (where customerPhone matches user's phone)
+    const txQuery = query(collection(db, "transactions"), where("customerPhone", "==", userData.phone), orderBy("createdAt", "desc"));
+    onSnapshot(txQuery, (snap) => {
+      const tbody = document.getElementById('userTxBody');
+      tbody.innerHTML = '';
+      if (snap.empty) {
+        tbody.innerHTML = '<tr><td colspan="4" class="text-center p-4 text-gray-400">No transactions found</td></tr>';
+        return;
+      }
+      snap.forEach(doc => {
+        const data = doc.data();
+        tbody.innerHTML += `<tr><td class="border p-2">KES ${data.amount || 0}</td><td class="border p-2">${data.method || 'mpesa'}</td><td class="border p-2"><span class="px-2 py-1 rounded text-xs ${data.status === 'completed' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}">${data.status || 'pending'}</span></td><td class="border p-2">${data.createdAt?.toDate().toLocaleString() || 'Just now'}</td></tr>`;
+      });
+    });
+    loginSection.classList.add('hidden');
+    dashboardSection.classList.remove('hidden');
+  });
+
+  logoutDashboardBtn.addEventListener('click', () => {
+    currentUserData = null;
+    dashboardSection.classList.add('hidden');
+    loginSection.classList.remove('hidden');
+    document.getElementById('userPhone').value = '';
+    document.getElementById('userCode').value = '';
+  });
+</script>
+</body>
+</html>

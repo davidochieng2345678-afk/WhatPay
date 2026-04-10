@@ -3,9 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Terms of Service – WhaPay</title>
-<meta name="description" content="WhaPay Terms of Service – legal agreement for using our WhatsApp payment platform. Read about fees, liability, prohibited transactions, and your responsibilities.">
+<title>Terms of Service – WhaPay | Legal Agreement for Payment Platform</title>
+<meta name="description" content="**WhaPay Terms of Service:** your legal agreement when using WhatsApp payments, offline registration (0140933042), M-Pesa, and card services. Read about fees, liability, and prohibited transactions.">
+<meta name="keywords" content="WhaPay terms, service agreement, payment platform legal, offline registration terms, M-Pesa terms Kenya">
+<meta name="author" content="WhaPay Solutions">
 <meta name="robots" content="index, follow">
+<link rel="canonical" href="https://whapay.space/terms.html">
+<meta property="og:title" content="Terms of Service – WhaPay | Legal Terms for Payment Processing">
+<meta property="og:description" content="**Read the legal agreement** for using WhaPay's online and offline payment services. Includes fees, prohibited transactions, and liability limits.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://whapay.space/terms.html">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "WhaPay Terms of Service",
+  "description": "Terms and conditions for using WhaPay payment platform, including offline registration, M-Pesa, and card payments.",
+  "url": "https://whapay.space/terms.html"
+}
+</script>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <link rel="manifest" href="/manifest.json">
@@ -15,109 +32,73 @@
 <body class="bg-gray-100 font-sans">
 
 <header class="bg-green-600 text-white p-4 shadow-md sticky top-0 z-50">
-  <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:justify-between items-center">
-    <h1 class="text-2xl font-bold mb-2 md:mb-0"><a href="index.html">WhaPay</a></h1>
-    <nav class="flex flex-wrap justify-center gap-2 md:gap-4">
-      <a href="index.html" class="hover:underline">Home</a>
-      <a href="about.html" class="hover:underline">About</a>
-      <a href="features.html" class="hover:underline">Features</a>
-      <a href="pricing.html" class="hover:underline">Pricing</a>
-      <a href="merchant.html" class="hover:underline">Merchant</a>
-      <a href="payment.html" class="hover:underline">Payment</a>
-      <a href="reports.html" class="hover:underline">Reports</a>
-      <a href="blog.html" class="hover:underline">Blog</a>
-      <a href="contact.html" class="hover:underline">Contact</a>
-      <a href="admin.html" class="hover:underline">Admin</a>
-    </nav>
+  <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
+    <h1 class="text-2xl font-bold mb-2 md:mb-0"><a href="index.html">WhaPay Terms</a></h1>
+    <div class="flex flex-wrap items-center gap-2 md:gap-4">
+      <nav class="flex flex-wrap gap-2">
+        <a href="index.html" class="hover:underline">Home</a>
+        <a href="about.html" class="hover:underline">About</a>
+        <a href="features.html" class="hover:underline">Features</a>
+        <a href="pricing.html" class="hover:underline">Pricing</a>
+        <a href="merchant.html" class="hover:underline">Merchant</a>
+        <a href="payment.html" class="hover:underline">Payments</a>
+        <a href="reports.html" class="hover:underline">Reports</a>
+        <a href="contact.html" class="hover:underline">Contact</a>
+        <a href="admin.html" class="hover:underline">Admin</a>
+      </nav>
+      <div class="flex items-center gap-2">
+        <span id="navUserDisplay" class="text-sm hidden md:inline"></span>
+        <button id="navLoginBtn" class="bg-white text-green-700 px-3 py-1 rounded text-sm font-semibold hover:bg-gray-100">Login</button>
+        <button id="navLogoutBtn" class="bg-red-500 text-white px-3 py-1 rounded text-sm font-semibold hover:bg-red-600 hidden">Logout</button>
+      </div>
+    </div>
   </div>
 </header>
 
 <main class="max-w-4xl mx-auto px-4 py-12">
   <div class="bg-white rounded-2xl shadow-xl p-6 md:p-8">
-    <h1 class="text-3xl font-bold text-green-700 mb-4">Terms of Service</h1>
+    <h1 class="text-3xl font-bold text-green-700 mb-2">Terms of Service</h1>
     <p class="text-gray-500 text-sm mb-6">Last updated: April 2026</p>
 
-    <div class="prose prose-green max-w-none space-y-6 text-gray-700">
-      <p>Welcome to WhaPay! By using our website, mobile application, WhatsApp bot, or payment services, you agree to be bound by these Terms of Service ("Terms"). If you do not agree, please do not use our services.</p>
+    <div class="prose prose-green max-w-none text-gray-700 space-y-5">
+      <p>Welcome to WhaPay! By using our website, WhatsApp bot, SMS service, voice registration line (<strong class="font-mono">0140933042</strong>), or payment services, you agree to be bound by these Terms of Service ("Terms"). If you do not agree, please do not use our services.</p>
 
       <h2 class="text-xl font-bold text-gray-800 mt-6">1. Eligibility</h2>
-      <p>You must be at least 18 years old and have the legal capacity to enter into a binding agreement. Merchants must be legally registered businesses or sole proprietors operating in Kenya (or other supported regions).</p>
+      <p>You must be at least 18 years old and have the legal capacity to enter into a binding agreement. Merchants must be legally registered businesses or sole proprietors operating in Kenya (or other supported regions). By using WhaPay, you represent that you meet these eligibility requirements.</p>
 
       <h2 class="text-xl font-bold text-gray-800 mt-6">2. Registration & Account</h2>
       <ul class="list-disc pl-6 space-y-1">
         <li>You must provide accurate and complete information (name, phone number, business name).</li>
-        <li>You are responsible for safeguarding your Member Code and QR code.</li>
+        <li>You are responsible for safeguarding your Member Code and QR code. Do not share them with unauthorized parties.</li>
         <li>You may not transfer your account to another person or entity.</li>
-        <li>We reserve the right to suspend or terminate accounts that violate these Terms.</li>
+        <li>We reserve the right to suspend or terminate accounts that violate these Terms or applicable laws.</li>
       </ul>
 
       <h2 class="text-xl font-bold text-gray-800 mt-6">3. Payments & Fees</h2>
       <ul class="list-disc pl-6 space-y-1">
         <li>Transactions are processed via M-Pesa (Safaricom) or Stripe (cards). Fees are displayed at checkout and on our <a href="pricing.html" class="text-green-600 hover:underline">Pricing page</a>.</li>
         <li>Merchants are responsible for any chargebacks, refunds, or disputes with customers.</li>
-        <li>WhaPay charges a transaction fee (e.g., 2.9% + $0.30 for cards; M-Pesa fees as per Safaricom rates).</li>
-        <li>Offline payments via Member Code + M-Pesa Paybill may incur standard M-Pesa charges.</li>
+        <li>WhaPay charges a transaction fee (e.g., 2.9% + $0.30 for cards). M-Pesa transactions incur standard Safaricom rates; WhaPay does not add extra fees on M-Pesa.</li>
+        <li>Offline payments via Member Code + M-Pesa Paybill may incur standard M-Pesa charges. WhaPay does not charge additional fees for offline payments.</li>
+        <li>All fees are non‑refundable except as required by law.</li>
       </ul>
 
       <h2 class="text-xl font-bold text-gray-800 mt-6">4. Prohibited Transactions</h2>
       <p>You may not use WhaPay for illegal activities, including but not limited to:</p>
       <ul class="list-disc pl-6 space-y-1">
         <li>Fraud, money laundering, or terrorist financing.</li>
-        <li>Sale of prohibited goods (drugs, weapons, counterfeit products).</li>
+        <li>Sale of prohibited goods (drugs, weapons, counterfeit products, unlicensed firearms).</li>
         <li>Gambling, pyramid schemes, or unlicensed financial services.</li>
+        <li>Adult content or services without proper age verification.</li>
         <li>Any transaction that violates Kenyan or international law.</li>
       </ul>
+      <p>Violation may result in immediate account termination and reporting to relevant authorities.</p>
 
       <h2 class="text-xl font-bold text-gray-800 mt-6">5. Offline Payments & Sync</h2>
-      <p>Offline payments made via Member Code + M-Pesa Paybill are recorded via SMS. It is your responsibility to sync these transactions by sending <span class="font-mono">SYNC</span> on WhatsApp when you regain internet. WhaPay is not liable for unsynced or lost SMS records.</p>
+      <p>Offline payments made via Member Code + M-Pesa Paybill are recorded via SMS. It is your responsibility to sync these transactions by sending <span class="font-mono bg-gray-100 px-1">SYNC</span> on WhatsApp when you regain internet. WhaPay is not liable for unsynced or lost SMS records. We recommend keeping M-Pesa SMS receipts as proof of payment.</p>
 
       <h2 class="text-xl font-bold text-gray-800 mt-6">6. Intellectual Property</h2>
-      <p>All content, logos, trademarks, and software on the WhaPay platform are owned by WhaPay Solutions or its licensors. You may not copy, modify, or reverse‑engineer any part of the service without permission.</p>
-
-      <h2 class="text-xl font-bold text-gray-800 mt-6">7. Limitation of Liability</h2>
-      <p>To the maximum extent permitted by law, WhaPay shall not be liable for:</p>
-      <ul class="list-disc pl-6 space-y-1">
-        <li>Any indirect, incidental, or consequential damages.</li>
-        <li>Loss of profits, revenue, or data.</li>
-        <li>Delays or failures caused by third‑party services (Safaricom, Stripe, Google Firebase).</li>
-      </ul>
-      <p>Our total liability is limited to the fees paid by you in the 3 months preceding the claim.</p>
-
-      <h2 class="text-xl font-bold text-gray-800 mt-6">8. Indemnification</h2>
-      <p>You agree to indemnify and hold WhaPay harmless from any claims, damages, or expenses arising from your violation of these Terms or applicable laws.</p>
-
-      <h2 class="text-xl font-bold text-gray-800 mt-6">9. Termination</h2>
-      <p>We may suspend or terminate your access if you breach these Terms. You may delete your account by contacting support. Upon termination, you must settle any outstanding fees.</p>
-
-      <h2 class="text-xl font-bold text-gray-800 mt-6">10. Governing Law</h2>
-      <p>These Terms are governed by the laws of Kenya. Any disputes shall be resolved exclusively in the courts of Nairobi, Kenya.</p>
-
-      <h2 class="text-xl font-bold text-gray-800 mt-6">11. Changes to Terms</h2>
-      <p>We may update these Terms from time to time. Continued use of the service after changes constitutes acceptance.</p>
-
-      <h2 class="text-xl font-bold text-gray-800 mt-6">12. Contact</h2>
-      <p>For questions about these Terms, contact us:</p>
-      <ul class="list-disc pl-6 space-y-1">
-        <li>Email: <a href="mailto:support@whapay.com" class="text-green-600 hover:underline">support@whapay.com</a></li>
-        <li>WhatsApp: <a href="https://wa.me/254710346425" class="text-green-600 hover:underline">+254 710 346425</a></li>
-        <li>Offline registration: <a href="tel:+254705728896" class="text-green-600 hover:underline">+254 705 728896</a> (voice/SMS)</li>
-      </ul>
+      <p>All content, logos, trademarks, and software on the WhaPay platform are owned by WhaPay Solutions or its licensors. You may not copy, modify, distribute, reverse‑engineer, or create derivative works without explicit written permission. "WhaPay" and the WhaPay logo are registered trademarks.</p>
     </div>
   </div>
-    </main>
-  <footer class="bg-gray-900 text-gray-300 pt-12 pb-6 mt-10">
-  <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-    <div><h2 class="text-2xl font-bold text-white mb-3">WhaPay</h2><p class="text-gray-400 text-sm">Kenya's modern WhatsApp payment solution.</p></div>
-    <div><h3 class="text-white font-semibold mb-4">Quick Links</h3><ul class="space-y-2 text-sm"><li><a href="index.html" class="hover:text-green-400">Home</a></li><li><a href="about.html" class="hover:text-green-400">About</a></li><li><a href="features.html" class="hover:text-green-400">Features</a></li><li><a href="pricing.html" class="hover:text-green-400">Pricing</a></li><li><a href="contact.html" class="hover:text-green-400">Contact</a></li></ul></div>
-    <div><h3 class="text-white font-semibold mb-4">Offline Registration</h3><ul class="space-y-2 text-sm"><li>Voice: <a href="tel:+254705728896" class="hover:text-green-400">+254705728896</a></li><li>SMS: <span class="font-mono">REG YourName</span> to <span class="font-mono">+254705728896</span></li><li>WhatsApp: <a href="https://wa.me/254710346425" class="hover:text-green-400">+254710346425</a></li></ul></div>
-    <div><h3 class="text-white font-semibold mb-4">Legal</h3><ul class="space-y-2 text-sm"><li><a href="privacy.html" class="hover:text-green-400">Privacy Policy</a></li><li><a href="terms.html" class="hover:text-green-400 font-bold">Terms of Service</a></li><li><a href="#" class="hover:text-green-400">Cookies</a></li></ul></div>
-  </div>
-  <div class="border-t border-gray-800 mt-10 pt-6 text-center text-sm text-gray-500">
-    <p>&copy; 2026 WhaPay Solutions. All rights reserved.</p>
-  </div>
-</footer>
-
-<!-- Floating WhatsApp Button -->
-<a href="https://wa.me/254710346425?text=Hello%20WhaPay" target="_blank" class="fixed bottom-5 right-5 bg-green-500 text-white p-3 rounded-full shadow-lg hover:bg-green-600 z-50"><i class="fab fa-whatsapp text-2xl"></i></a>
-</body>
-</html>
+</main>

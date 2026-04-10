@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>WhaPay Reports – Live Transaction Analytics | Charts, Filters, Export</title>
 <meta name="description" content="Live payment reports for WhaPay. Visualize weekly/monthly trends, payment method breakdown, top users, and export transactions. Works with online & offline payments.">
 <meta name="keywords" content="WhaPay reports, WhatsApp payments, M-Pesa, card payments, merchant analytics, real-time dashboard, offline payments">
@@ -18,6 +18,7 @@
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
   import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyDPAvq6BgpdfZAkfoEwdwmHrWedHgzjRSk",
@@ -30,15 +31,51 @@
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
+  const auth = getAuth(app);
 
-  // Use the correct collection name: "transactions"
+  // ---- Authentication (Email/Password) ----
+  const loginOverlay = document.getElementById('loginOverlay');
+  const userEmailDisplay = document.getElementById('userEmailDisplay');
+  const logoutBtn = document.getElementById('logoutBtn');
+  let currentUser = null;
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      currentUser = user;
+      userEmailDisplay.innerText = user.email;
+      userEmailDisplay.classList.remove('hidden');
+      logoutBtn.classList.remove('hidden');
+      if (loginOverlay) loginOverlay.classList.add('hidden');
+    } else {
+      currentUser = null;
+      userEmailDisplay.classList.add('hidden');
+      logoutBtn.classList.add('hidden');
+      if (loginOverlay) loginOverlay.classList.remove('hidden');
+    }
+  });
+
+  if (document.getElementById('loginBtn')) {
+    document.getElementById('loginBtn').onclick = async () => {
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value.trim();
+      const errorDiv = document.getElementById('loginError');
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        errorDiv.innerText = '';
+      } catch (err) {
+        errorDiv.innerText = err.message;
+      }
+    };
+  }
+  if (logoutBtn) logoutBtn.onclick = async () => { await signOut(auth); };
+
+  // ---- Reports logic (unchanged) ----
   const transactionsRef = collection(db, "transactions");
   const q = query(transactionsRef, orderBy("timestamp", "desc"));
 
   let allTransactions = [];
   let weeklyChart, monthlyChart, methodChart;
 
-  // Helper functions
   function formatKES(amount) { return `KES ${amount.toLocaleString()}`; }
 
   function destroyCharts() {
@@ -54,7 +91,7 @@
     if (startDate) filtered = filtered.filter(t => t.timestampDate >= startDate);
     if (endDate) filtered = filtered.filter(t => t.timestampDate <= endDate);
     if (filtered.length === 0) {
-      tbody.innerHTML = `<td><td colspan="6" class="text-center p-4 text-gray-400">No transactions found</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="6" class="text-center p-4 text-gray-400">No transactions found</td></tr>`;
       return;
     }
     filtered.forEach((t, i) => {
@@ -65,7 +102,7 @@
         <td class="border px-3 py-2 capitalize">${t.method || "—"}</td>
         <td class="border px-3 py-2 capitalize"><span class="px-2 py-0.5 rounded-full ${t.status === 'completed' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}">${t.status || "pending"}</span></td>
         <td class="border px-3 py-2">${t.timestampDate.toLocaleString("en-KE")}</td>
-       </tr>`;
+      </tr>`;
       tbody.insertAdjacentHTML('beforeend', row);
     });
   }
@@ -87,7 +124,7 @@
     document.getElementById("weekPaid").innerHTML = `${formatKES(weekPaid)} ${totalPaid ? `(${((weekPaid/totalPaid)*100).toFixed(1)}%)` : ''}`;
     document.getElementById("monthPaid").innerHTML = `${formatKES(monthPaid)} ${totalPaid ? `(${((monthPaid/totalPaid)*100).toFixed(1)}%)` : ''}`;
     
-    // Weekly chart (last 7 days)
+    // Weekly chart
     const weeklyLabels = [];
     const weeklyAmounts = Array(7).fill(0);
     for (let i = 6; i >= 0; i--) {
@@ -99,7 +136,7 @@
       if (diffDays >= 0 && diffDays < 7) weeklyAmounts[6 - diffDays] += t.amount;
     });
     
-    // Monthly chart (current month)
+    // Monthly chart
     const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
     const monthlyLabels = Array.from({ length: daysInMonth }, (_, i) => i + 1);
     const monthlyAmounts = Array(daysInMonth).fill(0);
@@ -110,7 +147,7 @@
       }
     });
     
-    // Payment method breakdown (current month)
+    // Payment method breakdown
     const methodMap = new Map();
     completedTx.forEach(t => {
       if (t.timestampDate.getMonth() === currentMonth && t.timestampDate.getFullYear() === currentYear) {
@@ -121,7 +158,7 @@
     const methodLabels = Array.from(methodMap.keys()).map(m => m.toUpperCase());
     const methodData = Array.from(methodMap.values());
     
-    // Top paying customers (current month)
+    // Top customers
     const customerMap = new Map();
     completedTx.forEach(t => {
       if (t.timestampDate.getMonth() === currentMonth && t.timestampDate.getFullYear() === currentYear && t.customer) {
@@ -165,7 +202,7 @@
 
   // Real-time listener
   const loadingMsg = document.getElementById("loadingMsg");
-  loadingMsg.classList.remove("hidden");
+  if (loadingMsg) loadingMsg.classList.remove("hidden");
   onSnapshot(q, (snapshot) => {
     const transactions = snapshot.docs.map(doc => {
       const data = doc.data();
@@ -180,16 +217,15 @@
       };
     }).filter(t => t.timestampDate);
     allTransactions = transactions;
-    loadingMsg.classList.add("hidden");
+    if (loadingMsg) loadingMsg.classList.add("hidden");
     updateDashboard(allTransactions);
-    // Reset filters and show all
     document.getElementById("startDate").value = "";
     document.getElementById("endDate").value = "";
     populateTable(allTransactions);
   }, (error) => {
     console.error("Firestore error:", error);
-    loadingMsg.innerHTML = "⚠️ Failed to load data. Check Firebase configuration.";
-    loadingMsg.classList.remove("hidden");
+    if (loadingMsg) loadingMsg.innerHTML = "⚠️ Failed to load data. Check Firebase configuration.";
+    if (loadingMsg) loadingMsg.classList.remove("hidden");
   });
 
   // Filter logic
@@ -233,27 +269,44 @@
 </head>
 <body class="bg-gray-100">
 
+<!-- ==================== HEADER WITH NAVIGATION ==================== -->
 <header class="bg-green-600 text-white p-4 shadow-md sticky top-0 z-20">
   <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:justify-between items-center">
     <h1 class="text-2xl font-bold mb-2 md:mb-0"><a href="index.html">WhaPay</a></h1>
-    <nav class="flex flex-wrap justify-center gap-2 md:gap-4">
-      <a href="index.html" class="hover:underline">Home</a>
-      <a href="merchant.html" class="hover:underline">Merchant</a>
-      <a href="payment.html" class="hover:underline">Payments</a>
-      <a href="process.html" class="hover:underline">How it works</a>
-      <a href="reports.html" class="hover:underline font-bold text-green-200">Reports</a>
-      <a href="contact.html" class="hover:underline">Contact</a>
-    </nav>
+    <div class="flex items-center gap-3">
+      <span id="userEmailDisplay" class="text-sm hidden md:inline"></span>
+      <button id="logoutBtn" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm hidden">Logout</button>
+      <nav class="flex flex-wrap justify-center gap-2 md:gap-4">
+        <a href="index.html" class="hover:underline">Home</a>
+        <a href="merchant.html" class="hover:underline">Merchant</a>
+        <a href="payment.html" class="hover:underline">Payments</a>
+        <a href="process.html" class="hover:underline">How it works</a>
+        <a href="reports.html" class="hover:underline font-bold text-green-200">Reports</a>
+        <a href="contact.html" class="hover:underline">Contact</a>
+      </nav>
+    </div>
   </div>
 </header>
 
+<!-- Login Overlay (Email/Password) -->
+<div id="loginOverlay" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+  <div class="bg-white rounded-xl p-6 max-w-md w-full">
+    <h2 class="text-xl font-bold mb-4">Admin Login</h2>
+    <input type="email" id="loginEmail" placeholder="Email" class="w-full border p-2 rounded mb-3">
+    <input type="password" id="loginPassword" placeholder="Password" class="w-full border p-2 rounded mb-3">
+    <button id="loginBtn" class="bg-green-600 text-white w-full py-2 rounded">Login</button>
+    <div id="loginError" class="text-red-500 text-sm mt-2 text-center"></div>
+    <p class="text-xs text-gray-500 text-center mt-3">Demo credentials: davidochieng99@gmail.com / your password</p>
+  </div>
+</div>
+
 <main class="max-w-7xl mx-auto px-4 py-6">
+  <!-- reports content (same as before) -->
   <div class="bg-white rounded-2xl shadow-md p-6 mb-6 text-center">
     <h1 class="text-3xl font-bold text-green-700">📊 Live Payment Reports</h1>
     <p class="text-gray-600">Real‑time analytics: weekly/monthly trends, payment methods, top customers & transaction history. Data syncs automatically.</p>
   </div>
 
-  <!-- Summary Cards (sticky) -->
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 summary-cards">
     <div class="bg-white shadow rounded p-4 text-center"><p class="text-gray-500">Total Completed</p><h2 id="totalPaid" class="text-2xl font-bold">KES 0</h2></div>
     <div class="bg-white shadow rounded p-4 text-center"><p class="text-gray-500">Pending Transactions</p><h2 id="pendingCount" class="text-2xl font-bold">0</h2></div>
@@ -261,19 +314,16 @@
     <div class="bg-white shadow rounded p-4 text-center"><p class="text-gray-500">Paid This Month</p><h2 id="monthPaid" class="text-2xl font-bold">KES 0</h2></div>
   </div>
 
-  <!-- Charts Row -->
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
     <div class="bg-white shadow rounded p-4"><h2 class="text-xl font-bold mb-2">📊 Weekly Payments (Last 7 Days)</h2><canvas id="weeklyChart" height="200"></canvas></div>
     <div class="bg-white shadow rounded p-4"><h2 class="text-xl font-bold mb-2">📈 Monthly Payments (Current Month)</h2><canvas id="monthlyChart" height="200"></canvas></div>
   </div>
 
-  <!-- Method Breakdown & Top Users -->
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
     <div class="bg-white shadow rounded p-4"><h2 class="text-xl font-bold mb-2">💳 Payment Method Breakdown (Monthly)</h2><canvas id="methodChart" height="200"></canvas></div>
     <div class="bg-white shadow rounded p-4"><h2 class="text-xl font-bold mb-2">🏆 Top Paying Customers (Monthly)</h2><ul id="topUsers" class="list-disc list-inside text-gray-700 space-y-1"></ul><p id="noTopUsers" class="text-gray-400 text-sm hidden">No completed transactions this month.</p></div>
   </div>
 
-  <!-- Transactions Table with Filter & Export -->
   <div class="bg-white shadow rounded p-4 mb-6">
     <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
       <h2 class="text-xl font-bold">📋 All Transactions</h2>
@@ -294,9 +344,10 @@
     <div id="loadingMsg" class="text-center text-gray-500 py-4 hidden">Loading transactions from Firebase...</div>
   </div>
 </main>
+
 <footer class="bg-gray-900 text-gray-300 pt-10 pb-6 mt-8">
   <div class="max-w-7xl mx-auto px-6 text-center text-sm">
-    <p>© 2026 WhaPay – Offline registration: voice call or SMS to <strong class="font-mono">+254705728896</strong> | WhatsApp: <strong>+254710346425</strong></p>
+    <p>© 2026 WhaPay – <strong>Offline registration: call <span class="font-mono">0140933042</span> (voicemail) or SMS to same number</strong> | WhatsApp: <strong>+254710346425</strong></p>
     <div class="mt-3 space-x-4">
       <a href="privacy.html" class="hover:text-green-400">Privacy</a>
       <a href="terms.html" class="hover:text-green-400">Terms</a>
@@ -310,8 +361,5 @@
 
 </body>
 </html>
-
-
-
 
                                                                                                                                                                                                                                                                                          

@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Register & Pay – WhaPay | One‑Step Signup + Payment</title>
-<meta name="description" content="**Register and pay in one step** with WhaPay. Enter your name, phone, amount – pay via M-Pesa or card. **Get your Member Code and QR code instantly after payment.** Offline registration available via 0140933042.">
+<meta name="description" content="Register and pay in one step with WhaPay. Enter your name, phone, amount – pay via M-Pesa or card. Get your Member Code and QR code instantly after payment. Offline registration available via 0140933042.">
 <meta name="keywords" content="register and pay, one-step payment, instant registration, M-Pesa payment, card payment, get member code">
 <meta name="author" content="WhaPay Solutions">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://whapay.space/first-time-pay.html">
 <meta property="og:title" content="Register & Pay – One Step to Get Your Member Code">
-<meta property="og:description" content="**Complete your payment and register automatically.** Receive your Member Code and QR code instantly. No separate registration needed.">
+<meta property="og:description" content="Complete your payment and register automatically. Receive your Member Code and QR code instantly. No separate registration needed.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://whapay.space/first-time-pay.html">
 <script type="application/ld+json">
@@ -24,13 +24,15 @@
 </script>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://js.stripe.com/v3/"></script>
-<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#16a34a">
-<script>if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js');}</script>
 <style>
-  .spinner{border:2px solid #f3f3f3;border-top:2px solid #16a34a;border-radius:50%;width:24px;height:24px;animation:spin 1s linear infinite;display:inline-block;}@keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
+  .spinner { border: 2px solid #f3f3f3; border-top: 2px solid #16a34a; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; display: inline-block; }
+  @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+  .toast { transition: opacity 0.3s; }
 </style>
 </head>
 <body class="bg-gray-100 font-sans">
@@ -48,23 +50,37 @@
         <a href="admin.html" class="hover:underline">Admin</a>
       </nav>
       <div class="flex items-center gap-2">
+        <span id="pendingSyncBadge" class="bg-yellow-500 text-white text-xs px-2 py-1 rounded-full hidden">Sync Pending</span>
+        <button id="syncOfflineBtn" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm hidden">Sync</button>
         <span id="navUserDisplay" class="text-sm hidden md:inline"></span>
-        <button id="navLoginBtn" class="bg-white text-green-700 px-3 py-1 rounded text-sm font-semibold hover:bg-gray-100">Login</button>
-        <button id="navLogoutBtn" class="bg-red-500 text-white px-3 py-1 rounded text-sm font-semibold hover:bg-red-600 hidden">Logout</button>
+        <button id="navLoginBtn" class="bg-white text-green-700 px-3 py-1 rounded text-sm font-semibold hover:bg-gray-100">Admin</button>
+        <button id="navLogoutBtn" class="bg-red-500 text-white px-3 py-1 rounded text-sm font-semibold hidden hover:bg-red-600">Logout</button>
       </div>
     </div>
   </div>
 </header>
 
+<!-- Admin Login Modal -->
+<div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+  <div class="bg-white rounded-xl p-6 max-w-md w-full">
+    <h2 class="text-xl font-bold mb-4">Admin Login</h2>
+    <input type="email" id="loginEmail" placeholder="Email" class="w-full border p-2 rounded mb-3">
+    <input type="password" id="loginPassword" placeholder="Password" class="w-full border p-2 rounded mb-3">
+    <button id="loginBtn" class="bg-green-600 text-white w-full py-2 rounded">Login</button>
+    <button id="closeModalBtn" class="text-gray-500 text-sm w-full mt-2">Cancel</button>
+    <div id="loginError" class="text-red-500 text-sm mt-2 text-center"></div>
+  </div>
+</div>
+
 <main class="max-w-xl mx-auto px-4 py-8">
   <div class="bg-white rounded-2xl shadow-xl p-6">
     <h1 class="text-2xl font-bold text-center text-green-700 mb-2">Register & Pay in One Step</h1>
-    <p class="text-center text-gray-600 text-sm mb-6">Enter your details, complete payment, and **get your permanent WhaPay Member Code and QR code instantly.**</p>
+    <p class="text-center text-gray-600 text-sm mb-6">Enter your details, complete payment, and <strong>get your permanent WhaPay Member Code and QR code instantly.</strong></p>
 
     <form id="registerPayForm" class="space-y-4">
       <div><label class="block text-sm font-medium mb-1">Full Name *</label><input type="text" id="name" required class="w-full border rounded-lg px-4 py-2"></div>
       <div><label class="block text-sm font-medium mb-1">Phone Number (WhatsApp) *</label><input type="tel" id="phone" required placeholder="+254712345678" class="w-full border rounded-lg px-4 py-2"><p class="text-xs text-gray-500 mt-1">We'll send your Member Code and QR via WhatsApp.</p></div>
-      <div><label class="block text-sm font-medium mb-1">Amount to Pay (KES) *</label><input type="number" id="amount" required placeholder="e.g., 500" class="w-full border rounded-lg px-4 py-2"></div>
+      <div><label class="block text-sm font-medium mb-1">Amount to Pay (KES) *</label><input type="number" id="amount" required placeholder="e.g., 500" class="w-full border rounded-lg px-4 py-2" min="1"></div>
       <div><label class="block text-sm font-medium mb-1">Payment Method</label><select id="method" class="w-full border rounded-lg px-4 py-2"><option value="mpesa">M-Pesa (STK Push)</option><option value="card">Credit / Debit Card (Stripe)</option></select></div>
       <button type="submit" id="submitBtn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition">Complete Registration & Payment</button>
       <div id="errorMsg" class="text-red-500 text-sm text-center"></div>
@@ -81,6 +97,7 @@
     </div>
   </div>
 </main>
+
 <footer class="bg-gray-900 text-gray-300 pt-8 pb-4 text-center text-sm">
   <p>© 2026 WhaPay – <strong>Offline registration: call <span class="font-mono">0140933042</span> (voicemail) or SMS to same number</strong> | WhatsApp: <strong>+254710346425</strong></p>
   <div class="mt-2 space-x-4"><a href="privacy.html" class="hover:text-green-400">Privacy Policy</a> | <a href="terms.html" class="hover:text-green-400">Terms of Service</a> | <a href="contact.html" class="hover:text-green-400">Contact</a></div>
@@ -88,10 +105,11 @@
 
 <a href="https://wa.me/254710346425?text=Hello%20WhaPay" target="_blank" class="fixed bottom-5 right-5 bg-green-500 text-white p-3 rounded-full shadow-lg hover:bg-green-600 z-50"><i class="fab fa-whatsapp text-2xl"></i></a>
 
-<script type="module" src="/auth.js"></script>
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { getFirestore, collection, addDoc, query, where, getDocs, serverTimestamp, writeBatch, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
   const firebaseConfig = {
     apiKey: "AIzaSyDPAvq6BgpdfZAkfoEwdwmHrWedHgzjRSk",
     authDomain: "whapay-c93ab.firebaseapp.com",
@@ -102,10 +120,127 @@
   };
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
-  window.db = db;
-  document.getElementById('navLoginBtn')?.addEventListener('click', () => window.showLoginModal());
-  document.getElementById('navLogoutBtn')?.addEventListener('click', () => window.logoutUser());
+  const auth = getAuth(app);
 
+  // ========== Helpers ==========
+  function showToast(msg, isErr = false) {
+    let toast = document.getElementById('globalToast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'globalToast';
+      toast.className = 'fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-full text-sm z-50 transition-opacity opacity-0';
+      document.body.appendChild(toast);
+    }
+    toast.innerText = msg;
+    toast.style.backgroundColor = isErr ? '#dc2626' : '#16a34a';
+    toast.classList.remove('opacity-0');
+    toast.classList.add('opacity-100');
+    setTimeout(() => toast.classList.add('opacity-0'), 3000);
+  }
+
+  // ========== Offline Sync ==========
+  const PENDING_KEY = 'whapay_pending_regpay';
+  async function savePendingRegistration(data) {
+    const pending = await localforage.getItem(PENDING_KEY) || [];
+    pending.push({ ...data, synced: false, createdAt: Date.now() });
+    await localforage.setItem(PENDING_KEY, pending);
+    updatePendingBadge();
+  }
+
+  async function updatePendingBadge() {
+    const pending = await localforage.getItem(PENDING_KEY) || [];
+    const unsynced = pending.filter(p => !p.synced).length;
+    const badge = document.getElementById('pendingSyncBadge');
+    const syncBtn = document.getElementById('syncOfflineBtn');
+    if (unsynced > 0) {
+      badge.classList.remove('hidden');
+      syncBtn.classList.remove('hidden');
+      badge.innerText = unsynced;
+    } else {
+      badge.classList.add('hidden');
+      syncBtn.classList.add('hidden');
+    }
+  }
+
+  async function syncOfflineRegistrations() {
+    const syncStatusDiv = document.getElementById('syncStatus');
+    if (!syncStatusDiv) {
+      const div = document.createElement('div');
+      div.id = 'syncStatus';
+      div.className = 'text-xs text-gray-500 mt-2 hidden';
+      document.querySelector('.bg-white.rounded-2xl.shadow-xl.p-6').appendChild(div);
+    }
+    const statusDiv = document.getElementById('syncStatus');
+    statusDiv.classList.remove('hidden');
+    statusDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Syncing offline registrations...';
+    try {
+      const pending = await localforage.getItem(PENDING_KEY) || [];
+      const toSync = pending.filter(p => !p.synced);
+      if (toSync.length === 0) {
+        statusDiv.innerHTML = '✅ No pending items.';
+        setTimeout(() => statusDiv.classList.add('hidden'), 2000);
+        return;
+      }
+      for (const item of toSync) {
+        // Check if user already exists (avoid duplicates)
+        const q = query(collection(db, "users"), where("phone", "==", item.phone));
+        const existing = await getDocs(q);
+        if (existing.empty) {
+          await addDoc(collection(db, "users"), {
+            fullName: item.name,
+            phone: item.phone,
+            memberCode: item.memberCode,
+            status: "active",
+            createdAt: serverTimestamp()
+          });
+        }
+        await addDoc(collection(db, "transactions"), {
+          customer: item.name,
+          customerPhone: item.phone,
+          amount: item.amount,
+          method: item.method,
+          status: "completed",
+          timestamp: serverTimestamp()
+        });
+        item.synced = true;
+      }
+      await localforage.setItem(PENDING_KEY, pending);
+      updatePendingBadge();
+      statusDiv.innerHTML = `✅ Synced ${toSync.length} registration(s).`;
+      setTimeout(() => statusDiv.classList.add('hidden'), 3000);
+      showToast(`Synced ${toSync.length} offline registrations`);
+    } catch (err) {
+      console.error(err);
+      statusDiv.innerHTML = '❌ Sync failed. Will retry later.';
+      setTimeout(() => statusDiv.classList.add('hidden'), 3000);
+      showToast("Sync failed", true);
+    }
+  }
+
+  window.addEventListener('online', () => {
+    if (navigator.onLine) {
+      showToast("Connection restored. Syncing offline registrations...");
+      syncOfflineRegistrations();
+    }
+  });
+
+  document.getElementById('syncOfflineBtn')?.addEventListener('click', syncOfflineRegistrations);
+
+  // ========== Unique Member Code Generation ==========
+  async function getUniqueMemberCode(name) {
+    const prefix = name.replace(/[^a-zA-Z0-9]/g, '').substring(0, 3).toUpperCase() || 'NEW';
+    let code, exists = true;
+    while (exists) {
+      const random = Math.floor(10000 + Math.random() * 90000);
+      code = `${prefix}${random}`;
+      const q = query(collection(db, "users"), where("memberCode", "==", code));
+      const snap = await getDocs(q);
+      if (snap.empty) exists = false;
+    }
+    return code;
+  }
+
+  // ========== Form Submission ==========
   const form = document.getElementById('registerPayForm');
   const submitBtn = document.getElementById('submitBtn');
   const errorDiv = document.getElementById('errorMsg');
@@ -113,49 +248,131 @@
   const memberCodeSpan = document.getElementById('memberCodeDisplay');
   const qrDiv = document.getElementById('qrCanvas');
 
-  function generateMemberCode(name) {
-    const prefix = name.replace(/[^a-zA-Z0-9]/g, '').substring(0, 3).toUpperCase() || 'NEW';
-    const random = Math.floor(10000 + Math.random() * 90000);
-    return `${prefix}${random}`;
-  }
-
-  async function saveUser(name, phone, memberCode) {
-    try {
-      await addDoc(collection(db, "users"), { fullName: name, phone, memberCode, status: "active", createdAt: serverTimestamp() });
-      return true;
-    } catch(e) { return false; }
-  }
-
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const name = document.getElementById('name').value.trim();
     let phoneRaw = document.getElementById('phone').value.trim();
     const amount = parseInt(document.getElementById('amount').value);
     const method = document.getElementById('method').value;
-    if (!name || !phoneRaw || !amount) { errorDiv.innerText = 'All fields required'; return; }
-    let phone = phoneRaw.replace(/\D/g,'');
+
+    if (!name || !phoneRaw || !amount) {
+      errorDiv.innerText = 'All fields required';
+      return;
+    }
+    if (!phoneRaw.match(/^\+254[0-9]{9}$/)) {
+      errorDiv.innerText = 'Phone must be in format +254712345678';
+      return;
+    }
+    if (amount < 1) {
+      errorDiv.innerText = 'Amount must be at least 1 KES';
+      return;
+    }
+
+    let phone = phoneRaw.replace(/\D/g, '');
     if (phone.startsWith('0')) phone = '254' + phone.substring(1);
     if (!phone.startsWith('254')) phone = '254' + phone;
+
     submitBtn.disabled = true;
     submitBtn.innerHTML = '<span class="spinner"></span> Processing payment...';
     errorDiv.innerText = '';
+
     try {
-      // Simulate payment – replace with real API calls
-      await new Promise(r => setTimeout(r, 2000));
-      const memberCode = generateMemberCode(name);
-      await saveUser(name, phone, memberCode);
-      QRCode.toCanvas(qrDiv, `https://whapay.space/pay.html?merchant=${memberCode}`, { width: 150 }, (err) => { if (err) console.error(err); });
+      // Simulate payment processing – replace with real M-Pesa STK Push or Stripe
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
+      let memberCode;
+      if (navigator.onLine) {
+        // Check if phone already registered
+        const q = query(collection(db, "users"), where("phone", "==", phone));
+        const existing = await getDocs(q);
+        if (!existing.empty) {
+          throw new Error('This phone number is already registered. Please login instead.');
+        }
+        memberCode = await getUniqueMemberCode(name);
+        await addDoc(collection(db, "users"), {
+          fullName: name,
+          phone: phone,
+          memberCode: memberCode,
+          status: "active",
+          createdAt: serverTimestamp()
+        });
+        await addDoc(collection(db, "transactions"), {
+          customer: name,
+          customerPhone: phone,
+          amount: amount,
+          method: method,
+          status: "completed",
+          timestamp: serverTimestamp()
+        });
+      } else {
+        memberCode = await getUniqueMemberCode(name); // offline: generate unique locally
+        await savePendingRegistration({ name, phone, amount, method, memberCode });
+        showToast("No internet. Registration saved offline. Will sync when online.", false);
+      }
+
+      // Display success UI
+      QRCode.toCanvas(qrDiv, `https://whapay.space/payment.html?merchant=${memberCode}`, { width: 150 }, (err) => { if (err) console.error(err); });
       memberCodeSpan.innerText = memberCode;
       resultDiv.classList.remove('hidden');
       form.classList.add('hidden');
-      const waMsg = `🎉 Welcome to WhaPay!\n\nYour Member Code: ${memberCode}\nPayment link: https://whapay.space/pay.html?merchant=${memberCode}\nUse this code to receive payments or pay others, even without internet.`;
+
+      // Send WhatsApp message
+      const waMsg = `🎉 Welcome to WhaPay!\n\nYour Member Code: ${memberCode}\nPayment link: https://whapay.space/payment.html?merchant=${memberCode}\nUse this code to receive payments or pay others – even without internet.`;
       window.open(`https://wa.me/${phone}?text=${encodeURIComponent(waMsg)}`, '_blank');
     } catch (err) {
       errorDiv.innerText = err.message;
+      showToast(err.message, true);
       submitBtn.disabled = false;
       submitBtn.innerHTML = 'Complete Registration & Payment';
     }
   });
+
+  // ========== Admin Auth (optional) ==========
+  const loginModal = document.getElementById('loginModal');
+  const navLoginBtn = document.getElementById('navLoginBtn');
+  const navLogoutBtn = document.getElementById('navLogoutBtn');
+  const navUserDisplay = document.getElementById('navUserDisplay');
+  let currentAdmin = null;
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      currentAdmin = user;
+      navUserDisplay.innerText = user.email;
+      navUserDisplay.classList.remove('hidden');
+      navLoginBtn.classList.add('hidden');
+      navLogoutBtn.classList.remove('hidden');
+      loginModal.classList.add('hidden');
+    } else {
+      currentAdmin = null;
+      navUserDisplay.classList.add('hidden');
+      navLoginBtn.classList.remove('hidden');
+      navLogoutBtn.classList.add('hidden');
+    }
+  });
+
+  navLoginBtn.onclick = () => loginModal.classList.remove('hidden');
+  document.getElementById('closeModalBtn').onclick = () => loginModal.classList.add('hidden');
+  document.getElementById('loginBtn').onclick = async () => {
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value.trim();
+    const errorDiv = document.getElementById('loginError');
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      errorDiv.innerText = '';
+      showToast('Logged in as admin');
+    } catch (err) {
+      errorDiv.innerText = err.message;
+    }
+  };
+  navLogoutBtn.onclick = async () => { await signOut(auth); showToast('Logged out'); };
+
+  // Service worker
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js').catch(e => console.log("SW failed", e));
+  }
+
+  // Initial pending badge
+  updatePendingBadge();
 </script>
 </body>
 </html>

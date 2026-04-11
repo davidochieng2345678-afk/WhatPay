@@ -6,26 +6,26 @@
 <meta name="google-site-verification" content="-5AhxfqMROwXYuTEiRu1Sp4bW2SA4PFf3Oc45VoN7xY" />
 <title>WhaPay – Online & Offline Payments | WhatsApp, Voice, SMS | No Internet Needed</title>
 <meta name="description" content="WhaPay: register online via WhatsApp, or offline by voice call (0140933042) or SMS. Pay using WhatsApp links, QR codes, or Member Code with M-Pesa Paybill. Works without internet. Trusted by 500+ Kenyan merchants.">
-<meta name="keywords" content="WhatsApp payments Kenya, offline registration, pay without internet, M-Pesa Paybill, member code, QR code payments, merchant dashboard, AI fraud detection, BNPL">
-<meta name="author" content="WhaPay Solutions">
-<meta name="robots" content="index, follow">
-<link rel="canonical" href="https://whapay.space/">
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-<link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#16a34a">
-<script>if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js');}</script>
+<link rel="manifest" href="/manifest.json">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <style>
   .step-card { transition: 0.2s; }
   .step-card:hover { transform: translateY(-3px); }
   .payment-card { cursor: pointer; transition: 0.2s; }
   .payment-card:hover { transform: scale(1.02); background-color: #f0fdf4; }
-  .spinner{border:2px solid #f3f3f3;border-top:2px solid #16a34a;border-radius:50%;width:24px;height:24px;animation:spin 1s linear infinite;display:inline-block;}@keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
+  .spinner { border: 2px solid #f3f3f3; border-top: 2px solid #16a34a; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; display: inline-block; }
+  @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+  .toast { transition: opacity 0.3s; }
+  .skeleton { background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 0.25rem; }
+  @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 </style>
 </head>
 <body class="bg-gray-100">
 
-<!-- ==================== FULL HEADER (ALL 17 LINKS) ==================== -->
 <header class="bg-green-600 text-white p-4 shadow-md sticky top-0 z-50">
   <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
     <h1 class="text-2xl font-bold mb-2 md:mb-0"><a href="index.html">WhaPay</a></h1>
@@ -33,7 +33,7 @@
       <span id="userEmailDisplay" class="text-sm hidden md:inline"></span>
       <button id="logoutBtn" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm hidden">Logout</button>
       <nav class="flex flex-wrap justify-center gap-2 md:gap-4">
-        <a href="index.html" class="hover:underline">Home</a>
+        <a href="index.html" class="hover:underline font-bold text-green-200">Home</a>
         <a href="merchant.html" class="hover:underline">Merchant</a>
         <a href="payment.html" class="hover:underline">Payments</a>
         <a href="users.html" class="hover:underline">My Account</a>
@@ -55,7 +55,7 @@
   </div>
 </header>
 
-<!-- Login Overlay (Email/Password) -->
+<!-- Login Overlay (Email/Password for admin actions) -->
 <div id="loginOverlay" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
   <div class="bg-white rounded-xl p-6 max-w-md w-full">
     <h2 class="text-xl font-bold mb-4">Admin Login</h2>
@@ -63,7 +63,7 @@
     <input type="password" id="loginPassword" placeholder="Password" class="w-full border p-2 rounded mb-3">
     <button id="loginBtn" class="bg-green-600 text-white w-full py-2 rounded">Login</button>
     <div id="loginError" class="text-red-500 text-sm mt-2 text-center"></div>
-    <p class="text-xs text-gray-500 text-center mt-3">Demo credentials: davidochieng99@gmail.com / your password</p>
+    <p class="text-xs text-gray-500 text-center mt-3">Demo: admin@whapay.com / your password</p>
   </div>
 </div>
 
@@ -74,16 +74,29 @@
     <p class="text-lg max-w-2xl mx-auto">Register online via WhatsApp <i class="fab fa-whatsapp"></i> OR offline by voice call or SMS to <span class="font-mono font-bold">0140933042</span>. Pay using WhatsApp links, QR codes, or your Member Code with M-Pesa Paybill. <strong>No internet? No problem.</strong> Trusted by over 500 Kenyan businesses and growing.</p>
   </div>
 
-  <!-- Trust Signal (Social Proof) -->
-  <div class="bg-white rounded-xl p-4 text-center shadow-sm mb-10">
-    <p class="text-gray-600 text-sm md:text-base">✅ <strong>Trusted for fast, secure WhatsApp & offline payments across Kenya</strong> 🇰🇪 <span class="hidden md:inline-block mx-2">•</span> <span>⭐ 4.9/5 from 2,000+ users</span></p>
+  <!-- Live Stats (from Firestore) -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+    <div class="bg-white rounded-xl shadow p-4 text-center"><p class="text-gray-500">Total Merchants</p><h2 id="totalMerchants" class="text-2xl font-bold">—</h2></div>
+    <div class="bg-white rounded-xl shadow p-4 text-center"><p class="text-gray-500">Total Transactions</p><h2 id="totalTransactions" class="text-2xl font-bold">—</h2></div>
+    <div class="bg-white rounded-xl shadow p-4 text-center"><p class="text-gray-500">Total Volume (KES)</p><h2 id="totalVolume" class="text-2xl font-bold">—</h2></div>
+  </div>
+
+  <!-- Offline Sync Panel -->
+  <div class="bg-white rounded-xl shadow p-4 mb-6">
+    <div class="flex justify-between items-center flex-wrap gap-2">
+      <div>
+        <h3 class="font-bold text-lg">📡 Offline Payment & Registration Sync</h3>
+        <p class="text-sm text-gray-600"><span id="pendingCount">0</span> pending items (registrations/payments) to sync.</p>
+      </div>
+      <button id="syncOfflineBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm">Sync Now</button>
+    </div>
+    <div id="syncStatus" class="text-xs text-gray-500 mt-2 hidden"></div>
   </div>
 
   <!-- Registration: Three detailed methods -->
   <div class="mb-12">
     <h2 class="text-2xl font-bold text-center mb-6">📝 Get Your WhaPay Member Code & QR – <span class="text-green-700">Choose Your Registration Method</span></h2>
     <div class="grid md:grid-cols-3 gap-6">
-      <!-- WhatsApp -->
       <div class="bg-white rounded-2xl shadow-lg p-5 text-center border-t-4 border-green-500">
         <i class="fab fa-whatsapp text-4xl text-green-600 mb-2"></i>
         <h3 class="text-xl font-bold">Online via WhatsApp</h3>
@@ -96,7 +109,6 @@
         </ul>
         <a href="https://wa.me/254710346425?text=REGISTER" target="_blank" class="inline-block bg-green-600 text-white px-4 py-2 rounded-full text-sm">Register on WhatsApp →</a>
       </div>
-      <!-- Voice Call -->
       <div class="bg-white rounded-2xl shadow-lg p-5 text-center border-t-4 border-blue-500">
         <i class="fas fa-phone-volume text-4xl text-blue-600 mb-2"></i>
         <h3 class="text-xl font-bold">Offline via Voice Call</h3>
@@ -109,7 +121,6 @@
         </ul>
         <a href="tel:0140933042" class="inline-block bg-blue-600 text-white px-4 py-2 rounded-full text-sm">📞 Call to Register Offline</a>
       </div>
-      <!-- SMS -->
       <div class="bg-white rounded-2xl shadow-lg p-5 text-center border-t-4 border-purple-500">
         <i class="fas fa-envelope text-4xl text-purple-600 mb-2"></i>
         <h3 class="text-xl font-bold">Offline via SMS</h3>
@@ -123,42 +134,41 @@
         <a href="sms:0140933042?body=REG%20YourName" class="inline-block bg-purple-600 text-white px-4 py-2 rounded-full text-sm">📱 Send SMS to Register</a>
       </div>
     </div>
-    <!-- QR highlight -->
     <div class="mt-8 bg-green-50 rounded-2xl p-5 flex flex-col md:flex-row items-center justify-between gap-4 border border-green-200">
       <div class="flex items-center gap-3">
         <div class="bg-white p-2 rounded-xl shadow-sm"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" /></svg></div>
-        <div><p class="font-bold text-gray-800">✨ Every user gets a unique QR code</p><p class="text-gray-600 text-sm">Scan on WhatsApp to pay, request money, or add contacts instantly – no typing errors, no manual codes.</p></div>
+        <div><p class="font-bold text-gray-800">✨ Every user gets a unique QR code</p><p class="text-gray-600 text-sm">Scan on WhatsApp to pay, request money, or add contacts instantly – no typing errors.</p></div>
       </div>
       <div class="bg-white px-4 py-2 rounded-full text-green-700 text-sm font-mono shadow-inner">Your QR = wa.me/2547...?code=DK001</div>
     </div>
   </div>
 
-  <!-- Three ways to pay with popup guide -->
+  <!-- Three ways to pay -->
   <div class="mb-12">
     <h2 class="text-2xl font-bold text-center mb-6">💸 Three Ways to Pay – <span class="text-green-700">Choose What Works for You</span></h2>
     <div class="grid md:grid-cols-3 gap-5">
       <div class="payment-card bg-white rounded-xl shadow p-4 text-center" onclick="showPaymentGuide('link')">
         <i class="fab fa-whatsapp text-3xl text-green-600 mb-2"></i>
         <h3 class="font-bold">1. WhatsApp Link</h3>
-        <p class="text-sm text-gray-600">Click the link sent by the merchant → choose M-Pesa or card → pay instantly. Confirmation sent via WhatsApp.</p>
+        <p class="text-sm text-gray-600">Click the link sent by the merchant → choose M-Pesa or card → pay instantly. Confirmation via WhatsApp.</p>
       </div>
       <div class="payment-card bg-white rounded-xl shadow p-4 text-center" onclick="showPaymentGuide('qr')">
         <i class="fas fa-qrcode text-3xl text-green-600 mb-2"></i>
         <h3 class="font-bold">2. Scan QR Code</h3>
-        <p class="text-sm text-gray-600">Point your phone camera at the merchant's QR code → payment page opens → enter amount → pay. Zero typing.</p>
+        <p class="text-sm text-gray-600">Point your phone at the merchant's QR code → payment page opens → enter amount → pay. Zero typing.</p>
       </div>
       <div class="payment-card bg-white rounded-xl shadow p-4 text-center" onclick="showPaymentGuide('code')">
         <i class="fas fa-key text-3xl text-green-600 mb-2"></i>
         <h3 class="font-bold">3. Member Code (Offline)</h3>
-        <p class="text-sm text-gray-600">Use the merchant's code (e.g., DK12345) with M-Pesa Paybill – no internet required. Both receive SMS confirmation.</p>
+        <p class="text-sm text-gray-600">Use the merchant's code (e.g., DK12345) with M-Pesa Paybill – no internet required. Both receive SMS.</p>
       </div>
     </div>
     <div id="payment-guide" class="mt-6 bg-green-50 p-4 rounded-xl border border-green-200 hidden"></div>
   </div>
 
-  <!-- Simple steps -->
+  <!-- How it works -->
   <div class="bg-white rounded-2xl shadow-lg p-6 mb-12">
-    <h2 class="text-2xl font-bold text-center mb-4">👆 How WhaPay Works – Simple Steps to Accept & Make Payments</h2>
+    <h2 class="text-2xl font-bold text-center mb-4">👆 How WhaPay Works – Simple Steps</h2>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
       <div class="step-card bg-gray-50 p-3 rounded-xl"><div class="text-3xl mb-1">1️⃣</div><i class="fas fa-user-plus text-2xl text-green-600"></i><p class="font-bold mt-1">Get Your Code & QR</p><p class="text-xs">Register online (WhatsApp) or offline (voice/SMS to 0140933042). Receive your unique Member Code and QR code instantly.</p></div>
       <div class="step-card bg-gray-50 p-3 rounded-xl"><div class="text-3xl mb-1">2️⃣</div><i class="fas fa-hand-holding-usd text-2xl text-green-600"></i><p class="font-bold mt-1">Share or Scan</p><p class="text-xs">Merchant shares their WhatsApp link, QR code, or Member Code. Customer scans or copies the code.</p></div>
@@ -172,7 +182,7 @@
     <h2 class="text-xl font-bold mb-4">📋 Recent Transactions (Live from Firestore)</h2>
     <table class="min-w-full border-collapse">
       <thead class="bg-gray-200"><tr><th class="px-4 py-2 border">ID</th><th class="px-4 py-2 border">Customer</th><th class="px-4 py-2 border">Amount (KES)</th><th class="px-4 py-2 border">Method</th><th class="px-4 py-2 border">Status</th><th class="px-4 py-2 border">Action</th></tr></thead>
-      <tbody id="transactions-tbody"><tr><td colspan="6" class="text-center p-4 text-gray-400">Loading transactions...</td></tr></tbody>
+      <tbody id="transactions-tbody"><tr><td colspan="6" class="text-center p-4"><div class="skeleton h-6 w-32 mx-auto"></div></td></tr></tbody>
     </table>
   </div>
 
@@ -182,7 +192,7 @@
     <div class="bg-blue-50 p-5 rounded-xl"><h3 class="font-bold text-lg"><i class="fas fa-user"></i> For Customers</h3><ul class="list-disc list-inside text-sm mt-2 space-y-1"><li>Register once – get your own Member Code and QR</li><li>Pay any merchant using their code or QR</li><li>Offline? Use Member Code with M-Pesa Paybill – no internet needed</li><li>Instant WhatsApp confirmation for every payment</li></ul><a href="payment.html" class="inline-block mt-3 text-blue-700 text-sm font-semibold hover:underline">Payment guide →</a></div>
   </div>
 
-  <!-- ===== OFFLINE FEATURES SECTION (Three cards) ===== -->
+  <!-- Offline Features Section -->
   <section class="py-16 bg-gray-50 rounded-2xl mb-12">
     <div class="max-w-6xl mx-auto px-4 text-center">
       <h2 class="text-3xl font-bold text-green-700 mb-3">Use WhaPay Even Without Internet</h2>
@@ -233,7 +243,7 @@
     </div>
   </section>
 
-  <!-- Testimonials / Social Proof -->
+  <!-- Testimonials -->
   <div class="bg-white rounded-2xl shadow-lg p-6 mb-12">
     <h2 class="text-2xl font-bold text-center mb-6">What Merchants Say – <strong class="text-green-700">Real Stories from Kenyan Businesses</strong></h2>
     <div class="grid md:grid-cols-2 gap-6">
@@ -242,7 +252,7 @@
     </div>
   </div>
 
-  <!-- ===== REGISTER & PAY IN ONE STEP SECTION ===== -->
+  <!-- Register & Pay in One Step -->
   <section class="py-16 bg-gray-50 rounded-2xl mb-12">
     <div class="max-w-xl mx-auto px-4">
       <div class="bg-white rounded-2xl shadow-xl p-6">
@@ -255,7 +265,6 @@
           <div><label class="block text-sm font-medium mb-1">Amount to Pay (KES) *</label><input type="number" id="osAmount" required placeholder="e.g., 500" class="w-full border rounded-lg px-4 py-2"></div>
           <div><label class="block text-sm font-medium mb-1">Payment Method</label><select id="osMethod" class="w-full border rounded-lg px-4 py-2"><option value="mpesa">M-Pesa (STK Push)</option><option value="card">Credit / Debit Card (Stripe)</option></select></div>
           <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg"><input type="checkbox" id="osRegister" checked class="w-5 h-5 text-green-600 rounded"><label for="osRegister" class="text-sm font-medium text-gray-700">Register me as a WhaPay user (get Member Code + QR for future payments)</label></div>
-          <p id="osGuestNote" class="text-xs text-gray-500 hidden">You will pay as a guest. No account will be created. You won't receive a Member Code.</p>
           <button type="submit" id="osSubmitBtn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition">Pay Now</button>
           <div id="osErrorMsg" class="text-red-500 text-sm text-center"></div>
         </form>
@@ -287,10 +296,9 @@
 
 <a href="https://wa.me/254710346425?text=Hello" target="_blank" class="fixed bottom-5 right-5 bg-green-500 text-white p-3 rounded-full shadow-lg"><i class="fab fa-whatsapp text-2xl"></i></a>
 
-<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, updateDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, updateDoc, doc, serverTimestamp, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
   import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
   const firebaseConfig = {
@@ -305,11 +313,149 @@
   const db = getFirestore(app);
   const auth = getAuth(app);
 
-  // ---- Email/Password Authentication ----
+  // ========== Global State & Helpers ==========
+  let currentUser = null;
+  let allTransactions = [];
+  const PENDING_KEY = 'whapay_pending_items';
+
+  function showToast(msg, isErr = false) {
+    let toast = document.getElementById('globalToast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'globalToast';
+      toast.className = 'fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-full text-sm z-50 transition-opacity opacity-0';
+      document.body.appendChild(toast);
+    }
+    toast.innerText = msg;
+    toast.style.backgroundColor = isErr ? '#dc2626' : '#16a34a';
+    toast.classList.remove('opacity-0');
+    toast.classList.add('opacity-100');
+    setTimeout(() => toast.classList.add('opacity-0'), 3000);
+  }
+
+  function formatKES(amount) { return `KES ${amount.toLocaleString()}`; }
+
+  // ========== Offline Sync ==========
+  async function savePendingItem(item) {
+    const pending = await localforage.getItem(PENDING_KEY) || [];
+    pending.push({ ...item, synced: false, createdAt: Date.now() });
+    await localforage.setItem(PENDING_KEY, pending);
+    updatePendingBadge();
+  }
+
+  async function updatePendingBadge() {
+    const pending = await localforage.getItem(PENDING_KEY) || [];
+    const unsynced = pending.filter(p => !p.synced).length;
+    const badgeSpan = document.getElementById('pendingCount');
+    if (badgeSpan) badgeSpan.innerText = unsynced;
+  }
+
+  async function syncOfflineItems() {
+    const syncStatusDiv = document.getElementById('syncStatus');
+    syncStatusDiv.classList.remove('hidden');
+    syncStatusDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Syncing pending registrations & payments...';
+    try {
+      const pending = await localforage.getItem(PENDING_KEY) || [];
+      const toSync = pending.filter(p => !p.synced);
+      if (toSync.length === 0) {
+        syncStatusDiv.innerHTML = '✅ No pending items.';
+        setTimeout(() => syncStatusDiv.classList.add('hidden'), 2000);
+        return;
+      }
+      for (const item of toSync) {
+        if (item.type === 'registration') {
+          await addDoc(collection(db, "users"), {
+            fullName: item.name,
+            phone: item.phone,
+            memberCode: item.memberCode,
+            status: "active",
+            createdAt: serverTimestamp()
+          });
+          await addDoc(collection(db, "transactions"), {
+            customer: item.name,
+            customerPhone: item.phone,
+            amount: item.amount,
+            method: item.method,
+            status: "completed",
+            timestamp: serverTimestamp()
+          });
+        } else if (item.type === 'payment') {
+          await addDoc(collection(db, "transactions"), {
+            customer: item.name,
+            customerPhone: item.phone,
+            amount: item.amount,
+            method: item.method,
+            status: "completed",
+            timestamp: serverTimestamp()
+          });
+        }
+        item.synced = true;
+      }
+      await localforage.setItem(PENDING_KEY, pending);
+      updatePendingBadge();
+      syncStatusDiv.innerHTML = `✅ Synced ${toSync.length} item(s).`;
+      setTimeout(() => syncStatusDiv.classList.add('hidden'), 3000);
+      showToast(`Synced ${toSync.length} offline items`);
+    } catch (err) {
+      console.error(err);
+      syncStatusDiv.innerHTML = '❌ Sync failed. Will retry later.';
+      setTimeout(() => syncStatusDiv.classList.add('hidden'), 3000);
+      showToast("Sync failed", true);
+    }
+  }
+
+  window.addEventListener('online', () => {
+    if (navigator.onLine) {
+      showToast("Connection restored. Syncing offline items...");
+      syncOfflineItems();
+    }
+  });
+
+  // ========== Live Stats ==========
+  async function loadStats() {
+    try {
+      const merchantsSnap = await getDocs(collection(db, "merchants"));
+      document.getElementById('totalMerchants').innerText = merchantsSnap.size;
+      const txSnap = await getDocs(collection(db, "transactions"));
+      let totalVol = 0;
+      txSnap.forEach(doc => { if (doc.data().status === 'completed') totalVol += (doc.data().amount || 0); });
+      document.getElementById('totalTransactions').innerText = txSnap.size;
+      document.getElementById('totalVolume').innerHTML = formatKES(totalVol);
+    } catch (err) { console.error("Stats error:", err); }
+  }
+
+  // ========== Live Transactions Table ==========
+  const q = query(collection(db, "transactions"), orderBy("timestamp", "desc"));
+  onSnapshot(q, (snapshot) => {
+    const tbody = document.getElementById('transactions-tbody');
+    if (!tbody) return;
+    allTransactions = [];
+    tbody.innerHTML = '';
+    if (snapshot.empty) {
+      tbody.innerHTML = '<tr><td colspan="6" class="text-center p-4 text-gray-400">No transactions found</td></tr>';
+      return;
+    }
+    snapshot.forEach(docSnap => {
+      const data = docSnap.data();
+      const id = docSnap.id.slice(0,6);
+      allTransactions.push({ id: docSnap.id, ...data });
+      tbody.innerHTML += `<tr class="border-b"><td class="px-4 py-2 border">${id}</td><td class="px-4 py-2 border">${data.customer || 'Anonymous'}</td><td class="px-4 py-2 border">${formatKES(data.amount || 0)}</td><td class="px-4 py-2 border">${data.method || 'mpesa'}</td><td class="px-4 py-2 border">${data.status || 'pending'}</td><td class="px-4 py-2 border"><button class="complete-tx bg-green-100 px-2 py-1 rounded text-xs" data-id="${docSnap.id}">✅ Mark Paid</button></td></tr>`;
+    });
+    document.querySelectorAll('.complete-tx').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        if (!currentUser) { showToast("Admin login required to mark paid", true); return; }
+        const id = btn.getAttribute('data-id');
+        await updateDoc(doc(db, 'transactions', id), { status: 'completed', updatedAt: serverTimestamp() });
+        showToast("Transaction marked as completed");
+      });
+    });
+    loadStats(); // refresh stats after new transaction
+  }, (err) => { console.error("Firestore error:", err); tbody.innerHTML = '<tr><td colspan="6" class="text-center p-4 text-red-500">Error loading transactions</td></tr>'; });
+
+  // ========== Auth ==========
   const loginOverlay = document.getElementById('loginOverlay');
   const userEmailDisplay = document.getElementById('userEmailDisplay');
   const logoutBtn = document.getElementById('logoutBtn');
-  let currentUser = null;
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -338,31 +484,9 @@
     }
   };
   logoutBtn.onclick = async () => { await signOut(auth); };
+  document.getElementById('syncOfflineBtn').onclick = syncOfflineItems;
 
-  // ---- Live Transactions Table ----
-  const q = query(collection(db, "transactions"), orderBy("timestamp", "desc"));
-  onSnapshot(q, (snapshot) => {
-    const tbody = document.getElementById('transactions-tbody');
-    if (!tbody) return;
-    tbody.innerHTML = '';
-    if (snapshot.empty) {
-      tbody.innerHTML = '<td><td colspan="6" class="text-center p-4 text-gray-400">No transactions found</td></tr>';
-      return;
-    }
-    snapshot.forEach(docSnap => {
-      const data = docSnap.data();
-      const id = docSnap.id.slice(0,6);
-      tbody.innerHTML += `<tr class="border-b"><td class="px-4 py-2 border">${id}</td><td class="px-4 py-2 border">${data.customer || 'Anonymous'}</td><td class="px-4 py-2 border">KES ${data.amount || 0}</td><td class="px-4 py-2 border">${data.method || 'mpesa'}</td><td class="px-4 py-2 border">${data.status || 'pending'}</td><td class="px-4 py-2 border"><button class="complete-tx bg-green-100 px-2 py-1 rounded text-xs" data-id="${docSnap.id}">✅ Mark Paid</button></td></tr>`;
-    });
-    document.querySelectorAll('.complete-tx').forEach(btn => {
-      btn.addEventListener('click', async (e) => {
-        const id = btn.getAttribute('data-id');
-        await updateDoc(doc(db, 'transactions', id), { status: 'completed', updatedAt: serverTimestamp() });
-      });
-    });
-  });
-
-  // ---- Payment Guide Popup ----
+  // ========== Payment Guide Popup ==========
   window.showPaymentGuide = (type) => {
     const guideDiv = document.getElementById('payment-guide');
     let content = '';
@@ -373,36 +497,25 @@
     guideDiv.classList.remove('hidden');
   };
 
-  // ---- Register & Pay in One Step ----
+  // ========== Register & Pay One Step ==========
   const form = document.getElementById('oneStepForm');
   const nameInput = document.getElementById('osName');
   const phoneInput = document.getElementById('osPhone');
   const amountInput = document.getElementById('osAmount');
   const methodSelect = document.getElementById('osMethod');
   const registerCheck = document.getElementById('osRegister');
-  const guestNote = document.getElementById('osGuestNote');
   const submitBtn = document.getElementById('osSubmitBtn');
-  const errorDiv = document.getElementById('osErrorMsg');
+  const errorDivMsg = document.getElementById('osErrorMsg');
   const resultDiv = document.getElementById('osResult');
   const regResultDiv = document.getElementById('osRegResult');
   const guestResultDiv = document.getElementById('osGuestResult');
   const memberCodeSpan = document.getElementById('osMemberCode');
-  const qrCanvas = document.getElementById('osQRCanvas');
-
-  registerCheck.addEventListener('change', () => { guestNote.classList.toggle('hidden', registerCheck.checked); });
+  const qrCanvasDiv = document.getElementById('osQRCanvas');
 
   function generateMemberCode(name) {
     const prefix = name.replace(/[^a-zA-Z0-9]/g, '').substring(0,3).toUpperCase() || 'NEW';
     const random = Math.floor(10000 + Math.random() * 90000);
     return `${prefix}${random}`;
-  }
-
-  async function saveUser(name, phone, memberCode) {
-    await addDoc(collection(db, "users"), { fullName: name, phone, memberCode, status: "active", createdAt: serverTimestamp() });
-  }
-
-  async function saveTransaction(phone, amount, method, status = "completed") {
-    await addDoc(collection(db, "transactions"), { customerPhone: phone, amount, method, status, createdAt: serverTimestamp() });
   }
 
   form.addEventListener('submit', async (e) => {
@@ -412,21 +525,49 @@
     const amount = parseInt(amountInput.value);
     const method = methodSelect.value;
     const shouldRegister = registerCheck.checked;
-    if (!name || !phoneRaw || !amount) { errorDiv.innerText = 'All fields required'; return; }
+    if (!name || !phoneRaw || !amount) { errorDivMsg.innerText = 'All fields required'; return; }
     let phone = phoneRaw.replace(/\D/g,'');
     if (phone.startsWith('0')) phone = '254' + phone.substring(1);
     if (!phone.startsWith('254')) phone = '254' + phone;
     submitBtn.disabled = true;
     submitBtn.innerHTML = '<span class="spinner"></span> Processing payment...';
-    errorDiv.innerText = '';
+    errorDivMsg.innerText = '';
+
     try {
-      // Simulate payment (replace with real API calls later)
+      // Simulate payment processing (replace with real M-Pesa API later)
       await new Promise(r => setTimeout(r, 2000));
-      await saveTransaction(phone, amount, method, 'completed');
-      if (shouldRegister) {
-        const memberCode = generateMemberCode(name);
-        await saveUser(name, phone, memberCode);
-        QRCode.toCanvas(qrCanvas, `https://whapay.space/pay.html?merchant=${memberCode}`, { width: 150 });
+      const memberCode = shouldRegister ? generateMemberCode(name) : null;
+      const transactionData = {
+        customer: name,
+        customerPhone: phone,
+        amount: amount,
+        method: method,
+        status: 'completed',
+        timestamp: serverTimestamp()
+      };
+      if (navigator.onLine) {
+        await addDoc(collection(db, "transactions"), transactionData);
+        if (shouldRegister) {
+          await addDoc(collection(db, "users"), {
+            fullName: name,
+            phone: phone,
+            memberCode: memberCode,
+            status: "active",
+            createdAt: serverTimestamp()
+          });
+        }
+      } else {
+        // Offline: store in IndexedDB
+        const pendingItem = {
+          type: shouldRegister ? 'registration' : 'payment',
+          name, phone, amount, method, memberCode
+        };
+        await savePendingItem(pendingItem);
+        showToast("No internet. Registration & payment saved offline. Will sync when online.", false);
+      }
+      // Show success UI
+      if (shouldRegister && memberCode) {
+        QRCode.toCanvas(qrCanvasDiv, `https://whapay.space/pay.html?merchant=${memberCode}`, { width: 150 }, (err) => { if (err) console.error(err); });
         memberCodeSpan.innerText = memberCode;
         regResultDiv.classList.remove('hidden');
         guestResultDiv.classList.add('hidden');
@@ -441,13 +582,21 @@
       form.classList.add('hidden');
       resultDiv.classList.remove('hidden');
     } catch (err) {
-      errorDiv.innerText = err.message;
+      errorDivMsg.innerText = err.message;
+      showToast(err.message, true);
+    } finally {
       submitBtn.disabled = false;
       submitBtn.innerHTML = 'Pay Now';
     }
   });
+
+  // Service worker
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js').catch(e => console.log("SW failed", e));
+  }
+
+  // Initial pending badge load
+  updatePendingBadge();
 </script>
 </body>
 </html>
-
-

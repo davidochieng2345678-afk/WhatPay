@@ -32,14 +32,15 @@
 }
 </script>
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#16a34a">
-<script>if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js');}</script>
 <style>
   .step-card { transition: transform 0.2s, box-shadow 0.2s; }
   .step-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.02); }
   .step-number { background: #16a34a; color: white; width: 40px; height: 40px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.25rem; margin-bottom: 1rem; }
+  .toast { transition: opacity 0.3s; }
 </style>
 </head>
 <body class="bg-gray-100 font-sans">
@@ -48,6 +49,11 @@
   <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
     <h1 class="text-2xl font-bold mb-2 md:mb-0"><a href="index.html">WhaPay Process</a></h1>
     <div class="flex flex-wrap items-center gap-2 md:gap-4">
+      <span id="pendingSyncBadge" class="bg-yellow-500 text-white text-xs px-2 py-1 rounded-full hidden">Sync Pending</span>
+      <button id="syncOfflineBtn" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm hidden">Sync</button>
+      <span id="navUserDisplay" class="text-sm hidden md:inline"></span>
+      <button id="navLoginBtn" class="bg-white text-green-700 px-3 py-1 rounded text-sm font-semibold hover:bg-gray-100">Admin</button>
+      <button id="navLogoutBtn" class="bg-red-500 text-white px-3 py-1 rounded text-sm font-semibold hover:bg-red-600 hidden">Logout</button>
       <nav class="flex flex-wrap gap-2">
         <a href="index.html" class="hover:underline">Home</a>
         <a href="about.html" class="hover:underline">About</a>
@@ -59,14 +65,21 @@
         <a href="contact.html" class="hover:underline">Contact</a>
         <a href="admin.html" class="hover:underline">Admin</a>
       </nav>
-      <div class="flex items-center gap-2">
-        <span id="navUserDisplay" class="text-sm hidden md:inline"></span>
-        <button id="navLoginBtn" class="bg-white text-green-700 px-3 py-1 rounded text-sm font-semibold hover:bg-gray-100">Login</button>
-        <button id="navLogoutBtn" class="bg-red-500 text-white px-3 py-1 rounded text-sm font-semibold hover:bg-red-600 hidden">Logout</button>
-      </div>
     </div>
   </div>
 </header>
+
+<!-- Admin Login Modal -->
+<div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+  <div class="bg-white rounded-xl p-6 max-w-md w-full">
+    <h2 class="text-xl font-bold mb-4">Admin Login</h2>
+    <input type="email" id="loginEmail" placeholder="Email" class="w-full border p-2 rounded mb-3">
+    <input type="password" id="loginPassword" placeholder="Password" class="w-full border p-2 rounded mb-3">
+    <button id="loginBtn" class="bg-green-600 text-white w-full py-2 rounded">Login</button>
+    <button id="closeModalBtn" class="text-gray-500 text-sm w-full mt-2">Cancel</button>
+    <div id="loginError" class="text-red-500 text-sm mt-2 text-center"></div>
+  </div>
+</div>
 
 <main class="max-w-7xl mx-auto px-4 py-8">
   <!-- Hero Section -->
@@ -183,22 +196,26 @@
     <p class="text-center text-sm text-gray-500 mt-6">Merchant registers → gets Member Code & QR → customer pays via WhatsApp link, QR scan, or offline Member Code → both get confirmation → merchant tracks in dashboard.</p>
   </div>
 
-  <!-- Video / Demo Placeholder (optional) -->
-  <div class="bg-gray-800 rounded-2xl p-6 text-center text-white mb-12">
-    <i class="fas fa-play-circle text-5xl mb-3"></i>
-    <h3 class="text-xl font-bold mb-2">Watch a 2‑Minute Demo</h3>
-    <p class="text-gray-300">See how easy it is to register, share, and accept payments with WhaPay.</p>
-    <a href="#" class="inline-block mt-3 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg">Coming Soon →</a>
-  </div>
-
-  <!-- Call to Action -->
+  <!-- Call to Action with Offline-Ready Lead Form -->
   <div class="bg-gradient-to-r from-green-600 to-green-700 text-white rounded-2xl p-8 text-center">
     <h2 class="text-3xl font-bold mb-3">Ready to Follow These Steps?</h2>
     <p class="mb-6 max-w-xl mx-auto">**Register now – it's free.** Get your Member Code and QR code instantly. Start accepting payments online or offline today.</p>
-    <div class="flex flex-wrap justify-center gap-4">
+    <div class="flex flex-wrap justify-center gap-4 mb-6">
       <a href="https://wa.me/254710346425?text=REGISTER" class="bg-white text-green-700 font-bold px-6 py-3 rounded-full shadow hover:bg-gray-100">WhatsApp Registration</a>
       <a href="tel:0140933042" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-3 rounded-full shadow">📞 Voice Call Registration</a>
       <a href="sms:0140933042?body=REG%20YourName" class="bg-purple-600 hover:bg-purple-700 text-white font-bold px-6 py-3 rounded-full shadow">📱 SMS Registration</a>
+    </div>
+
+    <!-- Lead Capture Form (Offline-Ready) -->
+    <div class="max-w-md mx-auto bg-white/10 backdrop-blur-sm rounded-xl p-4 mt-4">
+      <h3 class="text-lg font-semibold mb-2">Get a Free Consultation</h3>
+      <p class="text-xs mb-3">Leave your details and we'll call you back within 24 hours.</p>
+      <form id="processLeadForm" class="space-y-3">
+        <input type="text" id="leadName" placeholder="Your Name" required class="w-full rounded-lg px-3 py-2 text-gray-900 text-sm">
+        <input type="email" id="leadEmail" placeholder="Email Address" required class="w-full rounded-lg px-3 py-2 text-gray-900 text-sm">
+        <button type="submit" class="w-full bg-white text-green-700 font-bold py-2 rounded-lg hover:shadow-lg transition text-sm">Request Callback →</button>
+      </form>
+      <div id="formStatus" class="text-xs mt-2"></div>
     </div>
     <p class="text-xs mt-4 opacity-80">After registration, you'll receive a unique Member Code (e.g., DK12345) and QR code – use them to pay or receive money instantly, even without internet.</p>
   </div>
@@ -211,10 +228,192 @@
 
 <a href="https://wa.me/254710346425?text=Hello%20WhaPay" target="_blank" class="fixed bottom-5 right-5 bg-green-500 text-white p-3 rounded-full shadow-lg hover:bg-green-600 z-50"><i class="fab fa-whatsapp text-2xl"></i></a>
 
-<script type="module" src="/auth.js"></script>
 <script type="module">
-  document.getElementById('navLoginBtn')?.addEventListener('click', () => window.showLoginModal());
-  document.getElementById('navLogoutBtn')?.addEventListener('click', () => window.logoutUser());
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, serverTimestamp, writeBatch, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDPAvq6BgpdfZAkfoEwdwmHrWedHgzjRSk",
+    authDomain: "whapay-c93ab.firebaseapp.com",
+    projectId: "whapay-c93ab",
+    storageBucket: "whapay-c93ab.firebasestorage.app",
+    messagingSenderId: "205456952458",
+    appId: "1:205456952458:web:6533921ca10a2988417173"
+  };
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
+
+  // Helper: Toast
+  function showToast(msg, isErr = false) {
+    let toast = document.getElementById('globalToast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'globalToast';
+      toast.className = 'fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-full text-sm z-50 transition-opacity opacity-0';
+      document.body.appendChild(toast);
+    }
+    toast.innerText = msg;
+    toast.style.backgroundColor = isErr ? '#dc2626' : '#16a34a';
+    toast.classList.remove('opacity-0');
+    toast.classList.add('opacity-100');
+    setTimeout(() => toast.classList.add('opacity-0'), 3000);
+  }
+
+  // Offline Sync for Lead Form
+  const PENDING_LEADS_KEY = 'whapay_pending_process_leads';
+  async function savePendingLead(lead) {
+    const pending = await localforage.getItem(PENDING_LEADS_KEY) || [];
+    pending.push({ ...lead, synced: false, createdAt: Date.now() });
+    await localforage.setItem(PENDING_LEADS_KEY, pending);
+    updatePendingBadge();
+  }
+
+  async function updatePendingBadge() {
+    const pending = await localforage.getItem(PENDING_LEADS_KEY) || [];
+    const unsynced = pending.filter(p => !p.synced).length;
+    const badge = document.getElementById('pendingSyncBadge');
+    const syncBtn = document.getElementById('syncOfflineBtn');
+    if (unsynced > 0) {
+      badge.classList.remove('hidden');
+      syncBtn.classList.remove('hidden');
+      badge.innerText = unsynced;
+    } else {
+      badge.classList.add('hidden');
+      syncBtn.classList.add('hidden');
+    }
+  }
+
+  async function syncOfflineLeads() {
+    const syncStatusDiv = document.getElementById('formStatus');
+    syncStatusDiv.innerHTML = '<span class="text-white"><i class="fas fa-spinner fa-spin"></i> Syncing...</span>';
+    try {
+      const pending = await localforage.getItem(PENDING_LEADS_KEY) || [];
+      const toSync = pending.filter(p => !p.synced);
+      if (toSync.length === 0) {
+        syncStatusDiv.innerHTML = '<span class="text-green-300">✅ No pending leads.</span>';
+        setTimeout(() => syncStatusDiv.innerHTML = '', 2000);
+        return;
+      }
+      const batch = writeBatch(db);
+      for (const lead of toSync) {
+        const leadRef = doc(collection(db, "process_leads"));
+        batch.set(leadRef, {
+          name: lead.name,
+          email: lead.email,
+          page: "process",
+          createdAt: serverTimestamp(),
+          offlineSync: true
+        });
+      }
+      await batch.commit();
+      const remaining = pending.filter(p => !toSync.includes(p));
+      await localforage.setItem(PENDING_LEADS_KEY, remaining);
+      updatePendingBadge();
+      syncStatusDiv.innerHTML = `<span class="text-green-300">✅ Synced ${toSync.length} lead(s).</span>`;
+      setTimeout(() => syncStatusDiv.innerHTML = '', 3000);
+      showToast(`Synced ${toSync.length} offline leads`);
+    } catch (err) {
+      console.error(err);
+      syncStatusDiv.innerHTML = '<span class="text-red-300">❌ Sync failed.</span>';
+      setTimeout(() => syncStatusDiv.innerHTML = '', 3000);
+      showToast("Sync failed", true);
+    }
+  }
+
+  window.addEventListener('online', () => {
+    if (navigator.onLine) {
+      showToast("Connection restored. Syncing offline leads...");
+      syncOfflineLeads();
+    }
+  });
+
+  document.getElementById('syncOfflineBtn')?.addEventListener('click', syncOfflineLeads);
+
+  // Lead Form Submission
+  const form = document.getElementById('processLeadForm');
+  const statusDiv = document.getElementById('formStatus');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = document.getElementById('leadName').value.trim();
+    const email = document.getElementById('leadEmail').value.trim();
+    if (!name || !email) {
+      statusDiv.innerHTML = '<span class="text-yellow-200">Please fill in both fields.</span>';
+      return;
+    }
+    const submitBtn = form.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    submitBtn.innerText = 'Sending...';
+    statusDiv.innerHTML = '<span class="text-white"><i class="fas fa-spinner fa-spin"></i> Saving...</span>';
+    try {
+      if (navigator.onLine) {
+        await addDoc(collection(db, "process_leads"), { name, email, page: "process", createdAt: serverTimestamp() });
+        statusDiv.innerHTML = '<span class="text-green-300">✅ Thanks! We will contact you shortly.</span>';
+        form.reset();
+        setTimeout(() => statusDiv.innerHTML = '', 5000);
+        showToast("Request saved successfully");
+      } else {
+        await savePendingLead({ name, email });
+        statusDiv.innerHTML = '<span class="text-yellow-200">📡 No internet. Request saved offline. Will sync when online.</span>';
+        form.reset();
+        setTimeout(() => statusDiv.innerHTML = '', 5000);
+        showToast("Request saved offline. Will sync when online.");
+      }
+    } catch (err) {
+      console.error(err);
+      statusDiv.innerHTML = '<span class="text-red-300">❌ Error. Please try again or WhatsApp us.</span>';
+      showToast("Error saving request", true);
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerText = 'Request Callback →';
+    }
+  });
+
+  // Admin Auth (optional)
+  const loginModal = document.getElementById('loginModal');
+  const navLoginBtn = document.getElementById('navLoginBtn');
+  const navLogoutBtn = document.getElementById('navLogoutBtn');
+  const navUserDisplay = document.getElementById('navUserDisplay');
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      navUserDisplay.innerText = user.email;
+      navUserDisplay.classList.remove('hidden');
+      navLoginBtn.classList.add('hidden');
+      navLogoutBtn.classList.remove('hidden');
+      loginModal.classList.add('hidden');
+    } else {
+      navUserDisplay.classList.add('hidden');
+      navLoginBtn.classList.remove('hidden');
+      navLogoutBtn.classList.add('hidden');
+    }
+  });
+
+  navLoginBtn.onclick = () => loginModal.classList.remove('hidden');
+  document.getElementById('closeModalBtn').onclick = () => loginModal.classList.add('hidden');
+  document.getElementById('loginBtn').onclick = async () => {
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value.trim();
+    const errorDiv = document.getElementById('loginError');
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      errorDiv.innerText = '';
+      showToast('Logged in as admin');
+      loginModal.classList.add('hidden');
+    } catch (err) {
+      errorDiv.innerText = err.message;
+    }
+  };
+  navLogoutBtn.onclick = async () => { await signOut(auth); showToast('Logged out'); };
+
+  // Service Worker
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js').catch(e => console.log("SW failed", e));
+  }
+
+  // Initial pending badge
+  updatePendingBadge();
 </script>
 </body>
 </html>

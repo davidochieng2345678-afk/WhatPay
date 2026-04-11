@@ -17,10 +17,11 @@ const urlsToCache = [
   '/sketch.html',
   '/privacy.html',
   '/terms.html',
-  '/auth.js',          // <-- kept as requested
+  '/auth.js',
+  '/offline.html',
   '/manifest.json',
   '/whapay-logo.svg',
-  // External CDNs (optional - cache for offline)
+  // External CDNs
   'https://cdn.tailwindcss.com',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css',
   'https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js',
@@ -34,18 +35,18 @@ const urlsToCache = [
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
-      console.log('Caching static assets');
+      console.log('Caching WhaPay static assets');
       return cache.addAll(urlsToCache);
     })
   );
   self.skipWaiting(); // activate immediately
 });
 
-// Fetch event – network-first for HTML pages (including those with auth.js), cache-first for static
+// Fetch event – network-first for HTML pages, cache-first for static
 self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
   
-  // For HTML pages (including those that might load auth.js), try network first, then cache
+  // For HTML pages (navigate requests), try network first, fallback to cache, then offline.html
   if (event.request.mode === 'navigate') {
     event.respondWith(
       fetch(event.request)
@@ -57,12 +58,11 @@ self.addEventListener('fetch', event => {
           });
           return response;
         })
-        .catch(() => {
-          return caches.match(event.request).then(cached => {
-            if (cached) return cached;
-            // Optional fallback to offline page
-            return caches.match('/offline.html');
-          });
+        .catch(async () => {
+          const cachedResponse = await caches.match(event.request);
+          if (cachedResponse) return cachedResponse;
+          // Fallback to offline page
+          return caches.match('/offline.html');
         })
     );
     return;
@@ -73,7 +73,7 @@ self.addEventListener('fetch', event => {
     caches.match(event.request).then(cached => {
       if (cached) return cached;
       return fetch(event.request).then(response => {
-        // Cache new assets on the fly
+        // Cache new assets on the fly if they are successful
         if (response.status === 200) {
           const responseClone = response.clone();
           caches.open(CACHE_NAME).then(cache => {

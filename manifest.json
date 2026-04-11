@@ -1,16 +1,73 @@
 {
-  "name": "WhaPay",
+  "name": "WhaPay – Online & Offline Payments",
   "short_name": "WhaPay",
+  "description": "Accept WhatsApp payments, QR codes, and offline M-Pesa. Register via 0140933042.",
   "start_url": "/index.html",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#ffffff",
   "theme_color": "#16a34a",
+  "scope": "/",
   "icons": [
+    {
+      "src": "/icons/whapay-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/whapay-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
     {
       "src": "/whapay-logo.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"
     }
-  ]
+  ],
+  "shortcuts": [
+    {
+      "name": "Merchant Dashboard",
+      "short_name": "Dashboard",
+      "description": "Go to your merchant dashboard",
+      "url": "/merchant.html",
+      "icons": [{ "src": "/icons/dashboard-96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Make a Payment",
+      "short_name": "Pay",
+      "description": "Quick payment page",
+      "url": "/payment.html",
+      "icons": [{ "src": "/icons/payment-96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Register Offline",
+      "short_name": "Register",
+      "description": "Offline registration via 0140933042",
+      "url": "/registration.html",
+      "icons": [{ "src": "/icons/register-96.png", "sizes": "96x96" }]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/dashboard-mobile.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Merchant dashboard on mobile"
+    },
+    {
+      "src": "/screenshots/payment-mobile.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Payment page"
+    }
+  ],
+  "categories": ["finance", "business", "productivity"],
+  "prefer_related_applications": false,
+  "related_applications": []
 }

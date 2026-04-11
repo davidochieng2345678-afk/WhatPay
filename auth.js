@@ -55,22 +55,45 @@ function injectLoginModal() {
           <button id="loginBtn" class="bg-green-600 text-white w-full py-2 rounded">Login</button>
           <div id="loginError" class="text-red-500 text-sm mt-2 text-center"></div>
         </div>
-        <p class="text-xs text-gray-500 text-center mt-3">Demo credentials: davidochieng99@gmail.com / your password</p>
+        <p class="text-xs text-gray-500 text-center mt-3">Admin only: use your Firebase Auth credentials</p>
       </div>
     </div>
   `;
   document.body.insertAdjacentHTML('beforeend', modalHTML);
+  
+  // Attach event listeners after injection
+  document.getElementById('closeLoginModal')?.addEventListener('click', () => window.hideLoginModal());
+  document.getElementById('loginBtn')?.addEventListener('click', async () => {
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value.trim();
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      window.hideLoginModal();
+    } catch (err) {
+      document.getElementById('loginError').innerText = err.message;
+    }
+  });
+  
+  // Close modal when clicking outside (optional)
+  window.addEventListener('click', (e) => {
+    const modal = document.getElementById('loginModal');
+    if (e.target === modal) window.hideLoginModal();
+  });
 }
 
 window.showLoginModal = function() {
   const modal = document.getElementById('loginModal');
   if (modal) modal.classList.remove('hidden');
+  // Clear previous error
+  const errorDiv = document.getElementById('loginError');
+  if (errorDiv) errorDiv.innerText = '';
 };
 
 window.hideLoginModal = function() {
   const modal = document.getElementById('loginModal');
   if (modal) modal.classList.add('hidden');
-  document.getElementById('loginError').innerText = '';
+  const errorDiv = document.getElementById('loginError');
+  if (errorDiv) errorDiv.innerText = '';
 };
 
 window.logoutUser = async function() {
@@ -104,17 +127,6 @@ function updateAuthUI() {
 
 function initAuth() {
   injectLoginModal();
-  document.getElementById('closeLoginModal')?.addEventListener('click', () => window.hideLoginModal());
-  document.getElementById('loginBtn')?.addEventListener('click', async () => {
-    const email = document.getElementById('loginEmail').value.trim();
-    const password = document.getElementById('loginPassword').value.trim();
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      window.hideLoginModal();
-    } catch (err) {
-      document.getElementById('loginError').innerText = err.message;
-    }
-  });
   
   onAuthStateChanged(auth, (user) => {
     window.currentUser = user;
@@ -124,9 +136,16 @@ function initAuth() {
   });
 }
 
-// Wait for DOM to load before initializing
+// Start auth when DOM is ready
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initAuth);
 } else {
   initAuth();
 }
+
+
+
+
+
+
+

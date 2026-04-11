@@ -9,9 +9,7 @@
 <link rel="manifest" href="/manifest.json">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <script src="https://cdn.tailwindcss.com"></script>
-<!-- Load QR code library once -->
 <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
-<!-- localForage for offline storage -->
 <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
 <style>
   .toast { transition: opacity 0.3s; }
@@ -175,15 +173,14 @@
 <a href="https://wa.me/254710346425" target="_blank" class="fixed bottom-5 right-5 bg-green-500 text-white p-3 rounded-full shadow-lg z-50"><i class="fab fa-whatsapp text-xl"></i></a>
 
 <script type="module">
-  // ==================== CONFIGURATION ====================
-  // Replace with your Firebase project config
+  // ==================== CORRECT FIREBASE CONFIG FOR WHAPAY ====================
   const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT.appspot.com",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyDPAvq6BgpdfZAkfoEwdwmHrWedHgzjRSk",
+    authDomain: "whapay-c93ab.firebaseapp.com",
+    projectId: "whapay-c93ab",
+    storageBucket: "whapay-c93ab.firebasestorage.app",
+    messagingSenderId: "205456952458",
+    appId: "1:205456952458:web:6533921ca10a2988417173"
   };
   
   // Offline storage keys
@@ -206,10 +203,10 @@
     setTimeout(() => toast.classList.add('opacity-0'), 3000);
   };
   
-  // Initialize Firebase (lazy load to avoid blocking)
-  const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js");
-  const { getFirestore, collection, addDoc, query, where, getDocs, onSnapshot, serverTimestamp, orderBy, doc, updateDoc, writeBatch } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
-  const { getAuth, signInWithPhoneNumber, RecaptchaVerifier, onAuthStateChanged, signOut } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js");
+  // Initialize Firebase
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, query, where, getDocs, onSnapshot, serverTimestamp, orderBy, doc, updateDoc, writeBatch } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { getAuth, signInWithPhoneNumber, RecaptchaVerifier, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
   
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
@@ -286,7 +283,7 @@
       }
       await batch.commit();
       // Mark as synced
-      const remaining = pending.filter(t => toSync.includes(t));
+      const remaining = pending.filter(t => !toSync.includes(t));
       const newPending = pending.filter(t => !toSync.includes(t));
       await localforage.setItem(PENDING_TXS_KEY, newPending);
       updatePendingBadge();
@@ -554,11 +551,7 @@
     statusDiv.innerHTML = 'Creating your merchant account...';
     try {
       // First, sign up the user with phone auth (if not already)
-      let userCred;
       if (!auth.currentUser) {
-        // We need to send OTP to this phone? For simplicity, assume the merchant is registering themselves.
-        // In a real flow, you'd send OTP. Here we'll just create a temporary user? Not safe.
-        // Better: redirect to login. But for demo, we'll require user to be logged in.
         window.showToast('Please login first using the same phone number', true);
         return;
       }

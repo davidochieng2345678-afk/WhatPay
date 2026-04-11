@@ -30,66 +30,53 @@
 }
 </script>
 
-<!-- Tailwind CSS + Font Awesome -->
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#16a34a">
-<script>if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js');}</script>
-
-<!-- Firebase SDK -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyDPAvq6BgpdfZAkfoEwdwmHrWedHgzjRSk",
-    authDomain: "whapay-c93ab.firebaseapp.com",
-    projectId: "whapay-c93ab",
-    storageBucket: "whapay-c93ab.firebasestorage.app",
-    messagingSenderId: "205456952458",
-    appId: "1:205456952458:web:6533921ca10a2988417173"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  window.db = db;
-
-  // Toast helper
-  window.showToast = function(msg, isError = false) {
-    let toast = document.getElementById('toast-msg');
-    if (!toast) {
-      toast = document.createElement('div');
-      toast.id = 'toast-msg';
-      toast.className = 'fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white px-5 py-2 rounded-full text-sm z-50 hidden';
-      document.body.appendChild(toast);
-    }
-    toast.innerText = msg;
-    toast.classList.remove('hidden');
-    setTimeout(() => toast.classList.add('hidden'), 4000);
-  };
-</script>
+<style>
+  .toast { transition: opacity 0.3s; }
+</style>
 </head>
 <body class="bg-gray-100 font-sans text-gray-800">
 
-<!-- Header (consistent with all pages) -->
-<header class="bg-green-600 text-white p-4 shadow-md">
-  <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:justify-between items-center">
+<header class="bg-green-600 text-white p-4 shadow-md sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
     <h1 class="text-2xl font-bold mb-2 md:mb-0"><a href="index.html">WhaPay</a></h1>
-    <nav class="flex flex-wrap justify-center gap-2 md:gap-4">
-      <a href="index.html" class="hover:underline">Home</a>
-      <a href="about.html" class="hover:underline">About</a>
-      <a href="features.html" class="hover:underline">Features</a>
-      <a href="pricing.html" class="hover:underline">Pricing</a>
-      <a href="merchant.html" class="hover:underline">Merchant</a>
-      <a href="payment.html" class="hover:underline">Payment</a>
-      <a href="reports.html" class="hover:underline">Reports</a>
-      <a href="blog.html" class="hover:underline">Blogs</a>
-      <a href="contact.html" class="hover:underline font-bold text-green-200">Contact</a>
-      <a href="admin.html" class="hover:underline">Admin</a>
-    </nav>
+    <div class="flex flex-wrap items-center gap-2 md:gap-4">
+      <span id="pendingSyncBadge" class="bg-yellow-500 text-white text-xs px-2 py-1 rounded-full hidden">Sync Pending</span>
+      <button id="syncOfflineBtn" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm hidden">Sync</button>
+      <span id="navUserDisplay" class="text-sm hidden md:inline"></span>
+      <button id="navLoginBtn" class="bg-white text-green-700 px-3 py-1 rounded text-sm font-semibold hover:bg-gray-100">Admin</button>
+      <button id="navLogoutBtn" class="bg-red-500 text-white px-3 py-1 rounded text-sm font-semibold hover:bg-red-600 hidden">Logout</button>
+      <nav class="flex flex-wrap gap-2">
+        <a href="index.html" class="hover:underline">Home</a>
+        <a href="about.html" class="hover:underline">About</a>
+        <a href="features.html" class="hover:underline">Features</a>
+        <a href="pricing.html" class="hover:underline">Pricing</a>
+        <a href="merchant.html" class="hover:underline">Merchant</a>
+        <a href="payment.html" class="hover:underline">Payment</a>
+        <a href="reports.html" class="hover:underline">Reports</a>
+        <a href="blog.html" class="hover:underline">Blogs</a>
+        <a href="contact.html" class="hover:underline font-bold text-green-200">Contact</a>
+        <a href="admin.html" class="hover:underline">Admin</a>
+      </nav>
+    </div>
   </div>
 </header>
+
+<!-- Admin Login Modal -->
+<div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+  <div class="bg-white rounded-xl p-6 max-w-md w-full">
+    <h2 class="text-xl font-bold mb-4">Admin Login</h2>
+    <input type="email" id="loginEmail" placeholder="Email" class="w-full border p-2 rounded mb-3">
+    <input type="password" id="loginPassword" placeholder="Password" class="w-full border p-2 rounded mb-3">
+    <button id="loginBtn" class="bg-green-600 text-white w-full py-2 rounded">Login</button>
+    <button id="closeModalBtn" class="text-gray-500 text-sm w-full mt-2">Cancel</button>
+    <div id="loginError" class="text-red-500 text-sm mt-2 text-center"></div>
+  </div>
+</div>
 
 <!-- Hero Section -->
 <section class="bg-gradient-to-r from-green-700 to-green-500 text-white py-12 px-4 text-center">
@@ -99,9 +86,11 @@
 
 <main class="max-w-5xl mx-auto px-4 py-8">
 
-  <!-- CONTACT FORM (with Firebase) -->
+  <!-- CONTACT FORM (with offline support) -->
   <section class="bg-white shadow-lg rounded-lg p-6 mb-12">
     <h2 class="text-2xl font-bold mb-6 text-center text-green-600">Send us a message</h2>
+    
+    <div id="syncStatus" class="text-xs text-center text-gray-500 hidden mb-3"></div>
     
     <form id="contactForm" class="space-y-4">
       <div>
@@ -140,6 +129,7 @@
       <iframe class="w-full h-full" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.123456!2d36.8219!3d-1.2921!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f1a0abcd12345%3A0x123456789abcdef!2sNairobi%2C%20Kenya!5e0!3m2!1sen!2sus!4v1612345678901!5m2!1sen!2sus" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
   </section>
+</main>
 
 <footer class="bg-gray-900 text-gray-300 pt-12 pb-6 mt-10">
   <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
@@ -173,7 +163,7 @@
       <p class="text-sm text-gray-400 mb-3">Start accepting payments via WhatsApp today.</p>
       <a href="https://wa.me/254710346425" target="_blank" class="block bg-green-500 hover:bg-green-600 text-white text-center py-2 px-4 rounded mb-3">Chat on WhatsApp</a>
       <p class="text-sm text-gray-400">Email: <a href="mailto:support@whapay.com" class="hover:text-green-400">support@whapay.com</a></p>
-      <p class="text-sm text-gray-400">Offline registration: <a href="tel:+254705728896" class="hover:text-green-400">+254705728896</a> (voice/SMS)</p>
+      <p class="text-sm text-gray-400">Offline registration: <a href="tel:0140933042" class="hover:text-green-400">0140933042</a> (voice/SMS)</p>
     </div>
   </div>
   <div class="border-t border-gray-800 mt-10 pt-6 text-center text-sm text-gray-500">
@@ -190,11 +180,113 @@
 <a href="https://wa.me/254710346425?text=Hello%20WhaPay%20Support" target="_blank" class="fixed bottom-5 right-5 bg-green-500 text-white p-3 rounded-full shadow-lg hover:bg-green-600 z-50 transition"><i class="fab fa-whatsapp text-xl"></i></a>
 
 <script type="module">
-  // Contact form submission to Firebase
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, serverTimestamp, writeBatch, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDPAvq6BgpdfZAkfoEwdwmHrWedHgzjRSk",
+    authDomain: "whapay-c93ab.firebaseapp.com",
+    projectId: "whapay-c93ab",
+    storageBucket: "whapay-c93ab.firebasestorage.app",
+    messagingSenderId: "205456952458",
+    appId: "1:205456952458:web:6533921ca10a2988417173"
+  };
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
+
+  // Helper: Toast
+  function showToast(msg, isErr = false) {
+    let toast = document.getElementById('globalToast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'globalToast';
+      toast.className = 'fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-full text-sm z-50 transition-opacity opacity-0';
+      document.body.appendChild(toast);
+    }
+    toast.innerText = msg;
+    toast.style.backgroundColor = isErr ? '#dc2626' : '#16a34a';
+    toast.classList.remove('opacity-0');
+    toast.classList.add('opacity-100');
+    setTimeout(() => toast.classList.add('opacity-0'), 3000);
+  }
+
+  // ========== Offline Sync for Contact Messages ==========
+  const PENDING_CONTACTS_KEY = 'whapay_pending_contacts';
+  async function savePendingContact(contact) {
+    const pending = await localforage.getItem(PENDING_CONTACTS_KEY) || [];
+    pending.push({ ...contact, synced: false, createdAt: Date.now() });
+    await localforage.setItem(PENDING_CONTACTS_KEY, pending);
+    updatePendingBadge();
+  }
+
+  async function updatePendingBadge() {
+    const pending = await localforage.getItem(PENDING_CONTACTS_KEY) || [];
+    const unsynced = pending.filter(p => !p.synced).length;
+    const badge = document.getElementById('pendingSyncBadge');
+    const syncBtn = document.getElementById('syncOfflineBtn');
+    if (unsynced > 0) {
+      badge.classList.remove('hidden');
+      syncBtn.classList.remove('hidden');
+      badge.innerText = unsynced;
+    } else {
+      badge.classList.add('hidden');
+      syncBtn.classList.add('hidden');
+    }
+  }
+
+  async function syncOfflineContacts() {
+    const syncStatusDiv = document.getElementById('syncStatus');
+    syncStatusDiv.classList.remove('hidden');
+    syncStatusDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Syncing offline messages...';
+    try {
+      const pending = await localforage.getItem(PENDING_CONTACTS_KEY) || [];
+      const toSync = pending.filter(p => !p.synced);
+      if (toSync.length === 0) {
+        syncStatusDiv.innerHTML = '✅ No pending messages.';
+        setTimeout(() => syncStatusDiv.classList.add('hidden'), 2000);
+        return;
+      }
+      const batch = writeBatch(db);
+      for (const msg of toSync) {
+        const msgRef = doc(collection(db, "contact_messages"));
+        batch.set(msgRef, {
+          name: msg.name,
+          email: msg.email,
+          phone: msg.phone,
+          message: msg.message,
+          timestamp: serverTimestamp(),
+          offlineSync: true
+        });
+      }
+      await batch.commit();
+      const remaining = pending.filter(p => !toSync.includes(p));
+      await localforage.setItem(PENDING_CONTACTS_KEY, remaining);
+      updatePendingBadge();
+      syncStatusDiv.innerHTML = `✅ Synced ${toSync.length} message(s).`;
+      setTimeout(() => syncStatusDiv.classList.add('hidden'), 3000);
+      showToast(`Synced ${toSync.length} offline messages`);
+    } catch (err) {
+      console.error(err);
+      syncStatusDiv.innerHTML = '❌ Sync failed. Will retry later.';
+      setTimeout(() => syncStatusDiv.classList.add('hidden'), 3000);
+      showToast("Sync failed", true);
+    }
+  }
+
+  window.addEventListener('online', () => {
+    if (navigator.onLine) {
+      showToast("Connection restored. Syncing offline messages...");
+      syncOfflineContacts();
+    }
+  });
+
+  document.getElementById('syncOfflineBtn')?.addEventListener('click', syncOfflineContacts);
+
+  // ========== Contact Form Submission ==========
   const form = document.getElementById('contactForm');
   const formMessage = document.getElementById('formMessage');
-  const { getFirestore, collection, addDoc, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
-  const db = window.db;
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -213,29 +305,73 @@
     submitBtn.innerText = 'Sending...';
 
     try {
-      await addDoc(collection(db, "contact_messages"), {
-        name, email, phone, message, timestamp: serverTimestamp()
-      });
-      formMessage.innerHTML = '<span class="text-green-600">✅ Message sent successfully! We will get back to you soon.</span>';
-      form.reset();
+      if (navigator.onLine) {
+        await addDoc(collection(db, "contact_messages"), {
+          name, email, phone, message, timestamp: serverTimestamp()
+        });
+        formMessage.innerHTML = '<span class="text-green-600">✅ Message sent successfully! We will get back to you soon.</span>';
+        form.reset();
+        showToast("Message sent successfully");
+      } else {
+        await savePendingContact({ name, email, phone, message });
+        formMessage.innerHTML = '<span class="text-yellow-600">📡 No internet. Message saved offline. Will sync when online.</span>';
+        form.reset();
+        showToast("Message saved offline. Will sync when online.");
+      }
     } catch (error) {
+      console.error(error);
       formMessage.innerHTML = '<span class="text-red-500">❌ Oops! Something went wrong. Please try again or WhatsApp us.</span>';
+      showToast("Error sending message", true);
     } finally {
       submitBtn.disabled = false;
       submitBtn.innerText = 'Send Message';
     }
   });
 
-  // Active link highlighting
-  const currentPage = window.location.pathname.split('/').pop();
-  document.querySelectorAll('nav a').forEach(link => {
-    const href = link.getAttribute('href');
-    if (href === currentPage || (currentPage === '' && href === 'index.html')) {
-      link.classList.add('text-green-300', 'font-bold', 'underline');
+  // ========== Admin Auth ==========
+  const loginModal = document.getElementById('loginModal');
+  const navLoginBtn = document.getElementById('navLoginBtn');
+  const navLogoutBtn = document.getElementById('navLogoutBtn');
+  const navUserDisplay = document.getElementById('navUserDisplay');
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      navUserDisplay.innerText = user.email;
+      navUserDisplay.classList.remove('hidden');
+      navLoginBtn.classList.add('hidden');
+      navLogoutBtn.classList.remove('hidden');
+      loginModal.classList.add('hidden');
+    } else {
+      navUserDisplay.classList.add('hidden');
+      navLoginBtn.classList.remove('hidden');
+      navLogoutBtn.classList.add('hidden');
     }
   });
+
+  navLoginBtn.onclick = () => loginModal.classList.remove('hidden');
+  document.getElementById('closeModalBtn').onclick = () => loginModal.classList.add('hidden');
+  document.getElementById('loginBtn').onclick = async () => {
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value.trim();
+    const errorDiv = document.getElementById('loginError');
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      errorDiv.innerText = '';
+      showToast('Logged in as admin');
+      loginModal.classList.add('hidden');
+    } catch (err) {
+      errorDiv.innerText = err.message;
+    }
+  };
+  navLogoutBtn.onclick = async () => { await signOut(auth); showToast('Logged out'); };
+
+  // Service Worker
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js').catch(e => console.log("SW failed", e));
+  }
+
+  // Initial pending badge
+  updatePendingBadge();
 </script>
 </body>
 </html>
-  
-</main>

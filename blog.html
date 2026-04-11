@@ -15,80 +15,52 @@
 <meta property="og:url" content="https://whapay.space/blog.html">
 <meta property="og:image" content="https://whapay.space/images/whapay-blog-og.jpg">
 
-<!-- Tailwind CSS + Font Awesome -->
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#16a34a">
-<script>if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js');}</script>
-
-<!-- Firebase SDK -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { getFirestore, collection, query, orderBy, getDocs, where, limit } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyDPAvq6BgpdfZAkfoEwdwmHrWedHgzjRSk",
-    authDomain: "whapay-c93ab.firebaseapp.com",
-    projectId: "whapay-c93ab",
-    storageBucket: "whapay-c93ab.firebasestorage.app",
-    messagingSenderId: "205456952458",
-    appId: "1:205456952458:web:6533921ca10a2988417173"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  window.db = db;
-
-  // Helper: format date
-  function formatDate(timestamp) {
-    if (!timestamp) return "Recent";
-    const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
-    return date.toLocaleDateString("en-KE", { year: 'numeric', month: 'long', day: 'numeric' });
-  }
-
-  // Load all blog posts (for listing)
-  window.loadAllPosts = async () => {
-    const q = query(collection(db, "blogs"), orderBy("createdAt", "desc"));
-    const snapshot = await getDocs(q);
-    const posts = [];
-    snapshot.forEach(doc => {
-      posts.push({ id: doc.id, ...doc.data() });
-    });
-    return posts;
-  };
-
-  // Load single post by slug
-  window.loadPostBySlug = async (slug) => {
-    const q = query(collection(db, "blogs"), where("slug", "==", slug), limit(1));
-    const snapshot = await getDocs(q);
-    if (!snapshot.empty) {
-      return { id: snapshot.docs[0].id, ...snapshot.docs[0].data() };
-    }
-    return null;
-  };
-</script>
+<style>
+  .toast { transition: opacity 0.3s; }
+</style>
 </head>
 <body class="bg-gray-100 font-sans">
 
-<!-- Header (consistent with all pages) -->
-<header class="bg-green-600 text-white p-4 shadow-md">
-  <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:justify-between items-center">
+<header class="bg-green-600 text-white p-4 shadow-md sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
     <h1 class="text-2xl font-bold mb-2 md:mb-0"><a href="index.html">WhaPay</a></h1>
-    <nav class="flex flex-wrap justify-center gap-2 md:gap-4">
-      <a href="index.html" class="hover:underline">Home</a>
-      <a href="about.html" class="hover:underline">About</a>
-      <a href="features.html" class="hover:underline">Features</a>
-      <a href="pricing.html" class="hover:underline">Pricing</a>
-      <a href="merchant.html" class="hover:underline">Merchant</a>
-      <a href="payment.html" class="hover:underline">Payment</a>
-      <a href="reports.html" class="hover:underline">Reports</a>
-      <a href="blog.html" class="hover:underline font-bold text-green-200">Blogs</a>
-      <a href="contact.html" class="hover:underline">Contact</a>
-      <a href="admin.html" class="hover:underline">Admin</a>
-    </nav>
+    <div class="flex flex-wrap items-center gap-2 md:gap-4">
+      <span id="pendingSyncBadge" class="bg-yellow-500 text-white text-xs px-2 py-1 rounded-full hidden">Sync Pending</span>
+      <span id="navUserDisplay" class="text-sm hidden md:inline"></span>
+      <button id="navLoginBtn" class="bg-white text-green-700 px-3 py-1 rounded text-sm font-semibold hover:bg-gray-100">Admin</button>
+      <button id="navLogoutBtn" class="bg-red-500 text-white px-3 py-1 rounded text-sm font-semibold hover:bg-red-600 hidden">Logout</button>
+      <nav class="flex flex-wrap gap-2">
+        <a href="index.html" class="hover:underline">Home</a>
+        <a href="about.html" class="hover:underline">About</a>
+        <a href="features.html" class="hover:underline">Features</a>
+        <a href="pricing.html" class="hover:underline">Pricing</a>
+        <a href="merchant.html" class="hover:underline">Merchant</a>
+        <a href="payment.html" class="hover:underline">Payment</a>
+        <a href="reports.html" class="hover:underline">Reports</a>
+        <a href="blog.html" class="hover:underline font-bold text-green-200">Blogs</a>
+        <a href="contact.html" class="hover:underline">Contact</a>
+        <a href="admin.html" class="hover:underline">Admin</a>
+      </nav>
+    </div>
   </div>
 </header>
+
+<!-- Admin Login Modal -->
+<div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+  <div class="bg-white rounded-xl p-6 max-w-md w-full">
+    <h2 class="text-xl font-bold mb-4">Admin Login</h2>
+    <input type="email" id="loginEmail" placeholder="Email" class="w-full border p-2 rounded mb-3">
+    <input type="password" id="loginPassword" placeholder="Password" class="w-full border p-2 rounded mb-3">
+    <button id="loginBtn" class="bg-green-600 text-white w-full py-2 rounded">Login</button>
+    <button id="closeModalBtn" class="text-gray-500 text-sm w-full mt-2">Cancel</button>
+    <div id="loginError" class="text-red-500 text-sm mt-2 text-center"></div>
+  </div>
+</div>
 
 <!-- Hero -->
 <section class="bg-gradient-to-r from-green-700 to-green-500 text-white py-12 px-4 text-center">
@@ -100,6 +72,8 @@
   <div id="blogContent" class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
     <p class="text-gray-500 text-center">Loading posts...</p>
   </div>
+</main>
+
 <footer class="bg-gray-900 text-gray-300 pt-12 pb-6 mt-10">
   <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
     <div>
@@ -132,7 +106,7 @@
       <p class="text-sm text-gray-400 mb-3">Start accepting payments via WhatsApp today.</p>
       <a href="https://wa.me/254710346425" target="_blank" class="block bg-green-500 hover:bg-green-600 text-white text-center py-2 px-4 rounded mb-3">Chat on WhatsApp</a>
       <p class="text-sm text-gray-400">Email: <a href="mailto:support@whapay.com" class="hover:text-green-400">support@whapay.com</a></p>
-      <p class="text-sm text-gray-400">Offline registration: <a href="tel:+254705728896" class="hover:text-green-400">+254705728896</a> (voice/SMS)</p>
+      <p class="text-sm text-gray-400">Offline registration: <a href="tel:0140933042" class="hover:text-green-400">0140933042</a> (voice/SMS)</p>
     </div>
   </div>
   <div class="border-t border-gray-800 mt-10 pt-6 text-center text-sm text-gray-500">
@@ -153,12 +127,37 @@
 </a>
 
 <script type="module">
-  import { collection, query, orderBy, getDocs, where, limit } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-  const db = window.db;
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getFirestore, collection, query, orderBy, getDocs, where, limit } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-  const params = new URLSearchParams(window.location.search);
-  const slug = params.get("slug");
-  const container = document.getElementById("blogContent");
+  const firebaseConfig = {
+    apiKey: "AIzaSyDPAvq6BgpdfZAkfoEwdwmHrWedHgzjRSk",
+    authDomain: "whapay-c93ab.firebaseapp.com",
+    projectId: "whapay-c93ab",
+    storageBucket: "whapay-c93ab.firebasestorage.app",
+    messagingSenderId: "205456952458",
+    appId: "1:205456952458:web:6533921ca10a2988417173"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
+
+  function showToast(msg, isErr = false) {
+    let toast = document.getElementById('globalToast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'globalToast';
+      toast.className = 'fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-full text-sm z-50 transition-opacity opacity-0';
+      document.body.appendChild(toast);
+    }
+    toast.innerText = msg;
+    toast.style.backgroundColor = isErr ? '#dc2626' : '#16a34a';
+    toast.classList.remove('opacity-0');
+    toast.classList.add('opacity-100');
+    setTimeout(() => toast.classList.add('opacity-0'), 3000);
+  }
 
   function formatDate(timestamp) {
     if (!timestamp) return "Recent";
@@ -166,7 +165,48 @@
     return date.toLocaleDateString("en-KE", { year: 'numeric', month: 'long', day: 'numeric' });
   }
 
-  // Show single post
+  // Admin Auth UI
+  const loginModal = document.getElementById('loginModal');
+  const navLoginBtn = document.getElementById('navLoginBtn');
+  const navLogoutBtn = document.getElementById('navLogoutBtn');
+  const navUserDisplay = document.getElementById('navUserDisplay');
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      navUserDisplay.innerText = user.email;
+      navUserDisplay.classList.remove('hidden');
+      navLoginBtn.classList.add('hidden');
+      navLogoutBtn.classList.remove('hidden');
+      loginModal.classList.add('hidden');
+    } else {
+      navUserDisplay.classList.add('hidden');
+      navLoginBtn.classList.remove('hidden');
+      navLogoutBtn.classList.add('hidden');
+    }
+  });
+
+  navLoginBtn.onclick = () => loginModal.classList.remove('hidden');
+  document.getElementById('closeModalBtn').onclick = () => loginModal.classList.add('hidden');
+  document.getElementById('loginBtn').onclick = async () => {
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value.trim();
+    const errorDiv = document.getElementById('loginError');
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      errorDiv.innerText = '';
+      showToast('Logged in as admin');
+      loginModal.classList.add('hidden');
+    } catch (err) {
+      errorDiv.innerText = err.message;
+    }
+  };
+  navLogoutBtn.onclick = async () => { await signOut(auth); showToast('Logged out'); };
+
+  // Blog loading logic
+  const params = new URLSearchParams(window.location.search);
+  const slug = params.get("slug");
+  const container = document.getElementById("blogContent");
+
   async function showSinglePost(slug) {
     const q = query(collection(db, "blogs"), where("slug", "==", slug), limit(1));
     const snapshot = await getDocs(q);
@@ -184,17 +224,17 @@
     const post = snapshot.docs[0].data();
     container.innerHTML = `
       <article>
-        <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-3">${post.title || "Untitled"}</h1>
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-3">${escapeHtml(post.title) || "Untitled"}</h1>
         <div class="flex flex-wrap gap-3 text-sm text-gray-500 mb-6 border-b pb-3">
           <span><i class="far fa-calendar-alt mr-1"></i> ${formatDate(post.createdAt)}</span>
-          ${post.author ? `<span><i class="far fa-user mr-1"></i> ${post.author}</span>` : ''}
-          ${post.category ? `<span><i class="far fa-folder mr-1"></i> ${post.category}</span>` : ''}
+          ${post.author ? `<span><i class="far fa-user mr-1"></i> ${escapeHtml(post.author)}</span>` : ''}
+          ${post.category ? `<span><i class="far fa-folder mr-1"></i> ${escapeHtml(post.category)}</span>` : ''}
         </div>
-        ${post.image ? `<img src="${post.image}" alt="${post.title}" class="rounded-lg w-full object-cover mb-6 max-h-96">` : ''}
+        ${post.image ? `<img src="${escapeHtml(post.image)}" alt="${escapeHtml(post.title)}" class="rounded-lg w-full object-cover mb-6 max-h-96">` : ''}
         <div class="prose max-w-none text-gray-700 leading-relaxed space-y-4">
           ${post.content || "No content available."}
         </div>
-        ${post.tags ? `<div class="mt-6 pt-4 border-t flex flex-wrap gap-2"><span class="text-sm text-gray-500"><i class="fas fa-tags mr-1"></i> Tags:</span> ${post.tags.map(t => `<span class="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-full">${t}</span>`).join(' ')}</div>` : ''}
+        ${post.tags ? `<div class="mt-6 pt-4 border-t flex flex-wrap gap-2"><span class="text-sm text-gray-500"><i class="fas fa-tags mr-1"></i> Tags:</span> ${post.tags.map(t => `<span class="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-full">${escapeHtml(t)}</span>`).join(' ')}</div>` : ''}
         <div class="mt-8 text-center">
           <a href="blog.html" class="text-green-600 hover:underline">← Back to all posts</a>
         </div>
@@ -202,7 +242,6 @@
     `;
   }
 
-  // Show list of all posts
   async function showAllPosts() {
     const q = query(collection(db, "blogs"), orderBy("createdAt", "desc"));
     const snapshot = await getDocs(q);
@@ -226,38 +265,42 @@
         ${posts.map(post => `
           <div class="border rounded-xl p-5 hover:shadow-lg transition">
             <h2 class="text-xl font-bold text-gray-800 mb-2">
-              <a href="blog.html?slug=${post.slug}" class="hover:text-green-600">${post.title}</a>
+              <a href="blog.html?slug=${encodeURIComponent(post.slug)}" class="hover:text-green-600">${escapeHtml(post.title)}</a>
             </h2>
             <div class="text-sm text-gray-500 mb-2">
-              ${formatDate(post.createdAt)} ${post.author ? `• ${post.author}` : ''} ${post.category ? `• ${post.category}` : ''}
+              ${formatDate(post.createdAt)} ${post.author ? `• ${escapeHtml(post.author)}` : ''} ${post.category ? `• ${escapeHtml(post.category)}` : ''}
             </div>
-            <p class="text-gray-600 mb-3">${post.excerpt || (post.content ? post.content.substring(0, 150).replace(/<[^>]*>/g, '') + '...' : 'Click to read more.')}</p>
-            <a href="blog.html?slug=${post.slug}" class="text-green-600 font-semibold hover:underline">Read more →</a>
+            <p class="text-gray-600 mb-3">${escapeHtml(post.excerpt || (post.content ? post.content.substring(0, 150).replace(/<[^>]*>/g, '') + '...' : 'Click to read more.'))}</p>
+            <a href="blog.html?slug=${encodeURIComponent(post.slug)}" class="text-green-600 font-semibold hover:underline">Read more →</a>
           </div>
         `).join('')}
       </div>
     `;
   }
 
-  // Decide view
+  function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/[&<>]/g, function(m) {
+      if (m === '&') return '&amp;';
+      if (m === '<') return '&lt;';
+      if (m === '>') return '&gt;';
+      return m;
+    });
+  }
+
   if (slug) {
     showSinglePost(slug);
   } else {
     showAllPosts();
   }
 
-  // Active link highlighting
-  const currentPage = window.location.pathname.split('/').pop();
-  document.querySelectorAll('nav a').forEach(link => {
-    const href = link.getAttribute('href');
-    if (href === currentPage || (currentPage === '' && href === 'index.html')) {
-      link.classList.add('text-green-300', 'font-bold', 'underline');
-    }
-  });
+  // Service worker
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js').catch(e => console.log("SW failed", e));
+  }
+
+  // Hide pending badge (no forms on this page)
+  document.getElementById('pendingSyncBadge')?.classList.add('hidden');
 </script>
 </body>
 </html>
-  
-</main>
-
-

@@ -166,6 +166,233 @@
     <div id="payment-guide" class="mt-6 bg-green-50 p-4 rounded-xl border border-green-200 hidden"></div>
   </div>
 
+  <!-- ==================== PAY ANYONE SECTION ==================== -->
+<div class="bg-white rounded-2xl shadow-xl p-6 mb-10" id="payAnyoneSection">
+  <h2 class="text-2xl font-bold text-center text-green-700 mb-2">Pay Anyone, Anywhere</h2>
+  <p class="text-center text-gray-600 text-sm mb-6">Pay using a merchant’s Member Code, phone number, Paybill, or Till number. Works online and offline.</p>
+
+  <!-- Payment Type Selector -->
+  <div class="flex flex-wrap gap-3 mb-6">
+    <button class="pay-type-btn bg-green-600 text-white px-4 py-2 rounded-lg" data-type="member">Member Code</button>
+    <button class="pay-type-btn bg-gray-300 text-gray-700 px-4 py-2 rounded-lg" data-type="phone">Phone Number</button>
+    <button class="pay-type-btn bg-gray-300 text-gray-700 px-4 py-2 rounded-lg" data-type="paybill">Paybill / Till</button>
+  </div>
+
+  <!-- Member Code Form -->
+  <div id="payMemberForm" class="space-y-4">
+    <div><label class="block text-sm font-medium">Merchant Member Code *</label><input type="text" id="payMemberCode" placeholder="e.g., DK12345" class="w-full border rounded-lg px-4 py-2"></div>
+    <div><label class="block text-sm font-medium">Your Phone Number (for M-Pesa) *</label><input type="tel" id="payMemberPhone" placeholder="+254712345678" class="w-full border rounded-lg px-4 py-2"></div>
+    <div><label class="block text-sm font-medium">Amount (KES) *</label><input type="number" id="payMemberAmount" placeholder="e.g., 500" class="w-full border rounded-lg px-4 py-2"></div>
+    <div><label class="block text-sm font-medium">Payment Method</label><select id="payMemberMethod" class="w-full border rounded-lg px-4 py-2"><option value="mpesa">M-Pesa (STK Push)</option><option value="card">Credit / Debit Card (Stripe)</option></select></div>
+    <button id="payMemberBtn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg">Pay Now</button>
+    <div id="payMemberMessage" class="text-center text-sm"></div>
+  </div>
+
+  <!-- Phone Number Form (hidden initially) -->
+  <div id="payPhoneForm" class="hidden space-y-4">
+    <div><label class="block text-sm font-medium">Recipient Phone Number *</label><input type="tel" id="payRecipientPhone" placeholder="+254712345678" class="w-full border rounded-lg px-4 py-2"></div>
+    <div><label class="block text-sm font-medium">Your Phone Number (for M-Pesa) *</label><input type="tel" id="payYourPhone" placeholder="+254712345678" class="w-full border rounded-lg px-4 py-2"></div>
+    <div><label class="block text-sm font-medium">Amount (KES) *</label><input type="number" id="payPhoneAmount" placeholder="e.g., 500" class="w-full border rounded-lg px-4 py-2"></div>
+    <div><label class="block text-sm font-medium">Payment Method</label><select id="payPhoneMethod" class="w-full border rounded-lg px-4 py-2"><option value="mpesa">M-Pesa (STK Push)</option><option value="card">Credit / Debit Card (Stripe)</option></select></div>
+    <button id="payPhoneBtn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg">Pay to Phone Number</button>
+    <div id="payPhoneMessage" class="text-center text-sm"></div>
+  </div>
+
+  <!-- Paybill / Till Form (hidden initially) -->
+  <div id="payPaybillForm" class="hidden space-y-4">
+    <div><label class="block text-sm font-medium">Business Number (Paybill/Till) *</label><input type="text" id="payBusinessNumber" placeholder="e.g., 123456" class="w-full border rounded-lg px-4 py-2"></div>
+    <div><label class="block text-sm font-medium">Account Number (optional)</label><input type="text" id="payAccountNumber" placeholder="e.g., your name or invoice" class="w-full border rounded-lg px-4 py-2"></div>
+    <div><label class="block text-sm font-medium">Your Phone Number (for M-Pesa) *</label><input type="tel" id="payPayerPhone" placeholder="+254712345678" class="w-full border rounded-lg px-4 py-2"></div>
+    <div><label class="block text-sm font-medium">Amount (KES) *</label><input type="number" id="payPaybillAmount" placeholder="e.g., 500" class="w-full border rounded-lg px-4 py-2"></div>
+    <div><label class="block text-sm font-medium">Payment Method</label><select id="payPaybillMethod" class="w-full border rounded-lg px-4 py-2"><option value="mpesa">M-Pesa (STK Push)</option><option value="card">Credit / Debit Card (Stripe)</option></select></div>
+    <button id="payPaybillBtn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg">Pay to Paybill/Till</button>
+    <div id="payPaybillMessage" class="text-center text-sm"></div>
+  </div>
+</div>
+
+<script>
+(function() {
+  // Ensure the page has required helpers (if not, define them)
+  if (typeof window.showToast !== 'function') {
+    window.showToast = function(msg, isErr) {
+      let toast = document.getElementById('globalToast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'globalToast';
+        toast.className = 'fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-full text-sm z-50 transition-opacity opacity-0';
+        document.body.appendChild(toast);
+      }
+      toast.innerText = msg;
+      toast.style.backgroundColor = isErr ? '#dc2626' : '#16a34a';
+      toast.classList.remove('opacity-0');
+      toast.classList.add('opacity-100');
+      setTimeout(() => toast.classList.add('opacity-0'), 3000);
+    };
+  }
+  if (typeof window.validatePhone !== 'function') {
+    window.validatePhone = function(phone) {
+      const cleaned = phone.replace(/\D/g,'');
+      return (cleaned.startsWith('0') && cleaned.length===10) || (cleaned.startsWith('254') && cleaned.length===12) || (cleaned.length===9 && cleaned.startsWith('7'));
+    };
+  }
+  if (typeof window.normalizePhone !== 'function') {
+    window.normalizePhone = function(phone) {
+      let cleaned = phone.replace(/\D/g,'');
+      if (cleaned.startsWith('0')) cleaned = '254' + cleaned.substring(1);
+      if (!cleaned.startsWith('254')) cleaned = '254' + cleaned;
+      return cleaned;
+    };
+  }
+  if (typeof window.savePendingPayment !== 'function') {
+    window.savePendingPayment = async function(payment) {
+      const PENDING_KEY = 'whapay_pending_payments';
+      const pending = await localforage.getItem(PENDING_KEY) || [];
+      pending.push({ ...payment, synced: false, createdAt: Date.now() });
+      await localforage.setItem(PENDING_KEY, pending);
+      const badge = document.getElementById('pendingSyncBadge');
+      if (badge) {
+        badge.classList.remove('hidden');
+        badge.innerText = pending.filter(p => !p.synced).length;
+      }
+    };
+  }
+
+  // Tab switching
+  const btns = document.querySelectorAll('.pay-type-btn');
+  const memberForm = document.getElementById('payMemberForm');
+  const phoneForm = document.getElementById('payPhoneForm');
+  const paybillForm = document.getElementById('payPaybillForm');
+
+  function switchForm(type) {
+    memberForm.classList.add('hidden');
+    phoneForm.classList.add('hidden');
+    paybillForm.classList.add('hidden');
+    if (type === 'member') memberForm.classList.remove('hidden');
+    if (type === 'phone') phoneForm.classList.remove('hidden');
+    if (type === 'paybill') paybillForm.classList.remove('hidden');
+    btns.forEach(btn => {
+      btn.classList.remove('bg-green-600', 'text-white');
+      btn.classList.add('bg-gray-300', 'text-gray-700');
+      if (btn.getAttribute('data-type') === type) {
+        btn.classList.remove('bg-gray-300', 'text-gray-700');
+        btn.classList.add('bg-green-600', 'text-white');
+      }
+    });
+  }
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => switchForm(btn.getAttribute('data-type')));
+  });
+
+  // Helper: process payment (offline-aware)
+  async function processPayment(paymentData, submitBtn, messageDiv, successMsg) {
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+    messageDiv.innerHTML = '';
+    try {
+      if (navigator.onLine) {
+        // Simulate payment – replace with real M-Pesa/Stripe call
+        await new Promise(r => setTimeout(r, 2000));
+        if (window.db) {
+          const { addDoc, collection, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
+          await addDoc(collection(window.db, "transactions"), {
+            ...paymentData,
+            status: 'completed',
+            timestamp: serverTimestamp()
+          });
+        }
+        messageDiv.innerHTML = `<div class="bg-green-50 p-2 rounded text-green-800">✅ ${successMsg}</div>`;
+        window.showToast(successMsg);
+      } else {
+        await window.savePendingPayment(paymentData);
+        messageDiv.innerHTML = '<div class="bg-yellow-50 p-2 rounded text-yellow-800">📡 No internet. Payment saved offline. Will sync when online.</div>';
+        window.showToast("Payment saved offline. Will sync when online.");
+      }
+      // Clear inputs
+      if (paymentData.type === 'member_code') {
+        document.getElementById('payMemberCode').value = '';
+        document.getElementById('payMemberPhone').value = '';
+        document.getElementById('payMemberAmount').value = '';
+      } else if (paymentData.type === 'phone_payment') {
+        document.getElementById('payRecipientPhone').value = '';
+        document.getElementById('payYourPhone').value = '';
+        document.getElementById('payPhoneAmount').value = '';
+      } else if (paymentData.type === 'paybill') {
+        document.getElementById('payBusinessNumber').value = '';
+        document.getElementById('payAccountNumber').value = '';
+        document.getElementById('payPayerPhone').value = '';
+        document.getElementById('payPaybillAmount').value = '';
+      }
+    } catch (err) {
+      messageDiv.innerHTML = `<div class="bg-red-50 p-2 rounded text-red-800">❌ ${err.message}</div>`;
+      window.showToast(err.message, true);
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = submitBtn.id === 'payMemberBtn' ? 'Pay Now' : (submitBtn.id === 'payPhoneBtn' ? 'Pay to Phone Number' : 'Pay to Paybill/Till');
+    }
+  }
+
+  // Member Code payment
+  document.getElementById('payMemberBtn').addEventListener('click', async () => {
+    const code = document.getElementById('payMemberCode').value.trim();
+    const phoneRaw = document.getElementById('payMemberPhone').value.trim();
+    const amount = parseFloat(document.getElementById('payMemberAmount').value);
+    const method = document.getElementById('payMemberMethod').value;
+    if (!code) { window.showToast("Enter merchant code", true); return; }
+    if (!phoneRaw || !window.validatePhone(phoneRaw)) { window.showToast("Enter valid Kenyan phone number", true); return; }
+    if (!amount || amount<=0) { window.showToast("Enter valid amount", true); return; }
+    const phone = window.normalizePhone(phoneRaw);
+    await processPayment({
+      type: 'member_code',
+      merchantCode: code,
+      customerPhone: phone,
+      amount: amount,
+      method: method
+    }, document.getElementById('payMemberBtn'), document.getElementById('payMemberMessage'), `Payment of KES ${amount} to merchant ${code} completed.`);
+  });
+
+  // Phone Number payment
+  document.getElementById('payPhoneBtn').addEventListener('click', async () => {
+    const recipientRaw = document.getElementById('payRecipientPhone').value.trim();
+    const yourRaw = document.getElementById('payYourPhone').value.trim();
+    const amount = parseFloat(document.getElementById('payPhoneAmount').value);
+    const method = document.getElementById('payPhoneMethod').value;
+    if (!recipientRaw || !window.validatePhone(recipientRaw)) { window.showToast("Enter valid recipient phone", true); return; }
+    if (!yourRaw || !window.validatePhone(yourRaw)) { window.showToast("Enter your phone number", true); return; }
+    if (!amount || amount<=0) { window.showToast("Enter valid amount", true); return; }
+    const recipient = window.normalizePhone(recipientRaw);
+    const yourPhone = window.normalizePhone(yourRaw);
+    await processPayment({
+      type: 'phone_payment',
+      recipientPhone: recipient,
+      customerPhone: yourPhone,
+      amount: amount,
+      method: method
+    }, document.getElementById('payPhoneBtn'), document.getElementById('payPhoneMessage'), `Payment of KES ${amount} sent to ${recipient}.`);
+  });
+
+  // Paybill/Till payment
+  document.getElementById('payPaybillBtn').addEventListener('click', async () => {
+    const business = document.getElementById('payBusinessNumber').value.trim();
+    const account = document.getElementById('payAccountNumber').value.trim();
+    const payerRaw = document.getElementById('payPayerPhone').value.trim();
+    const amount = parseFloat(document.getElementById('payPaybillAmount').value);
+    const method = document.getElementById('payPaybillMethod').value;
+    if (!business) { window.showToast("Enter business number (Paybill/Till)", true); return; }
+    if (!payerRaw || !window.validatePhone(payerRaw)) { window.showToast("Enter your phone number", true); return; }
+    if (!amount || amount<=0) { window.showToast("Enter valid amount", true); return; }
+    const payerPhone = window.normalizePhone(payerRaw);
+    await processPayment({
+      type: 'paybill',
+      businessNumber: business,
+      accountNumber: account,
+      customerPhone: payerPhone,
+      amount: amount,
+      method: method
+    }, document.getElementById('payPaybillBtn'), document.getElementById('payPaybillMessage'), `Payment of KES ${amount} to ${business} completed.`);
+  });
+})();
+</script>
+
   <!-- How it works -->
   <div class="bg-white rounded-2xl shadow-lg p-6 mb-12">
     <h2 class="text-2xl font-bold text-center mb-4">👆 How WhaPay Works – Simple Steps</h2>

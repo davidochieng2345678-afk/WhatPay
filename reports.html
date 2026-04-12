@@ -16,6 +16,8 @@
   @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
   .toast { transition: opacity 0.3s; }
   .summary-cards { position: sticky; top: 1rem; z-index: 10; }
+  .step-card { transition: 0.2s; }
+  .step-card:hover { transform: translateY(-3px); }
 </style>
 </head>
 <body class="bg-gray-100">
@@ -31,6 +33,7 @@
         <a href="index.html" class="hover:underline">Home</a>
         <a href="merchant.html" class="hover:underline">Merchant</a>
         <a href="payment.html" class="hover:underline">Payments</a>
+        <a href="pay-anyone.html" class="hover:underline">Pay Anyone</a>
         <a href="users.html" class="hover:underline">My Account</a>
         <a href="blog.html" class="hover:underline">Blog</a>
         <a href="features.html" class="hover:underline">Features</a>
@@ -59,6 +62,7 @@
     <button id="loginBtn" class="bg-green-600 text-white w-full py-2 rounded">Login</button>
     <div id="loginError" class="text-red-500 text-sm mt-2 text-center"></div>
     <p class="text-xs text-gray-500 text-center mt-3">Demo: admin@whapay.com / your password</p>
+    <p class="text-xs text-gray-500 text-center mt-2">Offline registration: <strong class="font-mono">0140933042</strong></p>
   </div>
 </div>
 
@@ -66,6 +70,7 @@
   <div class="bg-white rounded-2xl shadow-md p-6 mb-6 text-center">
     <h1 class="text-3xl font-bold text-green-700">📊 Live Payment Reports</h1>
     <p class="text-gray-600">Real‑time analytics: weekly/monthly trends, payment methods, top customers & transaction history. Filter any date range.</p>
+    <div class="mt-2 text-sm text-gray-500">Offline registration: <strong class="font-mono">0140933042</strong> | WhatsApp: <strong class="font-mono">0140933042</strong></div>
   </div>
 
   <!-- Offline Sync Panel -->
@@ -129,11 +134,21 @@
       </table>
     </div>
   </div>
+
+  <!-- How WhaPay Works Section -->
+  <div class="bg-white rounded-2xl shadow-lg p-6 mb-6">
+    <h2 class="text-2xl font-bold text-center mb-4">👆 How WhaPay Works – Simple Steps</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+      <div class="step-card bg-gray-50 p-3 rounded-xl"><div class="text-3xl mb-1">1️⃣</div><i class="fas fa-user-plus text-2xl text-green-600"></i><p class="font-bold mt-1">Get Your Code & QR</p><p class="text-xs">Register online (WhatsApp) or offline (voice/SMS to 0140933042). Receive your unique Member Code and QR code instantly.</p></div>
+      <div class="step-card bg-gray-50 p-3 rounded-xl"><div class="text-3xl mb-1">2️⃣</div><i class="fas fa-hand-holding-usd text-2xl text-green-600"></i><p class="font-bold mt-1">Share or Scan</p><p class="text-xs">Merchant shares their WhatsApp link, QR code, or Member Code. Customer scans or copies the code.</p></div>
+      <div class="step-card bg-gray-50 p-3 rounded-xl"><div class="text-3xl mb-1">3️⃣</div><i class="fas fa-check-circle text-2xl text-green-600"></i><p class="font-bold mt-1">Pay & Confirm</p><p class="text-xs">Pay via M-Pesa or card (online) or Member Code + M-Pesa Paybill (offline). Both receive instant confirmation.</p></div>
+    </div>
+  </div>
 </main>
 
 <footer class="bg-gray-900 text-gray-300 pt-10 pb-6 mt-8">
   <div class="max-w-7xl mx-auto px-6 text-center text-sm">
-    <p>© 2026 WhaPay – <strong>Offline registration: call <span class="font-mono">0140933042</span> (voicemail) or SMS to same number</strong> | WhatsApp: <strong>+254710346425</strong></p>
+    <p>© 2026 WhaPay – <strong>Offline registration: call <span class="font-mono">0140933042</span> (voicemail) or SMS to same number</strong> | WhatsApp: <strong class="font-mono">0140933042</strong></p>
     <div class="mt-3 space-x-4">
       <a href="privacy.html" class="hover:text-green-400">Privacy</a>
       <a href="terms.html" class="hover:text-green-400">Terms</a>
@@ -142,14 +157,14 @@
   </div>
 </footer>
 
-<a href="https://wa.me/254710346425?text=Hello%2C%20I%20need%20help%20with%20WhaPay%20reports" target="_blank" class="fixed bottom-5 right-5 bg-green-500 text-white p-3 rounded-full shadow-lg hover:bg-green-600 z-50"><i class="fab fa-whatsapp text-2xl"></i></a>
+<a href="https://wa.me/0140933042?text=Hello%2C%20I%20need%20help%20with%20WhaPay%20reports" target="_blank" class="fixed bottom-5 right-5 bg-green-500 text-white p-3 rounded-full shadow-lg hover:bg-green-600 z-50"><i class="fab fa-whatsapp text-2xl"></i></a>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
   import { getFirestore, collection, onSnapshot, query, orderBy, writeBatch, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
   import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-  // Firebase config – replace with your own
+  // Firebase config
   const firebaseConfig = {
     apiKey: "AIzaSyDPAvq6BgpdfZAkfoEwdwmHrWedHgzjRSk",
     authDomain: "whapay-c93ab.firebaseapp.com",
@@ -264,14 +279,14 @@
     currentEndDate = end;
     
     filteredTransactions = allTransactions.filter(tx => {
-      if (tx.status !== 'completed') return false; // summary only completed? But we'll keep all for table, but analytics use completed.
+      if (tx.status !== 'completed') return false;
       const txDate = tx.timestampDate;
       if (start && txDate < start) return false;
       if (end && txDate > end) return false;
       return true;
     });
     updateAllChartsAndSummaries();
-    populateTable(); // table shows all transactions (including pending), but we'll filter table separately
+    populateTable();
   }
 
   function resetFilter() {
@@ -286,23 +301,20 @@
 
   // Update everything: summary cards, charts, top customers, method breakdown
   function updateAllChartsAndSummaries() {
-    const completed = filteredTransactions; // already filtered by date and status completed
+    const completed = filteredTransactions;
     const totalPaid = completed.reduce((sum, t) => sum + t.amount, 0);
-    const pendingCount = allTransactions.filter(t => t.status !== 'completed').length;
+    const pendingCountVal = allTransactions.filter(t => t.status !== 'completed').length;
     
-    // This week and month relative to today, but respecting filter? Better to show based on filtered data's week/month?
-    // For simplicity, keep "This week" and "This month" based on current date, not filter.
     const now = new Date();
     const weekPaid = completed.filter(t => (now - t.timestampDate) <= 7 * 24 * 3600 * 1000).reduce((sum, t) => sum + t.amount, 0);
     const monthPaid = completed.filter(t => t.timestampDate.getMonth() === now.getMonth() && t.timestampDate.getFullYear() === now.getFullYear()).reduce((sum, t) => sum + t.amount, 0);
     
     document.getElementById("totalPaid").innerHTML = formatKES(totalPaid);
-    document.getElementById("pendingCount").innerText = pendingCount;
+    document.getElementById("pendingCount").innerText = pendingCountVal;
     document.getElementById("weekPaid").innerHTML = formatKES(weekPaid);
     document.getElementById("monthPaid").innerHTML = formatKES(monthPaid);
     
-    // Weekly chart (last 7 days from today, but only within filtered range? Actually we'll show weekly based on filtered data if range <7 days)
-    // Better to create weekly labels from the filtered date range's first day to last day, but for simplicity show last 7 days of filtered data.
+    // Weekly chart (last 7 days)
     const weeklyLabels = [];
     const weeklyAmounts = Array(7).fill(0);
     for (let i = 6; i >= 0; i--) {
@@ -314,10 +326,9 @@
       if (diffDays >= 0 && diffDays < 7) weeklyAmounts[6 - diffDays] += t.amount;
     });
     
-    // Monthly chart: show days in month based on filtered date range or current month
+    // Monthly chart
     let monthlyLabels = [], monthlyAmounts = [];
     if (currentStartDate && currentEndDate && (currentEndDate - currentStartDate) <= 31*86400000) {
-      // show daily breakdown within range
       const daysDiff = Math.ceil((currentEndDate - currentStartDate) / 86400000) + 1;
       for (let i = 0; i < daysDiff; i++) {
         const d = new Date(currentStartDate);
@@ -330,7 +341,6 @@
         if (idx >= 0 && idx < daysDiff) monthlyAmounts[idx] += t.amount;
       });
     } else {
-      // default to current month
       const currentYear = now.getFullYear(), currentMonth = now.getMonth();
       const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
       monthlyLabels = Array.from({ length: daysInMonth }, (_, i) => i + 1);
@@ -342,7 +352,7 @@
       });
     }
     
-    // Method breakdown (based on filtered completed)
+    // Method breakdown
     const methodMap = new Map();
     completed.forEach(t => {
       const method = t.method || "other";
@@ -388,7 +398,7 @@
     });
   }
 
-  // Populate transaction table (shows all transactions, filtered by date range)
+  // Populate transaction table
   function populateTable() {
     const tbody = document.getElementById("transactionTable");
     let filtered = allTransactions;
@@ -408,10 +418,9 @@
         <td class="border px-3 py-2"><span class="px-2 py-0.5 rounded-full ${tx.status === 'completed' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}">${tx.status || "pending"}</span></td>
         <td class="border px-3 py-2">${tx.timestampDate.toLocaleString("en-KE")}</td>
         <td class="border px-3 py-2"><button class="receipt-btn text-blue-600 text-sm" data-tx='${JSON.stringify(tx)}'>📄 Download</button></td>
-      </tr>`;
+       </tr>`;
       tbody.insertAdjacentHTML('beforeend', row);
     });
-    // Attach receipt download handlers
     document.querySelectorAll('.receipt-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const tx = JSON.parse(btn.dataset.tx);
@@ -423,7 +432,7 @@
   function generateReceipt(tx) {
     const receiptHtml = `
       <html><head><title>WhaPay Receipt</title><style>body{font-family:sans-serif;padding:20px;} .receipt{border:1px solid #ccc;padding:20px;max-width:400px;margin:auto;}</style></head>
-      <body><div class="receipt"><h2>WhaPay Receipt</h2><p><strong>Transaction ID:</strong> ${tx.id || 'N/A'}</p><p><strong>Customer:</strong> ${escapeHtml(tx.customer || 'N/A')}</p><p><strong>Amount:</strong> ${formatKES(tx.amount)}</p><p><strong>Method:</strong> ${tx.method || 'M-Pesa'}</p><p><strong>Status:</strong> ${tx.status}</p><p><strong>Date:</strong> ${tx.timestampDate.toLocaleString()}</p><p>Thank you for using WhaPay!</p></div></body></html>
+      <body><div class="receipt"><h2>WhaPay Receipt</h2><p><strong>Transaction ID:</strong> ${tx.id || 'N/A'}</p><p><strong>Customer:</strong> ${escapeHtml(tx.customer || 'N/A')}</p><p><strong>Amount:</strong> ${formatKES(tx.amount)}</p><p><strong>Method:</strong> ${tx.method || 'M-Pesa'}</p><p><strong>Status:</strong> ${tx.status}</p><p><strong>Date:</strong> ${tx.timestampDate.toLocaleString()}</p><p>Thank you for using WhaPay!</p><p>WhatsApp: <strong class="font-mono">0140933042</strong></p></div></body></html>
     `;
     const blob = new Blob([receiptHtml], {type: 'text/html'});
     const link = document.createElement('a');
@@ -435,7 +444,7 @@
 
   function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, function(m){ if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
 
-  // Export CSV of filtered transactions
+  // Export CSV
   function exportCSV() {
     let data = allTransactions;
     if (currentStartDate) data = data.filter(t => t.timestampDate >= currentStartDate);
@@ -460,7 +469,6 @@
       userEmailDisplay.classList.remove('hidden');
       logoutBtn.classList.remove('hidden');
       loginOverlay.classList.add('hidden');
-      // Start Firestore listener
       const q = query(collection(db, "transactions"), orderBy("timestamp", "desc"));
       onSnapshot(q, (snapshot) => {
         allTransactions = snapshot.docs.map(doc => {
@@ -475,7 +483,6 @@
             timestampDate: data.timestamp?.toDate ? data.timestamp.toDate() : new Date()
           };
         }).filter(t => t.timestampDate);
-        // Re-apply current filter
         if (currentStartDate || currentEndDate) applyDateFilter();
         else resetFilter();
         populateTable();
@@ -494,7 +501,6 @@
     }
   });
 
-  // Login handler
   document.getElementById('loginBtn').onclick = async () => {
     const email = document.getElementById('loginEmail').value.trim();
     const password = document.getElementById('loginPassword').value.trim();
@@ -512,7 +518,6 @@
   applyFilterBtn.onclick = applyDateFilter;
   resetFilterBtn.onclick = resetFilter;
 
-  // Service worker
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js').catch(e => console.log("SW failed", e));
   }

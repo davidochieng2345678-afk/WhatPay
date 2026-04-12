@@ -33,6 +33,8 @@
   .spinner { border: 2px solid #f3f3f3; border-top: 2px solid #16a34a; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; display: inline-block; }
   @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
   .toast { transition: opacity 0.3s; }
+  .step-card { transition: 0.2s; }
+  .step-card:hover { transform: translateY(-3px); }
 </style>
 </head>
 <body class="bg-gray-100 font-sans">
@@ -45,9 +47,18 @@
         <a href="index.html" class="hover:underline">Home</a>
         <a href="merchant.html" class="hover:underline">Merchant</a>
         <a href="payment.html" class="hover:underline">Payments</a>
+        <a href="pay-anyone.html" class="hover:underline">Pay Anyone</a>
         <a href="reports.html" class="hover:underline">Reports</a>
+        <a href="users.html" class="hover:underline">My Account</a>
+        <a href="blog.html" class="hover:underline">Blog</a>
+        <a href="features.html" class="hover:underline">Features</a>
+        <a href="about.html" class="hover:underline">About</a>
         <a href="contact.html" class="hover:underline">Contact</a>
+        <a href="privacy.html" class="hover:underline">Privacy</a>
+        <a href="terms.html" class="hover:underline">Terms</a>
         <a href="admin.html" class="hover:underline">Admin</a>
+        <a href="pricing.html" class="hover:underline">Pricing</a>
+        <a href="registration.html" class="hover:underline">Registration</a>
       </nav>
       <div class="flex items-center gap-2">
         <span id="pendingSyncBadge" class="bg-yellow-500 text-white text-xs px-2 py-1 rounded-full hidden">Sync Pending</span>
@@ -69,6 +80,7 @@
     <button id="loginBtn" class="bg-green-600 text-white w-full py-2 rounded">Login</button>
     <button id="closeModalBtn" class="text-gray-500 text-sm w-full mt-2">Cancel</button>
     <div id="loginError" class="text-red-500 text-sm mt-2 text-center"></div>
+    <p class="text-xs text-gray-500 text-center mt-3">Demo: admin@whapay.com / your password</p>
   </div>
 </div>
 
@@ -79,7 +91,7 @@
 
     <form id="registerPayForm" class="space-y-4">
       <div><label class="block text-sm font-medium mb-1">Full Name *</label><input type="text" id="name" required class="w-full border rounded-lg px-4 py-2"></div>
-      <div><label class="block text-sm font-medium mb-1">Phone Number (WhatsApp) *</label><input type="tel" id="phone" required placeholder="+254712345678" class="w-full border rounded-lg px-4 py-2"><p class="text-xs text-gray-500 mt-1">We'll send your Member Code and QR via WhatsApp.</p></div>
+      <div><label class="block text-sm font-medium mb-1">Phone Number (WhatsApp) *</label><input type="tel" id="phone" required placeholder="+254712345678" class="w-full border rounded-lg px-4 py-2"><p class="text-xs text-gray-500 mt-1">We'll send your Member Code and QR via WhatsApp to <strong class="font-mono">0140933042</strong>.</p></div>
       <div><label class="block text-sm font-medium mb-1">Amount to Pay (KES) *</label><input type="number" id="amount" required placeholder="e.g., 500" class="w-full border rounded-lg px-4 py-2" min="1"></div>
       <div><label class="block text-sm font-medium mb-1">Payment Method</label><select id="method" class="w-full border rounded-lg px-4 py-2"><option value="mpesa">M-Pesa (STK Push)</option><option value="card">Credit / Debit Card (Stripe)</option></select></div>
       <button type="submit" id="submitBtn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition">Complete Registration & Payment</button>
@@ -93,17 +105,39 @@
       <p id="memberCodeDisplay" class="text-3xl font-bold text-green-600 my-2"></p>
       <div id="qrCanvas" class="flex justify-center my-3"></div>
       <p class="text-sm text-gray-600">We've also sent your code and QR to your WhatsApp. Use this code for future payments – even without internet.</p>
+      <div class="mt-4 bg-green-50 p-3 rounded-lg text-sm">
+        <i class="fas fa-mobile-alt text-green-600 mr-2"></i> 
+        <strong>No internet?</strong> Use your Member Code directly in M-Pesa: 
+        <span class="font-mono">Paybill 0140933042 → Account = Your Member Code</span>
+      </div>
       <a href="merchant.html" class="inline-block mt-4 bg-green-600 text-white px-4 py-2 rounded-lg">Go to Dashboard</a>
     </div>
   </div>
+
+  <!-- How It Works Section -->
+  <div class="mt-8 bg-white rounded-2xl shadow-lg p-6">
+    <h2 class="text-xl font-bold text-center mb-4">👆 How WhaPay Works</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+      <div class="step-card bg-gray-50 p-3 rounded-xl"><div class="text-3xl mb-1">1️⃣</div><i class="fas fa-user-plus text-2xl text-green-600"></i><p class="font-bold mt-1">Register & Pay</p><p class="text-xs">Complete one form – pay via M-Pesa or card. Get your Member Code and QR instantly.</p></div>
+      <div class="step-card bg-gray-50 p-3 rounded-xl"><div class="text-3xl mb-1">2️⃣</div><i class="fas fa-hand-holding-usd text-2xl text-green-600"></i><p class="font-bold mt-1">Share or Scan</p><p class="text-xs">Share your WhatsApp link, QR code, or Member Code with customers.</p></div>
+      <div class="step-card bg-gray-50 p-3 rounded-xl"><div class="text-3xl mb-1">3️⃣</div><i class="fas fa-check-circle text-2xl text-green-600"></i><p class="font-bold mt-1">Get Paid</p><p class="text-xs">Customers pay via WhatsApp link, QR scan, or offline using M-Pesa Paybill.</p></div>
+    </div>
+  </div>
+
+  <!-- Offline Registration Info -->
+  <div class="mt-8 bg-blue-50 rounded-2xl p-4 text-center border border-blue-200">
+    <i class="fas fa-phone-volume text-blue-600 text-xl mr-2"></i>
+    <span class="font-semibold">No internet to register?</span>
+    <p class="text-sm text-gray-700 mt-1">Call <strong class="font-mono">0140933042</strong> (voicemail) or send SMS "REG YourName" to <strong class="font-mono">0140933042</strong> – we'll send your Member Code and QR via SMS/WhatsApp.</p>
+  </div>
 </main>
 
-<footer class="bg-gray-900 text-gray-300 pt-8 pb-4 text-center text-sm">
-  <p>© 2026 WhaPay – <strong>Offline registration: call <span class="font-mono">0140933042</span> (voicemail) or SMS to same number</strong> | WhatsApp: <strong>+254710346425</strong></p>
+<footer class="bg-gray-900 text-gray-300 pt-8 pb-4 text-center text-sm mt-8">
+  <p>© 2026 WhaPay – <strong>Offline registration: call <span class="font-mono">0140933042</span> (voicemail) or SMS to same number</strong> | WhatsApp: <strong class="font-mono">0140933042</strong></p>
   <div class="mt-2 space-x-4"><a href="privacy.html" class="hover:text-green-400">Privacy Policy</a> | <a href="terms.html" class="hover:text-green-400">Terms of Service</a> | <a href="contact.html" class="hover:text-green-400">Contact</a></div>
 </footer>
 
-<a href="https://wa.me/254710346425?text=Hello%20WhaPay" target="_blank" class="fixed bottom-5 right-5 bg-green-500 text-white p-3 rounded-full shadow-lg hover:bg-green-600 z-50"><i class="fab fa-whatsapp text-2xl"></i></a>
+<a href="https://wa.me/0140933042?text=Hello%20WhaPay" target="_blank" class="fixed bottom-5 right-5 bg-green-500 text-white p-3 rounded-full shadow-lg hover:bg-green-600 z-50"><i class="fab fa-whatsapp text-2xl"></i></a>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -182,7 +216,6 @@
         return;
       }
       for (const item of toSync) {
-        // Check if user already exists (avoid duplicates)
         const q = query(collection(db, "users"), where("phone", "==", item.phone));
         const existing = await getDocs(q);
         if (existing.empty) {
@@ -277,12 +310,10 @@
     errorDiv.innerText = '';
 
     try {
-      // Simulate payment processing – replace with real M-Pesa STK Push or Stripe
       await new Promise(resolve => setTimeout(resolve, 2000));
 
       let memberCode;
       if (navigator.onLine) {
-        // Check if phone already registered
         const q = query(collection(db, "users"), where("phone", "==", phone));
         const existing = await getDocs(q);
         if (!existing.empty) {
@@ -305,19 +336,17 @@
           timestamp: serverTimestamp()
         });
       } else {
-        memberCode = await getUniqueMemberCode(name); // offline: generate unique locally
+        memberCode = await getUniqueMemberCode(name);
         await savePendingRegistration({ name, phone, amount, method, memberCode });
         showToast("No internet. Registration saved offline. Will sync when online.", false);
       }
 
-      // Display success UI
       QRCode.toCanvas(qrDiv, `https://whapay.space/payment.html?merchant=${memberCode}`, { width: 150 }, (err) => { if (err) console.error(err); });
       memberCodeSpan.innerText = memberCode;
       resultDiv.classList.remove('hidden');
       form.classList.add('hidden');
 
-      // Send WhatsApp message
-      const waMsg = `🎉 Welcome to WhaPay!\n\nYour Member Code: ${memberCode}\nPayment link: https://whapay.space/payment.html?merchant=${memberCode}\nUse this code to receive payments or pay others – even without internet.`;
+      const waMsg = `🎉 Welcome to WhaPay!\n\nYour Member Code: ${memberCode}\nPayment link: https://whapay.space/payment.html?merchant=${memberCode}\nUse this code to receive payments or pay others – even without internet.\n\nOffline payment: M-Pesa Paybill 0140933042 Account: ${memberCode}`;
       window.open(`https://wa.me/${phone}?text=${encodeURIComponent(waMsg)}`, '_blank');
     } catch (err) {
       errorDiv.innerText = err.message;
@@ -327,7 +356,7 @@
     }
   });
 
-  // ========== Admin Auth (optional) ==========
+  // ========== Admin Auth ==========
   const loginModal = document.getElementById('loginModal');
   const navLoginBtn = document.getElementById('navLoginBtn');
   const navLogoutBtn = document.getElementById('navLogoutBtn');
@@ -355,23 +384,21 @@
   document.getElementById('loginBtn').onclick = async () => {
     const email = document.getElementById('loginEmail').value.trim();
     const password = document.getElementById('loginPassword').value.trim();
-    const errorDiv = document.getElementById('loginError');
+    const errorDivModal = document.getElementById('loginError');
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      errorDiv.innerText = '';
+      errorDivModal.innerText = '';
       showToast('Logged in as admin');
     } catch (err) {
-      errorDiv.innerText = err.message;
+      errorDivModal.innerText = err.message;
     }
   };
   navLogoutBtn.onclick = async () => { await signOut(auth); showToast('Logged out'); };
 
-  // Service worker
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js').catch(e => console.log("SW failed", e));
   }
 
-  // Initial pending badge
   updatePendingBadge();
 </script>
 </body>

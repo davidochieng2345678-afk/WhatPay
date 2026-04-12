@@ -19,6 +19,8 @@
   .wireframe-box { background: #f9fafb; border: 1px dashed #9ca3af; border-radius: 0.5rem; padding: 0.75rem; margin: 0.5rem 0; text-align: center; font-size: 0.75rem; color: #4b5563; }
   .wireframe-row { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin: 0.5rem 0; }
   .toast { transition: opacity 0.3s; }
+  .step-card { transition: 0.2s; }
+  .step-card:hover { transform: translateY(-3px); }
 </style>
 </head>
 <body class="bg-gray-100 font-sans">
@@ -38,9 +40,14 @@
         <a href="pricing.html" class="hover:underline">Pricing</a>
         <a href="merchant.html" class="hover:underline">Merchant</a>
         <a href="payment.html" class="hover:underline">Payments</a>
+        <a href="pay-anyone.html" class="hover:underline">Pay Anyone</a>
         <a href="reports.html" class="hover:underline">Reports</a>
+        <a href="users.html" class="hover:underline">My Account</a>
         <a href="contact.html" class="hover:underline">Contact</a>
         <a href="admin.html" class="hover:underline">Admin</a>
+        <a href="privacy.html" class="hover:underline">Privacy</a>
+        <a href="terms.html" class="hover:underline">Terms</a>
+        <a href="registration.html" class="hover:underline">Registration</a>
       </nav>
     </div>
   </div>
@@ -55,6 +62,7 @@
     <button id="loginBtn" class="bg-green-600 text-white w-full py-2 rounded">Login</button>
     <button id="closeModalBtn" class="text-gray-500 text-sm w-full mt-2">Cancel</button>
     <div id="loginError" class="text-red-500 text-sm mt-2 text-center"></div>
+    <p class="text-xs text-gray-500 text-center mt-3">Demo: admin@whapay.com / your password</p>
   </div>
 </div>
 
@@ -73,7 +81,7 @@
         <h3 class="font-bold text-lg mb-2"><i class="fab fa-whatsapp text-green-600 mr-1"></i> WhatsApp Registration</h3>
         <div class="space-y-2 text-sm">
           <div class="wireframe-box">User opens WhatsApp</div>
-          <div class="wireframe-box">Sends <span class="font-mono">REGISTER</span> to <strong>+254710346425</strong></div>
+          <div class="wireframe-box">Sends <span class="font-mono">REGISTER</span> to <strong class="font-mono">0140933042</strong></div>
           <div class="wireframe-box">Bot asks: "Your full name?"</div>
           <div class="wireframe-box">User replies with name</div>
           <div class="wireframe-box">Bot asks: "Your phone number?"</div>
@@ -88,9 +96,9 @@
         <div class="space-y-2 text-sm">
           <div class="wireframe-box">User dials <strong class="font-mono">0140933042</strong></div>
           <div class="wireframe-box">Voicemail plays: "Send SMS with REG YourName"</div>
-          <div class="wireframe-box">User sends SMS: <span class="font-mono">REG John Doe</span></div>
+          <div class="wireframe-box">User sends SMS: <span class="font-mono">REG John Doe</span> to <strong class="font-mono">0140933042</strong></div>
           <div class="wireframe-box">System replies with temporary code: <span class="font-mono">TMP5821</span></div>
-          <div class="wireframe-box">User goes online → sends WhatsApp: <span class="font-mono">ACTIVATE TMP5821</span></div>
+          <div class="wireframe-box">User goes online → sends WhatsApp to <strong class="font-mono">0140933042</strong>: <span class="font-mono">ACTIVATE TMP5821</span></div>
           <div class="wireframe-box bg-green-50 border-green-200">✅ Receives permanent Member Code + QR</div>
         </div>
         <p class="text-xs text-gray-500 mt-2">No internet needed for the call & SMS. Activation requires WhatsApp.</p>
@@ -99,9 +107,9 @@
       <div class="wireframe-card">
         <h3 class="font-bold text-lg mb-2"><i class="fas fa-envelope text-purple-600 mr-1"></i> Offline SMS Registration</h3>
         <div class="space-y-2 text-sm">
-          <div class="wireframe-box">User sends SMS: <span class="font-mono">REG John Doe</span> to <strong>0140933042</strong></div>
+          <div class="wireframe-box">User sends SMS: <span class="font-mono">REG John Doe</span> to <strong class="font-mono">0140933042</strong></div>
           <div class="wireframe-box">Auto-reply: "Temporary code: TMP5821"</div>
-          <div class="wireframe-box">User goes online → sends WhatsApp: <span class="font-mono">ACTIVATE TMP5821</span></div>
+          <div class="wireframe-box">User goes online → sends WhatsApp to <strong class="font-mono">0140933042</strong>: <span class="font-mono">ACTIVATE TMP5821</span></div>
           <div class="wireframe-box bg-green-50 border-green-200">✅ Receives permanent Member Code + QR</div>
         </div>
         <p class="text-xs text-gray-500 mt-2">No internet for sending SMS. Activation requires WhatsApp.</p>
@@ -117,12 +125,12 @@
       <div>
         <h3 class="text-xl font-bold mb-3">Online Payment Flow</h3>
         <div class="space-y-2 text-sm">
-          <div class="wireframe-box flex justify-between items-center">Customer receives WhatsApp link <span class="text-green-600">→</span></div>
+          <div class="wireframe-box flex justify-between items-center">Customer receives WhatsApp link from <strong class="font-mono">0140933042</strong> <span class="text-green-600">→</span></div>
           <div class="wireframe-box">Clicks link → opens payment page</div>
           <div class="wireframe-box">Chooses method: M-Pesa STK Push or Card</div>
           <div class="wireframe-box">If M-Pesa: enters phone number, receives prompt, enters PIN</div>
           <div class="wireframe-box">If Card: enters card details on Stripe secure page</div>
-          <div class="wireframe-box bg-green-50">✅ Both receive confirmation (WhatsApp/SMS)</div>
+          <div class="wireframe-box bg-green-50">✅ Both receive confirmation (WhatsApp/SMS) from <strong class="font-mono">0140933042</strong></div>
         </div>
       </div>
       <!-- Offline Payment Flow (Member Code + M-Pesa Paybill) -->
@@ -131,7 +139,7 @@
         <div class="space-y-2 text-sm">
           <div class="wireframe-box">Customer gets merchant's Member Code (e.g., DK12345)</div>
           <div class="wireframe-box">Opens M-Pesa → Lipa na M-PESA → Paybill</div>
-          <div class="wireframe-box">Enter Business Number (provided by merchant)</div>
+          <div class="wireframe-box">Enter Business Number: <strong class="font-mono">0140933042</strong></div>
           <div class="wireframe-box">Enter Account Number = Merchant's Member Code</div>
           <div class="wireframe-box">Enter Amount → PIN → Confirm</div>
           <div class="wireframe-box bg-green-50">✅ Both receive SMS confirmation. Dashboard syncs later via SYNC command.</div>
@@ -147,6 +155,7 @@
         <div class="wireframe-box bg-white">💳 Method: [M-Pesa ▼] or [Card ▼]</div>
         <div class="wireframe-box bg-white">📱 Phone (for M-Pesa): [__________]</div>
         <div class="wireframe-box bg-green-600 text-white">💳 Pay Now</div>
+        <div class="wireframe-box bg-yellow-50 text-xs">No internet? Use Paybill <strong class="font-mono">0140933042</strong> Account = Merchant Code</div>
       </div>
     </div>
   </div>
@@ -167,7 +176,7 @@
         <div class="wireframe-box">Member Code: [__________]</div>
         <div class="wireframe-box">Amount: [__________]</div>
         <div class="wireframe-box bg-green-600 text-white">Create Link</div>
-        <div class="wireframe-box bg-gray-100">Generated link: https://wa.me/254710346425?text=Pay DK12345 500</div>
+        <div class="wireframe-box bg-gray-100">Generated link: https://wa.me/0140933042?text=Pay DK12345 500</div>
       </div>
       <div>
         <h3 class="font-bold mb-2">Recent Transactions Table</h3>
@@ -175,7 +184,7 @@
         <div class="wireframe-box">
           <table class="w-full text-xs"><thead><tr><th>Customer</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead><tbody><tr><td>John</td><td>KES 500</td><td>Completed</td><td>2026-04-10</td></tr><tr><td>Mary</td><td>KES 200</td><td>Pending</td><td>2026-04-09</td></tr></tbody></table>
         </div>
-        <div class="wireframe-box bg-yellow-50">Offline payment instructions: Member Code + M-Pesa Paybill</div>
+        <div class="wireframe-box bg-yellow-50">Offline payment instructions: Member Code + M-Pesa Paybill <strong class="font-mono">0140933042</strong></div>
       </div>
     </div>
   </div>
@@ -201,9 +210,11 @@
         <div class="wireframe-box">Table with Edit/Delete buttons and Add button</div>
         <div class="wireframe-box">Modal forms for Add/Edit (popup)</div>
         <div class="wireframe-box bg-blue-50">+ Add Merchant | + Add User | + Add Blog</div>
+        <div class="wireframe-box text-xs text-gray-500">Offline registration number: <strong class="font-mono">0140933042</strong></div>
       </div>
     </div>
   </div>
+
   <!-- ==================== 5. REPORTS DASHBOARD WIREFRAME ==================== -->
   <div class="bg-white rounded-2xl shadow-lg p-6 mb-10">
     <h2 class="text-2xl font-bold mb-4 flex items-center"><i class="fas fa-chart-bar text-green-600 mr-2"></i> 5. Reports Dashboard Wireframe</h2>
@@ -226,7 +237,7 @@
         <div class="wireframe-box">Date Range: [Start] [End] [Filter] [Reset]</div>
         <div class="wireframe-box">Export CSV button</div>
         <div class="wireframe-box">Table: #, Customer, Amount, Method, Status, Date</div>
-        <div class="wireframe-box bg-yellow-50">Offline payments appear after SYNC command</div>
+        <div class="wireframe-box bg-yellow-50">Offline payments appear after SYNC command to <strong class="font-mono">0140933042</strong></div>
       </div>
     </div>
   </div>
@@ -243,7 +254,7 @@
           <div class="wireframe-box">Clicks "Complete Registration & Payment"</div>
           <div class="wireframe-box">Pays via M-Pesa or Card (real API)</div>
           <div class="wireframe-box bg-green-50">✅ After success: system generates Member Code + QR</div>
-          <div class="wireframe-box">User receives WhatsApp with code & QR</div>
+          <div class="wireframe-box">User receives WhatsApp from <strong class="font-mono">0140933042</strong> with code & QR</div>
           <div class="wireframe-box">User is redirected to merchant dashboard</div>
         </div>
       </div>
@@ -256,7 +267,7 @@
           <div class="wireframe-box bg-white">💳 Method: [M-Pesa ▼] or [Card ▼]</div>
           <div class="wireframe-box bg-green-600 text-white">Complete Registration & Payment</div>
         </div>
-        <div class="wireframe-box bg-green-50 mt-2">Result screen shows Member Code + QR code</div>
+        <div class="wireframe-box bg-green-50 mt-2">Result screen shows Member Code + QR code + offline Paybill instructions: <strong class="font-mono">0140933042</strong></div>
       </div>
     </div>
   </div>
@@ -267,13 +278,13 @@
     <div class="flex flex-wrap justify-center items-center gap-2 text-sm">
       <div class="bg-gray-100 p-2 rounded-lg text-center">User dials<br><strong class="font-mono">0140933042</strong></div>
       <i class="fas fa-arrow-right text-green-600"></i>
-      <div class="bg-gray-100 p-2 rounded-lg text-center">Voicemail:<br>"Send SMS with REG YourName"</div>
+      <div class="bg-gray-100 p-2 rounded-lg text-center">Voicemail:<br>"Send SMS with REG YourName to 0140933042"</div>
       <i class="fas fa-arrow-right text-green-600"></i>
-      <div class="bg-gray-100 p-2 rounded-lg text-center">User sends SMS:<br><span class="font-mono">REG John Doe</span></div>
+      <div class="bg-gray-100 p-2 rounded-lg text-center">User sends SMS:<br><span class="font-mono">REG John Doe</span> to <strong class="font-mono">0140933042</strong></div>
       <i class="fas fa-arrow-right text-green-600"></i>
       <div class="bg-gray-100 p-2 rounded-lg text-center">System replies:<br>Temporary code (e.g., TMP5821)</div>
       <i class="fas fa-arrow-right text-green-600"></i>
-      <div class="bg-gray-100 p-2 rounded-lg text-center">User goes online → WhatsApp:<br><span class="font-mono">ACTIVATE TMP5821</span></div>
+      <div class="bg-gray-100 p-2 rounded-lg text-center">User goes online → WhatsApp to <strong class="font-mono">0140933042</strong>:<br><span class="font-mono">ACTIVATE TMP5821</span></div>
       <i class="fas fa-arrow-right text-green-600"></i>
       <div class="bg-green-100 p-2 rounded-lg text-center">✅ Receives permanent<br>Member Code + QR</div>
     </div>
@@ -286,11 +297,11 @@
       <div>
         <h3 class="font-bold text-lg mb-2">Merchant Journey</h3>
         <div class="space-y-1">
-          <div class="wireframe-box">1. Registers via WhatsApp, voice (0140933042), or SMS</div>
+          <div class="wireframe-box">1. Registers via WhatsApp, voice (<strong class="font-mono">0140933042</strong>), or SMS</div>
           <div class="wireframe-box">2. Receives Member Code & QR code</div>
           <div class="wireframe-box">3. Displays QR at shop / shares WhatsApp link</div>
           <div class="wireframe-box">4. Customer pays (online or offline)</div>
-          <div class="wireframe-box">5. Merchant receives SMS/WhatsApp confirmation</div>
+          <div class="wireframe-box">5. Merchant receives SMS/WhatsApp confirmation from <strong class="font-mono">0140933042</strong></div>
           <div class="wireframe-box">6. Views live dashboard, reports, exports CSV</div>
         </div>
       </div>
@@ -299,7 +310,7 @@
         <div class="space-y-1">
           <div class="wireframe-box">1. Receives merchant's QR or Member Code</div>
           <div class="wireframe-box">2. If online: scans QR or clicks WhatsApp link → pays with card/M-Pesa</div>
-          <div class="wireframe-box">3. If offline: opens M-Pesa → Paybill → enters merchant's Member Code → pays</div>
+          <div class="wireframe-box">3. If offline: opens M-Pesa → Paybill <strong class="font-mono">0140933042</strong> → enters merchant's Member Code → pays</div>
           <div class="wireframe-box">4. Receives SMS confirmation</div>
           <div class="wireframe-box">5. Can optionally register as a user via first-time pay</div>
         </div>
@@ -340,18 +351,19 @@
       <li>Tables scroll horizontally on mobile (<code class="bg-gray-100 px-1">overflow-x-auto</code>)</li>
       <li>Navigation collapses to wrap on small screens</li>
       <li>Forms and cards are full-width on mobile, grid on desktop</li>
-      <li>Floating WhatsApp button fixed on bottom-right, scales down on mobile</li>
+      <li>Floating WhatsApp button fixed on bottom-right (links to <strong class="font-mono">0140933042</strong>), scales down on mobile</li>
       <li>All interactive elements have hover states and touch-friendly tap targets (min 44px)</li>
+      <li>Offline registration number <strong class="font-mono">0140933042</strong> appears throughout all flows</li>
     </ul>
   </div>
 </main>
 
 <footer class="bg-gray-900 text-gray-300 pt-8 pb-4 text-center text-sm mt-8">
-  <p>© 2026 WhaPay – <strong>Offline registration: call <span class="font-mono">0140933042</span> (voicemail) or SMS to same number</strong> | WhatsApp: <strong>+254710346425</strong></p>
+  <p>© 2026 WhaPay – <strong>Offline registration: call <span class="font-mono">0140933042</span> (voicemail) or SMS to same number</strong> | WhatsApp: <strong class="font-mono">0140933042</strong></p>
   <div class="mt-2 space-x-4"><a href="privacy.html" class="hover:text-green-400">Privacy Policy</a> | <a href="terms.html" class="hover:text-green-400">Terms of Service</a> | <a href="contact.html" class="hover:text-green-400">Contact</a></div>
 </footer>
 
-<a href="https://wa.me/254710346425?text=Hello%20WhaPay" target="_blank" class="fixed bottom-5 right-5 bg-green-500 text-white p-3 rounded-full shadow-lg hover:bg-green-600 z-50"><i class="fab fa-whatsapp text-2xl"></i></a>
+<a href="https://wa.me/0140933042?text=Hello%20WhaPay" target="_blank" class="fixed bottom-5 right-5 bg-green-500 text-white p-3 rounded-full shadow-lg hover:bg-green-600 z-50"><i class="fab fa-whatsapp text-2xl"></i></a>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -427,4 +439,3 @@
 </script>
 </body>
 </html>
-  

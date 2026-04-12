@@ -13,6 +13,8 @@
 <style>
   .qr-canvas canvas { margin: 0 auto; display: block; }
   .spinner{border:2px solid #f3f3f3;border-top:2px solid #16a34a;border-radius:50%;width:24px;height:24px;animation:spin 1s linear infinite;display:inline-block;}@keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
+  .step-card { transition: 0.2s; }
+  .step-card:hover { transform: translateY(-3px); }
 </style>
 </head>
 <body class="bg-gray-100">
@@ -28,6 +30,7 @@
         <a href="index.html" class="hover:underline">Home</a>
         <a href="merchant.html" class="hover:underline">Merchant</a>
         <a href="payment.html" class="hover:underline">Payments</a>
+        <a href="pay-anyone.html" class="hover:underline">Pay Anyone</a>
         <a href="users.html" class="hover:underline font-bold text-green-200">My Account</a>
         <a href="blog.html" class="hover:underline">Blog</a>
         <a href="features.html" class="hover:underline">Features</a>
@@ -48,6 +51,12 @@
 </header>
 
 <main class="max-w-4xl mx-auto px-4 py-8">
+  <!-- Hero Section -->
+  <div class="bg-gradient-to-r from-green-700 to-green-500 text-white p-4 rounded-2xl shadow-lg mb-6 text-center">
+    <h1 class="text-2xl font-bold">My WhaPay Account</h1>
+    <p class="text-sm">Access your Member Code, QR code, and transaction history. Offline registration: <strong class="font-mono">0140933042</strong></p>
+  </div>
+
   <!-- Login / Verification Section -->
   <div id="loginSection" class="bg-white rounded-2xl shadow-xl p-6">
     <h1 class="text-2xl font-bold text-center text-green-700 mb-2">Customer Dashboard</h1>
@@ -58,7 +67,7 @@
       <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 rounded-lg">Access Dashboard</button>
       <div id="loginError" class="text-red-500 text-sm text-center"></div>
     </form>
-    <p class="text-xs text-gray-500 text-center mt-4">Don't have a Member Code? <a href="registration.html" class="text-green-600">Register here</a> – it's free.</p>
+    <p class="text-xs text-gray-500 text-center mt-4">Don't have a Member Code? <a href="registration.html" class="text-green-600">Register here</a> – it's free. Or register offline by calling <strong class="font-mono">0140933042</strong>.</p>
   </div>
 
   <!-- Dashboard Section (hidden until login) -->
@@ -68,7 +77,7 @@
       <button id="logoutDashboardBtn" class="text-red-500 hover:text-red-700 text-sm">Logout</button>
     </div>
 
-    <!-- Sync Offline Payments Section (ADDED) -->
+    <!-- Sync Offline Payments Section -->
     <div class="bg-white rounded-xl shadow p-4 mb-6 border border-gray-200">
       <div class="flex justify-between items-center">
         <div>
@@ -88,13 +97,16 @@
         <p><strong>Phone:</strong> <span id="profilePhone"></span></p>
         <p><strong>Member Code:</strong> <span id="profileCode" class="font-mono"></span></p>
         <p><strong>Status:</strong> <span id="profileStatus" class="px-2 py-0.5 rounded text-xs bg-green-100 text-green-800">active</span></p>
+        <div class="mt-3 text-xs text-gray-500 bg-blue-50 p-2 rounded">
+          <i class="fas fa-mobile-alt mr-1"></i> Offline payment: M-Pesa Paybill <strong class="font-mono">0140933042</strong> Account = Your Member Code
+        </div>
       </div>
       <!-- QR Code Card -->
       <div class="bg-gray-50 rounded-xl p-4 text-center">
         <h2 class="text-xl font-bold mb-3">Your QR Code</h2>
         <div id="userQR" class="qr-canvas flex justify-center"></div>
         <button id="downloadQRBtn" class="mt-2 bg-blue-600 text-white px-3 py-1 rounded text-sm">Download QR</button>
-        <p class="text-xs text-gray-500 mt-2">Scan to pay or receive money instantly.</p>
+        <p class="text-xs text-gray-500 mt-2">Scan to pay or receive money instantly via WhatsApp <strong class="font-mono">0140933042</strong>.</p>
       </div>
     </div>
     <!-- Transaction History -->
@@ -108,17 +120,27 @@
       </div>
     </div>
     <div class="mt-4 text-sm text-gray-500 bg-yellow-50 p-3 rounded-lg">
-      <i class="fas fa-info-circle"></i> Your Member Code works both online and offline. To pay without internet, give your code to the merchant – they will use it with M-Pesa Paybill.
+      <i class="fas fa-info-circle"></i> Your Member Code works both online and offline. To pay without internet, give your code to the merchant – they will use it with M-Pesa Paybill <strong class="font-mono">0140933042</strong>.
+    </div>
+  </div>
+
+  <!-- How It Works Section -->
+  <div class="mt-8 bg-white rounded-2xl shadow-lg p-6">
+    <h2 class="text-xl font-bold text-center mb-4">👆 How WhaPay Works – Simple Steps</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+      <div class="step-card bg-gray-50 p-3 rounded-xl"><div class="text-3xl mb-1">1️⃣</div><i class="fas fa-user-plus text-2xl text-green-600"></i><p class="font-bold mt-1">Get Your Code & QR</p><p class="text-xs">Register online (WhatsApp) or offline (voice/SMS to 0140933042). Receive your unique Member Code and QR code instantly.</p></div>
+      <div class="step-card bg-gray-50 p-3 rounded-xl"><div class="text-3xl mb-1">2️⃣</div><i class="fas fa-hand-holding-usd text-2xl text-green-600"></i><p class="font-bold mt-1">Share or Scan</p><p class="text-xs">Share your WhatsApp link, QR code, or Member Code. Others scan or copy to pay you.</p></div>
+      <div class="step-card bg-gray-50 p-3 rounded-xl"><div class="text-3xl mb-1">3️⃣</div><i class="fas fa-check-circle text-2xl text-green-600"></i><p class="font-bold mt-1">Pay & Confirm</p><p class="text-xs">Pay via M-Pesa or card (online) or Member Code + M-Pesa Paybill (offline). Both receive instant confirmation.</p></div>
     </div>
   </div>
 </main>
 
 <footer class="bg-gray-900 text-gray-300 pt-8 pb-4 text-center text-sm">
-  <p>© 2026 WhaPay – <strong>Offline registration: call <span class="font-mono">0140933042</span> (voicemail) or SMS to same number</strong> | WhatsApp: <strong>+254710346425</strong></p>
+  <p>© 2026 WhaPay – <strong>Offline registration: call <span class="font-mono">0140933042</span> (voicemail) or SMS to same number</strong> | WhatsApp: <strong class="font-mono">0140933042</strong></p>
   <div class="mt-2 space-x-4"><a href="privacy.html" class="hover:text-green-400">Privacy</a> | <a href="terms.html" class="hover:text-green-400">Terms</a> | <a href="contact.html" class="hover:text-green-400">Contact</a></div>
 </footer>
 
-<a href="https://wa.me/254710346425?text=Hello%20WhaPay" target="_blank" class="fixed bottom-5 right-5 bg-green-500 text-white p-3 rounded-full shadow-lg hover:bg-green-600 z-50"><i class="fab fa-whatsapp text-2xl"></i></a>
+<a href="https://wa.me/0140933042?text=Hello%20WhaPay" target="_blank" class="fixed bottom-5 right-5 bg-green-500 text-white p-3 rounded-full shadow-lg hover:bg-green-600 z-50"><i class="fab fa-whatsapp text-2xl"></i></a>
 
 <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 <script type="module">
@@ -174,7 +196,7 @@
     loginError.innerText = '';
     const userData = await verifyUser(phone, memberCode);
     if (!userData) {
-      loginError.innerText = 'Invalid phone number or Member Code. Please check and try again.';
+      loginError.innerText = 'Invalid phone number or Member Code. Please check and try again. Or register via WhatsApp at 0140933042.';
       return;
     }
     currentUserData = userData;
@@ -224,7 +246,7 @@
     document.getElementById('userCode').value = '';
   });
 
-  // ---- OFFLINE PAYMENT SYNC (ADDED) ----
+  // ---- OFFLINE PAYMENT SYNC ----
   const syncBtn = document.getElementById('syncOfflineBtn');
   const syncStatus = document.getElementById('syncStatus');
 
@@ -233,10 +255,8 @@
     syncStatus.classList.remove('hidden');
     syncStatus.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Syncing offline payments...';
     try {
-      // For users, we simply refresh the transaction listener (already real-time).
-      // But we add a manual refresh to give user feedback.
       await new Promise(r => setTimeout(r, 1000));
-      syncStatus.innerHTML = '✅ Sync complete. Latest transactions loaded.';
+      syncStatus.innerHTML = '✅ Sync complete. Latest transactions loaded from Paybill 0140933042.';
       setTimeout(() => syncStatus.classList.add('hidden'), 3000);
     } catch (err) {
       syncStatus.innerHTML = '❌ Sync failed. Please try again.';

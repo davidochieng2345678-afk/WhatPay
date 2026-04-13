@@ -4,13 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>WhaPay Blog – WhatsApp Payment Insights for Kenyan Merchants</title>
-<meta name="description" content="Read the latest tips, guides, and tutorials about WhatsApp payments, M-Pesa integration, card payments, and growing your business in Kenya with WhaPay.">
-<meta name="keywords" content="WhaPay blog, WhatsApp payments Kenya, M-Pesa tips, card payments, merchant guides, Kenyan fintech">
+<meta name="description" content="Read the latest tips, guides, and tutorials about WhatsApp payments, M-Pesa integration, card payments, and growing your business in Kenya with WhaPay. Offline registration: 0140933042.">
+<meta name="keywords" content="WhaPay blog, WhatsApp payments Kenya, M-Pesa tips, card payments, merchant guides, Kenyan fintech, offline registration 0140933042">
+<meta name="author" content="WhaPay Solutions">
 <meta name="robots" content="index, follow">
 
 <!-- Open Graph -->
 <meta property="og:title" content="WhaPay Blog – WhatsApp Payment Insights">
-<meta property="og:description" content="Practical guides for Kenyan merchants accepting WhatsApp payments, M-Pesa, and cards.">
+<meta property="og:description" content="Practical guides for Kenyan merchants accepting WhatsApp payments, M-Pesa, and cards. Offline registration: 0140933042.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://whapay.space/blog.html">
 <meta property="og:image" content="https://whapay.space/images/whapay-blog-og.jpg">
@@ -22,13 +23,15 @@
 <meta name="theme-color" content="#16a34a">
 <style>
   .toast { transition: opacity 0.3s; }
+  .step-card { transition: 0.2s; }
+  .step-card:hover { transform: translateY(-3px); }
 </style>
 </head>
 <body class="bg-gray-100 font-sans">
 
 <header class="bg-green-600 text-white p-4 shadow-md sticky top-0 z-50">
   <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
-    <h1 class="text-2xl font-bold mb-2 md:mb-0"><a href="index.html">WhaPay</a></h1>
+    <h1 class="text-2xl font-bold mb-2 md:mb-0"><a href="index.html">WhaPay Blog</a></h1>
     <div class="flex flex-wrap items-center gap-2 md:gap-4">
       <span id="pendingSyncBadge" class="bg-yellow-500 text-white text-xs px-2 py-1 rounded-full hidden">Sync Pending</span>
       <span id="navUserDisplay" class="text-sm hidden md:inline"></span>
@@ -36,15 +39,20 @@
       <button id="navLogoutBtn" class="bg-red-500 text-white px-3 py-1 rounded text-sm font-semibold hover:bg-red-600 hidden">Logout</button>
       <nav class="flex flex-wrap gap-2">
         <a href="index.html" class="hover:underline">Home</a>
-        <a href="about.html" class="hover:underline">About</a>
-        <a href="features.html" class="hover:underline">Features</a>
-        <a href="pricing.html" class="hover:underline">Pricing</a>
         <a href="merchant.html" class="hover:underline">Merchant</a>
-        <a href="payment.html" class="hover:underline">Payment</a>
+        <a href="payment.html" class="hover:underline">Payments</a>
+        <a href="pay-anyone.html" class="hover:underline">Pay Anyone</a>
+        <a href="users.html" class="hover:underline">My Account</a>
+        <a href="features.html" class="hover:underline">Features</a>
         <a href="reports.html" class="hover:underline">Reports</a>
-        <a href="blog.html" class="hover:underline font-bold text-green-200">Blogs</a>
+        <a href="blog.html" class="hover:underline font-bold text-green-200">Blog</a>
+        <a href="about.html" class="hover:underline">About</a>
         <a href="contact.html" class="hover:underline">Contact</a>
+        <a href="privacy.html" class="hover:underline">Privacy</a>
+        <a href="terms.html" class="hover:underline">Terms</a>
         <a href="admin.html" class="hover:underline">Admin</a>
+        <a href="pricing.html" class="hover:underline">Pricing</a>
+        <a href="registration.html" class="hover:underline">Registration</a>
       </nav>
     </div>
   </div>
@@ -59,18 +67,29 @@
     <button id="loginBtn" class="bg-green-600 text-white w-full py-2 rounded">Login</button>
     <button id="closeModalBtn" class="text-gray-500 text-sm w-full mt-2">Cancel</button>
     <div id="loginError" class="text-red-500 text-sm mt-2 text-center"></div>
+    <p class="text-xs text-gray-500 text-center mt-3">Demo: admin@whapay.com / your password</p>
   </div>
 </div>
 
 <!-- Hero -->
 <section class="bg-gradient-to-r from-green-700 to-green-500 text-white py-12 px-4 text-center">
   <h1 class="text-3xl md:text-4xl font-bold mb-2">WhaPay Blog</h1>
-  <p class="text-lg max-w-2xl mx-auto">Tips, guides, and tutorials to help you master WhatsApp payments in Kenya.</p>
+  <p class="text-lg max-w-2xl mx-auto">Tips, guides, and tutorials to help you master WhatsApp payments in Kenya. <strong>Offline registration: <span class="font-mono">0140933042</span></strong></p>
 </section>
 
 <main class="max-w-7xl mx-auto px-4 py-8">
   <div id="blogContent" class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
     <p class="text-gray-500 text-center">Loading posts...</p>
+  </div>
+
+  <!-- How It Works Section -->
+  <div class="mt-8 bg-white rounded-2xl shadow-lg p-6">
+    <h2 class="text-xl font-bold text-center mb-4">👆 How WhaPay Works – Simple Steps</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+      <div class="step-card bg-gray-50 p-3 rounded-xl"><div class="text-3xl mb-1">1️⃣</div><i class="fas fa-user-plus text-2xl text-green-600"></i><p class="font-bold mt-1">Get Your Code & QR</p><p class="text-xs">Register online (WhatsApp) or offline (voice/SMS to <strong class="font-mono">0140933042</strong>). Receive your unique Member Code and QR code instantly.</p></div>
+      <div class="step-card bg-gray-50 p-3 rounded-xl"><div class="text-3xl mb-1">2️⃣</div><i class="fas fa-hand-holding-usd text-2xl text-green-600"></i><p class="font-bold mt-1">Share or Scan</p><p class="text-xs">Merchant shares their WhatsApp link, QR code, or Member Code. Customer scans or copies the code.</p></div>
+      <div class="step-card bg-gray-50 p-3 rounded-xl"><div class="text-3xl mb-1">3️⃣</div><i class="fas fa-check-circle text-2xl text-green-600"></i><p class="font-bold mt-1">Pay & Confirm</p><p class="text-xs">Pay via M-Pesa or card (online) or Member Code + M-Pesa Paybill <strong class="font-mono">0140933042</strong> (offline). Both receive instant confirmation.</p></div>
+    </div>
   </div>
 </main>
 
@@ -80,16 +99,6 @@
       <h2 class="text-2xl font-bold text-white mb-3">WhaPay</h2>
       <p class="text-gray-400 text-sm leading-relaxed mb-4">Kenya's modern WhatsApp payment solution. Accept M-Pesa & card payments seamlessly, even offline.</p>
       <p class="text-sm text-gray-500">Trusted by businesses across Kenya 🇰🇪</p>
-    </div>
-    <div>
-      <h3 class="text-white font-semibold mb-4">Quick Links</h3>
-      <ul class="space-y-2 text-sm">
-        <li><a href="index.html" class="hover:text-green-400">Home</a></li>
-        <li><a href="about.html" class="hover:text-green-400">About</a></li>
-        <li><a href="features.html" class="hover:text-green-400">Features</a></li>
-        <li><a href="pricing.html" class="hover:text-green-400">Pricing</a></li>
-        <li><a href="contact.html" class="hover:text-green-400">Contact</a></li>
-      </ul>
     </div>
     <div>
       <h3 class="text-white font-semibold mb-4">Solutions</h3>
@@ -102,25 +111,25 @@
       </ul>
     </div>
     <div>
+      <h3 class="text-white font-semibold mb-4">Contact</h3>
+      <p class="text-sm text-gray-400 mb-2">Email: <a href="mailto:support@whapay.com" class="hover:text-green-400">support@whapay.com</a></p>
+      <p class="text-sm text-gray-400">Offline registration: <a href="tel:0140933042" class="hover:text-green-400">0140933042</a> (voice/SMS)</p>
+      <p class="text-sm text-gray-400">WhatsApp: <strong class="font-mono">0140933042</strong></p>
+    </div>
+    <div>
       <h3 class="text-white font-semibold mb-4">Get Started</h3>
       <p class="text-sm text-gray-400 mb-3">Start accepting payments via WhatsApp today.</p>
-      <a href="https://wa.me/254710346425" target="_blank" class="block bg-green-500 hover:bg-green-600 text-white text-center py-2 px-4 rounded mb-3">Chat on WhatsApp</a>
-      <p class="text-sm text-gray-400">Email: <a href="mailto:support@whapay.com" class="hover:text-green-400">support@whapay.com</a></p>
-      <p class="text-sm text-gray-400">Offline registration: <a href="tel:0140933042" class="hover:text-green-400">0140933042</a> (voice/SMS)</p>
+      <a href="https://wa.me/0140933042" target="_blank" class="block bg-green-500 hover:bg-green-600 text-white text-center py-2 px-4 rounded mb-3">Chat on WhatsApp</a>
     </div>
   </div>
   <div class="border-t border-gray-800 mt-10 pt-6 text-center text-sm text-gray-500">
     <p>&copy; 2026 WhaPay Solutions. All rights reserved.</p>
-    <div class="mt-2 space-x-4">
-      <a href="privacy.html" class="hover:text-green-400">Privacy Policy</a>
-      <a href="terms.html" class="hover:text-green-400">Terms of Service</a>
-      <a href="#" class="hover:text-green-400">Cookies</a>
-    </div>
+    <p class="text-xs mt-1">Offline registration: call <strong class="font-mono">0140933042</strong> (voicemail) or SMS to same number | WhatsApp: <strong class="font-mono">0140933042</strong></p>
   </div>
 </footer>
 
 <!-- Floating WhatsApp Button -->
-<a href="https://wa.me/254710346425?text=Hello%20I%20want%20to%20use%20WhaPay" target="_blank" 
+<a href="https://wa.me/0140933042?text=Hello%20I%20want%20to%20use%20WhaPay" target="_blank" 
    class="fixed bottom-5 right-5 z-50 flex items-center gap-3 bg-green-500 hover:bg-green-600 text-white px-4 py-3 rounded-full shadow-lg transition-all duration-300">
   <i class="fab fa-whatsapp text-xl"></i>
   <span class="hidden md:inline text-sm font-semibold">Chat with us</span>
@@ -254,6 +263,10 @@
           <i class="fas fa-pen-fancy text-5xl text-gray-400 mb-4"></i>
           <h2 class="text-2xl font-bold text-gray-700">No blog posts yet</h2>
           <p class="text-gray-500 mt-2">Check back soon for updates and guides.</p>
+          <div class="mt-4 p-3 bg-green-50 rounded-lg text-sm">
+            <i class="fas fa-phone-volume text-green-600 mr-2"></i> 
+            Need help? Register offline by calling <strong class="font-mono">0140933042</strong> or send SMS to the same number.
+          </div>
         </div>
       `;
       return;

@@ -24,7 +24,7 @@
   "name": "WhaPay Solutions",
   "url": "https://whapay.space",
   "logo": "https://whapay.space/images/whapay-logo.png",
-  "sameAs": ["https://wa.me/254710346425", "https://twitter.com/whapay"],
+  "sameAs": ["https://wa.me/0140933042", "https://twitter.com/whapay"],
   "description": "Offline-first payment platform for Kenya and beyond. Register via WhatsApp, voice (0140933042), or SMS. Pay online or offline with Member Code + M-Pesa.",
   "foundingDate": "2025",
   "founder": { "@type": "Person", "name": "David Ochieng" },
@@ -41,6 +41,8 @@
   .hover-scale:hover { transform: scale(1.02); transition: transform 0.2s; }
   .timeline-dot { width: 12px; height: 12px; background-color: #16a34a; border-radius: 50%; position: absolute; left: -6px; top: 5px; }
   .toast { transition: opacity 0.3s; }
+  .step-card { transition: 0.2s; }
+  .step-card:hover { transform: translateY(-3px); }
 </style>
 </head>
 <body class="bg-gray-100 font-sans">
@@ -56,15 +58,20 @@
       <button id="navLogoutBtn" class="bg-red-500 text-white px-3 py-1 rounded text-sm font-semibold hover:bg-red-600 hidden">Logout</button>
       <nav class="flex flex-wrap gap-2">
         <a href="index.html" class="hover:underline">Home</a>
-        <a href="about.html" class="hover:underline font-bold text-green-200">About</a>
-        <a href="features.html" class="hover:underline">Features</a>
-        <a href="pricing.html" class="hover:underline">Pricing</a>
         <a href="merchant.html" class="hover:underline">Merchant</a>
         <a href="payment.html" class="hover:underline">Payments</a>
+        <a href="pay-anyone.html" class="hover:underline">Pay Anyone</a>
+        <a href="users.html" class="hover:underline">My Account</a>
+        <a href="features.html" class="hover:underline">Features</a>
         <a href="reports.html" class="hover:underline">Reports</a>
         <a href="blog.html" class="hover:underline">Blog</a>
+        <a href="about.html" class="hover:underline font-bold text-green-200">About</a>
         <a href="contact.html" class="hover:underline">Contact</a>
+        <a href="privacy.html" class="hover:underline">Privacy</a>
+        <a href="terms.html" class="hover:underline">Terms</a>
         <a href="admin.html" class="hover:underline">Admin</a>
+        <a href="pricing.html" class="hover:underline">Pricing</a>
+        <a href="registration.html" class="hover:underline">Registration</a>
       </nav>
     </div>
   </div>
@@ -79,6 +86,7 @@
     <button id="loginBtn" class="bg-green-600 text-white w-full py-2 rounded">Login</button>
     <button id="closeModalBtn" class="text-gray-500 text-sm w-full mt-2">Cancel</button>
     <div id="loginError" class="text-red-500 text-sm mt-2 text-center"></div>
+    <p class="text-xs text-gray-500 text-center mt-3">Demo: admin@whapay.com / your password</p>
   </div>
 </div>
 
@@ -89,7 +97,7 @@
     <p class="text-lg max-w-3xl mx-auto">**Offline-first, WhatsApp-powered, and built for the unconnected.** WhaPay is on a mission to connect 1 billion people to the digital economy – even those without internet or smartphones.</p>
     <div class="flex flex-wrap justify-center gap-4 mt-6">
       <a href="merchant.html" class="bg-white text-green-700 px-6 py-3 rounded-xl font-bold hover:bg-gray-100 transition shadow-md">Join the Revolution →</a>
-      <div class="bg-green-500 backdrop-blur-sm px-6 py-3 rounded-xl font-semibold shadow-md">Offline registration: <strong>0140933042</strong></div>
+      <div class="bg-green-500 backdrop-blur-sm px-6 py-3 rounded-xl font-semibold shadow-md">Offline registration: <strong class="font-mono">0140933042</strong></div>
     </div>
   </div>
 
@@ -139,10 +147,20 @@
     <div class="grid md:grid-cols-3 gap-8">
       <div class="bg-white rounded-xl shadow p-6 text-center hover:shadow-xl transition"><i class="fas fa-robot text-4xl text-green-600 mb-3"></i><h3 class="text-xl font-bold mb-2">AI Fraud Detection</h3><p class="text-gray-600">**Real‑time machine learning** blocks fraud before it happens – 64% fewer false declines than traditional systems.</p></div>
       <div class="bg-white rounded-xl shadow p-6 text-center hover:shadow-xl transition"><i class="fas fa-globe text-4xl text-green-600 mb-3"></i><h3 class="text-xl font-bold mb-2">Unified Commerce</h3><p class="text-gray-600">**Online, WhatsApp, and offline payments** – all synced in one dashboard. No more manual reconciliation.</p></div>
-      <div class="bg-white rounded-xl shadow p-6 text-center hover:shadow-xl transition"><i class="fas fa-phone-volume text-4xl text-green-600 mb-3"></i><h3 class="text-xl font-bold mb-2">Offline Registration</h3><p class="text-gray-600">**Dial 0140933042** (voice) or SMS <span class="font-mono">REG YourName</span> – get your Member Code instantly, no internet required.</p></div>
+      <div class="bg-white rounded-xl shadow p-6 text-center hover:shadow-xl transition"><i class="fas fa-phone-volume text-4xl text-green-600 mb-3"></i><h3 class="text-xl font-bold mb-2">Offline Registration</h3><p class="text-gray-600">**Dial <strong class="font-mono">0140933042</strong>** (voice) or SMS <span class="font-mono">REG YourName</span> – get your Member Code instantly, no internet required.</p></div>
       <div class="bg-white rounded-xl shadow p-6 text-center hover:shadow-xl transition"><i class="fas fa-money-bill-wave text-4xl text-green-600 mb-3"></i><h3 class="text-xl font-bold mb-2">Cross‑Border Settlements</h3><p class="text-gray-600">Hold and settle in **50+ currencies** – no hidden FX fees. Coming soon.</p></div>
       <div class="bg-white rounded-xl shadow p-6 text-center hover:shadow-xl transition"><i class="fas fa-calendar-alt text-4xl text-green-600 mb-3"></i><h3 class="text-xl font-bold mb-2">Buy Now, Pay Later</h3><p class="text-gray-600">Offer **installment plans** – increase conversion by up to 40%.</p></div>
       <div class="bg-white rounded-xl shadow p-6 text-center hover:shadow-xl transition"><i class="fab fa-whatsapp text-4xl text-green-600 mb-3"></i><h3 class="text-xl font-bold mb-2">WhatsApp Super‑App</h3><p class="text-gray-600">**In‑chat payments, AI support, automated receipts** – all inside WhatsApp. Turn messaging into money.</p></div>
+    </div>
+  </div>
+
+  <!-- How WhaPay Works Section -->
+  <div class="bg-white rounded-2xl shadow-lg p-6 mb-16">
+    <h2 class="text-2xl font-bold text-center mb-4">👆 How WhaPay Works – Simple Steps</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+      <div class="step-card bg-gray-50 p-3 rounded-xl"><div class="text-3xl mb-1">1️⃣</div><i class="fas fa-user-plus text-2xl text-green-600"></i><p class="font-bold mt-1">Get Your Code & QR</p><p class="text-xs">Register online (WhatsApp) or offline (voice/SMS to <strong class="font-mono">0140933042</strong>). Receive your unique Member Code and QR code instantly.</p></div>
+      <div class="step-card bg-gray-50 p-3 rounded-xl"><div class="text-3xl mb-1">2️⃣</div><i class="fas fa-hand-holding-usd text-2xl text-green-600"></i><p class="font-bold mt-1">Share or Scan</p><p class="text-xs">Merchant shares their WhatsApp link, QR code, or Member Code. Customer scans or copies the code.</p></div>
+      <div class="step-card bg-gray-50 p-3 rounded-xl"><div class="text-3xl mb-1">3️⃣</div><i class="fas fa-check-circle text-2xl text-green-600"></i><p class="font-bold mt-1">Pay & Confirm</p><p class="text-xs">Pay via M-Pesa or card (online) or Member Code + M-Pesa Paybill <strong class="font-mono">0140933042</strong> (offline). Both receive instant confirmation.</p></div>
     </div>
   </div>
 
@@ -162,7 +180,7 @@
     <h2 class="text-3xl font-bold text-green-800 mb-3">Ready to Join the Payment Revolution?</h2>
     <p class="text-gray-700 mb-6">**Register online via WhatsApp, or offline by voice call or SMS** – it's free and takes 2 minutes. No internet? No problem.</p>
     <div class="flex flex-wrap justify-center gap-4">
-      <a href="https://wa.me/254710346425?text=REGISTER" class="bg-green-600 hover:bg-green-700 text-white font-bold px-6 py-3 rounded-full shadow">WhatsApp Registration</a>
+      <a href="https://wa.me/0140933042?text=REGISTER" class="bg-green-600 hover:bg-green-700 text-white font-bold px-6 py-3 rounded-full shadow">WhatsApp Registration</a>
       <a href="tel:0140933042" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-3 rounded-full shadow">📞 Voice Call Registration</a>
       <a href="sms:0140933042?body=REG%20YourName" class="bg-purple-600 hover:bg-purple-700 text-white font-bold px-6 py-3 rounded-full shadow">📱 SMS Registration</a>
     </div>
@@ -187,17 +205,17 @@
 <footer class="bg-gray-900 text-gray-300 pt-12 pb-6 mt-10">
   <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
     <div><h2 class="text-2xl font-bold text-white mb-3">WhaPay</h2><p class="text-gray-400 text-sm">The world's smartest payment platform – AI fraud, unified commerce, offline registration.</p></div>
-    <div><h3 class="text-white font-semibold mb-4">Quick Links</h3><ul class="space-y-2 text-sm"><li><a href="index.html" class="hover:text-green-400">Home</a></li><li><a href="features.html" class="hover:text-green-400">Features</a></li><li><a href="pricing.html" class="hover:text-green-400">Pricing</a></li><li><a href="contact.html" class="hover:text-green-400">Contact</a></li></ul></div>
-    <div><h3 class="text-white font-semibold mb-4">Offline Registration</h3><ul class="space-y-2 text-sm"><li>Voice: <a href="tel:0140933042" class="hover:text-green-400">0140933042</a></li><li>SMS: <span class="font-mono">REG YourName</span> to <span class="font-mono">0140933042</span></li><li>WhatsApp: <a href="https://wa.me/254710346425" class="hover:text-green-400">+254710346425</a></li></ul></div>
+    <div><h3 class="text-white font-semibold mb-4">Offline Registration</h3><ul class="space-y-2 text-sm"><li>Voice: <a href="tel:0140933042" class="hover:text-green-400">0140933042</a></li><li>SMS: <span class="font-mono">REG YourName</span> to <span class="font-mono">0140933042</span></li><li>WhatsApp: <a href="https://wa.me/0140933042" class="hover:text-green-400">0140933042</a></li></ul></div>
+    <div><h3 class="text-white font-semibold mb-4">Solutions</h3><ul class="space-y-2 text-sm"><li>WhatsApp Payments</li><li>M-Pesa Integration</li><li>QR & Barcode</li><li>Live Dashboard</li></ul></div>
     <div><h3 class="text-white font-semibold mb-4">Legal</h3><ul class="space-y-2 text-sm"><li><a href="privacy.html" class="hover:text-green-400">Privacy Policy</a></li><li><a href="terms.html" class="hover:text-green-400">Terms of Service</a></li><li><a href="#" class="hover:text-green-400">Security</a></li></ul></div>
   </div>
   <div class="border-t border-gray-800 mt-10 pt-6 text-center text-sm text-gray-500">
     <p>© 2026 WhaPay Solutions – Empowering businesses worldwide.</p>
-    <div class="mt-2 space-x-4"><a href="privacy.html" class="hover:text-green-400">Privacy</a> | <a href="terms.html" class="hover:text-green-400">Terms</a> | <a href="#" class="hover:text-green-400">Cookies</a></div>
+    <p class="text-xs mt-1">Offline registration: call <strong class="font-mono">0140933042</strong> (voicemail) or SMS to same number | WhatsApp: <strong class="font-mono">0140933042</strong></p>
   </div>
 </footer>
 
-<a href="https://wa.me/254710346425?text=Hello%2C%20I%20want%20to%20learn%20about%20WhaPay" target="_blank" class="fixed bottom-5 right-5 bg-green-500 text-white p-3 rounded-full shadow-lg hover:bg-green-600 z-50"><i class="fab fa-whatsapp text-2xl"></i></a>
+<a href="https://wa.me/0140933042?text=Hello%2C%20I%20want%20to%20learn%20about%20WhaPay" target="_blank" class="fixed bottom-5 right-5 bg-green-500 text-white p-3 rounded-full shadow-lg hover:bg-green-600 z-50"><i class="fab fa-whatsapp text-2xl"></i></a>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -329,7 +347,7 @@
         await addDoc(collection(db, "about_contacts"), {
           name, email, message, page: "about", timestamp: serverTimestamp()
         });
-        statusDiv.innerHTML = '<span class="text-green-600">✅ Message sent! We’ll reply within 24 hours.</span>';
+        statusDiv.innerHTML = '<span class="text-green-600">✅ Message sent! We\'ll reply within 24 hours.</span>';
         form.reset();
         showToast("Message sent successfully");
       } else {
@@ -340,7 +358,7 @@
       }
     } catch (err) {
       console.error(err);
-      statusDiv.innerHTML = '<span class="text-red-600">❌ Failed to send. Please try again or WhatsApp us.</span>';
+      statusDiv.innerHTML = '<span class="text-red-600">❌ Failed to send. Please try again or WhatsApp us at 0140933042.</span>';
       showToast("Error sending message", true);
     } finally {
       submitBtn.disabled = false;
@@ -419,3 +437,12 @@
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+

@@ -3,34 +3,32 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>WhaPay Pricing – Free Registration, Transparent Fees, No Monthly Charges</title>
-<meta name="description" content="**WhaPay pricing: free registration, 2.9% + $0.30 per card transaction, M-Pesa fees as per Safaricom rates.** No monthly fees. **Offline registration via 0140933042** is always free. Enterprise plans available.">
-<meta name="keywords" content="WhaPay pricing, free payment platform Kenya, transaction fees, M-Pesa rates, card payment fees, no monthly fees, enterprise plan, offline registration free">
+<title>WhaPay Pricing – Free Registration, 1.5% + KES 20 Card Fee | No Monthly Fees</title>
+<meta name="description" content="**WhaPay pricing: free registration, 1.5% + KES 20 per card transaction, M-Pesa fees as per Safaricom rates.** No monthly fees. **Offline registration via 0140933042** is always free. Pay only when you get paid.">
+<meta name="keywords" content="WhaPay pricing, free payment platform Kenya, 1.5 percent transaction fee, M-Pesa rates, card payment fees, no monthly fees, offline registration 0140933042">
 <meta name="author" content="WhaPay Solutions">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://whapay.space/pricing.html">
-<meta property="og:title" content="WhaPay Pricing – Free to Start, Pay Only When You Earn">
-<meta property="og:description" content="**Zero monthly fees.** 2.9% + $0.30 per card transaction. M-Pesa at Safaricom rates. **Offline registration (dial 0140933042) is free.** Enterprise plans available for high‑volume merchants.">
+<meta property="og:title" content="WhaPay Pricing – 1.5% + KES 20 Card Fee, No Monthly Charges">
+<meta property="og:description" content="**Zero monthly fees.** 1.5% + KES 20 per card transaction. M-Pesa at Safaricom rates. **Offline registration (dial 0140933042) is free.** Pay only when you earn.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://whapay.space/pricing.html">
-<meta property="og:image" content="https://whapay.space/images/whapay-pricing-og.jpg">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="WhaPay Pricing – No Monthly Fees, Transparent Transaction Costs">
-<meta name="twitter:description" content="**Free registration.** Pay only 2.9% + $0.30 per card transaction. M-Pesa at standard rates. No hidden fees. **Enterprise plans** for high volume.">
+<meta name="twitter:title" content="WhaPay Pricing – Simple, Transparent, 1.5% Card Fee">
+<meta name="twitter:description" content="**Free registration.** Pay only 1.5% + KES 20 per card transaction. M-Pesa at standard Safaricom rates. No hidden fees. No daily fees.">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "Product",
   "name": "WhaPay Payment Platform",
-  "description": "Payment platform for Kenyan merchants. Free registration, no monthly fees, 2.9% + $0.30 per card transaction, M-Pesa at Safaricom rates.",
+  "description": "Payment platform for Kenyan merchants. Free registration, no monthly fees, 1.5% + KES 20 per card transaction, M-Pesa at Safaricom rates.",
   "brand": { "@type": "Brand", "name": "WhaPay" },
   "offers": {
     "@type": "Offer",
     "price": "0",
     "priceCurrency": "KES",
     "description": "Free registration, pay only per transaction"
-  },
-  "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.9", "reviewCount": "2000" }
+  }
 }
 </script>
 <script src="https://cdn.tailwindcss.com"></script>
@@ -43,6 +41,8 @@
   .pricing-card:hover { transform: translateY(-5px); box-shadow: 0 25px 30px -12px rgba(0,0,0,0.25); }
   .popular-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #16a34a; color: white; padding: 4px 16px; border-radius: 9999px; font-size: 12px; font-weight: bold; }
   .toast { transition: opacity 0.3s; }
+  .step-card { transition: 0.2s; }
+  .step-card:hover { transform: translateY(-3px); }
 </style>
 </head>
 <body class="bg-gray-100 font-sans">
@@ -57,14 +57,20 @@
       <button id="navLogoutBtn" class="bg-red-500 text-white px-3 py-1 rounded text-sm font-semibold hover:bg-red-600 hidden">Logout</button>
       <nav class="flex flex-wrap gap-2">
         <a href="index.html" class="hover:underline">Home</a>
-        <a href="about.html" class="hover:underline">About</a>
-        <a href="features.html" class="hover:underline">Features</a>
-        <a href="pricing.html" class="hover:underline font-bold text-green-200">Pricing</a>
         <a href="merchant.html" class="hover:underline">Merchant</a>
         <a href="payment.html" class="hover:underline">Payments</a>
+        <a href="pay-anyone.html" class="hover:underline">Pay Anyone</a>
+        <a href="users.html" class="hover:underline">My Account</a>
+        <a href="features.html" class="hover:underline">Features</a>
         <a href="reports.html" class="hover:underline">Reports</a>
+        <a href="blog.html" class="hover:underline">Blog</a>
+        <a href="about.html" class="hover:underline">About</a>
         <a href="contact.html" class="hover:underline">Contact</a>
+        <a href="privacy.html" class="hover:underline">Privacy</a>
+        <a href="terms.html" class="hover:underline">Terms</a>
         <a href="admin.html" class="hover:underline">Admin</a>
+        <a href="pricing.html" class="hover:underline font-bold text-green-200">Pricing</a>
+        <a href="registration.html" class="hover:underline">Registration</a>
       </nav>
     </div>
   </div>
@@ -79,78 +85,62 @@
     <button id="loginBtn" class="bg-green-600 text-white w-full py-2 rounded">Login</button>
     <button id="closeModalBtn" class="text-gray-500 text-sm w-full mt-2">Cancel</button>
     <div id="loginError" class="text-red-500 text-sm mt-2 text-center"></div>
+    <p class="text-xs text-gray-500 text-center mt-3">Demo: admin@whapay.com / your password</p>
   </div>
 </div>
 
 <main class="max-w-7xl mx-auto px-4 py-8">
   <!-- Hero Section -->
   <div class="bg-gradient-to-r from-green-800 to-green-600 text-white p-8 rounded-2xl shadow-lg mb-12 text-center">
-    <h1 class="text-4xl md:text-5xl font-bold mb-3">Simple, Transparent Pricing – <strong class="underline">No Surprises</strong></h1>
-    <p class="text-lg max-w-2xl mx-auto">**Free registration, zero monthly fees, pay only when you get paid.** Offline registration via <strong class="font-mono">0140933042</strong> is always free. Card transactions cost <strong>2.9% + $0.30</strong>. M-Pesa at standard Safaricom rates.</p>
+    <h1 class="text-4xl md:text-5xl font-bold mb-3">Simple, Transparent Pricing – <strong class="underline">Pay Only When You Get Paid</strong></h1>
+    <p class="text-lg max-w-2xl mx-auto">**Free registration, zero monthly fees, zero daily fees.** You pay only when you receive a payment. Offline registration via <strong class="font-mono">0140933042</strong> is always free.</p>
     <div class="flex flex-wrap justify-center gap-4 mt-6">
       <a href="merchant.html" class="bg-white text-green-700 px-6 py-3 rounded-xl font-bold hover:bg-gray-100 transition shadow-md">Start for Free →</a>
-      <div class="bg-green-500 backdrop-blur-sm px-6 py-3 rounded-xl font-semibold shadow-md">Offline registration: <strong>0140933042</strong></div>
+      <div class="bg-green-500 backdrop-blur-sm px-6 py-3 rounded-xl font-semibold shadow-md">Offline registration: <strong class="font-mono">0140933042</strong></div>
     </div>
   </div>
 
-  <!-- Pricing Cards -->
-  <div class="grid md:grid-cols-3 gap-8 mb-16">
-    <!-- Starter (Free) -->
-    <div class="bg-white rounded-2xl shadow-xl p-6 text-center relative pricing-card">
-      <h2 class="text-2xl font-bold mb-2">Starter</h2>
-      <div class="text-4xl font-bold text-green-600 mb-2">KES 0</div>
-      <p class="text-gray-500 text-sm mb-4">per month – forever free</p>
-      <ul class="text-left space-y-2 text-sm text-gray-600 mb-6">
-        <li><i class="fas fa-check-circle text-green-600 mr-2"></i> Free registration (online/offline)</li>
-        <li><i class="fas fa-check-circle text-green-600 mr-2"></i> WhatsApp payment links</li>
-        <li><i class="fas fa-check-circle text-green-600 mr-2"></i> QR code payments</li>
-        <li><i class="fas fa-check-circle text-green-600 mr-2"></i> Offline Member Code payments</li>
-        <li><i class="fas fa-check-circle text-green-600 mr-2"></i> Live transaction dashboard</li>
-        <li><i class="fas fa-check-circle text-green-600 mr-2"></i> Weekly & monthly reports</li>
-        <li><i class="fas fa-check-circle text-green-600 mr-2"></i> 24/7 WhatsApp support</li>
-        <li class="text-gray-400"><i class="fas fa-times-circle text-gray-400 mr-2"></i> AI fraud detection (add‑on)</li>
-        <li class="text-gray-400"><i class="fas fa-times-circle text-gray-400 mr-2"></i> BNPL (coming soon)</li>
-      </ul>
-      <div class="mt-2 text-sm font-semibold text-green-700">Transaction fees:</div>
-      <div class="text-xs text-gray-500 mb-4">Card: 2.9% + $0.30<br>M-Pesa: Safaricom rates</div>
-      <a href="merchant.html" class="block bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded-lg transition">Get Started Free →</a>
-    </div>
-
-    <!-- Business (Pay-as-you-go) – Popular -->
-    <div class="bg-white rounded-2xl shadow-xl p-6 text-center relative pricing-card border-2 border-green-500">
-      <div class="popular-badge">🔥 MOST POPULAR</div>
-      <h2 class="text-2xl font-bold mb-2">Business</h2>
-      <div class="text-4xl font-bold text-green-600 mb-2">2.9% + $0.30</div>
-      <p class="text-gray-500 text-sm mb-4">per card transaction – no monthly fee</p>
-      <ul class="text-left space-y-2 text-sm text-gray-600 mb-6">
-        <li><i class="fas fa-check-circle text-green-600 mr-2"></i> Everything in Starter</li>
-        <li><i class="fas fa-check-circle text-green-600 mr-2"></i> AI fraud detection</li>
-        <li><i class="fas fa-check-circle text-green-600 mr-2"></i> Buy Now, Pay Later (BNPL)</li>
-        <li><i class="fas fa-check-circle text-green-600 mr-2"></i> Cross‑border settlements (coming)</li>
-        <li><i class="fas fa-check-circle text-green-600 mr-2"></i> Priority support (under 1 hour)</li>
-        <li><i class="fas fa-check-circle text-green-600 mr-2"></i> Advanced analytics & export</li>
-      </ul>
-      <div class="mt-2 text-sm font-semibold text-green-700">M-Pesa:</div>
-      <div class="text-xs text-gray-500 mb-4">Safaricom rates (no WhaPay fee)</div>
-      <a href="merchant.html" class="block bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded-lg transition">Start Business Plan →</a>
-    </div>
-
-    <!-- Enterprise (Custom) -->
-    <div class="bg-white rounded-2xl shadow-xl p-6 text-center relative pricing-card">
-      <h2 class="text-2xl font-bold mb-2">Enterprise</h2>
-      <div class="text-4xl font-bold text-green-600 mb-2">Custom</div>
-      <p class="text-gray-500 text-sm mb-4">tailored for high‑volume merchants</p>
-      <ul class="text-left space-y-2 text-sm text-gray-600 mb-6">
-        <li><i class="fas fa-check-circle text-green-600 mr-2"></i> Everything in Business</li>
-        <li><i class="fas fa-check-circle text-green-600 mr-2"></i> Dedicated account manager</li>
-        <li><i class="fas fa-check-circle text-green-600 mr-2"></i> Custom API integrations</li>
-        <li><i class="fas fa-check-circle text-green-600 mr-2"></i> Volume discounts (negotiable)</li>
-        <li><i class="fas fa-check-circle text-green-600 mr-2"></i> SLA 99.99% uptime</li>
-        <li><i class="fas fa-check-circle text-green-600 mr-2"></i> On‑site training (Kenya only)</li>
-      </ul>
-      <div class="mt-2 text-sm font-semibold text-green-700">Custom pricing</div>
-      <div class="text-xs text-gray-500 mb-4">Contact sales for quote</div>
-      <a href="contact.html" class="block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition">Contact Sales →</a>
+  <!-- Simple Pricing Card -->
+  <div class="max-w-2xl mx-auto mb-16">
+    <div class="bg-white rounded-2xl shadow-xl p-8 text-center relative pricing-card border-2 border-green-500">
+      <div class="popular-badge">🔥 SIMPLE & TRANSPARENT</div>
+      <h2 class="text-3xl font-bold mb-2">Pay as you grow</h2>
+      <div class="text-5xl font-bold text-green-600 mb-2">1.5% + KES 20</div>
+      <p class="text-gray-500 text-sm mb-6">per card transaction – no monthly fees, no daily fees</p>
+      
+      <div class="grid md:grid-cols-2 gap-6 text-left mb-6">
+        <div class="bg-gray-50 rounded-xl p-4">
+          <h3 class="font-bold text-lg mb-2 text-green-700">✅ What's included</h3>
+          <ul class="space-y-2 text-sm text-gray-700">
+            <li><i class="fas fa-check-circle text-green-600 mr-2"></i> Free registration (online/offline)</li>
+            <li><i class="fas fa-check-circle text-green-600 mr-2"></i> WhatsApp payment links</li>
+            <li><i class="fas fa-check-circle text-green-600 mr-2"></i> QR code payments</li>
+            <li><i class="fas fa-check-circle text-green-600 mr-2"></i> Offline Member Code payments</li>
+            <li><i class="fas fa-check-circle text-green-600 mr-2"></i> Live transaction dashboard</li>
+            <li><i class="fas fa-check-circle text-green-600 mr-2"></i> Weekly & monthly reports</li>
+            <li><i class="fas fa-check-circle text-green-600 mr-2"></i> 24/7 WhatsApp support</li>
+            <li><i class="fas fa-check-circle text-green-600 mr-2"></i> AI fraud detection</li>
+            <li><i class="fas fa-check-circle text-green-600 mr-2"></i> Buy Now, Pay Later (coming soon)</li>
+          </ul>
+        </div>
+        <div class="bg-gray-50 rounded-xl p-4">
+          <h3 class="font-bold text-lg mb-2 text-green-700">💰 What you pay</h3>
+          <ul class="space-y-2 text-sm text-gray-700">
+            <li><i class="fas fa-credit-card text-green-600 mr-2"></i> <strong>Card payments:</strong> 1.5% + KES 20</li>
+            <li><i class="fas fa-mobile-alt text-green-600 mr-2"></i> <strong>M-Pesa payments:</strong> Safaricom rates only <span class="text-xs text-gray-500">(WhaPay adds 0%)</span></li>
+            <li><i class="fas fa-key text-green-600 mr-2"></i> <strong>Offline payments:</strong> Safaricom rates only</li>
+            <li><i class="fas fa-calendar-alt text-green-600 mr-2"></i> <strong>Monthly fee:</strong> KES 0</li>
+            <li><i class="fas fa-clock text-green-600 mr-2"></i> <strong>Daily fee:</strong> KES 0</li>
+            <li><i class="fas fa-user-plus text-green-600 mr-2"></i> <strong>Registration:</strong> Free</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="mt-2 text-sm font-semibold text-green-700 bg-green-50 p-3 rounded-lg">
+        <i class="fas fa-info-circle mr-1"></i> No setup costs. No hidden charges. No minimum transactions.
+      </div>
+      
+      <a href="merchant.html" class="block mt-6 bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition text-lg">Start Accepting Payments →</a>
     </div>
   </div>
 
@@ -164,39 +154,59 @@
         </thead>
         <tbody class="divide-y">
           <tr><td class="p-3 font-bold">Registration (WhatsApp, voice, SMS)</td><td class="p-3 text-green-700">Free</td><td class="p-3 text-gray-500">No charge – ever. Offline number: <strong class="font-mono">0140933042</strong></td></tr>
-          <tr class="bg-gray-50"><td class="p-3 font-bold">Card payments (Visa/Mastercard)</td><td class="p-3 text-green-700">2.9% + $0.30</td><td class="p-3 text-gray-500">Per successful transaction. No monthly fee.</td></tr>
-          <tr><td class="p-3 font-bold">M-Pesa STK Push</td><td class="p-3 text-green-700">Safaricom rates</td><td class="p-3 text-gray-500">WhaPay does not add extra fees. Standard M-Pesa charges apply.</td></tr>
-          <tr class="bg-gray-50"><td class="p-3 font-bold">Offline payment (Member Code + Paybill)</td><td class="p-3 text-green-700">Safaricom rates</td><td class="p-3 text-gray-500">Customer pays via M-Pesa Paybill – no WhaPay fee.</td></tr>
+          <tr class="bg-gray-50"><td class="p-3 font-bold">Card payments (Visa/Mastercard)</td><td class="p-3 text-green-700">1.5% + KES 20</td><td class="p-3 text-gray-500">Per successful transaction. No monthly fee.</td></tr>
+          <tr><td class="p-3 font-bold">M-Pesa STK Push</td><td class="p-3 text-green-700">Safaricom rates only</td><td class="p-3 text-gray-500">WhaPay does not add extra fees. Standard M-Pesa charges apply.</td></tr>
+          <tr class="bg-gray-50"><td class="p-3 font-bold">Offline payment (Member Code + Paybill)</td><td class="p-3 text-green-700">Safaricom rates only</td><td class="p-3 text-gray-500">Customer pays via M-Pesa Paybill <strong class="font-mono">0140933042</strong> – no WhaPay fee.</td></tr>
           <tr><td class="p-3 font-bold">QR code payments</td><td class="p-3 text-green-700">Same as card/M-Pesa</td><td class="p-3 text-gray-500">No additional fee for QR generation or scanning.</td></tr>
-          <tr class="bg-gray-50"><td class="p-3 font-bold">AI fraud detection</td><td class="p-3 text-green-700">Included in Business plan</td><td class="p-3 text-gray-500">Free for Business plan; custom for Enterprise.</td></tr>
-          <tr><td class="p-3 font-bold">Buy Now, Pay Later (BNPL)</td><td class="p-3 text-green-700">Included in Business plan</td><td class="p-3 text-gray-500">No extra cost to merchant. Customer pays interest? (partner terms apply).</td></tr>
-          <tr class="bg-gray-50"><td class="p-3 font-bold">Cross-border settlements</td><td class="p-3 text-green-700">Coming soon</td><td class="p-3 text-gray-500">Pricing TBD – contact sales.</td></tr>
+          <tr class="bg-gray-50"><td class="p-3 font-bold">AI fraud detection</td><td class="p-3 text-green-700">Included</td><td class="p-3 text-gray-500">Free for all merchants.</td></tr>
+          <tr><td class="p-3 font-bold">Buy Now, Pay Later (BNPL)</td><td class="p-3 text-green-700">Included</td><td class="p-3 text-gray-500">Coming soon – no extra cost to merchant.</td></tr>
+          <tr class="bg-gray-50"><td class="p-3 font-bold">Monthly / Daily fees</td><td class="p-3 text-green-700">KES 0</td><td class="p-3 text-gray-500">No subscription fees. Pay only when you earn.</td></tr>
         </tbody>
-       </table>
+      </table>
     </div>
-    <p class="text-xs text-gray-500 text-center mt-4">*All fees are transparent. No setup costs, no hidden charges, no monthly minimums.</p>
+    <p class="text-xs text-gray-500 text-center mt-4">*All fees are transparent. No setup costs, no hidden charges, no monthly minimums, no daily fees.</p>
   </div>
 
-  <!-- Comparison Table (WhaPay vs Other PSPs) -->
+  <!-- Comparison Table (WhaPay vs Others) -->
   <div class="bg-white rounded-2xl shadow-xl p-6 mb-12">
     <h2 class="text-2xl font-bold text-center mb-6">Why WhaPay is the Most Affordable – <strong class="text-green-700">Compare vs Others</strong></h2>
     <div class="overflow-x-auto">
       <table class="min-w-full text-sm text-center">
         <thead class="bg-gray-100">
-          <tr><th class="p-3 text-left">Feature</th><th class="p-3">WhaPay</th><th class="p-3">Paystack</th><th class="p-3">Pesapal</th><th class="p-3">IntaSend</th></tr>
+          <tr><th class="p-3 text-left">Feature</th><th class="p-3 bg-green-50">WhaPay</th><th class="p-3">Paystack</th><th class="p-3">Pesapal</th><th class="p-3">IntaSend</th></tr>
         </thead>
         <tbody class="divide-y">
-          <tr><td class="p-3 text-left font-bold">Monthly fee</td><td class="p-3 text-green-700">KES 0</td><td class="p-3">KES 0</td><td class="p-3">KES 0 (basic)</td><td class="p-3">KES 0</td></tr>
-          <tr class="bg-gray-50"><td class="p-3 text-left font-bold">Card transaction fee</td><td class="p-3 text-green-700">2.9% + $0.30</td><td class="p-3">2.9% + KES 30</td><td class="p-3">2.9% + KES 20</td><td class="p-3">2.5% + KES 20</td></tr>
-          <tr><td class="p-3 text-left font-bold">M-Pesa fee (WhaPay added)</td><td class="p-3 text-green-700">0% (Safaricom only)</td><td class="p-3">1% + KES 10</td><td class="p-3">~1% + KES 10</td><td class="p-3">0.5% + KES 10</td></tr>
-          <tr class="bg-gray-50"><td class="p-3 text-left font-bold">Offline registration</td><td class="p-3 text-green-700">✅ Free (0140933042)</td><td class="p-3">❌</td><td class="p-3">❌</td><td class="p-3">❌</td></tr>
-          <tr><td class="p-3 text-left font-bold">Offline payment (no internet)</td><td class="p-3 text-green-700">✅ Member Code + Paybill</td><td class="p-3">❌</td><td class="p-3">❌</td><td class="p-3">❌</td></tr>
-          <tr class="bg-gray-50"><td class="p-3 text-left font-bold">WhatsApp links</td><td class="p-3 text-green-700">✅</td><td class="p-3">❌</td><td class="p-3">❌</td><td class="p-3">❌</td></tr>
-          <tr><td class="p-3 text-left font-bold">QR code payments</td><td class="p-3 text-green-700">✅</td><td class="p-3">❌</td><td class="p-3">✅</td><td class="p-3">❌</td></tr>
+          <tr><td class="p-3 text-left font-bold">Monthly fee</td><td class="p-3 bg-green-50 text-green-700">KES 0</td><td class="p-3">KES 0</td><td class="p-3">KES 0 (basic)</td><td class="p-3">KES 0</td></tr>
+          <tr class="bg-gray-50"><td class="p-3 text-left font-bold">Card transaction fee</td><td class="p-3 bg-green-50 text-green-700">1.5% + KES 20</td><td class="p-3">2.9% + KES 30</td><td class="p-3">2.9% + KES 20</td><td class="p-3">2.5% + KES 20</td></tr>
+          <tr><td class="p-3 text-left font-bold">M-Pesa extra fee</td><td class="p-3 bg-green-50 text-green-700">0% (Safaricom only)</td><td class="p-3">1% + KES 10</td><td class="p-3">~1% + KES 10</td><td class="p-3">0.5% + KES 10</td></tr>
+          <tr class="bg-gray-50"><td class="p-3 text-left font-bold">Offline registration</td><td class="p-3 bg-green-50 text-green-700">✅ Free (0140933042)</td><td class="p-3">❌</td><td class="p-3">❌</td><td class="p-3">❌</td></tr>
+          <tr><td class="p-3 text-left font-bold">Offline payment (no internet)</td><td class="p-3 bg-green-50 text-green-700">✅ Member Code + Paybill</td><td class="p-3">❌</td><td class="p-3">❌</td><td class="p-3">❌</td></tr>
+          <tr class="bg-gray-50"><td class="p-3 text-left font-bold">WhatsApp links</td><td class="p-3 bg-green-50 text-green-700">✅</td><td class="p-3">❌</td><td class="p-3">❌</td><td class="p-3">❌</td></tr>
         </tbody>
       </table>
     </div>
-    <p class="text-xs text-gray-500 text-center mt-4">*WhaPay charges **no extra fee on M-Pesa** – you only pay Safaricom's standard rates. Other platforms add 0.5‑1% on top.</p>
+    <p class="text-xs text-gray-500 text-center mt-4">*WhaPay charges <strong>no extra fee on M-Pesa</strong> – you only pay Safaricom's standard rates. Other platforms add 0.5‑1% on top.</p>
+  </div>
+
+  <!-- For Customers Section -->
+  <div class="bg-white rounded-2xl shadow-xl p-6 mb-12">
+    <h2 class="text-2xl font-bold text-center mb-4">For Customers – <strong class="text-green-700">Always Free</strong></h2>
+    <p class="text-center text-gray-600 mb-6">WhaPay customers never pay any fees. Send money, pay merchants, and request payments – all free.</p>
+    <div class="grid md:grid-cols-3 gap-4 text-center">
+      <div class="bg-gray-50 p-4 rounded-xl"><i class="fas fa-user-plus text-3xl text-green-600 mb-2"></i><p class="font-bold">Registration</p><p class="text-sm text-gray-500">Free (online or offline)</p></div>
+      <div class="bg-gray-50 p-4 rounded-xl"><i class="fas fa-paper-plane text-3xl text-green-600 mb-2"></i><p class="font-bold">Send Payment</p><p class="text-sm text-gray-500">Free</p></div>
+      <div class="bg-gray-50 p-4 rounded-xl"><i class="fas fa-qrcode text-3xl text-green-600 mb-2"></i><p class="font-bold">QR Code</p><p class="text-sm text-gray-500">Free</p></div>
+    </div>
+  </div>
+
+  <!-- How It Works Section -->
+  <div class="bg-white rounded-2xl shadow-lg p-6 mb-12">
+    <h2 class="text-2xl font-bold text-center mb-4">👆 How WhaPay Works – Simple Steps</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+      <div class="step-card bg-gray-50 p-3 rounded-xl"><div class="text-3xl mb-1">1️⃣</div><i class="fas fa-user-plus text-2xl text-green-600"></i><p class="font-bold mt-1">Get Your Code & QR</p><p class="text-xs">Register online (WhatsApp) or offline (voice/SMS to <strong class="font-mono">0140933042</strong>). Receive your unique Member Code and QR code instantly. <strong>Free.</strong></p></div>
+      <div class="step-card bg-gray-50 p-3 rounded-xl"><div class="text-3xl mb-1">2️⃣</div><i class="fas fa-hand-holding-usd text-2xl text-green-600"></i><p class="font-bold mt-1">Share or Scan</p><p class="text-xs">Merchant shares their WhatsApp link, QR code, or Member Code. Customer scans or copies the code.</p></div>
+      <div class="step-card bg-gray-50 p-3 rounded-xl"><div class="text-3xl mb-1">3️⃣</div><i class="fas fa-check-circle text-2xl text-green-600"></i><p class="font-bold mt-1">Pay & Confirm</p><p class="text-xs">Pay via M-Pesa or card (online) or Member Code + M-Pesa Paybill <strong class="font-mono">0140933042</strong> (offline). Both receive instant confirmation. <strong>Merchant pays 1.5% + KES 20 only on card.</strong></p></div>
+    </div>
   </div>
 
   <!-- FAQ (Pricing Related) -->
@@ -204,19 +214,20 @@
     <h2 class="text-2xl font-bold text-center mb-6">Frequently Asked Questions – <strong class="text-green-700">Pricing & Billing</strong></h2>
     <div class="space-y-4">
       <div class="border-b pb-3"><p class="font-bold">❓ Is registration really free?</p><p class="text-gray-600 text-sm">Yes. Registration via WhatsApp, voice call (<strong class="font-mono">0140933042</strong>), or SMS is completely free. You only pay when you receive a payment.</p></div>
-      <div class="border-b pb-3"><p class="font-bold">❓ Are there any monthly fees?</p><p class="text-gray-600 text-sm">No. WhaPay has **zero monthly fees**. You only pay per successful transaction.</p></div>
+      <div class="border-b pb-3"><p class="font-bold">❓ Are there any monthly or daily fees?</p><p class="text-gray-600 text-sm">No. WhaPay has <strong>zero monthly fees and zero daily fees</strong>. You only pay per successful transaction.</p></div>
       <div class="border-b pb-3"><p class="font-bold">❓ How much does M-Pesa cost?</p><p class="text-gray-600 text-sm">WhaPay does not add any fee on M-Pesa. You pay only the standard Safaricom rates (e.g., 1% + KES 10 for Paybill).</p></div>
-      <div class="border-b pb-3"><p class="font-bold">❓ What about card payments?</p><p class="text-gray-600 text-sm">2.9% + $0.30 per successful transaction. This is the industry standard and includes Stripe's fees.</p></div>
-      <div><p class="font-bold">❓ Can I upgrade from Starter to Business later?</p><p class="text-gray-600 text-sm">Yes. Just contact support or enable AI fraud detection from your dashboard. No contract, cancel anytime.</p></div>
+      <div class="border-b pb-3"><p class="font-bold">❓ What about card payments?</p><p class="text-gray-600 text-sm">1.5% + KES 20 per successful transaction. This covers Stripe's fees plus WhaPay's service fee.</p></div>
+      <div class="border-b pb-3"><p class="font-bold">❓ Do customers pay any fees?</p><p class="text-gray-600 text-sm">No. Customers never pay any fees to use WhaPay. Registration, sending payments, scanning QR codes – all free.</p></div>
+      <div><p class="font-bold">❓ Can I cancel anytime?</p><p class="text-gray-600 text-sm">Yes. No contracts, no cancellation fees. You only pay for transactions you actually processed.</p></div>
     </div>
   </div>
 
   <!-- Call to Action -->
   <div class="bg-gradient-to-r from-green-600 to-green-700 text-white rounded-2xl p-8 text-center">
     <h2 class="text-3xl font-bold mb-3">Start Accepting Payments Today – <strong class="underline">Free Registration</strong></h2>
-    <p class="mb-6 max-w-xl mx-auto">No setup fees. No monthly charges. Pay only when you earn. **Offline registration is always free.**</p>
+    <p class="mb-6 max-w-xl mx-auto">No setup fees. No monthly charges. No daily fees. Pay only 1.5% + KES 20 per card transaction. <strong>Offline registration is always free.</strong></p>
     <div class="flex flex-wrap justify-center gap-4">
-      <a href="https://wa.me/254710346425?text=REGISTER" class="bg-white text-green-700 font-bold px-6 py-3 rounded-full shadow hover:bg-gray-100">WhatsApp Registration</a>
+      <a href="https://wa.me/0140933042?text=REGISTER" class="bg-white text-green-700 font-bold px-6 py-3 rounded-full shadow hover:bg-gray-100">WhatsApp Registration</a>
       <a href="tel:0140933042" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-3 rounded-full shadow">📞 Voice Call Registration</a>
       <a href="sms:0140933042?body=REG%20YourName" class="bg-purple-600 hover:bg-purple-700 text-white font-bold px-6 py-3 rounded-full shadow">📱 SMS Registration</a>
     </div>
@@ -225,11 +236,12 @@
 </main>
 
 <footer class="bg-gray-900 text-gray-300 pt-8 pb-4 text-center text-sm">
-  <p>© 2026 WhaPay – <strong>Offline registration: call <span class="font-mono">0140933042</span> (voicemail) or SMS to same number</strong> | WhatsApp: <strong>+254710346425</strong></p>
+  <p>© 2026 WhaPay – <strong>Offline registration: call <span class="font-mono">0140933042</span> (voicemail) or SMS to same number</strong> | WhatsApp: <strong class="font-mono">0140933042</strong></p>
   <div class="mt-2 space-x-4"><a href="privacy.html" class="hover:text-green-400">Privacy Policy</a> | <a href="terms.html" class="hover:text-green-400">Terms of Service</a> | <a href="contact.html" class="hover:text-green-400">Contact</a></div>
 </footer>
 
-<a href="https://wa.me/254710346425?text=Hello%20WhaPay" target="_blank" class="fixed bottom-5 right-5 bg-green-500 text-white p-3 rounded-full shadow-lg hover:bg-green-600 z-50"><i class="fab fa-whatsapp text-2xl"></i></a>
+<!-- Floating WhatsApp Button -->
+<a href="https://wa.me/0140933042?text=Hello%20WhaPay%20Pricing" target="_blank" class="fixed bottom-5 right-5 bg-green-500 text-white p-3 rounded-full shadow-lg hover:bg-green-600 z-50"><i class="fab fa-whatsapp text-2xl"></i></a>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -303,7 +315,7 @@
     navigator.serviceWorker.register('/sw.js').catch(e => console.log("SW failed", e));
   }
 
-  // Update pending badge (always 0 for this page, but keep for consistency)
+  // Hide pending badge for this page
   document.getElementById('pendingSyncBadge')?.classList.add('hidden');
 </script>
 </body>

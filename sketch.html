@@ -2,6 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+  <!-- In <head> -->
+<link rel="stylesheet" href="global.css">
+
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>WhaPay Complete Wireframes & Process Flows</title>
 <meta name="description" content="Complete design sketches, wireframes, and user flow diagrams for WhaPay – including offline registration (0140933042), payment flows, merchant/admin dashboards, reports, and first-time pay.">
@@ -437,5 +441,7 @@
     navigator.serviceWorker.register('/sw.js').catch(e => console.log("SW failed", e));
   }
 </script>
+  <!-- Before </body> -->
+<script src="global.js"></script>
 </body>
 </html>

@@ -2,173 +2,300 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-  <!-- In <head> -->
-<link rel="stylesheet" href="global.css">
-
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>WhaPay Reports – Live Transaction Analytics | Charts, Filters, Export</title>
-<meta name="description" content="Live payment reports for WhaPay. Visualize weekly/monthly trends, payment method breakdown, top users, and export transactions. Works with online & offline payments.">
+<title>WhaPay Analytics – Professional Payment Reports Dashboard</title>
+<meta name="description" content="Professional payment analytics dashboard with real-time metrics, advanced filtering, and export capabilities. Works worldwide.">
 <meta name="theme-color" content="#16a34a">
 <link rel="manifest" href="/manifest.json">
+<link rel="stylesheet" href="global.css">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <style>
-  .skeleton { background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 0.25rem; }
-  @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-  .toast { transition: opacity 0.3s; }
-  .summary-cards { position: sticky; top: 1rem; z-index: 10; }
-  .step-card { transition: 0.2s; }
-  .step-card:hover { transform: translateY(-3px); }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #f8fafc; font-family: 'Inter', sans-serif; }
+  
+  .metric-card {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    transition: all 0.2s ease;
+    border: 1px solid #e2e8f0;
+  }
+  .metric-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px -6px rgba(0,0,0,0.1);
+  }
+  .chart-container {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid #e2e8f0;
+  }
+  .filter-bar {
+    background: white;
+    border-radius: 16px;
+    padding: 16px 20px;
+    border: 1px solid #e2e8f0;
+  }
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .data-table th {
+    text-align: left;
+    padding: 12px 16px;
+    background: #f8fafc;
+    font-weight: 600;
+    font-size: 13px;
+    color: #475569;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  .data-table td {
+    padding: 12px 16px;
+    font-size: 14px;
+    border-bottom: 1px solid #f1f5f9;
+    color: #1e293b;
+  }
+  .data-table tr:hover {
+    background: #f8fafc;
+  }
+  .badge-success {
+    background: #dcfce7;
+    color: #166534;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .badge-pending {
+    background: #fef9c3;
+    color: #854d0e;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .badge-failed {
+    background: #fee2e2;
+    color: #991b1b;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .trend-up { color: #10b981; }
+  .trend-down { color: #ef4444; }
+  .dark-mode .metric-card,
+  .dark-mode .chart-container,
+  .dark-mode .filter-bar {
+    background: #1e293b;
+    border-color: #334155;
+  }
+  .dark-mode .data-table th {
+    background: #0f172a;
+    color: #94a3b8;
+  }
+  .dark-mode .data-table td {
+    color: #cbd5e1;
+    border-color: #334155;
+  }
+  .dark-mode .data-table tr:hover {
+    background: #0f172a;
+  }
 </style>
 </head>
-<body class="bg-gray-100">
+<body>
 
-<!-- Header with all navigation links -->
-<header class="bg-green-600 text-white p-4 shadow-md sticky top-0 z-50">
-  <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
-    <h1 class="text-2xl font-bold mb-2 md:mb-0"><a href="index.html">WhaPay</a></h1>
-    <div class="flex items-center gap-3">
-      <span id="userEmailDisplay" class="text-sm hidden md:inline"></span>
-      <button id="logoutBtn" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm hidden">Logout</button>
-      <nav class="flex flex-wrap justify-center gap-2 md:gap-4">
-        <a href="index.html" class="hover:underline">Home</a>
-        <a href="merchant.html" class="hover:underline">Merchant</a>
-        <a href="payment.html" class="hover:underline">Payments</a>
-        <a href="pay-anyone.html" class="hover:underline">Pay Anyone</a>
-        <a href="users.html" class="hover:underline">My Account</a>
-        <a href="blog.html" class="hover:underline">Blog</a>
-        <a href="features.html" class="hover:underline">Features</a>
-        <a href="first-time-pay.html" class="hover:underline">Register & Pay</a>
-        <a href="about.html" class="hover:underline">About</a>
-        <a href="reports.html" class="hover:underline font-bold text-green-200">Reports</a>
-        <a href="contact.html" class="hover:underline">Contact</a>
-        <a href="privacy.html" class="hover:underline">Privacy</a>
-        <a href="terms.html" class="hover:underline">Terms</a>
-        <a href="admin.html" class="hover:underline">Admin</a>
-        <a href="sketch.html" class="hover:underline">Sketch</a>
-        <a href="process.html" class="hover:underline">Process</a>
-        <a href="pricing.html" class="hover:underline">Pricing</a>
-        <a href="registration.html" class="hover:underline">Registration</a>
+<!-- Header -->
+<header class="bg-white border-b border-gray-200 sticky top-0 z-50 dark:bg-gray-900 dark:border-gray-700">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center">
+    <div class="flex items-center gap-3 mb-3 md:mb-0">
+      <div class="w-10 h-10 bg-green-600 rounded-xl flex items-center justify-center">
+        <i class="fas fa-chart-line text-white text-xl"></i>
+      </div>
+      <h1 class="text-2xl font-bold text-gray-800 dark:text-white">WhaPay <span class="text-green-600">Analytics</span></h1>
+    </div>
+    <div class="flex items-center gap-4">
+      <span id="userEmailDisplay" class="text-sm text-gray-600 dark:text-gray-400 hidden md:inline"></span>
+      <button id="logoutBtn" class="text-red-600 hover:text-red-700 text-sm font-medium hidden">Logout</button>
+      <nav class="flex gap-4 text-sm">
+        <a href="index.html" class="text-gray-600 dark:text-gray-400 hover:text-green-600">Home</a>
+        <a href="merchant.html" class="text-gray-600 dark:text-gray-400 hover:text-green-600">Merchant</a>
+        <a href="payment.html" class="text-gray-600 dark:text-gray-400 hover:text-green-600">Payments</a>
+        <a href="admin.html" class="text-gray-600 dark:text-gray-400 hover:text-green-600">Admin</a>
+        <a href="reports.html" class="text-green-600 font-semibold">Analytics</a>
       </nav>
     </div>
   </div>
 </header>
 
-<!-- Login Overlay (Email/Password) -->
-<div id="loginOverlay" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-  <div class="bg-white rounded-xl p-6 max-w-md w-full">
-    <h2 class="text-xl font-bold mb-4">Admin Login</h2>
-    <input type="email" id="loginEmail" placeholder="Email" class="w-full border p-2 rounded mb-3">
-    <input type="password" id="loginPassword" placeholder="Password" class="w-full border p-2 rounded mb-3">
-    <button id="loginBtn" class="bg-green-600 text-white w-full py-2 rounded">Login</button>
-    <div id="loginError" class="text-red-500 text-sm mt-2 text-center"></div>
-    <p class="text-xs text-gray-500 text-center mt-3">Demo: admin@whapay.com / your password</p>
-    <p class="text-xs text-gray-500 text-center mt-2">Offline registration: <strong class="font-mono">0140933042</strong></p>
+<!-- Login Overlay -->
+<div id="loginOverlay" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl">
+    <div class="text-center mb-6">
+      <div class="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-4">
+        <i class="fas fa-chart-line text-green-600 dark:text-green-400 text-2xl"></i>
+      </div>
+      <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Analytics Dashboard</h2>
+      <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Login to access your payment insights</p>
+    </div>
+    <input type="email" id="loginEmail" placeholder="Email address" class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-xl px-4 py-3 mb-3 focus:outline-none focus:ring-2 focus:ring-green-500">
+    <input type="password" id="loginPassword" placeholder="Password" class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-xl px-4 py-3 mb-4 focus:outline-none focus:ring-2 focus:ring-green-500">
+    <button id="loginBtn" class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-xl transition">Access Dashboard</button>
+    <div id="loginError" class="text-red-500 text-sm mt-3 text-center"></div>
+    <p class="text-xs text-gray-400 dark:text-gray-500 text-center mt-4">Offline registration: <strong class="font-mono">0140933042</strong></p>
   </div>
 </div>
 
-<main class="max-w-7xl mx-auto px-4 py-6">
-  <div class="bg-white rounded-2xl shadow-md p-6 mb-6 text-center">
-    <h1 class="text-3xl font-bold text-green-700">📊 Live Payment Reports</h1>
-    <p class="text-gray-600">Real‑time analytics: weekly/monthly trends, payment methods, top customers & transaction history. Filter any date range.</p>
-    <div class="mt-2 text-sm text-gray-500">Offline registration: <strong class="font-mono">0140933042</strong> | WhatsApp: <strong class="font-mono">0140933042</strong></div>
-  </div>
-
-  <!-- Offline Sync Panel -->
-  <div class="bg-white rounded-xl shadow p-4 mb-6">
-    <div class="flex justify-between items-center flex-wrap gap-2">
+<!-- Main Dashboard -->
+<main id="dashboardContent" class="hidden max-w-7xl mx-auto px-6 py-8">
+  
+  <!-- Welcome Banner -->
+  <div class="bg-gradient-to-r from-green-600 to-green-700 rounded-2xl p-6 mb-8 text-white">
+    <div class="flex justify-between items-center flex-wrap gap-4">
       <div>
-        <h3 class="font-bold text-lg">📡 Offline Payment Sync</h3>
-        <p class="text-sm text-gray-600">Sync pending offline payments from IndexedDB to Firestore.</p>
+        <h1 class="text-2xl font-bold mb-1">Welcome back, <span id="adminName">Admin</span></h1>
+        <p class="text-green-100 text-sm">Here's what's happening with your payments today.</p>
       </div>
-      <button id="syncOfflineBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm">Sync Now</button>
+      <div class="flex gap-2">
+        <button id="refreshBtn" class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-xl text-sm transition"><i class="fas fa-sync-alt mr-2"></i>Refresh</button>
+        <button id="exportAllBtn" class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-xl text-sm transition"><i class="fas fa-download mr-2"></i>Export All</button>
+      </div>
     </div>
-    <div id="syncStatus" class="text-xs text-gray-500 mt-2 hidden"></div>
   </div>
 
-  <!-- Summary Cards (sticky, update with filter) -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 summary-cards">
-    <div class="bg-white shadow rounded p-4 text-center"><p class="text-gray-500">Total Completed</p><h2 id="totalPaid" class="text-2xl font-bold">KES 0</h2></div>
-    <div class="bg-white shadow rounded p-4 text-center"><p class="text-gray-500">Pending Transactions</p><h2 id="pendingCount" class="text-2xl font-bold">0</h2></div>
-    <div class="bg-white shadow rounded p-4 text-center"><p class="text-gray-500">Paid This Week</p><h2 id="weekPaid" class="text-2xl font-bold">KES 0</h2></div>
-    <div class="bg-white shadow rounded p-4 text-center"><p class="text-gray-500">Paid This Month</p><h2 id="monthPaid" class="text-2xl font-bold">KES 0</h2></div>
-  </div>
-
-  <!-- Date Range Filter for All Charts & Top Customers -->
-  <div class="bg-white rounded-xl shadow p-4 mb-6">
-    <h3 class="font-bold text-lg mb-2">📅 Filter Reports by Date</h3>
-    <div class="flex flex-wrap gap-3 items-end">
-      <div><label class="block text-sm font-medium">Start Date</label><input type="date" id="filterStartDate" class="border rounded px-3 py-2"></div>
-      <div><label class="block text-sm font-medium">End Date</label><input type="date" id="filterEndDate" class="border rounded px-3 py-2"></div>
-      <button id="applyFilterBtn" class="bg-green-600 text-white px-4 py-2 rounded">Apply Filter</button>
-      <button id="resetFilterBtn" class="bg-gray-500 text-white px-4 py-2 rounded">Reset</button>
+  <!-- Date Range Filter -->
+  <div class="filter-bar mb-8">
+    <div class="flex flex-wrap justify-between items-center gap-4">
+      <div class="flex flex-wrap gap-3">
+        <div>
+          <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">From</label>
+          <input type="date" id="dateFrom" class="border border-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-lg px-3 py-2 text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">To</label>
+          <input type="date" id="dateTo" class="border border-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-lg px-3 py-2 text-sm">
+        </div>
+        <button id="applyDateFilter" class="bg-green-600 text-white px-5 py-2 rounded-lg text-sm mt-5">Apply</button>
+        <button id="resetDateFilter" class="border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 px-5 py-2 rounded-lg text-sm mt-5 hover:bg-gray-50 dark:hover:bg-gray-800">Reset</button>
+      </div>
+      <div class="flex gap-2">
+        <button class="quick-filter text-sm px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-600 hover:border-green-500" data-days="7">Last 7 days</button>
+        <button class="quick-filter text-sm px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-600 hover:border-green-500" data-days="30">Last 30 days</button>
+        <button class="quick-filter text-sm px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-600 hover:border-green-500" data-days="90">Last 90 days</button>
+        <button class="quick-filter text-sm px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-600 hover:border-green-500" data-days="365">This year</button>
+      </div>
     </div>
-    <p class="text-xs text-gray-500 mt-2">Charts, top customers, and summary cards will update based on this date range.</p>
   </div>
 
-  <!-- Charts Row -->
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-    <div class="bg-white shadow rounded p-4"><h2 class="text-xl font-bold mb-2">📊 Weekly Payments</h2><canvas id="weeklyChart" height="200"></canvas></div>
-    <div class="bg-white shadow rounded p-4"><h2 class="text-xl font-bold mb-2">📈 Monthly Payments</h2><canvas id="monthlyChart" height="200"></canvas></div>
+  <!-- KPI Metrics Row -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5 mb-8">
+    <div class="metric-card">
+      <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Total Revenue</p>
+      <p id="kpiRevenue" class="text-2xl font-bold text-gray-800 dark:text-white">KES 0</p>
+      <p id="revenueTrend" class="text-xs mt-2">vs previous period</p>
+    </div>
+    <div class="metric-card">
+      <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Transactions</p>
+      <p id="kpiTransactions" class="text-2xl font-bold text-gray-800 dark:text-white">0</p>
+      <p id="txTrend" class="text-xs mt-2">vs previous period</p>
+    </div>
+    <div class="metric-card">
+      <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Average Value</p>
+      <p id="kpiAverage" class="text-2xl font-bold text-gray-800 dark:text-white">KES 0</p>
+      <p class="text-xs text-gray-400 mt-2">per transaction</p>
+    </div>
+    <div class="metric-card">
+      <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Success Rate</p>
+      <p id="kpiSuccessRate" class="text-2xl font-bold text-green-600">0%</p>
+      <p class="text-xs text-gray-400 mt-2">completed / total</p>
+    </div>
+    <div class="metric-card">
+      <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Unique Customers</p>
+      <p id="kpiCustomers" class="text-2xl font-bold text-gray-800 dark:text-white">0</p>
+      <p class="text-xs text-gray-400 mt-2">active payers</p>
+    </div>
   </div>
 
-  <!-- Method Breakdown & Top Users -->
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-    <div class="bg-white shadow rounded p-4"><h2 class="text-xl font-bold mb-2">💳 Payment Method Breakdown</h2><canvas id="methodChart" height="200"></canvas></div>
-    <div class="bg-white shadow rounded p-4"><h2 class="text-xl font-bold mb-2">🏆 Top Paying Customers</h2><ul id="topUsers" class="list-disc list-inside text-gray-700 space-y-1"></ul><p id="noTopUsers" class="text-gray-400 text-sm hidden">No completed transactions in selected period.</p></div>
+  <!-- Charts Row 1 -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+    <div class="chart-container">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="font-semibold text-gray-800 dark:text-white">Revenue Trend</h3>
+        <div class="flex gap-2">
+          <button class="trend-view text-xs px-2 py-1 rounded bg-gray-100 dark:bg-gray-700" data-view="daily">Daily</button>
+          <button class="trend-view text-xs px-2 py-1 rounded" data-view="weekly">Weekly</button>
+          <button class="trend-view text-xs px-2 py-1 rounded" data-view="monthly">Monthly</button>
+        </div>
+      </div>
+      <canvas id="revenueChart" height="250"></canvas>
+    </div>
+    <div class="chart-container">
+      <h3 class="font-semibold text-gray-800 dark:text-white mb-4">Payment Methods</h3>
+      <canvas id="methodsChart" height="250"></canvas>
+      <div id="methodsLegend" class="flex flex-wrap justify-center gap-4 mt-4 text-sm"></div>
+    </div>
   </div>
 
-  <!-- Transactions Table with Filter & Export -->
-  <div class="bg-white shadow rounded p-4 mb-6">
-    <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
-      <h2 class="text-xl font-bold">📋 All Transactions</h2>
-      <button id="exportBtn" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow">📎 Export CSV (Filtered)</button>
+  <!-- Charts Row 2 -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+    <div class="chart-container">
+      <h3 class="font-semibold text-gray-800 dark:text-white mb-4">Top Customers</h3>
+      <div class="overflow-y-auto max-h-80">
+        <table class="data-table">
+          <thead>
+            <tr><th>Customer</th><th class="text-right">Amount</th><th class="text-right">Transactions</th></tr>
+          </thead>
+          <tbody id="topCustomersTable"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="chart-container">
+      <h3 class="font-semibold text-gray-800 dark:text-white mb-4">Transaction Status</h3>
+      <canvas id="statusChart" height="250"></canvas>
+    </div>
+  </div>
+
+  <!-- Recent Transactions Table -->
+  <div class="chart-container mb-8">
+    <div class="flex flex-wrap justify-between items-center mb-4 gap-3">
+      <h3 class="font-semibold text-gray-800 dark:text-white">Recent Transactions</h3>
+      <div class="flex gap-3">
+        <input type="text" id="searchTransaction" placeholder="Search customer..." class="border border-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-lg px-3 py-1.5 text-sm w-48">
+        <select id="statusFilter" class="border border-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-lg px-3 py-1.5 text-sm">
+          <option value="">All status</option>
+          <option value="completed">Completed</option>
+          <option value="pending">Pending</option>
+          <option value="failed">Failed</option>
+        </select>
+        <button id="exportTransactionsBtn" class="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 px-4 py-1.5 rounded-lg text-sm transition"><i class="fas fa-file-excel mr-1"></i>Export</button>
+      </div>
     </div>
     <div class="overflow-x-auto">
-      <table class="min-w-full bg-white text-gray-700 border">
-        <thead class="bg-gray-100">
-          <tr><th class="px-4 py-2 border">#</th><th class="px-4 py-2 border">Customer</th><th class="px-4 py-2 border">Amount</th><th class="px-4 py-2 border">Method</th><th class="px-4 py-2 border">Status</th><th class="px-4 py-2 border">Date</th><th class="px-4 py-2 border">Receipt</th></tr>
+      <table class="data-table">
+        <thead>
+          <tr><th>ID</th><th>Customer</th><th>Amount</th><th>Method</th><th>Status</th><th>Date</th><th>Receipt</th></tr>
         </thead>
-        <tbody id="transactionTable">
-          <tr><td colspan="7" class="text-center p-4"><div class="skeleton h-6 w-32 mx-auto"></div></td></tr>
-        </tbody>
+        <tbody id="transactionsTableBody"></tbody>
       </table>
     </div>
-  </div>
-
-  <!-- How WhaPay Works Section -->
-  <div class="bg-white rounded-2xl shadow-lg p-6 mb-6">
-    <h2 class="text-2xl font-bold text-center mb-4">👆 How WhaPay Works – Simple Steps</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-      <div class="step-card bg-gray-50 p-3 rounded-xl"><div class="text-3xl mb-1">1️⃣</div><i class="fas fa-user-plus text-2xl text-green-600"></i><p class="font-bold mt-1">Get Your Code & QR</p><p class="text-xs">Register online (WhatsApp) or offline (voice/SMS to 0140933042). Receive your unique Member Code and QR code instantly.</p></div>
-      <div class="step-card bg-gray-50 p-3 rounded-xl"><div class="text-3xl mb-1">2️⃣</div><i class="fas fa-hand-holding-usd text-2xl text-green-600"></i><p class="font-bold mt-1">Share or Scan</p><p class="text-xs">Merchant shares their WhatsApp link, QR code, or Member Code. Customer scans or copies the code.</p></div>
-      <div class="step-card bg-gray-50 p-3 rounded-xl"><div class="text-3xl mb-1">3️⃣</div><i class="fas fa-check-circle text-2xl text-green-600"></i><p class="font-bold mt-1">Pay & Confirm</p><p class="text-xs">Pay via M-Pesa or card (online) or Member Code + M-Pesa Paybill (offline). Both receive instant confirmation.</p></div>
+    <div id="pagination" class="flex justify-between items-center mt-4 text-sm">
+      <span id="showingInfo" class="text-gray-500 dark:text-gray-400"></span>
+      <div class="flex gap-2">
+        <button id="prevPage" class="px-3 py-1 border rounded-lg disabled:opacity-50 dark:border-gray-600">← Previous</button>
+        <button id="nextPage" class="px-3 py-1 border rounded-lg disabled:opacity-50 dark:border-gray-600">Next →</button>
+      </div>
     </div>
   </div>
 </main>
 
-<footer class="bg-gray-900 text-gray-300 pt-10 pb-6 mt-8">
-  <div class="max-w-7xl mx-auto px-6 text-center text-sm">
-    <p>© 2026 WhaPay – <strong>Offline registration: call <span class="font-mono">0140933042</span> (voicemail) or SMS to same number</strong> | WhatsApp: <strong class="font-mono">0140933042</strong></p>
-    <div class="mt-3 space-x-4">
-      <a href="privacy.html" class="hover:text-green-400">Privacy</a>
-      <a href="terms.html" class="hover:text-green-400">Terms</a>
-      <a href="contact.html" class="hover:text-green-400">Contact</a>
-    </div>
-  </div>
-</footer>
-
-<a href="https://wa.me/0140933042?text=Hello%2C%20I%20need%20help%20with%20WhaPay%20reports" target="_blank" class="fixed bottom-5 right-5 bg-green-500 text-white p-3 rounded-full shadow-lg hover:bg-green-600 z-50"><i class="fab fa-whatsapp text-2xl"></i></a>
-
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { getFirestore, collection, onSnapshot, query, orderBy, writeBatch, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
   import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-  // Firebase config
   const firebaseConfig = {
     apiKey: "AIzaSyDPAvq6BgpdfZAkfoEwdwmHrWedHgzjRSk",
     authDomain: "whapay-c93ab.firebaseapp.com",
@@ -182,32 +309,28 @@
   const db = getFirestore(app);
   const auth = getAuth(app);
 
-  // ========== Global State ==========
-  let allTransactions = [];       // raw from Firestore
-  let filteredTransactions = [];  // after date filter
-  let currentStartDate = null;
-  let currentEndDate = null;
-  let charts = { weekly: null, monthly: null, method: null };
+  // State
+  let allTransactions = [];
+  let filteredTransactions = [];
+  let currentPage = 1;
+  let pageSize = 15;
+  let currentView = 'daily';
+  let charts = { revenue: null, methods: null, status: null };
+  let dateFrom = null;
+  let dateTo = null;
 
-  // DOM elements
+  // DOM Elements
   const loginOverlay = document.getElementById('loginOverlay');
+  const dashboard = document.getElementById('dashboardContent');
   const userEmailDisplay = document.getElementById('userEmailDisplay');
   const logoutBtn = document.getElementById('logoutBtn');
-  const syncBtn = document.getElementById('syncOfflineBtn');
-  const syncStatus = document.getElementById('syncStatus');
-  const exportBtn = document.getElementById('exportBtn');
-  const applyFilterBtn = document.getElementById('applyFilterBtn');
-  const resetFilterBtn = document.getElementById('resetFilterBtn');
-  const filterStartDate = document.getElementById('filterStartDate');
-  const filterEndDate = document.getElementById('filterEndDate');
 
-  // Helper: Toast notification
   function showToast(msg, isErr = false) {
-    let toast = document.getElementById('globalToast');
+    let toast = document.getElementById('toast');
     if (!toast) {
       toast = document.createElement('div');
-      toast.id = 'globalToast';
-      toast.className = 'fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-full text-sm z-50 transition-opacity opacity-0';
+      toast.id = 'toast';
+      toast.className = 'fixed bottom-5 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-full text-sm z-50 transition-all duration-300 opacity-0';
       document.body.appendChild(toast);
     }
     toast.innerText = msg;
@@ -217,262 +340,312 @@
     setTimeout(() => toast.classList.add('opacity-0'), 3000);
   }
 
-  // Format KES
   function formatKES(amount) { return `KES ${amount.toLocaleString()}`; }
+  function formatUSD(amount) { return `$${amount.toLocaleString()}`; }
 
-  // Destroy existing charts
-  function destroyCharts() {
-    Object.values(charts).forEach(chart => { if (chart) chart.destroy(); });
-    charts = { weekly: null, monthly: null, method: null };
+  function getDateRange(prev = false) {
+    let start, end;
+    if (dateFrom && dateTo) {
+      start = new Date(dateFrom);
+      end = new Date(dateTo);
+      end.setHours(23, 59, 59, 999);
+    } else {
+      end = new Date();
+      start = new Date();
+      start.setDate(start.getDate() - 30);
+    }
+    if (prev) {
+      const duration = end - start;
+      const prevEnd = new Date(start);
+      const prevStart = new Date(prevEnd - duration);
+      return { start: prevStart, end: prevEnd };
+    }
+    return { start, end };
   }
 
-  // ========== Offline Sync (IndexedDB) ==========
-  const PENDING_TXS_KEY = 'pending_transactions';
-  async function syncOfflineTransactions() {
-    if (!auth.currentUser) { showToast("Please login first", true); return; }
-    syncStatus.classList.remove('hidden');
-    syncStatus.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Syncing offline payments...';
-    try {
-      const pending = await localforage.getItem(PENDING_TXS_KEY) || [];
-      const toSync = pending.filter(t => !t.synced);
-      if (toSync.length === 0) {
-        syncStatus.innerHTML = '✅ No pending offline transactions.';
-        setTimeout(() => syncStatus.classList.add('hidden'), 2000);
-        return;
-      }
-      const batch = writeBatch(db);
-      for (const tx of toSync) {
-        const txRef = doc(collection(db, "transactions"));
-        batch.set(txRef, {
-          amount: tx.amount,
-          customer: tx.customer,
-          method: tx.method || 'mpesa',
-          status: 'completed',
-          timestamp: new Date(),
-          merchantId: tx.merchantId || 'offline-sync',
-          offlineSync: true
-        });
-      }
-      await batch.commit();
-      const remaining = pending.filter(t => !toSync.includes(t));
-      await localforage.setItem(PENDING_TXS_KEY, remaining);
-      syncStatus.innerHTML = `✅ Synced ${toSync.length} transaction(s). Firestore updated.`;
-      setTimeout(() => syncStatus.classList.add('hidden'), 3000);
-      showToast(`Synced ${toSync.length} offline payments`);
-    } catch (err) {
-      console.error(err);
-      syncStatus.innerHTML = '❌ Sync failed. Check console.';
-      setTimeout(() => syncStatus.classList.add('hidden'), 3000);
-      showToast("Sync failed", true);
-    }
-  }
-
-  // Auto-sync when online
-  window.addEventListener('online', () => {
-    if (auth.currentUser) {
-      showToast("Connection restored. Syncing offline payments...");
-      syncOfflineTransactions();
-    }
-  });
-
-  // ========== Filter Logic ==========
-  function applyDateFilter() {
-    const start = filterStartDate.value ? new Date(filterStartDate.value) : null;
-    const end = filterEndDate.value ? new Date(filterEndDate.value + "T23:59:59") : null;
-    currentStartDate = start;
-    currentEndDate = end;
-    
-    filteredTransactions = allTransactions.filter(tx => {
-      if (tx.status !== 'completed') return false;
-      const txDate = tx.timestampDate;
-      if (start && txDate < start) return false;
-      if (end && txDate > end) return false;
-      return true;
+  function filterTransactionsByDate() {
+    const { start, end } = getDateRange();
+    filteredTransactions = allTransactions.filter(t => {
+      const txDate = t.timestampDate;
+      return txDate >= start && txDate <= end;
     });
-    updateAllChartsAndSummaries();
-    populateTable();
+    return filteredTransactions;
   }
 
-  function resetFilter() {
-    filterStartDate.value = '';
-    filterEndDate.value = '';
-    currentStartDate = null;
-    currentEndDate = null;
-    filteredTransactions = allTransactions.filter(tx => tx.status === 'completed');
-    updateAllChartsAndSummaries();
-    populateTable();
+  function getPreviousPeriodData() {
+    const { start, end } = getDateRange(true);
+    return allTransactions.filter(t => {
+      const txDate = t.timestampDate;
+      return txDate >= start && txDate <= end && t.status === 'completed';
+    });
   }
 
-  // Update everything: summary cards, charts, top customers, method breakdown
-  function updateAllChartsAndSummaries() {
-    const completed = filteredTransactions;
-    const totalPaid = completed.reduce((sum, t) => sum + t.amount, 0);
-    const pendingCountVal = allTransactions.filter(t => t.status !== 'completed').length;
-    
+  function updateKPIs() {
+    const completed = filteredTransactions.filter(t => t.status === 'completed');
+    const totalRevenue = completed.reduce((sum, t) => sum + t.amount, 0);
+    const totalTx = completed.length;
+    const avgValue = totalTx > 0 ? totalRevenue / totalTx : 0;
+    const successRate = filteredTransactions.length > 0 ? (completed.length / filteredTransactions.length * 100).toFixed(1) : 0;
+    const uniqueCustomers = new Set(completed.map(t => t.customer)).size;
+
+    const prevData = getPreviousPeriodData();
+    const prevRevenue = prevData.reduce((sum, t) => sum + t.amount, 0);
+    const prevTx = prevData.length;
+    const revenueChange = prevRevenue > 0 ? ((totalRevenue - prevRevenue) / prevRevenue * 100).toFixed(1) : 0;
+    const txChange = prevTx > 0 ? ((totalTx - prevTx) / prevTx * 100).toFixed(1) : 0;
+
+    document.getElementById('kpiRevenue').innerHTML = formatKES(totalRevenue);
+    document.getElementById('kpiTransactions').innerText = totalTx;
+    document.getElementById('kpiAverage').innerHTML = formatKES(avgValue);
+    document.getElementById('kpiSuccessRate').innerHTML = `${successRate}%`;
+    document.getElementById('kpiCustomers').innerText = uniqueCustomers;
+
+    const revenueTrend = document.getElementById('revenueTrend');
+    revenueTrend.innerHTML = `${revenueChange >= 0 ? '↑' : '↓'} ${Math.abs(revenueChange)}% vs previous period`;
+    revenueTrend.className = `text-xs mt-2 ${revenueChange >= 0 ? 'trend-up' : 'trend-down'}`;
+
+    const txTrend = document.getElementById('txTrend');
+    txTrend.innerHTML = `${txChange >= 0 ? '↑' : '↓'} ${Math.abs(txChange)}% vs previous period`;
+    txTrend.className = `text-xs mt-2 ${txChange >= 0 ? 'trend-up' : 'trend-down'}`;
+  }
+
+  function updateRevenueChart() {
+    const completed = filteredTransactions.filter(t => t.status === 'completed');
+    let labels = [], data = [];
     const now = new Date();
-    const weekPaid = completed.filter(t => (now - t.timestampDate) <= 7 * 24 * 3600 * 1000).reduce((sum, t) => sum + t.amount, 0);
-    const monthPaid = completed.filter(t => t.timestampDate.getMonth() === now.getMonth() && t.timestampDate.getFullYear() === now.getFullYear()).reduce((sum, t) => sum + t.amount, 0);
-    
-    document.getElementById("totalPaid").innerHTML = formatKES(totalPaid);
-    document.getElementById("pendingCount").innerText = pendingCountVal;
-    document.getElementById("weekPaid").innerHTML = formatKES(weekPaid);
-    document.getElementById("monthPaid").innerHTML = formatKES(monthPaid);
-    
-    // Weekly chart (last 7 days)
-    const weeklyLabels = [];
-    const weeklyAmounts = Array(7).fill(0);
-    for (let i = 6; i >= 0; i--) {
-      const d = new Date(); d.setDate(now.getDate() - i);
-      weeklyLabels.push(d.toLocaleDateString("en-KE", { weekday: "short", day: "numeric" }));
-    }
-    completed.forEach(t => {
-      const diffDays = Math.floor((now - t.timestampDate) / (1000*3600*24));
-      if (diffDays >= 0 && diffDays < 7) weeklyAmounts[6 - diffDays] += t.amount;
-    });
-    
-    // Monthly chart
-    let monthlyLabels = [], monthlyAmounts = [];
-    if (currentStartDate && currentEndDate && (currentEndDate - currentStartDate) <= 31*86400000) {
-      const daysDiff = Math.ceil((currentEndDate - currentStartDate) / 86400000) + 1;
-      for (let i = 0; i < daysDiff; i++) {
-        const d = new Date(currentStartDate);
-        d.setDate(currentStartDate.getDate() + i);
-        monthlyLabels.push(d.toLocaleDateString("en-KE", { month: "short", day: "numeric" }));
-        monthlyAmounts.push(0);
+
+    if (currentView === 'daily') {
+      for (let i = 29; i >= 0; i--) {
+        const d = new Date(); d.setDate(now.getDate() - i);
+        labels.push(d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
+        data.push(0);
       }
       completed.forEach(t => {
-        const idx = Math.floor((t.timestampDate - currentStartDate) / 86400000);
-        if (idx >= 0 && idx < daysDiff) monthlyAmounts[idx] += t.amount;
+        const txDate = t.timestampDate;
+        const diffDays = Math.floor((now - txDate) / (1000*3600*24));
+        if (diffDays >= 0 && diffDays < 30) data[29 - diffDays] += t.amount;
+      });
+    } else if (currentView === 'weekly') {
+      for (let i = 11; i >= 0; i--) {
+        const d = new Date(); d.setDate(now.getDate() - (i * 7));
+        labels.push(`Week ${12 - i}`);
+        data.push(0);
+      }
+      completed.forEach(t => {
+        const diffWeeks = Math.floor((now - t.timestampDate) / (1000*3600*24*7));
+        if (diffWeeks >= 0 && diffWeeks < 12) data[11 - diffWeeks] += t.amount;
       });
     } else {
-      const currentYear = now.getFullYear(), currentMonth = now.getMonth();
-      const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-      monthlyLabels = Array.from({ length: daysInMonth }, (_, i) => i + 1);
-      monthlyAmounts = Array(daysInMonth).fill(0);
+      for (let i = 11; i >= 0; i--) {
+        const d = new Date(); d.setMonth(now.getMonth() - i);
+        labels.push(d.toLocaleDateString('en-US', { month: 'short', year: '2-digit' }));
+        data.push(0);
+      }
       completed.forEach(t => {
-        if (t.timestampDate.getMonth() === currentMonth && t.timestampDate.getFullYear() === currentYear) {
-          monthlyAmounts[t.timestampDate.getDate() - 1] += t.amount;
-        }
+        const diffMonths = (now.getFullYear() - t.timestampDate.getFullYear()) * 12 + (now.getMonth() - t.timestampDate.getMonth());
+        if (diffMonths >= 0 && diffMonths < 12) data[11 - diffMonths] += t.amount;
       });
     }
-    
-    // Method breakdown
-    const methodMap = new Map();
-    completed.forEach(t => {
-      const method = t.method || "other";
-      methodMap.set(method, (methodMap.get(method) || 0) + t.amount);
+
+    if (charts.revenue) charts.revenue.destroy();
+    const ctx = document.getElementById('revenueChart').getContext('2d');
+    charts.revenue = new Chart(ctx, {
+      type: 'line',
+      data: { labels, datasets: [{ label: 'Revenue (KES)', data, borderColor: '#16a34a', backgroundColor: 'rgba(22,163,74,0.05)', fill: true, tension: 0.3, pointRadius: 3, pointBackgroundColor: '#16a34a' }] },
+      options: { responsive: true, maintainAspectRatio: true, plugins: { tooltip: { callbacks: { label: ctx => `KES ${ctx.raw.toLocaleString()}` } } }, scales: { y: { beginAtZero: true, ticks: { callback: val => 'KES ' + val.toLocaleString() } } } }
     });
-    const methodLabels = Array.from(methodMap.keys()).map(m => m.toUpperCase());
-    const methodData = Array.from(methodMap.values());
-    
-    // Top customers
-    const customerMap = new Map();
+  }
+
+  function updateMethodsChart() {
+    const completed = filteredTransactions.filter(t => t.status === 'completed');
+    const methods = new Map();
+    completed.forEach(t => {
+      const method = t.method || 'mpesa';
+      methods.set(method, (methods.get(method) || 0) + t.amount);
+    });
+    if (charts.methods) charts.methods.destroy();
+    const ctx = document.getElementById('methodsChart').getContext('2d');
+    charts.methods = new Chart(ctx, {
+      type: 'doughnut',
+      data: { labels: Array.from(methods.keys()).map(m => m.toUpperCase()), datasets: [{ data: Array.from(methods.values()), backgroundColor: ['#16a34a', '#3b82f6', '#f59e0b', '#8b5cf6', '#ec489a'] }] },
+      options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'bottom' }, tooltip: { callbacks: { label: ctx => `${ctx.label}: ${formatKES(ctx.raw)}` } } } }
+    });
+  }
+
+  function updateStatusChart() {
+    const statuses = new Map();
+    filteredTransactions.forEach(t => {
+      const status = t.status || 'pending';
+      statuses.set(status, (statuses.get(status) || 0) + 1);
+    });
+    if (charts.status) charts.status.destroy();
+    const ctx = document.getElementById('statusChart').getContext('2d');
+    charts.status = new Chart(ctx, {
+      type: 'bar',
+      data: { labels: Array.from(statuses.keys()), datasets: [{ label: 'Transactions', data: Array.from(statuses.values()), backgroundColor: ['#10b981', '#f59e0b', '#ef4444'] }] },
+      options: { responsive: true, maintainAspectRatio: true, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+    });
+  }
+
+  function updateTopCustomers() {
+    const completed = filteredTransactions.filter(t => t.status === 'completed');
+    const customers = new Map();
+    const counts = new Map();
     completed.forEach(t => {
       if (t.customer) {
-        customerMap.set(t.customer, (customerMap.get(t.customer) || 0) + t.amount);
+        customers.set(t.customer, (customers.get(t.customer) || 0) + t.amount);
+        counts.set(t.customer, (counts.get(t.customer) || 0) + 1);
       }
     });
-    const sortedCustomers = Array.from(customerMap.entries()).sort((a,b) => b[1] - a[1]).slice(0, 5);
-    const topUsersUl = document.getElementById("topUsers");
-    const noTopMsg = document.getElementById("noTopUsers");
-    if (sortedCustomers.length === 0) {
-      topUsersUl.innerHTML = "";
-      noTopMsg.classList.remove("hidden");
-    } else {
-      noTopMsg.classList.add("hidden");
-      topUsersUl.innerHTML = sortedCustomers.map(([name, amt]) => `<li class="text-sm">${escapeHtml(name)} – ${formatKES(amt)}</li>`).join("");
+    const sorted = Array.from(customers.entries()).sort((a,b) => b[1] - a[1]).slice(0, 10);
+    const tbody = document.getElementById('topCustomersTable');
+    if (tbody) {
+      tbody.innerHTML = sorted.map(([name, amt]) => `<tr><td>${escapeHtml(name)}</td><td class="text-right font-medium">${formatKES(amt)}</td><td class="text-right text-gray-500">${counts.get(name)}</td></tr>`).join('');
+    }
+  }
+
+  function renderTransactionsTable() {
+    let data = filteredTransactions;
+    const searchTerm = document.getElementById('searchTransaction')?.value.toLowerCase() || '';
+    const statusFilter = document.getElementById('statusFilter')?.value || '';
+    if (searchTerm) data = data.filter(t => t.customer?.toLowerCase().includes(searchTerm));
+    if (statusFilter) data = data.filter(t => (t.status || 'pending') === statusFilter);
+    
+    const start = (currentPage - 1) * pageSize;
+    const paginated = data.slice(start, start + pageSize);
+    const totalPages = Math.ceil(data.length / pageSize);
+    
+    const tbody = document.getElementById('transactionsTableBody');
+    if (tbody) {
+      if (paginated.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" class="text-center py-8 text-gray-400">No transactions found</td></tr>';
+      } else {
+        tbody.innerHTML = paginated.map((tx, i) => {
+          const statusClass = tx.status === 'completed' ? 'badge-success' : (tx.status === 'pending' ? 'badge-pending' : 'badge-failed');
+          const statusText = tx.status || 'pending';
+          return `<tr>
+            <td class="font-mono text-xs">${tx.id?.slice(0,8)}</td>
+            <td>${escapeHtml(tx.customer || '-')}</td>
+            <td class="font-medium">${formatKES(tx.amount || 0)}</td>
+            <td class="capitalize">${tx.method || 'mpesa'}</td>
+            <td><span class="${statusClass}">${statusText}</span></td>
+            <td class="text-gray-500">${tx.timestampDate.toLocaleString()}</td>
+            <td><button class="text-green-600 hover:text-green-700 text-sm receipt-btn" data-tx='${JSON.stringify(tx)}'>View</button></td>
+          </tr>`;
+        }).join('');
+      }
     }
     
-    // Render charts
-    destroyCharts();
-    const weeklyCtx = document.getElementById("weeklyChart").getContext("2d");
-    charts.weekly = new Chart(weeklyCtx, {
-      type: "bar", data: { labels: weeklyLabels, datasets: [{ label: "KES Paid", data: weeklyAmounts, backgroundColor: "rgba(22, 163, 74, 0.6)" }] },
-      options: { responsive: true, maintainAspectRatio: true, plugins: { tooltip: { callbacks: { label: ctx => formatKES(ctx.raw) } } }, scales: { y: { beginAtZero: true, ticks: { callback: val => "KES " + val.toLocaleString() } } } }
-    });
-    const monthlyCtx = document.getElementById("monthlyChart").getContext("2d");
-    charts.monthly = new Chart(monthlyCtx, {
-      type: "line", data: { labels: monthlyLabels, datasets: [{ label: "KES Paid", data: monthlyAmounts, borderColor: "#16a34a", backgroundColor: "rgba(22, 163, 74, 0.1)", fill: true, tension: 0.3 }] },
-      options: { responsive: true, maintainAspectRatio: true, plugins: { tooltip: { callbacks: { label: ctx => formatKES(ctx.raw) } } }, scales: { y: { beginAtZero: true, ticks: { callback: val => "KES " + val.toLocaleString() } } } }
-    });
-    const methodCtx = document.getElementById("methodChart").getContext("2d");
-    charts.method = new Chart(methodCtx, {
-      type: "doughnut", data: { labels: methodLabels, datasets: [{ data: methodData, backgroundColor: ["#16a34a", "#10b981", "#34d399", "#059669", "#047857"] }] },
-      options: { responsive: true, maintainAspectRatio: true, plugins: { tooltip: { callbacks: { label: ctx => `${ctx.label}: ${formatKES(ctx.raw)}` } }, legend: { position: "bottom" } } }
-    });
-  }
-
-  // Populate transaction table
-  function populateTable() {
-    const tbody = document.getElementById("transactionTable");
-    let filtered = allTransactions;
-    if (currentStartDate) filtered = filtered.filter(t => t.timestampDate >= currentStartDate);
-    if (currentEndDate) filtered = filtered.filter(t => t.timestampDate <= currentEndDate);
-    if (filtered.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="7" class="text-center p-4 text-gray-400">No transactions found</td></tr>`;
-      return;
-    }
-    tbody.innerHTML = "";
-    filtered.forEach((tx, idx) => {
-      const row = `<tr class="hover:bg-gray-50">
-        <td class="border px-3 py-2">${idx+1}</td>
-        <td class="border px-3 py-2">${escapeHtml(tx.customer || "—")}</td>
-        <td class="border px-3 py-2">${formatKES(tx.amount)}</td>
-        <td class="border px-3 py-2 capitalize">${tx.method || "—"}</td>
-        <td class="border px-3 py-2"><span class="px-2 py-0.5 rounded-full ${tx.status === 'completed' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}">${tx.status || "pending"}</span></td>
-        <td class="border px-3 py-2">${tx.timestampDate.toLocaleString("en-KE")}</td>
-        <td class="border px-3 py-2"><button class="receipt-btn text-blue-600 text-sm" data-tx='${JSON.stringify(tx)}'>📄 Download</button></td>
-       </tr>`;
-      tbody.insertAdjacentHTML('beforeend', row);
-    });
+    const showingInfo = document.getElementById('showingInfo');
+    if (showingInfo) showingInfo.innerHTML = `Showing ${start + 1} to ${Math.min(start + pageSize, data.length)} of ${data.length} transactions`;
+    
+    const prevBtn = document.getElementById('prevPage');
+    const nextBtn = document.getElementById('nextPage');
+    if (prevBtn) prevBtn.disabled = currentPage <= 1;
+    if (nextBtn) nextBtn.disabled = currentPage >= totalPages;
+    
     document.querySelectorAll('.receipt-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
+      btn.onclick = () => {
         const tx = JSON.parse(btn.dataset.tx);
-        generateReceipt(tx);
-      });
+        const receiptHtml = `<html><head><title>Receipt</title><style>body{font-family:sans-serif;padding:20px;}</style></head><body><h2>WhaPay Receipt</h2><p><strong>Amount:</strong> ${formatKES(tx.amount)}</p><p><strong>Customer:</strong> ${escapeHtml(tx.customer)}</p><p><strong>Date:</strong> ${tx.timestampDate.toLocaleString()}</p><p><strong>Status:</strong> ${tx.status}</p><hr><p>Thank you for using WhaPay!</p><p>WhatsApp: 0140933042</p></body></html>`;
+        const blob = new Blob([receiptHtml], {type: 'text/html'});
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `receipt_${tx.id || Date.now()}.html`;
+        link.click();
+        URL.revokeObjectURL(link.href);
+      };
     });
   }
 
-  function generateReceipt(tx) {
-    const receiptHtml = `
-      <html><head><title>WhaPay Receipt</title><style>body{font-family:sans-serif;padding:20px;} .receipt{border:1px solid #ccc;padding:20px;max-width:400px;margin:auto;}</style></head>
-      <body><div class="receipt"><h2>WhaPay Receipt</h2><p><strong>Transaction ID:</strong> ${tx.id || 'N/A'}</p><p><strong>Customer:</strong> ${escapeHtml(tx.customer || 'N/A')}</p><p><strong>Amount:</strong> ${formatKES(tx.amount)}</p><p><strong>Method:</strong> ${tx.method || 'M-Pesa'}</p><p><strong>Status:</strong> ${tx.status}</p><p><strong>Date:</strong> ${tx.timestampDate.toLocaleString()}</p><p>Thank you for using WhaPay!</p><p>WhatsApp: <strong class="font-mono">0140933042</strong></p></div></body></html>
-    `;
-    const blob = new Blob([receiptHtml], {type: 'text/html'});
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = `receipt_${tx.id || Date.now()}.html`;
-    link.click();
-    URL.revokeObjectURL(link.href);
+  function refreshAll() {
+    if (!allTransactions.length) return;
+    filterTransactionsByDate();
+    updateKPIs();
+    updateRevenueChart();
+    updateMethodsChart();
+    updateStatusChart();
+    updateTopCustomers();
+    renderTransactionsTable();
   }
 
-  function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, function(m){ if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
-
-  // Export CSV
-  function exportCSV() {
-    let data = allTransactions;
-    if (currentStartDate) data = data.filter(t => t.timestampDate >= currentStartDate);
-    if (currentEndDate) data = data.filter(t => t.timestampDate <= currentEndDate);
-    if (data.length === 0) { showToast("No transactions to export", true); return; }
-    const headers = ["Customer", "Amount (KES)", "Method", "Status", "Date"];
-    const rows = data.map(t => [`"${t.customer || ''}"`, t.amount, t.method || 'mpesa', t.status, t.timestampDate.toISOString()]);
-    const csvContent = [headers, ...rows].map(row => row.join(",")).join("\n");
-    const blob = new Blob([csvContent], {type: 'text/csv'});
+  function exportAllData() {
+    const data = filteredTransactions.map(t => ({
+      Customer: t.customer,
+      Amount: t.amount,
+      Method: t.method,
+      Status: t.status,
+      Date: t.timestampDate.toISOString()
+    }));
+    const csv = ['Customer,Amount (KES),Method,Status,Date', ...data.map(d => `"${d.Customer}",${d.Amount},${d.Method},${d.Status},${d.Date}`)].join('\n');
+    const blob = new Blob([csv], {type: 'text/csv'});
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
-    link.download = `whapay_transactions_${new Date().toISOString().slice(0,10)}.csv`;
+    link.download = `whapay_report_${new Date().toISOString().slice(0,10)}.csv`;
     link.click();
-    URL.revokeObjectURL(link.href);
-    showToast("CSV exported");
+    showToast('Report exported');
   }
 
-  // ========== Firebase Auth & Real-time Listener ==========
+  function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m])); }
+
+  // Event Listeners
+  document.getElementById('applyDateFilter')?.addEventListener('click', () => {
+    dateFrom = document.getElementById('dateFrom').value;
+    dateTo = document.getElementById('dateTo').value;
+    currentPage = 1;
+    refreshAll();
+  });
+  
+  document.getElementById('resetDateFilter')?.addEventListener('click', () => {
+    document.getElementById('dateFrom').value = '';
+    document.getElementById('dateTo').value = '';
+    dateFrom = null;
+    dateTo = null;
+    currentPage = 1;
+    refreshAll();
+  });
+  
+  document.querySelectorAll('.quick-filter').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const days = parseInt(btn.dataset.days);
+      const to = new Date();
+      const from = new Date();
+      from.setDate(to.getDate() - days);
+      document.getElementById('dateFrom').value = from.toISOString().split('T')[0];
+      document.getElementById('dateTo').value = to.toISOString().split('T')[0];
+      dateFrom = from;
+      dateTo = to;
+      currentPage = 1;
+      refreshAll();
+    });
+  });
+  
+  document.querySelectorAll('.trend-view').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.trend-view').forEach(b => b.classList.remove('bg-gray-100', 'dark:bg-gray-700'));
+      btn.classList.add('bg-gray-100', 'dark:bg-gray-700');
+      currentView = btn.dataset.view;
+      updateRevenueChart();
+    });
+  });
+  
+  document.getElementById('refreshBtn')?.addEventListener('click', refreshAll);
+  document.getElementById('exportAllBtn')?.addEventListener('click', exportAllData);
+  document.getElementById('exportTransactionsBtn')?.addEventListener('click', exportAllData);
+  document.getElementById('searchTransaction')?.addEventListener('input', () => { currentPage = 1; renderTransactionsTable(); });
+  document.getElementById('statusFilter')?.addEventListener('change', () => { currentPage = 1; renderTransactionsTable(); });
+  document.getElementById('prevPage')?.addEventListener('click', () => { if (currentPage > 1) { currentPage--; renderTransactionsTable(); } });
+  document.getElementById('nextPage')?.addEventListener('click', () => { currentPage++; renderTransactionsTable(); });
+
+  // Firebase Auth
   onAuthStateChanged(auth, (user) => {
     if (user) {
       userEmailDisplay.innerText = user.email;
       userEmailDisplay.classList.remove('hidden');
       logoutBtn.classList.remove('hidden');
       loginOverlay.classList.add('hidden');
+      dashboard.classList.remove('hidden');
+      
       const q = query(collection(db, "transactions"), orderBy("timestamp", "desc"));
       onSnapshot(q, (snapshot) => {
         allTransactions = snapshot.docs.map(doc => {
@@ -487,27 +660,17 @@
             timestampDate: data.timestamp?.toDate ? data.timestamp.toDate() : new Date()
           };
         }).filter(t => t.timestampDate);
-        if (currentStartDate || currentEndDate) applyDateFilter();
-        else resetFilter();
-        populateTable();
-      }, (err) => {
-        console.error("Firestore error:", err);
-        showToast("Failed to load transactions. Check permissions.", true);
+        refreshAll();
       });
     } else {
-      userEmailDisplay.classList.add('hidden');
-      logoutBtn.classList.add('hidden');
       loginOverlay.classList.remove('hidden');
-      allTransactions = [];
-      filteredTransactions = [];
-      destroyCharts();
-      document.getElementById("transactionTable").innerHTML = '<tr><td colspan="7" class="text-center p-4 text-gray-400">Login to view reports</td></tr>';
+      dashboard.classList.add('hidden');
     }
   });
 
   document.getElementById('loginBtn').onclick = async () => {
     const email = document.getElementById('loginEmail').value.trim();
-    const password = document.getElementById('loginPassword').value.trim();
+    const password = document.getElementById('loginPassword').value;
     const errorDiv = document.getElementById('loginError');
     try {
       await signInWithEmailAndPassword(auth, email, password);
@@ -516,17 +679,13 @@
       errorDiv.innerText = err.message;
     }
   };
+  
   logoutBtn.onclick = async () => { await signOut(auth); };
-  syncBtn.onclick = syncOfflineTransactions;
-  exportBtn.onclick = exportCSV;
-  applyFilterBtn.onclick = applyDateFilter;
-  resetFilterBtn.onclick = resetFilter;
-
+  
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js').catch(e => console.log("SW failed", e));
   }
 </script>
-  <!-- Before </body> -->
-<script src="global.js"></script>
 </body>
 </html>
+

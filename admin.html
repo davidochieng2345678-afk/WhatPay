@@ -100,6 +100,169 @@
         </div>
       </div>
     </div>
+    <!-- ========== DETAILED REPORTS DASHBOARD ========== -->
+<div class="mt-8">
+  <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">📊 Detailed Analytics Reports <span class="text-sm bg-green-100 text-green-700 px-2 py-1 rounded">Live Data</span></h2>
+  
+  <!-- Date Range & Quick Filters -->
+  <div class="bg-white rounded-xl shadow p-4 mb-6">
+    <div class="flex flex-wrap justify-between items-center mb-4">
+      <h3 class="font-bold text-lg">📅 Filter by Date Range</h3>
+      <div class="flex gap-2">
+        <button id="quickFilterToday" class="text-xs bg-gray-100 px-3 py-1 rounded hover:bg-gray-200">Today</button>
+        <button id="quickFilterWeek" class="text-xs bg-gray-100 px-3 py-1 rounded hover:bg-gray-200">This Week</button>
+        <button id="quickFilterMonth" class="text-xs bg-gray-100 px-3 py-1 rounded hover:bg-gray-200">This Month</button>
+        <button id="quickFilterYear" class="text-xs bg-gray-100 px-3 py-1 rounded hover:bg-gray-200">This Year</button>
+      </div>
+    </div>
+    <div class="flex flex-wrap gap-3 items-end">
+      <div><label class="block text-sm font-medium">Start Date</label><input type="date" id="reportStartDate" class="border rounded px-3 py-2"></div>
+      <div><label class="block text-sm font-medium">End Date</label><input type="date" id="reportEndDate" class="border rounded px-3 py-2"></div>
+      <button id="applyReportFilter" class="bg-green-600 text-white px-4 py-2 rounded">Apply Filter</button>
+      <button id="resetReportFilter" class="bg-gray-500 text-white px-4 py-2 rounded">Reset</button>
+    </div>
+  </div>
+
+  <!-- Main KPI Cards -->
+  <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-6">
+    <div class="bg-gradient-to-br from-green-50 to-white rounded-xl shadow p-3 text-center border-l-4 border-green-500">
+      <p class="text-xs text-gray-500">Total Revenue</p>
+      <p id="reportTotalRevenue" class="text-xl font-bold text-green-700">KES 0</p>
+      <p id="reportRevenueTrend" class="text-xs text-gray-400">vs last period</p>
+    </div>
+    <div class="bg-gradient-to-br from-blue-50 to-white rounded-xl shadow p-3 text-center border-l-4 border-blue-500">
+      <p class="text-xs text-gray-500">Total Transactions</p>
+      <p id="reportTotalTransactions" class="text-xl font-bold text-blue-700">0</p>
+      <p id="reportTxTrend" class="text-xs text-gray-400">vs last period</p>
+    </div>
+    <div class="bg-gradient-to-br from-purple-50 to-white rounded-xl shadow p-3 text-center border-l-4 border-purple-500">
+      <p class="text-xs text-gray-500">Avg. Transaction</p>
+      <p id="reportAvgTransaction" class="text-xl font-bold text-purple-700">KES 0</p>
+    </div>
+    <div class="bg-gradient-to-br from-yellow-50 to-white rounded-xl shadow p-3 text-center border-l-4 border-yellow-500">
+      <p class="text-xs text-gray-500">Pending</p>
+      <p id="reportPendingTotal" class="text-xl font-bold text-yellow-700">0</p>
+    </div>
+    <div class="bg-gradient-to-br from-indigo-50 to-white rounded-xl shadow p-3 text-center border-l-4 border-indigo-500">
+      <p class="text-xs text-gray-500">Unique Customers</p>
+      <p id="reportUniqueCustomers" class="text-xl font-bold text-indigo-700">0</p>
+    </div>
+    <div class="bg-gradient-to-br from-pink-50 to-white rounded-xl shadow p-3 text-center border-l-4 border-pink-500">
+      <p class="text-xs text-gray-500">Success Rate</p>
+      <p id="reportSuccessRate" class="text-xl font-bold text-pink-700">0%</p>
+    </div>
+  </div>
+
+  <!-- Charts Row - 3 Charts -->
+  <div class="grid lg:grid-cols-3 gap-6 mb-6">
+    <div class="bg-white shadow rounded p-4">
+      <h3 class="font-bold mb-2">📊 Daily Revenue (Last 30 Days)</h3>
+      <canvas id="reportDailyChart" height="200"></canvas>
+    </div>
+    <div class="bg-white shadow rounded p-4">
+      <h3 class="font-bold mb-2">📈 Revenue by Payment Method</h3>
+      <canvas id="reportMethodChart" height="200"></canvas>
+    </div>
+    <div class="bg-white shadow rounded p-4">
+      <h3 class="font-bold mb-2">⏰ Hourly Transaction Heat</h3>
+      <canvas id="reportHourlyChart" height="200"></canvas>
+    </div>
+  </div>
+
+  <!-- Second Row Charts -->
+  <div class="grid lg:grid-cols-2 gap-6 mb-6">
+    <div class="bg-white shadow rounded p-4">
+      <h3 class="font-bold mb-2">🏆 Top 10 Customers</h3>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead class="bg-gray-100"><tr><th class="p-2 text-left">#</th><th class="p-2 text-left">Customer</th><th class="p-2 text-right">Total Spent</th><th class="p-2 text-right">Transactions</th></tr></thead>
+          <tbody id="reportTopCustomersList"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="bg-white shadow rounded p-4">
+      <h3 class="font-bold mb-2">🔥 Most Active Merchants</h3>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead class="bg-gray-100"><tr><th class="p-2 text-left">#</th><th class="p-2 text-left">Merchant</th><th class="p-2 text-right">Revenue</th><th class="p-2 text-right">Volume</th></tr></thead>
+          <tbody id="reportTopMerchantsList"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Payment Method Breakdown & Status Distribution -->
+  <div class="grid lg:grid-cols-2 gap-6 mb-6">
+    <div class="bg-white shadow rounded p-4">
+      <h3 class="font-bold mb-2">💳 Payment Method Breakdown</h3>
+      <canvas id="reportPaymentMethodPie" height="200"></canvas>
+      <div id="paymentMethodLegend" class="mt-3 text-xs text-center"></div>
+    </div>
+    <div class="bg-white shadow rounded p-4">
+      <h3 class="font-bold mb-2">📋 Transaction Status Distribution</h3>
+      <canvas id="reportStatusChart" height="200"></canvas>
+    </div>
+  </div>
+
+  <!-- Weekly & Monthly Summary Tables -->
+  <div class="grid lg:grid-cols-2 gap-6 mb-6">
+    <div class="bg-white shadow rounded p-4">
+      <h3 class="font-bold mb-2">📅 Weekly Summary</h3>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead class="bg-gray-100"><tr><th class="p-2 text-left">Week</th><th class="p-2 text-right">Transactions</th><th class="p-2 text-right">Revenue</th><th class="p-2 text-right">Avg</th></tr></thead>
+          <tbody id="reportWeeklySummary"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="bg-white shadow rounded p-4">
+      <h3 class="font-bold mb-2">📆 Monthly Summary</h3>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead class="bg-gray-100"><tr><th class="p-2 text-left">Month</th><th class="p-2 text-right">Transactions</th><th class="p-2 text-right">Revenue</th><th class="p-2 text-right">Avg</th></tr></thead>
+          <tbody id="reportMonthlySummary"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- All Transactions Table with Filters -->
+  <div class="bg-white shadow rounded p-4">
+    <div class="flex justify-between items-center mb-4 flex-wrap gap-2">
+      <h3 class="font-bold text-lg">📋 All Transactions</h3>
+      <div class="flex gap-2">
+        <input type="text" id="reportSearchInput" placeholder="🔍 Search customer..." class="border rounded px-3 py-1 text-sm">
+        <select id="reportMethodFilter" class="border rounded px-3 py-1 text-sm">
+          <option value="">All Methods</option>
+          <option value="mpesa">M-Pesa</option>
+          <option value="card">Card</option>
+        </select>
+        <select id="reportStatusFilter" class="border rounded px-3 py-1 text-sm">
+          <option value="">All Status</option>
+          <option value="completed">Completed</option>
+          <option value="pending">Pending</option>
+          <option value="failed">Failed</option>
+        </select>
+        <button id="reportExportBtn" class="bg-green-600 text-white px-3 py-1 rounded text-sm">📎 Export CSV</button>
+      </div>
+    </div>
+    <div class="overflow-x-auto" style="max-height: 500px; overflow-y: auto;">
+      <table class="min-w-full text-sm border">
+        <thead class="bg-gray-100 sticky top-0">
+          <tr><th class="p-2 border">#</th><th class="p-2 border">Customer</th><th class="p-2 border">Amount</th><th class="p-2 border">Method</th><th class="p-2 border">Status</th><th class="p-2 border">Date</th><th class="p-2 border">Merchant</th><th class="p-2 border">Receipt</th></tr>
+        </thead>
+        <tbody id="reportTransactionsTable"></tbody>
+      </table>
+    </div>
+    <div id="reportPagination" class="flex justify-between items-center mt-3 text-sm">
+      <span id="reportShowingInfo"></span>
+      <div class="flex gap-2">
+        <button id="reportPrevPage" class="px-3 py-1 bg-gray-100 rounded disabled:opacity-50">← Previous</button>
+        <button id="reportNextPage" class="px-3 py-1 bg-gray-100 rounded disabled:opacity-50">Next →</button>
+      </div>
+    </div>
+  </div>
+</div>
 
     <!-- How It Works Section -->
     <div class="bg-white rounded-2xl shadow-lg p-6 mt-4">

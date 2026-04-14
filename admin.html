@@ -823,6 +823,417 @@
   window.onclick = (e) => {
     if (e.target === loginModal) loginModal.classList.add('hidden');
   };
+
+  // ========== DETAILED REPORTS FUNCTIONALITY ==========
+let reportStartDate = null;
+let reportEndDate = null;
+let reportCurrentPage = 1;
+let reportPageSize = 20;
+let reportFilteredData = [];
+let reportCharts = { daily: null, method: null, hourly: null, paymentPie: null, statusChart: null };
+
+function destroyReportCharts() {
+  Object.values(reportCharts).forEach(chart => { if (chart) chart.destroy(); });
+  reportCharts = { daily: null, method: null, hourly: null, paymentPie: null, statusChart: null };
+}
+
+function formatKES(amount) { return `KES ${amount.toLocaleString()}`; }
+
+function getPreviousPeriodData(currentData, allData, daysOffset) {
+  const end = new Date(reportStartDate || new Date());
+  const start = new Date(end);
+  start.setDate(start.getDate() - daysOffset);
+  return allData.filter(t => {
+    const txDate = t.timestamp?.toDate ? t.timestamp.toDate() : new Date(t.timestampDate);
+    return txDate >= start && txDate < (reportStartDate || new Date());
+  });
+}
+
+function updateDetailedReports() {
+  if (!allTransactions) return;
+  
+  let filtered = allTransactions.filter(t => t.status === 'completed');
+  let allFiltered = allTransactions; // for pending counts
+  
+  if (reportStartDate) {
+    filtered = filtered.filter(t => {
+      const txDate = t.timestamp?.toDate ? t.timestamp.toDate() : new Date(t.timestampDate);
+      return txDate >= reportStartDate;
+    });
+    allFiltered = allFiltered.filter(t => {
+      const txDate = t.timestamp?.toDate ? t.timestamp.toDate() : new Date(t.timestampDate);
+      return txDate >= reportStartDate;
+    });
+  }
+  if (reportEndDate) {
+    filtered = filtered.filter(t => {
+      const txDate = t.timestamp?.toDate ? t.timestamp.toDate() : new Date(t.timestampDate);
+      return txDate <= reportEndDate;
+    });
+    allFiltered = allFiltered.filter(t => {
+      const txDate = t.timestamp?.toDate ? t.timestamp.toDate() : new Date(t.timestampDate);
+      return txDate <= reportEndDate;
+    });
+  }
+  
+  reportFilteredData = filtered;
+  
+  // Calculate KPIs
+  const totalRevenue = filtered.reduce((sum, t) => sum + (t.amount || 0), 0);
+  const totalTx = filtered.length;
+  const avgTx = totalTx > 0 ? totalRevenue / totalTx : 0;
+  const pendingTotal = allFiltered.filter(t => t.status !== 'completed').length;
+  const uniqueCustomers = new Set(filtered.map(t => t.customer)).size;
+  const successRate = allFiltered.length > 0 ? (filtered.length / allFiltered.length * 100).toFixed(1) : 0;
+  
+  // Calculate trends (compare with previous period)
+  const periodDays = reportStartDate && reportEndDate ? 
+    Math.ceil((reportEndDate - reportStartDate) / (1000*3600*24)) : 30;
+  const prevData = getPreviousPeriodData(filtered, allTransactions, periodDays);
+  const prevRevenue = prevData.reduce((sum, t) => sum + (t.amount || 0), 0);
+  const revenueTrend = prevRevenue > 0 ? ((totalRevenue - prevRevenue) / prevRevenue * 100).toFixed(1) : 0;
+  const prevTx = prevData.length;
+  const txTrend = prevTx > 0 ? ((totalTx - prevTx) / prevTx * 100).toFixed(1) : 0;
+  
+  document.getElementById('reportTotalRevenue').innerHTML = formatKES(totalRevenue);
+  document.getElementById('reportTotalTransactions').innerText = totalTx;
+  document.getElementById('reportAvgTransaction').innerHTML = formatKES(avgTx);
+  document.getElementById('reportPendingTotal').innerText = pendingTotal;
+  document.getElementById('reportUniqueCustomers').innerText = uniqueCustomers;
+  document.getElementById('reportSuccessRate').innerHTML = `${successRate}%`;
+  
+  const revenueTrendEl = document.getElementById('reportRevenueTrend');
+  revenueTrendEl.innerHTML = `${revenueTrend >= 0 ? '↑' : '↓'} ${Math.abs(revenueTrend)}% vs last period`;
+  revenueTrendEl.className = `text-xs ${revenueTrend >= 0 ? 'text-green-600' : 'text-red-600'}`;
+  
+  const txTrendEl = document.getElementById('reportTxTrend');
+  txTrendEl.innerHTML = `${txTrend >= 0 ? '↑' : '↓'} ${Math.abs(txTrend)}% vs last period`;
+  txTrendEl.className = `text-xs ${txTrend >= 0 ? 'text-green-600' : 'text-red-600'}`;
+  
+  // Daily chart (last 30 days)
+  const dailyData = new Map();
+  const now = new Date();
+  for (let i = 29; i >= 0; i--) {
+    const d = new Date(); d.setDate(now.getDate() - i);
+    const key = d.toLocaleDateString('en-KE');
+    dailyData.set(key, 0);
+  }
+  filtered.forEach(t => {
+    const txDate = t.timestamp?.toDate ? t.timestamp.toDate() : new Date(t.timestampDate);
+    const key = txDate.toLocaleDateString('en-KE');
+    if (dailyData.has(key)) dailyData.set(key, dailyData.get(key) + (t.amount || 0));
+  });
+  
+  // Hourly chart
+  const hourlyData = Array(24).fill(0);
+  filtered.forEach(t => {
+    const txDate = t.timestamp?.toDate ? t.timestamp.toDate() : new Date(t.timestampDate);
+    const hour = txDate.getHours();
+    hourlyData[hour] += (t.amount || 0);
+  });
+  
+  // Top customers
+  const customerRevenue = new Map();
+  const customerCount = new Map();
+  filtered.forEach(t => {
+    if (t.customer) {
+      customerRevenue.set(t.customer, (customerRevenue.get(t.customer) || 0) + (t.amount || 0));
+      customerCount.set(t.customer, (customerCount.get(t.customer) || 0) + 1);
+    }
+  });
+  const topCustomers = Array.from(customerRevenue.entries())
+    .sort((a,b) => b[1] - a[1]).slice(0, 10);
+  
+  // Top merchants (from merchantCode or merchantId)
+  const merchantRevenue = new Map();
+  const merchantCount = new Map();
+  filtered.forEach(t => {
+    const merchant = t.merchantCode || t.merchantId || 'Unknown';
+    merchantRevenue.set(merchant, (merchantRevenue.get(merchant) || 0) + (t.amount || 0));
+    merchantCount.set(merchant, (merchantCount.get(merchant) || 0) + 1);
+  });
+  const topMerchants = Array.from(merchantRevenue.entries())
+    .sort((a,b) => b[1] - a[1]).slice(0, 10);
+  
+  // Payment method breakdown
+  const methodRevenue = new Map();
+  filtered.forEach(t => {
+    const method = t.method || 'mpesa';
+    methodRevenue.set(method, (methodRevenue.get(method) || 0) + (t.amount || 0));
+  });
+  
+  // Status distribution
+  const statusCount = new Map();
+  allFiltered.forEach(t => {
+    const status = t.status || 'pending';
+    statusCount.set(status, (statusCount.get(status) || 0) + 1);
+  });
+  
+  // Weekly summary
+  const weeklySummary = new Map();
+  filtered.forEach(t => {
+    const txDate = t.timestamp?.toDate ? t.timestamp.toDate() : new Date(t.timestampDate);
+    const weekKey = `${txDate.getFullYear()}-W${Math.ceil(txDate.getDate() / 7)}`;
+    if (!weeklySummary.has(weekKey)) weeklySummary.set(weekKey, { revenue: 0, count: 0 });
+    const week = weeklySummary.get(weekKey);
+    week.revenue += (t.amount || 0);
+    week.count++;
+  });
+  
+  // Monthly summary
+  const monthlySummary = new Map();
+  filtered.forEach(t => {
+    const txDate = t.timestamp?.toDate ? t.timestamp.toDate() : new Date(t.timestampDate);
+    const monthKey = `${txDate.getFullYear()}-${txDate.getMonth() + 1}`;
+    if (!monthlySummary.has(monthKey)) monthlySummary.set(monthKey, { revenue: 0, count: 0 });
+    const month = monthlySummary.get(monthKey);
+    month.revenue += (t.amount || 0);
+    month.count++;
+  });
+  
+  // Render tables
+  const topCustomersTbody = document.getElementById('reportTopCustomersList');
+  if (topCustomersTbody) {
+    topCustomersTbody.innerHTML = topCustomers.map(([name, revenue], i) => 
+      `<tr class="border-b"><td class="p-2">${i+1}</td><td class="p-2">${escapeHtml(name)}</td><td class="p-2 text-right">${formatKES(revenue)}</td><td class="p-2 text-right">${customerCount.get(name)}</td></tr>`
+    ).join('');
+  }
+  
+  const topMerchantsTbody = document.getElementById('reportTopMerchantsList');
+  if (topMerchantsTbody) {
+    topMerchantsTbody.innerHTML = topMerchants.map(([name, revenue], i) => 
+      `<tr class="border-b"><td class="p-2">${i+1}</td><td class="p-2">${escapeHtml(name)}</td><td class="p-2 text-right">${formatKES(revenue)}</td><td class="p-2 text-right">${merchantCount.get(name)}</td></tr>`
+    ).join('');
+  }
+  
+  const weeklyTbody = document.getElementById('reportWeeklySummary');
+  if (weeklyTbody) {
+    weeklyTbody.innerHTML = Array.from(weeklySummary.entries()).slice(0, 12).map(([week, data]) => 
+      `<tr class="border-b"><td class="p-2">${week}</td><td class="p-2 text-right">${data.count}</td><td class="p-2 text-right">${formatKES(data.revenue)}</td><td class="p-2 text-right">${formatKES(data.revenue / data.count)}</td></tr>`
+    ).join('');
+  }
+  
+  const monthlyTbody = document.getElementById('reportMonthlySummary');
+  if (monthlyTbody) {
+    monthlyTbody.innerHTML = Array.from(monthlySummary.entries()).slice(0, 12).map(([month, data]) => 
+      `<tr class="border-b"><td class="p-2">${month}</td><td class="p-2 text-right">${data.count}</td><td class="p-2 text-right">${formatKES(data.revenue)}</td><td class="p-2 text-right">${formatKES(data.revenue / data.count)}</td></tr>`
+    ).join('');
+  }
+  
+  // Render payment method legend
+  const legendDiv = document.getElementById('paymentMethodLegend');
+  if (legendDiv) {
+    legendDiv.innerHTML = Array.from(methodRevenue.entries()).map(([method, revenue]) => 
+      `<span class="inline-block mr-3"><span class="inline-block w-3 h-3 rounded-full bg-green-600 mr-1"></span> ${method.toUpperCase()}: ${formatKES(revenue)}</span>`
+    ).join('');
+  }
+  
+  // Render charts
+  destroyReportCharts();
+  
+  const dailyCtx = document.getElementById('reportDailyChart')?.getContext('2d');
+  if (dailyCtx) reportCharts.daily = new Chart(dailyCtx, {
+    type: 'line', data: { labels: Array.from(dailyData.keys()), datasets: [{ label: 'Revenue (KES)', data: Array.from(dailyData.values()), borderColor: '#16a34a', fill: true, backgroundColor: 'rgba(22,163,74,0.1)' }] }
+  });
+  
+  const hourlyCtx = document.getElementById('reportHourlyChart')?.getContext('2d');
+  if (hourlyCtx) reportCharts.hourly = new Chart(hourlyCtx, {
+    type: 'bar', data: { labels: Array.from({length: 24}, (_, i) => `${i}:00`), datasets: [{ label: 'Revenue (KES)', data: hourlyData, backgroundColor: '#3b82f6' }] }
+  });
+  
+  const methodCtx = document.getElementById('reportMethodChart')?.getContext('2d');
+  if (methodCtx) reportCharts.method = new Chart(methodCtx, {
+    type: 'doughnut', data: { labels: Array.from(methodRevenue.keys()), datasets: [{ data: Array.from(methodRevenue.values()), backgroundColor: ['#16a34a', '#3b82f6', '#f59e0b', '#8b5cf6'] }] }
+  });
+  
+  const paymentPieCtx = document.getElementById('reportPaymentMethodPie')?.getContext('2d');
+  if (paymentPieCtx) reportCharts.paymentPie = new Chart(paymentPieCtx, {
+    type: 'pie', data: { labels: Array.from(methodRevenue.keys()), datasets: [{ data: Array.from(methodRevenue.values()), backgroundColor: ['#16a34a', '#10b981', '#34d399', '#059669'] }] }
+  });
+  
+  const statusCtx = document.getElementById('reportStatusChart')?.getContext('2d');
+  if (statusCtx) reportCharts.statusChart = new Chart(statusCtx, {
+    type: 'bar', data: { labels: Array.from(statusCount.keys()), datasets: [{ label: 'Transaction Count', data: Array.from(statusCount.values()), backgroundColor: '#f59e0b' }] }
+  });
+  
+  // Render transaction table with pagination
+  renderReportTable();
+}
+
+function renderReportTable() {
+  const searchTerm = document.getElementById('reportSearchInput')?.value.toLowerCase() || '';
+  const methodFilter = document.getElementById('reportMethodFilter')?.value || '';
+  const statusFilter = document.getElementById('reportStatusFilter')?.value || '';
+  
+  let filtered = reportFilteredData;
+  
+  if (searchTerm) {
+    filtered = filtered.filter(t => t.customer?.toLowerCase().includes(searchTerm));
+  }
+  if (methodFilter) {
+    filtered = filtered.filter(t => (t.method || 'mpesa') === methodFilter);
+  }
+  if (statusFilter) {
+    filtered = filtered.filter(t => (t.status || 'pending') === statusFilter);
+  }
+  
+  const startIdx = (reportCurrentPage - 1) * reportPageSize;
+  const paginated = filtered.slice(startIdx, startIdx + reportPageSize);
+  const totalPages = Math.ceil(filtered.length / reportPageSize);
+  
+  const tbody = document.getElementById('reportTransactionsTable');
+  if (tbody) {
+    if (paginated.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="8" class="text-center p-4 text-gray-400">No transactions found</td></tr>';
+    } else {
+      tbody.innerHTML = paginated.map((tx, idx) => {
+        const txDate = tx.timestamp?.toDate ? tx.timestamp.toDate() : new Date(tx.timestampDate);
+        return `<tr class="border-b hover:bg-gray-50">
+          <td class="border p-2">${startIdx + idx + 1}</td>
+          <td class="border p-2">${escapeHtml(tx.customer || '-')}</td>
+          <td class="border p-2 font-semibold">${formatKES(tx.amount || 0)}</td>
+          <td class="border p-2 capitalize">${tx.method || 'mpesa'}</td>
+          <td class="border p-2"><span class="px-2 py-1 rounded text-xs ${tx.status === 'completed' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}">${tx.status || 'pending'}</span></td>
+          <td class="border p-2">${txDate.toLocaleString()}</td>
+          <td class="border p-2">${escapeHtml(tx.merchantCode || tx.merchantId || '-')}</td>
+          <td class="border p-2"><button class="report-receipt-btn text-blue-600 text-sm" data-tx='${JSON.stringify(tx)}'>📄 Receipt</button></td>
+        </tr>`;
+      }).join('');
+    }
+  }
+  
+  const showingInfo = document.getElementById('reportShowingInfo');
+  if (showingInfo) {
+    showingInfo.innerHTML = `Showing ${startIdx + 1} to ${Math.min(startIdx + reportPageSize, filtered.length)} of ${filtered.length} transactions`;
+  }
+  
+  const prevBtn = document.getElementById('reportPrevPage');
+  const nextBtn = document.getElementById('reportNextPage');
+  if (prevBtn) prevBtn.disabled = reportCurrentPage <= 1;
+  if (nextBtn) nextBtn.disabled = reportCurrentPage >= totalPages;
+  
+  // Attach receipt handlers
+  document.querySelectorAll('.report-receipt-btn').forEach(btn => {
+    btn.removeEventListener('click', () => {});
+    btn.addEventListener('click', () => {
+      const tx = JSON.parse(btn.dataset.tx);
+      const txDate = tx.timestamp?.toDate ? tx.timestamp.toDate() : new Date(tx.timestampDate);
+      const receiptHtml = `<html><head><title>WhaPay Receipt</title><style>body{font-family:sans-serif;padding:20px;}</style></head><body><div><h2>WhaPay Receipt</h2><p><strong>Receipt No:</strong> ${tx.id?.slice(0,8) || 'N/A'}</p><p><strong>Customer:</strong> ${escapeHtml(tx.customer || 'N/A')}</p><p><strong>Amount:</strong> ${formatKES(tx.amount || 0)}</p><p><strong>Method:</strong> ${tx.method || 'M-Pesa'}</p><p><strong>Status:</strong> ${tx.status || 'completed'}</p><p><strong>Date:</strong> ${txDate.toLocaleString()}</p><p><strong>Merchant Code:</strong> ${tx.merchantCode || '-'}</p><hr><p>Thank you for using WhaPay!</p><p>WhatsApp: 0140933042</p></div></body></html>`;
+      const blob = new Blob([receiptHtml], {type: 'text/html'});
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `receipt_${tx.id || Date.now()}.html`;
+      link.click();
+      URL.revokeObjectURL(link.href);
+    });
+  });
+}
+
+function exportDetailedCSV() {
+  let data = reportFilteredData;
+  const searchTerm = document.getElementById('reportSearchInput')?.value.toLowerCase() || '';
+  const methodFilter = document.getElementById('reportMethodFilter')?.value || '';
+  const statusFilter = document.getElementById('reportStatusFilter')?.value || '';
+  
+  if (searchTerm) data = data.filter(t => t.customer?.toLowerCase().includes(searchTerm));
+  if (methodFilter) data = data.filter(t => (t.method || 'mpesa') === methodFilter);
+  if (statusFilter) data = data.filter(t => (t.status || 'pending') === statusFilter);
+  
+  if (data.length === 0) { showToast('No transactions to export', true); return; }
+  
+  const headers = ['Customer', 'Amount (KES)', 'Method', 'Status', 'Date', 'Merchant Code'];
+  const rows = data.map(t => [
+    `"${t.customer || ''}"`, t.amount || 0, t.method || 'mpesa', t.status || '',
+    (t.timestamp?.toDate ? t.timestamp.toDate() : new Date(t.timestampDate)).toISOString(),
+    t.merchantCode || t.merchantId || ''
+  ]);
+  const csv = [headers, ...rows].map(row => row.join(',')).join('\n');
+  const blob = new Blob([csv], {type: 'text/csv'});
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = `detailed_transactions_${new Date().toISOString().slice(0,10)}.csv`;
+  link.click();
+  showToast('CSV exported');
+}
+
+// Event listeners
+document.getElementById('applyReportFilter')?.addEventListener('click', () => {
+  const start = document.getElementById('reportStartDate')?.value ? new Date(document.getElementById('reportStartDate').value) : null;
+  const end = document.getElementById('reportEndDate')?.value ? new Date(document.getElementById('reportEndDate').value + "T23:59:59") : null;
+  reportStartDate = start;
+  reportEndDate = end;
+  reportCurrentPage = 1;
+  updateDetailedReports();
+});
+
+document.getElementById('resetReportFilter')?.addEventListener('click', () => {
+  if (document.getElementById('reportStartDate')) document.getElementById('reportStartDate').value = '';
+  if (document.getElementById('reportEndDate')) document.getElementById('reportEndDate').value = '';
+  reportStartDate = null;
+  reportEndDate = null;
+  reportCurrentPage = 1;
+  updateDetailedReports();
+});
+
+document.getElementById('quickFilterToday')?.addEventListener('click', () => {
+  const today = new Date();
+  const start = new Date(today.setHours(0,0,0,0));
+  const end = new Date(today.setHours(23,59,59,999));
+  if (document.getElementById('reportStartDate')) document.getElementById('reportStartDate').value = start.toISOString().split('T')[0];
+  if (document.getElementById('reportEndDate')) document.getElementById('reportEndDate').value = end.toISOString().split('T')[0];
+  reportStartDate = start;
+  reportEndDate = end;
+  reportCurrentPage = 1;
+  updateDetailedReports();
+});
+
+document.getElementById('quickFilterWeek')?.addEventListener('click', () => {
+  const now = new Date();
+  const start = new Date(now);
+  start.setDate(now.getDate() - 7);
+  if (document.getElementById('reportStartDate')) document.getElementById('reportStartDate').value = start.toISOString().split('T')[0];
+  if (document.getElementById('reportEndDate')) document.getElementById('reportEndDate').value = now.toISOString().split('T')[0];
+  reportStartDate = start;
+  reportEndDate = now;
+  reportCurrentPage = 1;
+  updateDetailedReports();
+});
+
+document.getElementById('quickFilterMonth')?.addEventListener('click', () => {
+  const now = new Date();
+  const start = new Date(now.getFullYear(), now.getMonth(), 1);
+  if (document.getElementById('reportStartDate')) document.getElementById('reportStartDate').value = start.toISOString().split('T')[0];
+  if (document.getElementById('reportEndDate')) document.getElementById('reportEndDate').value = now.toISOString().split('T')[0];
+  reportStartDate = start;
+  reportEndDate = now;
+  reportCurrentPage = 1;
+  updateDetailedReports();
+});
+
+document.getElementById('quickFilterYear')?.addEventListener('click', () => {
+  const now = new Date();
+  const start = new Date(now.getFullYear(), 0, 1);
+  if (document.getElementById('reportStartDate')) document.getElementById('reportStartDate').value = start.toISOString().split('T')[0];
+  if (document.getElementById('reportEndDate')) document.getElementById('reportEndDate').value = now.toISOString().split('T')[0];
+  reportStartDate = start;
+  reportEndDate = now;
+  reportCurrentPage = 1;
+  updateDetailedReports();
+});
+
+document.getElementById('reportExportBtn')?.addEventListener('click', exportDetailedCSV);
+document.getElementById('reportSearchInput')?.addEventListener('input', () => { reportCurrentPage = 1; renderReportTable(); });
+document.getElementById('reportMethodFilter')?.addEventListener('change', () => { reportCurrentPage = 1; renderReportTable(); });
+document.getElementById('reportStatusFilter')?.addEventListener('change', () => { reportCurrentPage = 1; renderReportTable(); });
+document.getElementById('reportPrevPage')?.addEventListener('click', () => { if (reportCurrentPage > 1) { reportCurrentPage--; renderReportTable(); } });
+document.getElementById('reportNextPage')?.addEventListener('click', () => { reportCurrentPage++; renderReportTable(); });
+
+// Override updateCharts to also update reports
+const originalUpdateCharts = updateCharts;
+window.updateCharts = function() { originalUpdateCharts(); updateDetailedReports(); };
+updateCharts = function() { originalUpdateCharts(); updateDetailedReports(); };
+
+setTimeout(() => updateDetailedReports(), 1500);
 </script>
   <!-- Before </body> -->
 <script src="global.js"></script>

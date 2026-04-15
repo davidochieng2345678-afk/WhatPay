@@ -922,3 +922,259 @@ input:focus, select:focus, textarea:focus {
 </script>
 </body>
 </html>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>WhaPay – M-Pesa, Card or Register & Pay</title>
+  <meta name="description" content="Pay instantly with M-Pesa or credit/debit card. Register and pay in one step – get your Member Code and QR automatically. Offline registration: 0140933042.">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#16a34a">
+  <!-- Tailwind + external libs -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/minified/html5-qrcode.min.js"></script>
+  <script src="https://js.stripe.com/v3/"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* enhanced animations & professional polish */
+    .spinner { border: 2px solid #f3f3f3; border-top: 2px solid #16a34a; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; display: inline-block; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .toast { transition: opacity 0.3s; }
+    .step-card { transition: 0.2s; }
+    .step-card:hover { transform: translateY(-3px); }
+    @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.7; transform: scale(1.05); } }
+    .animate-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    .animate-fade-in-up { animation: fadeInUp 0.6s ease-out forwards; }
+    .card-hover { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.02); }
+    input:focus, select:focus { outline: none; ring: 2px solid #16a34a; border-color: #16a34a; }
+    .tab-active { border-bottom-width: 2px; border-color: #16a34a; color: #16a34a; font-weight: 600; }
+    .tab-inactive { border-bottom-width: 2px; border-color: transparent; color: #6b7280; font-weight: 500; }
+    .transition-tab { transition: all 0.2s ease; }
+  </style>
+</head>
+<body class="bg-gray-100">
+
+<header class="bg-green-600 text-white p-4 shadow-md sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
+    <h1 class="text-2xl font-bold mb-2 md:mb-0"><a href="index.html">WhaPay</a></h1>
+    <div class="flex items-center gap-3">
+      <span id="pendingSyncBadge" class="bg-yellow-500 text-white text-xs px-2 py-1 rounded-full hidden">Sync Pending</span>
+      <button id="syncOfflineBtn" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm hidden">Sync</button>
+      <span id="userEmailDisplay" class="text-sm hidden md:inline"></span>
+      <button id="logoutBtn" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm hidden">Logout</button>
+      <nav class="flex flex-wrap justify-center gap-2 md:gap-4 text-sm">
+        <a href="index.html" class="hover:underline">Home</a>
+        <a href="merchant.html" class="hover:underline">Merchant</a>
+        <a href="payment.html" class="hover:underline font-bold text-green-200">Payments</a>
+        <a href="pay-anyone.html" class="hover:underline">Pay Anyone</a>
+        <a href="process.html" class="hover:underline">How it works</a>
+        <a href="reports.html" class="hover:underline">Reports</a>
+        <a href="users.html" class="hover:underline">My Account</a>
+        <a href="features.html" class="hover:underline">Features</a>
+        <a href="contact.html" class="hover:underline">Contact</a>
+        <a href="admin.html" class="hover:underline">Admin</a>
+        <a href="privacy.html" class="hover:underline">Privacy</a>
+        <a href="terms.html" class="hover:underline">Terms</a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-5xl mx-auto px-4 py-8">
+  <!-- Hero / Global trust card (compact but elegant) -->
+  <div class="relative overflow-hidden bg-gradient-to-br from-emerald-900 via-emerald-700 to-emerald-500 rounded-2xl shadow-xl mb-8">
+    <div class="relative px-6 py-8 md:py-10 text-center">
+      <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-sm mb-4">
+        <span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400"></span><span class="relative rounded-full h-2 w-2 bg-green-500"></span></span>
+        <span class="font-medium text-white">Secure Payment Gateway</span>
+      </div>
+      <h1 class="text-2xl md:text-4xl font-bold text-white mb-2">Complete Your Payment</h1>
+      <p class="text-emerald-100 text-base md:text-lg mb-3">Pay with M-Pesa or credit/debit card. <strong class="text-white">New? Register & pay in one step</strong> – get Member Code instantly.</p>
+      <div class="inline-flex flex-wrap justify-center gap-2 bg-emerald-800/40 backdrop-blur-sm px-4 py-2 rounded-full text-sm">
+        <span class="text-white"><i class="fas fa-phone-alt mr-1"></i>Offline: <strong class="font-mono">0140933042</strong></span>
+        <span class="text-white"><i class="fab fa-whatsapp mr-1"></i>WhatsApp: <strong class="font-mono">0140933042</strong></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABBED INTERFACE: 2 MAIN FACES (Quick Pay / Register & Pay) + 3rd info card (global methods) -->
+  <div class="bg-white rounded-2xl shadow-xl overflow-hidden mb-8">
+    <!-- Tab headers -->
+    <div class="flex border-b border-gray-200 bg-gray-50/50">
+      <button id="tabQuickBtn" class="tab-head flex-1 py-4 px-4 text-center font-semibold transition-tab tab-active text-green-700 border-b-2 border-green-600">
+        <i class="fas fa-bolt mr-2"></i> Quick Pay (I have Member Code)
+      </button>
+      <button id="tabRegisterBtn" class="tab-head flex-1 py-4 px-4 text-center font-semibold transition-tab tab-inactive">
+        <i class="fas fa-user-plus mr-2"></i> Register & Pay (New user)
+      </button>
+    </div>
+
+    <!-- Tab 1: Quick Pay Panel -->
+    <div id="quickPayPanel" class="p-6 md:p-8">
+      <div class="max-w-xl mx-auto">
+        <h2 class="text-2xl font-bold text-gray-800 mb-5 text-center">Pay Using Member Code</h2>
+        <div class="space-y-4">
+          <div><label class="block text-sm font-medium text-gray-700 mb-1">Merchant Member Code *</label><input type="text" id="merchantCode" placeholder="e.g., DK12345" class="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-green-400"></div>
+          <div><label class="block text-sm font-medium text-gray-700 mb-1">Your Phone Number (for M-Pesa) *</label><input type="tel" id="userNumber" placeholder="+254712345678" class="w-full border border-gray-300 rounded-xl px-4 py-2.5"><p class="text-xs text-gray-500 mt-1">Confirmation via WhatsApp <strong class="font-mono">0140933042</strong></p></div>
+          <div><label class="block text-sm font-medium text-gray-700 mb-1">Amount (KES) *</label><input type="number" id="amount" placeholder="e.g., 500" class="w-full border border-gray-300 rounded-xl px-4 py-2.5"></div>
+          <div><label class="block text-sm font-medium text-gray-700 mb-1">Payment Method</label><select id="method" class="w-full border border-gray-300 rounded-xl px-4 py-2.5 bg-white"><option value="mpesa">M-Pesa (STK Push)</option><option value="card">Credit / Debit Card (Stripe)</option></select></div>
+          <button id="scanBtnQuick" class="w-full bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-medium py-2.5 rounded-xl flex items-center justify-center gap-2 transition"><i class="fas fa-qrcode"></i> Scan QR to Auto‑fill Amount</button>
+          <div id="qr-reader-quick" class="hidden w-full h-56 bg-gray-100 rounded-xl overflow-hidden mt-2"></div>
+          <button id="payBtn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl text-lg shadow-md transition transform active:scale-95">Pay Now</button>
+          <div id="message" class="text-center text-sm mt-2"></div>
+          <div class="text-xs text-gray-500 text-center mt-3"><i class="fas fa-info-circle"></i> No internet? Use Member Code in M-Pesa: Paybill <strong class="font-mono">0140933042</strong> → Account = Merchant Code</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 2: Register & Pay Panel -->
+    <div id="registerPayPanel" class="hidden p-6 md:p-8">
+      <div class="max-w-xl mx-auto">
+        <h2 class="text-2xl font-bold text-green-700 text-center mb-1">Register & Pay in One Step</h2>
+        <p class="text-center text-gray-600 text-sm mb-6">Enter your details, complete payment, and get your permanent Member Code + QR.</p>
+        <form id="oneStepForm" class="space-y-4">
+          <div><label class="block text-sm font-medium text-gray-700 mb-1">Full Name *</label><input type="text" id="osName" required class="w-full border border-gray-300 rounded-xl px-4 py-2.5"></div>
+          <div><label class="block text-sm font-medium text-gray-700 mb-1">Phone Number (WhatsApp) *</label><input type="tel" id="osPhone" required placeholder="+254712345678" class="w-full border border-gray-300 rounded-xl px-4 py-2.5"><p class="text-xs text-gray-500">We'll send Member Code & confirmation to <strong class="font-mono">0140933042</strong></p></div>
+          <div><label class="block text-sm font-medium text-gray-700 mb-1">Amount (KES) *</label><input type="number" id="osAmount" required placeholder="e.g., 500" class="w-full border border-gray-300 rounded-xl px-4 py-2.5"></div>
+          <div><label class="block text-sm font-medium text-gray-700 mb-1">Payment Method</label><select id="osMethod" class="w-full border border-gray-300 rounded-xl px-4 py-2.5"><option value="mpesa">M-Pesa (STK Push)</option><option value="card">Credit / Debit Card (Stripe)</option></select></div>
+          <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl"><input type="checkbox" id="osRegister" checked class="w-5 h-5 text-green-600 rounded focus:ring-green-500"><label for="osRegister" class="text-sm font-medium text-gray-700">Register me as a WhaPay user (get Member Code + QR)</label></div>
+          <p id="osGuestNote" class="text-xs text-gray-500 hidden">You will pay as a guest. No account created.</p>
+          <button id="scanBtnRegister" type="button" class="w-full bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-medium py-2.5 rounded-xl flex items-center justify-center gap-2"><i class="fas fa-qrcode"></i> Scan QR to Auto‑fill Amount</button>
+          <div id="qr-reader-register" class="hidden w-full h-56 bg-gray-100 rounded-xl overflow-hidden"></div>
+          <button type="submit" id="osSubmitBtn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl transition shadow-md">Pay Now</button>
+          <div id="osErrorMsg" class="text-red-500 text-sm text-center"></div>
+        </form>
+        <div id="osResult" class="hidden mt-6 text-center border-t pt-6">
+          <i class="fas fa-check-circle text-5xl text-green-600 mb-3"></i>
+          <h2 class="text-xl font-bold">Payment Successful!</h2>
+          <div id="osRegResult" class="hidden mt-3"><p class="text-gray-700">Your WhaPay Member Code:</p><p id="osMemberCode" class="text-3xl font-bold text-green-600 my-2"></p><div id="osQRCanvas" class="flex justify-center my-3"></div><p class="text-sm text-gray-600">Code & QR sent to your WhatsApp. Offline: M-Pesa Paybill <strong>0140933042</strong> Account = Your Code</p><a href="merchant.html" class="inline-block mt-4 bg-green-600 text-white px-5 py-2 rounded-full text-sm">Go to Dashboard</a></div>
+          <div id="osGuestResult" class="hidden"><p class="text-gray-600">Payment completed as guest. No account created.</p><a href="index.html" class="inline-block mt-4 bg-green-600 text-white px-5 py-2 rounded-full text-sm">Return Home</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3rd "FACE" : Global Payment Methods + How it works (consolidated info section) -->
+  <div class="grid md:grid-cols-2 gap-6 mb-8">
+    <!-- Global payment methods card -->
+    <div class="bg-white rounded-2xl shadow-lg p-5 card-hover">
+      <div class="flex items-center gap-3 mb-3"><i class="fab fa-cc-visa text-2xl text-blue-700"></i><i class="fab fa-cc-mastercard text-2xl text-orange-600"></i><i class="fas fa-mobile-alt text-2xl text-green-600"></i><span class="text-sm font-semibold text-gray-500 ml-auto">+50 methods</span></div>
+      <h3 class="font-bold text-gray-800 text-lg">Supported worldwide</h3>
+      <p class="text-sm text-gray-500 mt-1">Visa, Mastercard, M-Pesa, PayPal, Amex, and 50+ global payment options. One integration, seamless cross-border settlements.</p>
+      <div class="flex flex-wrap gap-2 mt-3 text-xs text-gray-600"><span class="bg-gray-100 px-2 py-1 rounded-full">1.5% + KES 20 card</span><span class="bg-gray-100 px-2 py-1 rounded-full">M-Pesa 0% extra</span><span class="bg-gray-100 px-2 py-1 rounded-full">AI fraud protection</span></div>
+    </div>
+    <!-- How it works concise -->
+    <div class="bg-white rounded-2xl shadow-lg p-5 card-hover">
+      <h3 class="font-bold text-gray-800 text-lg flex items-center gap-2"><i class="fas fa-rocket text-green-500"></i> How WhaPay Works – 3 Steps</h3>
+      <div class="grid grid-cols-3 gap-2 mt-3 text-center">
+        <div class="bg-gray-50 p-2 rounded-lg"><div class="text-lg font-bold text-green-600">1</div><i class="fas fa-qrcode text-green-600 text-xl"></i><p class="text-[11px] font-medium">Get Code & QR</p><p class="text-[10px] text-gray-500">Online/Offline via 0140933042</p></div>
+        <div class="bg-gray-50 p-2 rounded-lg"><div class="text-lg font-bold text-green-600">2</div><i class="fas fa-share-alt text-green-600 text-xl"></i><p class="text-[11px] font-medium">Share or Scan</p><p class="text-[10px] text-gray-500">Merchant QR or Member Code</p></div>
+        <div class="bg-gray-50 p-2 rounded-lg"><div class="text-lg font-bold text-green-600">3</div><i class="fas fa-check-double text-green-600 text-xl"></i><p class="text-[11px] font-medium">Pay & Confirm</p><p class="text-[10px] text-gray-500">M-Pesa/Card + instant receipt</p></div>
+      </div>
+      <div class="mt-3 text-center text-xs text-gray-400 border-t pt-2"><i class="fas fa-wifi-slash"></i> Offline payments via Paybill 0140933042</div>
+    </div>
+  </div>
+
+  <!-- Offline sync status row -->
+  <div id="syncStatus" class="text-xs text-center text-gray-500 hidden mb-3 bg-white p-2 rounded-lg shadow-sm"></div>
+
+  <!-- Trust badges footer -->
+  <div class="flex flex-wrap justify-center gap-6 mt-6 text-gray-400 text-xs border-t pt-6">
+    <span><i class="fas fa-shield-alt text-emerald-500 mr-1"></i> PCI DSS Level 1</span>
+    <span><i class="fas fa-lock text-emerald-500 mr-1"></i> 256-bit SSL</span>
+    <span><i class="fas fa-check-circle text-emerald-500 mr-1"></i> GDPR Compliant</span>
+    <span><i class="fas fa-globe text-emerald-500 mr-1"></i> Cross-border settlements</span>
+  </div>
+</main>
+
+<footer class="bg-gray-900 text-gray-300 pt-6 pb-4 text-center text-sm mt-6">
+  <p>© 2026 WhaPay – <strong>Offline registration: call <span class="font-mono">0140933042</span> (voicemail) or SMS</strong> | WhatsApp: <strong class="font-mono">0140933042</strong></p>
+  <div class="mt-2 space-x-4"><a href="privacy.html" class="hover:text-green-400">Privacy</a> | <a href="terms.html" class="hover:text-green-400">Terms</a> | <a href="contact.html" class="hover:text-green-400">Contact</a></div>
+</footer>
+
+<a href="https://wa.me/0140933042?text=Hello%20WhaPay%20Payment" target="_blank" class="fixed bottom-5 right-5 bg-green-500 text-white p-3 rounded-full shadow-lg hover:bg-green-600 z-50"><i class="fab fa-whatsapp text-2xl"></i></a>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, writeBatch, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDPAvq6BgpdfZAkfoEwdwmHrWedHgzjRSk",
+    authDomain: "whapay-c93ab.firebaseapp.com",
+    projectId: "whapay-c93ab",
+    storageBucket: "whapay-c93ab.firebasestorage.app",
+    messagingSenderId: "205456952458",
+    appId: "1:205456952458:web:6533921ca10a2988417173"
+  };
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
+
+  // helpers
+  function showToast(msg, isErr = false) {
+    let toast = document.getElementById('globalToast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'globalToast';
+      toast.className = 'fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-full text-sm z-50 transition-opacity opacity-0';
+      document.body.appendChild(toast);
+    }
+    toast.innerText = msg;
+    toast.style.backgroundColor = isErr ? '#dc2626' : '#16a34a';
+    toast.classList.remove('opacity-0');
+    toast.classList.add('opacity-100');
+    setTimeout(() => toast.classList.add('opacity-0'), 3000);
+  }
+  function validatePhone(phone) { const cleaned = phone.replace(/\D/g,''); return (cleaned.startsWith('0') && cleaned.length === 10) || (cleaned.startsWith('254') && cleaned.length === 12) || (cleaned.length === 9 && cleaned.startsWith('7')); }
+  function normalizePhone(phone) { let cleaned = phone.replace(/\D/g,''); if (cleaned.startsWith('0')) cleaned = '254' + cleaned.substring(1); if (!cleaned.startsWith('254')) cleaned = '254' + cleaned; return cleaned; }
+
+  const PENDING_PAYMENTS_KEY = 'whapay_pending_payments';
+  async function savePendingPayment(payment) { const pending = await localforage.getItem(PENDING_PAYMENTS_KEY) || []; pending.push({ ...payment, synced: false, createdAt: Date.now() }); await localforage.setItem(PENDING_PAYMENTS_KEY, pending); updatePendingBadge(); }
+  async function updatePendingBadge() { const pending = await localforage.getItem(PENDING_PAYMENTS_KEY) || []; const unsynced = pending.filter(p => !p.synced).length; const badge = document.getElementById('pendingSyncBadge'); const syncBtn = document.getElementById('syncOfflineBtn'); if (unsynced > 0) { badge.classList.remove('hidden'); syncBtn.classList.remove('hidden'); badge.innerText = unsynced; } else { badge.classList.add('hidden'); syncBtn.classList.add('hidden'); } }
+  async function syncOfflinePayments() { const syncStatusDiv = document.getElementById('syncStatus'); syncStatusDiv.classList.remove('hidden'); syncStatusDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Syncing offline payments...'; try { const pending = await localforage.getItem(PENDING_PAYMENTS_KEY) || []; const toSync = pending.filter(p => !p.synced); if (toSync.length === 0) { syncStatusDiv.innerHTML = '✅ No pending payments.'; setTimeout(() => syncStatusDiv.classList.add('hidden'), 2000); return; } const batch = writeBatch(db); for (const payment of toSync) { const txRef = doc(collection(db, "transactions")); batch.set(txRef, { customer: payment.customerName || 'Anonymous', customerPhone: payment.phone, amount: payment.amount, method: payment.method, status: 'completed', merchantCode: payment.merchantCode || null, offlineSync: true, timestamp: serverTimestamp() }); if (payment.shouldRegister && payment.memberCode) { const userRef = doc(collection(db, "users")); batch.set(userRef, { fullName: payment.customerName, phone: payment.phone, memberCode: payment.memberCode, status: 'active', createdAt: serverTimestamp() }); } } await batch.commit(); const remaining = pending.filter(p => !toSync.includes(p)); await localforage.setItem(PENDING_PAYMENTS_KEY, remaining); updatePendingBadge(); syncStatusDiv.innerHTML = `✅ Synced ${toSync.length} payment(s).`; setTimeout(() => syncStatusDiv.classList.add('hidden'), 3000); showToast(`Synced ${toSync.length} offline payments`); } catch (err) { console.error(err); syncStatusDiv.innerHTML = '❌ Sync failed. Will retry later.'; setTimeout(() => syncStatusDiv.classList.add('hidden'), 3000); showToast("Sync failed", true); } }
+  window.addEventListener('online', () => { if (navigator.onLine) { showToast("Online: syncing..."); syncOfflinePayments(); } });
+  document.getElementById('syncOfflineBtn')?.addEventListener('click', syncOfflinePayments);
+
+  // TABS logic
+  const quickPanel = document.getElementById('quickPayPanel');
+  const regPanel = document.getElementById('registerPayPanel');
+  const tabQuick = document.getElementById('tabQuickBtn');
+  const tabReg = document.getElementById('tabRegisterBtn');
+  function activateQuick() { quickPanel.classList.remove('hidden'); regPanel.classList.add('hidden'); tabQuick.classList.add('tab-active', 'border-green-600', 'text-green-700'); tabQuick.classList.remove('tab-inactive'); tabReg.classList.add('tab-inactive'); tabReg.classList.remove('tab-active', 'border-green-600', 'text-green-700'); }
+  function activateReg() { quickPanel.classList.add('hidden'); regPanel.classList.remove('hidden'); tabReg.classList.add('tab-active', 'border-green-600', 'text-green-700'); tabReg.classList.remove('tab-inactive'); tabQuick.classList.add('tab-inactive'); tabQuick.classList.remove('tab-active', 'border-green-600', 'text-green-700'); }
+  tabQuick.addEventListener('click', activateQuick);
+  tabReg.addEventListener('click', activateReg);
+  activateQuick();
+
+  // QR scanners
+  let activeScanner = null;
+  function initScanner(buttonId, readerId, targetInputId) { const btn = document.getElementById(buttonId); const readerDiv = document.getElementById(readerId); const targetInput = document.getElementById(targetInputId); if (!btn) return; btn.addEventListener('click', async () => { if (readerDiv.classList.contains('hidden')) { readerDiv.classList.remove('hidden'); try { const scanner = new Html5Qrcode(readerId); activeScanner = scanner; await scanner.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (decodedText) => { const match = decodedText.match(/\d+(?:\.\d+)?/); if (match) targetInput.value = match[0]; showToast(`Amount auto‑filled from QR`); scanner.stop(); readerDiv.classList.add('hidden'); activeScanner = null; }, (err) => console.log(err)); } catch(err) { showToast("Camera error", true); readerDiv.classList.add('hidden'); } } else { if (activeScanner) activeScanner.stop(); readerDiv.classList.add('hidden'); } }); }
+  initScanner('scanBtnQuick', 'qr-reader-quick', 'amount');
+  initScanner('scanBtnRegister', 'qr-reader-register', 'osAmount');
+
+  async function generateUniqueMemberCode(name) { const prefix = name.replace(/[^a-zA-Z0-9]/g, '').substring(0, 3).toUpperCase() || 'NEW'; let code, exists = true; while (exists) { const random = Math.floor(10000 + Math.random() * 90000); code = `${prefix}${random}`; const q = query(collection(db, "users"), where("memberCode", "==", code)); const snap = await getDocs(q); if (snap.empty) exists = false; } return code; }
+
+  // Quick Pay
+  const payBtn = document.getElementById('payBtn');
+  if(payBtn) payBtn.addEventListener('click', async () => { const merchantCode = document.getElementById('merchantCode').value.trim(); const rawPhone = document.getElementById('userNumber').value.trim(); const amount = parseFloat(document.getElementById('amount').value); const method = document.getElementById('method').value; if (!merchantCode) return showToast("Enter merchant code", true); if (!rawPhone || !validatePhone(rawPhone)) return showToast("Enter valid Kenyan phone", true); if (!amount || amount <= 0) return showToast("Enter valid amount", true); const phone = normalizePhone(rawPhone); payBtn.disabled = true; payBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...'; try { if (navigator.onLine) { await addDoc(collection(db, "transactions"), { customer: 'Guest', customerPhone: phone, amount, method, status: 'completed', merchantCode, timestamp: serverTimestamp() }); document.getElementById('message').innerHTML = '<div class="bg-green-50 p-2 rounded text-green-800">✅ Payment successful! Confirmation sent via WhatsApp.</div>'; window.open(`https://wa.me/${phone}?text=${encodeURIComponent(`✅ Payment of KES ${amount} to merchant ${merchantCode} completed via WhaPay.`)}`, '_blank'); } else { await savePendingPayment({ type:'quickpay', merchantCode, phone, amount, method, customerName:null }); document.getElementById('message').innerHTML = '<div class="bg-yellow-50 p-2 rounded text-yellow-800">📡 Offline mode. Payment saved.</div>'; showToast("Saved offline", false); } } catch(err) { showToast(err.message, true); } finally { payBtn.disabled = false; payBtn.innerHTML = 'Pay Now'; } });
+
+  // Register & Pay
+  const regForm = document.getElementById('oneStepForm'); const regCheck = document.getElementById('osRegister'); const guestNoteSpan = document.getElementById('osGuestNote'); if(regCheck) regCheck.addEventListener('change', () => { if(guestNoteSpan) guestNoteSpan.classList.toggle('hidden', regCheck.checked); });
+  if(regForm) regForm.addEventListener('submit', async (e) => { e.preventDefault(); const name = document.getElementById('osName').value.trim(); const rawPhone = document.getElementById('osPhone').value.trim(); const amount = parseInt(document.getElementById('osAmount').value); const method = document.getElementById('osMethod').value; const shouldRegister = document.getElementById('osRegister').checked; if(!name || !rawPhone || !amount) { document.getElementById('osErrorMsg').innerText = 'All fields required'; return; } if(!validatePhone(rawPhone)) { document.getElementById('osErrorMsg').innerText = 'Valid Kenyan phone required'; return; } const phone = normalizePhone(rawPhone); const submitBtnEl = document.getElementById('osSubmitBtn'); submitBtnEl.disabled = true; submitBtnEl.innerHTML = '<span class="spinner"></span> Processing...'; document.getElementById('osErrorMsg').innerText = ''; try { let memberCode = null; if (navigator.onLine) { await addDoc(collection(db, "transactions"), { customer: name, customerPhone: phone, amount, method, status: 'completed', timestamp: serverTimestamp() }); if (shouldRegister) { memberCode = await generateUniqueMemberCode(name); await addDoc(collection(db, "users"), { fullName: name, phone, memberCode, status: 'active', createdAt: serverTimestamp() }); } } else { if (shouldRegister) memberCode = await generateUniqueMemberCode(name); await savePendingPayment({ type:'registerpay', customerName: name, phone, amount, method, shouldRegister, memberCode }); showToast("Offline: registration saved. Will sync later.", false); } if (shouldRegister && memberCode) { const qrCanvasDiv = document.getElementById('osQRCanvas'); QRCode.toCanvas(qrCanvasDiv, `https://whapay.space/payment.html?merchant=${memberCode}`, { width: 150 }, (err) => { if(err) console.error(err); }); document.getElementById('osMemberCode').innerText = memberCode; document.getElementById('osRegResult').classList.remove('hidden'); document.getElementById('osGuestResult').classList.add('hidden'); window.open(`https://wa.me/${phone}?text=${encodeURIComponent(`🎉 Welcome! Member Code: ${memberCode} | Payment link: https://whapay.space/payment.html?merchant=${memberCode} | Offline Paybill 0140933042 Account: ${memberCode}`)}`, '_blank'); } else { document.getElementById('osRegResult').classList.add('hidden'); document.getElementById('osGuestResult').classList.remove('hidden'); window.open(`https://wa.me/${phone}?text=${encodeURIComponent(`✅ Payment of KES ${amount} completed successfully. Thank you!`)}`, '_blank'); } regForm.classList.add('hidden'); document.getElementById('osResult').classList.remove('hidden'); } catch(err) { document.getElementById('osErrorMsg').innerText = err.message; showToast(err.message, true); submitBtnEl.disabled = false; submitBtnEl.innerHTML = 'Pay Now'; } });
+
+  // Auth UI
+  onAuthStateChanged(auth, (user) => { const userSpan = document.getElementById('userEmailDisplay'); const logout = document.getElementById('logoutBtn'); if(user) { if(userSpan) { userSpan.innerText = user.email; userSpan.classList.remove('hidden'); } if(logout) logout.classList.remove('hidden'); } else { if(userSpan) userSpan.classList.add('hidden'); if(logout) logout.classList.add('hidden'); } });
+  document.getElementById('logoutBtn')?.addEventListener('click', async () => { await signOut(auth); showToast('Logged out'); });
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(e => console.log("SW err", e));
+  updatePendingBadge();
+</script>
+</body>
+</html>

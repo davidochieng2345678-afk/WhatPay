@@ -384,28 +384,42 @@
     </div>
   </div>
 </div>
-  <!-- Three ways to pay -->
-  <div class="mb-12">
-    <h2 class="text-2xl font-bold text-center mb-6">💸 Three Ways to Pay – <span class="text-green-700">Choose What Works for You</span></h2>
-    <div class="grid md:grid-cols-3 gap-5">
-      <div class="payment-card bg-white rounded-xl shadow p-4 text-center" onclick="showPaymentGuide('link')">
-        <i class="fab fa-whatsapp text-3xl text-green-600 mb-2"></i>
-        <h3 class="font-bold">1. WhatsApp Link</h3>
-        <p class="text-sm text-gray-600">Click the link sent by the merchant → choose M-Pesa or card → pay instantly. Confirmation via WhatsApp.</p>
-      </div>
-      <div class="payment-card bg-white rounded-xl shadow p-4 text-center" onclick="showPaymentGuide('qr')">
-        <i class="fas fa-qrcode text-3xl text-green-600 mb-2"></i>
-        <h3 class="font-bold">2. Scan QR Code</h3>
-        <p class="text-sm text-gray-600">Point your phone at the merchant's QR code → payment page opens → enter amount → pay. Zero typing.</p>
-      </div>
-      <div class="payment-card bg-white rounded-xl shadow p-4 text-center" onclick="showPaymentGuide('code')">
-        <i class="fas fa-key text-3xl text-green-600 mb-2"></i>
-        <h3 class="font-bold">3. Member Code (Offline)</h3>
-        <p class="text-sm text-gray-600">Use the merchant's code (e.g., DK12345) with M-Pesa Paybill – no internet required. Both receive SMS.</p>
-      </div>
-    </div>
-    <div id="payment-guide" class="mt-6 bg-green-50 p-4 rounded-xl border border-green-200 hidden"></div>
+  <!-- Payment Methods - Three Ways -->
+<div class="mb-20">
+  <div class="text-center mb-12">
+    <span class="text-emerald-600 font-semibold text-sm uppercase tracking-wider">Simple & Secure</span>
+    <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mt-2">Three Ways to <span class="text-emerald-600">Pay</span></h2>
+    <div class="w-24 h-1 bg-gradient-to-r from-emerald-500 to-emerald-300 mx-auto mt-4 rounded-full"></div>
   </div>
+  
+  <div class="grid md:grid-cols-3 gap-6">
+    <div class="payment-card bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition-all duration-300 group cursor-pointer border border-gray-100" onclick="showPaymentGuide('link')">
+      <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-emerald-200 transition-colors duration-300">
+        <i class="fab fa-whatsapp text-2xl text-emerald-600"></i>
+      </div>
+      <h3 class="font-bold text-lg text-gray-800 mb-2">WhatsApp Link</h3>
+      <p class="text-sm text-gray-500">Click the link → choose M-Pesa or card → pay instantly</p>
+    </div>
+    
+    <div class="payment-card bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition-all duration-300 group cursor-pointer border border-gray-100" onclick="showPaymentGuide('qr')">
+      <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-emerald-200 transition-colors duration-300">
+        <i class="fas fa-qrcode text-2xl text-emerald-600"></i>
+      </div>
+      <h3 class="font-bold text-lg text-gray-800 mb-2">Scan QR Code</h3>
+      <p class="text-sm text-gray-500">Scan with phone → enter amount → pay instantly</p>
+    </div>
+    
+    <div class="payment-card bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition-all duration-300 group cursor-pointer border border-gray-100" onclick="showPaymentGuide('code')">
+      <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-emerald-200 transition-colors duration-300">
+        <i class="fas fa-key text-2xl text-emerald-600"></i>
+      </div>
+      <h3 class="font-bold text-lg text-gray-800 mb-2">Member Code (Offline)</h3>
+      <p class="text-sm text-gray-500">Use code with M-Pesa Paybill – no internet needed</p>
+    </div>
+  </div>
+  
+  <div id="payment-guide" class="mt-6 bg-gradient-to-r from-emerald-50 to-green-50 p-5 rounded-xl border border-emerald-200 hidden"></div>
+</div>
 
   <!-- ==================== PAY ANYONE SECTION ==================== -->
 <div class="bg-white rounded-2xl shadow-xl p-6 mb-10" id="payAnyoneSection">

@@ -355,6 +355,41 @@
       </div>
     </div>
   </section>
+  <div class="grid md:grid-cols-2 gap-6">
+  <!-- QR Code Card - Professional -->
+  <div class="group bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-500 p-6 border border-gray-100 hover:-translate-y-1">
+    <div class="flex items-center gap-3 mb-4">
+      <div class="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center group-hover:bg-emerald-200 transition-colors">
+        <i class="fas fa-qrcode text-xl text-emerald-600"></i>
+      </div>
+      <h2 class="text-xl font-bold text-gray-800">Your QR Code</h2>
+    </div>
+    <div id="merchantQR" class="flex justify-center my-4 p-4 bg-gray-50 rounded-xl"></div>
+    <button id="downloadQRBtn" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium px-4 py-2 rounded-lg transition flex items-center justify-center gap-2">
+      <i class="fas fa-download"></i> Download QR
+    </button>
+    <p class="text-xs text-gray-500 mt-3 text-center">Customers can scan this QR to pay you instantly via WhatsApp</p>
+  </div>
+  
+  <!-- Payment Link Generator - Professional -->
+  <div class="group bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-500 p-6 border border-gray-100 hover:-translate-y-1">
+    <div class="flex items-center gap-3 mb-4">
+      <div class="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center group-hover:bg-emerald-200 transition-colors">
+        <i class="fas fa-link text-xl text-emerald-600"></i>
+      </div>
+      <h2 class="text-xl font-bold text-gray-800">Payment Link Generator</h2>
+    </div>
+    <div class="space-y-3">
+      <input type="text" id="mcode" placeholder="Your Member Code" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
+      <input type="number" id="mamount" placeholder="Amount (KES)" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
+      <button id="genLinkBtn" class="w-full bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-700 hover:to-emerald-600 text-white font-semibold py-2.5 rounded-lg transition-all duration-300 flex items-center justify-center gap-2">
+        <i class="fas fa-magic"></i> Create Link
+      </button>
+    </div>
+    <div id="linkOut" class="mt-4 text-sm bg-gray-50 p-3 rounded-lg hidden"></div>
+    <p class="text-xs text-gray-500 mt-3 text-center">Share this link on WhatsApp, SMS, or display at your shop</p>
+  </div>
+</div>
 </main>
 
 <footer class="bg-gray-900 text-gray-300 text-center p-4 text-sm mt-8">

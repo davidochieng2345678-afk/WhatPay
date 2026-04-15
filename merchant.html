@@ -26,6 +26,30 @@
   .step-card:hover { transform: translateY(-3px); }
   .feature-card { transition: 0.2s; }
   .feature-card:hover { transform: scale(1.02); background-color: #f0fdf4; }
+  /* Professional Animations */
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.05); }
+}
+
+@keyframes ping {
+  75%, 100% { transform: scale(2); opacity: 0; }
+}
+
+.animate-ping {
+  animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.delay-500 { animation-delay: 0.5s; }
+.delay-1000 { animation-delay: 1s; }
+
+.group:hover .group-hover\:scale-110 {
+  transform: scale(1.1);
+}
+
+.group:hover .group-hover\:bg-emerald-200 {
+  background-color: #bbf7d0;
+}
 </style>
 </head>
 <body class="bg-gray-100">

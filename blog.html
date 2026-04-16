@@ -422,6 +422,24 @@ if (newsletterForm) {
     }
   });
 }
+
+  // Search functionality
+const searchInput = document.getElementById('searchInput');
+if (searchInput) {
+  searchInput.addEventListener('input', () => {
+    const searchTerm = searchInput.value.toLowerCase();
+    const blogCards = document.querySelectorAll('.blog-card');
+    blogCards.forEach(card => {
+      const title = card.querySelector('h2 a')?.innerText.toLowerCase() || '';
+      const excerpt = card.querySelector('p')?.innerText.toLowerCase() || '';
+      if (title.includes(searchTerm) || excerpt.includes(searchTerm)) {
+        card.style.display = 'block';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  });
+}
 </script>
   <!-- Before </body> -->
 <script src="global.js"></script>

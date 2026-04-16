@@ -396,6 +396,32 @@
 
   // Hide pending badge (no forms on this page)
   document.getElementById('pendingSyncBadge')?.classList.add('hidden');
+  // Newsletter Subscription
+const newsletterForm = document.getElementById('newsletterForm');
+if (newsletterForm) {
+  newsletterForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('newsletterEmail').value.trim();
+    if (!email) {
+      document.getElementById('newsletterMessage').innerHTML = '<span class="text-red-500">Please enter your email</span>';
+      return;
+    }
+    const submitBtn = newsletterForm.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = 'Subscribing...';
+    try {
+      await addDoc(collection(db, "newsletter_subscribers"), { email, subscribedAt: serverTimestamp() });
+      document.getElementById('newsletterMessage').innerHTML = '<span class="text-green-600">✅ Subscribed successfully!</span>';
+      document.getElementById('newsletterEmail').value = '';
+      showToast('Thanks for subscribing!');
+    } catch (err) {
+      document.getElementById('newsletterMessage').innerHTML = '<span class="text-red-500">Error. Please try again.</span>';
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = 'Subscribe';
+    }
+  });
+}
 </script>
   <!-- Before </body> -->
 <script src="global.js"></script>

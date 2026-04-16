@@ -565,6 +565,12 @@
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js').catch(e => console.log("SW failed", e));
   }
+  // Download wireframes PDF
+document.getElementById('downloadWireframesBtn')?.addEventListener('click', () => {
+  showToast('PDF download started');
+  // In production, link to actual PDF file
+  // window.open('/wireframes/whapay-wireframes.pdf', '_blank');
+});
 </script>
   <!-- Before </body> -->
 <script src="global.js"></script>

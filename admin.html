@@ -834,6 +834,7 @@
       navLogoutBtn.classList.remove('hidden');
       loginRequired.classList.add('hidden');
       adminContent.classList.remove('hidden');
+      document.getElementById('adminHero').classList.remove('hidden');
       loadData();
     } else {
       if (user && user.email !== ADMIN_EMAIL) {

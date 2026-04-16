@@ -19,6 +19,36 @@
   .spinner{border:2px solid #f3f3f3;border-top:2px solid #16a34a;border-radius:50%;width:24px;height:24px;animation:spin 1s linear infinite;display:inline-block;}@keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
   .step-card { transition: 0.2s; }
   .step-card:hover { transform: translateY(-3px); }
+  /* Professional Animations */
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.05); }
+}
+
+@keyframes ping {
+  75%, 100% { transform: scale(2); opacity: 0; }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-ping {
+  animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.delay-500 { animation-delay: 0.5s; }
+.delay-1000 { animation-delay: 1s; }
+
+/* Card hover effects */
+.profile-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.profile-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
 </style>
 </head>
 <body class="bg-gray-100">

@@ -50,6 +50,22 @@
 .animate-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
 .animate-ping { animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite; }
 .delay-1000 { animation-delay: 1s; }
+  /* Force header to touch edges */
+header.bg-green-600 {
+  width: 100vw !important;
+  margin-left: calc(-50vw + 50%) !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* Force the inner container to full width */
+header .max-w-7xl {
+  max-width: 100% !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+}
 </style>
 </head>
 <body class="bg-gray-100 font-sans">

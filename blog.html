@@ -375,47 +375,69 @@
       </article>
     `;
   }
+async function showAllPosts() {
+  const q = query(collection(db, "blogs"), orderBy("createdAt", "desc"));
+  const snapshot = await getDocs(q);
+  const posts = [];
+  snapshot.forEach(doc => posts.push({ id: doc.id, ...doc.data() }));
 
-  async function showAllPosts() {
-    const q = query(collection(db, "blogs"), orderBy("createdAt", "desc"));
-    const snapshot = await getDocs(q);
-    const posts = [];
-    snapshot.forEach(doc => posts.push({ id: doc.id, ...doc.data() }));
-
-    if (posts.length === 0) {
-      container.innerHTML = `
-        <div class="text-center py-12">
-          <i class="fas fa-pen-fancy text-5xl text-gray-400 mb-4"></i>
-          <h2 class="text-2xl font-bold text-gray-700">No blog posts yet</h2>
-          <p class="text-gray-500 mt-2">Check back soon for updates and guides.</p>
-          <div class="mt-4 p-3 bg-green-50 rounded-lg text-sm">
-            <i class="fas fa-phone-volume text-green-600 mr-2"></i> 
-            Need help? Register offline by calling <strong class="font-mono">0140933042</strong> or send SMS to the same number.
-          </div>
-        </div>
-      `;
-      return;
-    }
-
+  if (posts.length === 0) {
     container.innerHTML = `
-      <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6">All Articles</h1>
-      <div class="grid gap-6">
+      <div class="text-center py-12">
+        <i class="fas fa-pen-fancy text-5xl text-gray-400 mb-4"></i>
+        <h2 class="text-2xl font-bold text-gray-700">No blog posts yet</h2>
+        <p class="text-gray-500 mt-2">Check back soon for updates and guides.</p>
+        <div class="mt-4 p-3 bg-green-50 rounded-lg text-sm">
+          <i class="fas fa-phone-volume text-green-600 mr-2"></i> 
+          Need help? Register offline by calling <strong class="font-mono">0140933042</strong> or send SMS to the same number.
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = `
+    <div class="mb-8">
+      <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-800">All Articles</h1>
+        <div class="text-sm text-gray-500">${posts.length} articles</div>
+      </div>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         ${posts.map(post => `
-          <div class="border rounded-xl p-5 hover:shadow-lg transition">
-            <h2 class="text-xl font-bold text-gray-800 mb-2">
-              <a href="blog.html?slug=${encodeURIComponent(post.slug)}" class="hover:text-green-600">${escapeHtml(post.title)}</a>
-            </h2>
-            <div class="text-sm text-gray-500 mb-2">
-              ${formatDate(post.createdAt)} ${post.author ? `• ${escapeHtml(post.author)}` : ''} ${post.category ? `• ${escapeHtml(post.category)}` : ''}
+          <div class="blog-card group bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 hover:-translate-y-1">
+            ${post.image ? `<img src="${escapeHtml(post.image)}" alt="${escapeHtml(post.title)}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500">` : `
+              <div class="w-full h-48 bg-gradient-to-br from-emerald-100 to-emerald-50 flex items-center justify-center">
+                <i class="fas fa-newspaper text-5xl text-emerald-300"></i>
+              </div>
+            `}
+            <div class="p-5">
+              <div class="flex items-center gap-2 text-xs text-gray-400 mb-2">
+                <i class="far fa-calendar-alt"></i>
+                <span>${formatDate(post.createdAt)}</span>
+                ${post.category ? `<span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full text-xs">${escapeHtml(post.category)}</span>` : ''}
+              </div>
+              <h2 class="text-xl font-bold text-gray-800 mb-2 line-clamp-2">
+                <a href="blog.html?slug=${encodeURIComponent(post.slug)}" class="hover:text-emerald-600 transition">${escapeHtml(post.title)}</a>
+              </h2>
+              <p class="text-gray-500 text-sm mb-4 line-clamp-3">${escapeHtml(post.excerpt || (post.content ? post.content.substring(0, 120).replace(/<[^>]*>/g, '') + '...' : 'Click to read more.'))}</p>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2 text-xs text-gray-400">
+                  <i class="far fa-user"></i>
+                  <span>${post.author ? escapeHtml(post.author) : 'WhaPay Team'}</span>
+                </div>
+                <a href="blog.html?slug=${encodeURIComponent(post.slug)}" class="text-emerald-600 font-semibold text-sm hover:underline flex items-center gap-1">
+                  Read more <i class="fas fa-arrow-right text-xs group-hover:translate-x-1 transition"></i>
+                </a>
+              </div>
             </div>
-            <p class="text-gray-600 mb-3">${escapeHtml(post.excerpt || (post.content ? post.content.substring(0, 150).replace(/<[^>]*>/g, '') + '...' : 'Click to read more.'))}</p>
-            <a href="blog.html?slug=${encodeURIComponent(post.slug)}" class="text-green-600 font-semibold hover:underline">Read more →</a>
           </div>
         `).join('')}
       </div>
-    `;
-  }
-
+    </div>
+  `;
+}
+  
+  
   function escapeHtml(str) {
     if (!str) return '';
     return str.replace(/[&<>]/g, function(m) {

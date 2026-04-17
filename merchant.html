@@ -8,8 +8,6 @@
   <!-- In <head> -->
 <link rel="stylesheet" href="global.css">
 
-<!-- Before </body> -->
-<script src="global.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>WhaPay Merchant – Secure Payments Anywhere</title>
 <meta name="description" content="Register your business or log in to your WhaPay merchant dashboard. Accept payments via WhatsApp, QR, or offline Member Code. Works offline.">
@@ -855,5 +853,7 @@
     navigator.serviceWorker.register('/sw.js').then(reg => console.log('SW registered', reg)).catch(err => console.log('SW failed', err));
   }
 </script>
+    <!-- Before </body> -->
+<script src="global.js"></script>
 </body>
 </html>

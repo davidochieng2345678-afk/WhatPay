@@ -87,25 +87,8 @@
 
 
 <main class="max-w-7xl mx-auto px-4 py-6">
-  <!-- Registration Section -->
-  <div id="registrationSection" class="max-w-xl mx-auto">
-    <div class="bg-white rounded-2xl shadow-xl p-6">
-      <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Register Your Business</h2>
-      <form id="merchantForm" class="space-y-4">
-        <div><label class="block text-sm font-medium text-gray-700 mb-1">Business Name *</label><input type="text" id="businessName" placeholder="e.g., Green Grocers" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-green-500"></div>
-        <div><label class="block text-sm font-medium text-gray-700 mb-1">Phone Number (WhatsApp) *</label><input type="tel" id="regPhone" placeholder="+254712345678" required class="w-full border border-gray-300 rounded-lg px-4 py-2"><p class="text-xs text-gray-500 mt-1">We'll send your merchant code and QR via WhatsApp to <strong class="font-mono">0140933042</strong>.</p></div>
-        <button type="submit" id="registerBtn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition shadow"><i class="fas fa-qrcode mr-2"></i> Generate My Merchant Code</button>
-      </form>
-      <div id="status" class="text-center text-sm mt-4 text-gray-600"></div>
-      <div id="result" class="hidden mt-6 text-center border-t pt-6">
-        <h3 class="text-lg font-bold text-gray-800 mb-2">✅ Registration Successful!</h3>
-        <p class="text-gray-600 mb-2">Your Merchant Code:</p>
-        <p id="codeDisplay" class="text-3xl font-bold text-green-600 mb-4"></p>
-        <div class="flex justify-center mb-4"><canvas id="qrCanvas" class="border rounded-lg p-2 bg-white"></canvas></div>
-        <div class="flex flex-wrap gap-3 justify-center"><button id="copyBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg"><i class="fas fa-copy mr-1"></i> Copy Code</button><button id="shareBtn" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg"><i class="fab fa-whatsapp mr-1"></i> Share on WhatsApp</button></div>
-      </div>
-    </div>
-  </div>
+
+
   <!-- Dashboard Hero - Rich Professional -->
 <div class="relative overflow-hidden bg-gradient-to-br from-emerald-900 via-emerald-700 to-emerald-500 rounded-2xl shadow-2xl mb-8">
   <!-- Animated background particles -->
@@ -210,6 +193,25 @@
         <p class="text-xs text-gray-500 mt-2">Share this link on WhatsApp, SMS, or display at your shop.</p>
       </div>
     </div>
+    
+      <div id="registrationSection" class="max-w-xl mx-auto">
+    <div class="bg-white rounded-2xl shadow-xl p-6">
+      <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Register Your Business</h2>
+      <form id="merchantForm" class="space-y-4">
+        <div><label class="block text-sm font-medium text-gray-700 mb-1">Business Name *</label><input type="text" id="businessName" placeholder="e.g., Green Grocers" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-green-500"></div>
+        <div><label class="block text-sm font-medium text-gray-700 mb-1">Phone Number (WhatsApp) *</label><input type="tel" id="regPhone" placeholder="+254712345678" required class="w-full border border-gray-300 rounded-lg px-4 py-2"><p class="text-xs text-gray-500 mt-1">We'll send your merchant code and QR via WhatsApp to <strong class="font-mono">0140933042</strong>.</p></div>
+        <button type="submit" id="registerBtn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition shadow"><i class="fas fa-qrcode mr-2"></i> Generate My Merchant Code</button>
+      </form>
+      <div id="status" class="text-center text-sm mt-4 text-gray-600"></div>
+      <div id="result" class="hidden mt-6 text-center border-t pt-6">
+        <h3 class="text-lg font-bold text-gray-800 mb-2">✅ Registration Successful!</h3>
+        <p class="text-gray-600 mb-2">Your Merchant Code:</p>
+        <p id="codeDisplay" class="text-3xl font-bold text-green-600 mb-4"></p>
+        <div class="flex justify-center mb-4"><canvas id="qrCanvas" class="border rounded-lg p-2 bg-white"></canvas></div>
+        <div class="flex flex-wrap gap-3 justify-center"><button id="copyBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg"><i class="fas fa-copy mr-1"></i> Copy Code</button><button id="shareBtn" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg"><i class="fab fa-whatsapp mr-1"></i> Share on WhatsApp</button></div>
+      </div>
+    </div>
+  </div>
   
 <!-- Global Features Section - New -->
 <div class="mb-8">

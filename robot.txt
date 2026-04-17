@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Sitemap: https://whapay.space/sitemap.xml
+Disallow: /dashboard/
+Disallow: /admin/

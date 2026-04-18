@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  
+  <!-- NO CACHE - Forces latest version always -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  
+  <title>WhaPay - Business Loss Calculator | Are you losing money daily?</title>
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at top, #0b1f1f, #000000);
+      font-family: system-ui, -apple-system, sans-serif;
+      color: #e6fffb;
+      padding: 16px;
+    }
+    
+    /* Animated background glow */
+    body::before {
+      content: "";
+      position: fixed;
+      width: 400px;
+      height: 400px;
+      background: #00ffcc;
+      filter: blur(180px);
+      opacity: 0.12;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: floatGlow 8s infinite alternate;
+      pointer-events: none;
+    }
+    
+    @keyframes floatGlow {
+      from { transform: translate(-50%, 0); }
+      to { transform: translate(-45%, 30px); }
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 0.6; }
+      50% { transform: scale(1.05); opacity: 1; }
+      100% { transform: scale(1); opacity: 0.6; }
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.98); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+    
+    /* Main card */
+    .card {
+      width: 100%;
+      max-width: 500px;
+      padding: 28px;
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 10px 40px rgba(0, 255, 204, 0.08);
+      animation: fadeIn 0.6s ease;
+      position: relative;
+      z-index: 1;
+    }
+    
+    h1 {
+      font-size: 1.6em;
+      margin-bottom: 8px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #00ffcc, #00cc99);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    
+    .badge {
+      display: inline-block;
+      background: rgba(0, 255, 204, 0.15);
+      border: 1px solid rgba(0, 255, 204, 0.3);
+      border-radius: 50px;
+      padding: 4px 12px;
+      font-size: 11px;
+      margin-bottom: 16px;
+    }
+    
+    p {
+      color: rgba(230, 255, 251, 0.7);
+      font-size: 0.95em;
+      line-height: 1.5;
+    }
+    
+    /* Question cards */
+    .question {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 16px;
+      padding: 16px;
+      margin: 16px 0;
+      border-left: 3px solid #00ffcc;
+    }
+    
+    .question label {
+      display: block;
+      margin-bottom: 12px;
+      font-weight: 500;
+    }
+    
+    input {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(0, 0, 0, 0.4);
+      color: #e6fffb;
+      font-size: 16px;
+      margin-top: 8px;
+    }
+    
+    input:focus {
+      outline: none;
+      border-color: #00ffcc;
+    }
+    
+    button {
+      width: 100%;
+      padding: 16px;
+      margin-top: 12px;
+      border-radius: 14px;
+      border: none;
+      background: linear-gradient(135deg, #00ffcc, #00cc99);
+      color: #000;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.25s ease;
+    }
+    
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(0, 255, 204, 0.3);
+    }
+    
+    .result-box {
+      background: rgba(0, 255, 204, 0.08);
+      border-radius: 20px;
+      padding: 24px;
+      text-align: center;
+      margin: 20px 0;
+      border: 1px solid rgba(0, 255, 204, 0.2);
+    }
+    
+    .loss-number {
+      font-size: 2.2em;
+      font-weight: 800;
+      color: #00ffcc;
+      margin: 10px 0;
+    }
+    
+    .shock-text {
+      animation: shake 0.5s ease;
+      font-size: 1.2em;
+      margin-top: 10px;
+    }
+    
+    /* Share buttons grid */
+    .share-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 20px;
+    }
+    
+    .share-btn {
+      padding: 14px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: 0.2s;
+      text-align: center;
+      border: none;
+    }
+    
+    .wa { background: #25D366; color: white; }
+    .fb { background: #1877F2; color: white; }
+    .tt { background: #000000; color: white; border: 1px solid #333; }
+    .copy { background: rgba(255,255,255,0.1); color: #00ffcc; border: 1px solid #00ffcc; }
+    
+    .share-btn:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.05);
+    }
+    
+    .hidden {
+      display: none;
+    }
+    
+    .step-indicator {
+      font-size: 11px;
+      color: rgba(0, 255, 204, 0.6);
+      margin-bottom: 16px;
+    }
+    
+    hr {
+      border-color: rgba(255,255,255,0.05);
+      margin: 20px 0;
+    }
+    
+    .footer-note {
+      font-size: 11px;
+      text-align: center;
+      margin-top: 20px;
+      opacity: 0.5;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card" id="app">
+  <div class="step-indicator" id="stepIndicator">⚡ STEP 1 OF 3</div>
+  <span class="badge">💰 FREE BUSINESS INSIGHT TOOL</span>
+  <h1>💸 Are you losing money daily?</h1>
+  <p>Most businesses in Kenya lose customers because they only accept cash. Let's calculate YOUR risk.</p>
+  
+  <!-- STEP 1: Customers per day -->
+  <div id="step1">
+    <div class="question">
+      <label>📊 How many customers do you get per day?</label>
+      <input type="number" id="customers" placeholder="e.g., 50" value="50">
+    </div>
+    <button id="nextBtn">Continue →</button>
+  </div>
+  
+  <!-- STEP 2: Result (hidden initially) -->
+  <div id="step2" class="hidden">
+    <div class="result-box">
+      <div style="font-size: 14px; opacity: 0.8;">📉 ESTIMATED DAILY LOSS</div>
+      <div class="loss-number" id="lossDisplay">KSh 0</div>
+      <div id="counter">💸 Calculating your loss...</div>
+    </div>
+    
+    <div id="shockMessage" class="shock-text hidden" style="text-align: center; color: #ffcc00;">
+      😳 THIS IS SHOCKING!
+    </div>
+    
+    <hr>
+    
+    <div style="text-align: center; font-weight: 600; margin-bottom: 12px;">
+      📲 SHOCKED? Share your result
+    </div>
+    
+    <div class="share-grid">
+      <button class="share-btn wa" id="shareWA">📲 WhatsApp</button>
+      <button class="share-btn fb" id="shareFB">📘 Facebook</button>
+      <button class="share-btn tt" id="shareTT">🎵 TikTok</button>
+      <button class="share-btn copy" id="copyLink">🔗 Copy Link</button>
+    </div>
+    
+    <hr>
+    
+    <button id="restartBtn">⟳ Test another business</button>
+  </div>
+  
+  <div class="footer-note">
+    🔒 No signup required • 100% free • Takes 30 seconds
+  </div>
+</div>
+
+<script>
+  // AGGRESSIVE MARKETING SCRIPT
+  
+  let calculatedLoss = 0;
+  let animationInterval = null;
+  
+  // Calculate loss function
+  function calculateLoss(customersPerDay) {
+    // Formula: customers × average spend (KSh 150) × 40% who walk away due to cash-only
+    const avgSpend = 150;
+    const walkAwayRate = 0.4;
+    let loss = customersPerDay * avgSpend * walkAwayRate;
+    return Math.floor(loss);
+  }
+  
+  // Animate the counter
+  function animateLoss(finalLoss) {
+    let current = 0;
+    if (animationInterval) clearInterval(animationInterval);
+    
+    animationInterval = setInterval(() => {
+      current += Math.ceil(finalLoss / 30);
+      if (current >= finalLoss) {
+        current = finalLoss;
+        clearInterval(animationInterval);
+        // Show shock message after animation
+        document.getElementById('shockMessage').classList.remove('hidden');
+      }
+      document.getElementById('lossDisplay').innerHTML = `KSh ${current.toLocaleString()}`;
+      document.getElementById('counter').innerHTML = `💸 You may be losing KSh ${current.toLocaleString()} per day`;
+    }, 30);
+  }
+  
+  // SHARE FUNCTIONS
+  function shareWhatsApp() {
+    let text = `😳 SHOCKING! I just tested my business and found I may be losing KSh ${calculatedLoss.toLocaleString()} EVERY DAY due to cash-only payments.\n\nTest your business FREE here: https://whapay.space/test.html\n\nDon't lose money without knowing.`;
+    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`);
+  }
+  
+  function shareFacebook() {
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=https://whapay.space/test.html`);
+  }
+  
+  function shareTikTok() {
+    let text = `😳 POV: You own a business in Kenya\n\nI just found out I lose KSh ${calculatedLoss.toLocaleString()} EVERY DAY because I only accept cash.\n\nTest your business FREE: whapay.space/test.html\n\n#kenyanbusiness #whapay #businesstips`;
+    navigator.clipboard.writeText(text);
+    alert("✅ Text copied! Paste into TikTok caption or comment.");
+  }
+  
+  function copyLink() {
+    navigator.clipboard.writeText("https://whapay.space/test.html");
+    alert("✅ Link copied! Share with any business owner.");
+  }
+  
+  // Next button logic
+  document.getElementById('nextBtn').addEventListener('click', function() {
+    let customers = parseInt(document.getElementById('customers').value);
+    
+    if (isNaN(customers) || customers < 1) {
+      alert("Please enter a valid number of customers");
+      return;
+    }
+    
+    // Calculate loss
+    calculatedLoss = calculateLoss(customers);
+    
+    // Hide step 1, show step 2
+    document.getElementById('step1').classList.add('hidden');
+    document.getElementById('step2').classList.remove('hidden');
+    document.getElementById('stepIndicator').innerHTML = '😳 STEP 2 OF 3 - YOUR RESULT';
+    
+    // Animate the loss number
+    animateLoss(calculatedLoss);
+  });
+  
+  // Restart button
+  document.getElementById('restartBtn').addEventListener('click', function() {
+    if (animationInterval) clearInterval(animationInterval);
+    document.getElementById('step1').classList.remove('hidden');
+    document.getElementById('step2').classList.add('hidden');
+    document.getElementById('stepIndicator').innerHTML = '⚡ STEP 1 OF 3';
+    document.getElementById('shockMessage').classList.add('hidden');
+    document.getElementById('customers').value = '50';
+  });
+  
+  // Share button listeners
+  document.getElementById('shareWA').addEventListener('click', shareWhatsApp);
+  document.getElementById('shareFB').addEventListener('click', shareFacebook);
+  document.getElementById('shareTT').addEventListener('click', shareTikTok);
+  document.getElementById('copyLink').addEventListener('click', copyLink);
+</script>
+
+<!-- Optional: Add Firebase tracking if you have it configured -->
+<script>
+  // If you have Firebase configured, uncomment and add your config
+  /*
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getFirestore, doc, setDoc, increment } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  
+  const firebaseConfig = {
+    apiKey: "YOUR_KEY",
+    authDomain: "YOUR_PROJECT.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT.appspot.com",
+    messagingSenderId: "YOUR_ID",
+    appId: "YOUR_APP_ID"
+  };
+  
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  
+  // Track visit
+  setDoc(doc(db, "analytics", "visits"), { count: increment(1) }, { merge: true });
+  */
+</script>
+
+</body>
+</html>

@@ -285,32 +285,24 @@
   </div>
 </div>
 
-<script>
-  // AGGRESSIVE MARKETING SCRIPT
-  
+  <script>
   let calculatedLoss = 0;
   let animationInterval = null;
   
-  // Calculate loss function
   function calculateLoss(customersPerDay) {
-    // Formula: customers × average spend (KSh 150) × 40% who walk away due to cash-only
     const avgSpend = 150;
     const walkAwayRate = 0.4;
-    let loss = customersPerDay * avgSpend * walkAwayRate;
-    return Math.floor(loss);
+    return Math.floor(customersPerDay * avgSpend * walkAwayRate);
   }
   
-  // Animate the counter
   function animateLoss(finalLoss) {
     let current = 0;
     if (animationInterval) clearInterval(animationInterval);
-    
     animationInterval = setInterval(() => {
       current += Math.ceil(finalLoss / 30);
       if (current >= finalLoss) {
         current = finalLoss;
         clearInterval(animationInterval);
-        // Show shock message after animation
         document.getElementById('shockMessage').classList.remove('hidden');
       }
       document.getElementById('lossDisplay').innerHTML = `KSh ${current.toLocaleString()}`;
@@ -318,18 +310,20 @@
     }, 30);
   }
   
-  // SHARE FUNCTIONS
+  // FIXED SHARE FUNCTIONS
   function shareWhatsApp() {
-    let text = `😳 SHOCKING! I just tested my business and found I may be losing KSh ${calculatedLoss.toLocaleString()} EVERY DAY due to cash-only payments.\n\nTest your business FREE here: https://whapay.space/test.html\n\nDon't lose money without knowing.`;
-    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`);
+    let lossText = document.getElementById('lossDisplay').innerHTML;
+    let message = `😳 SHOCKING! I just tested my business and found I may be losing ${lossText} EVERY DAY due to cash-only payments.%0A%0ATest your business FREE here: https://whapay.space/test.html%0A%0ADon't lose money without knowing.`;
+    window.open(`https://api.whatsapp.com/send?text=${message}`);
   }
   
   function shareFacebook() {
-    window.open(`https://www.facebook.com/sharer/sharer.php?u=https://whapay.space/test.html`);
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent('https://whapay.space/test.html')}`);
   }
   
   function shareTikTok() {
-    let text = `😳 POV: You own a business in Kenya\n\nI just found out I lose KSh ${calculatedLoss.toLocaleString()} EVERY DAY because I only accept cash.\n\nTest your business FREE: whapay.space/test.html\n\n#kenyanbusiness #whapay #businesstips`;
+    let lossText = document.getElementById('lossDisplay').innerHTML;
+    let text = `😳 POV: You own a business in Kenya\n\nI just found out I lose ${lossText} EVERY DAY because I only accept cash.\n\nTest your business FREE: whapay.space/test.html\n\n#kenyanbusiness #whapay`;
     navigator.clipboard.writeText(text);
     alert("✅ Text copied! Paste into TikTok caption or comment.");
   }
@@ -342,25 +336,17 @@
   // Next button logic
   document.getElementById('nextBtn').addEventListener('click', function() {
     let customers = parseInt(document.getElementById('customers').value);
-    
     if (isNaN(customers) || customers < 1) {
       alert("Please enter a valid number of customers");
       return;
     }
-    
-    // Calculate loss
     calculatedLoss = calculateLoss(customers);
-    
-    // Hide step 1, show step 2
     document.getElementById('step1').classList.add('hidden');
     document.getElementById('step2').classList.remove('hidden');
     document.getElementById('stepIndicator').innerHTML = '😳 STEP 2 OF 3 - YOUR RESULT';
-    
-    // Animate the loss number
     animateLoss(calculatedLoss);
   });
   
-  // Restart button
   document.getElementById('restartBtn').addEventListener('click', function() {
     if (animationInterval) clearInterval(animationInterval);
     document.getElementById('step1').classList.remove('hidden');
@@ -370,35 +356,10 @@
     document.getElementById('customers').value = '50';
   });
   
-  // Share button listeners
   document.getElementById('shareWA').addEventListener('click', shareWhatsApp);
   document.getElementById('shareFB').addEventListener('click', shareFacebook);
   document.getElementById('shareTT').addEventListener('click', shareTikTok);
   document.getElementById('copyLink').addEventListener('click', copyLink);
-</script>
-
-<!-- Optional: Add Firebase tracking if you have it configured -->
-<script>
-  // If you have Firebase configured, uncomment and add your config
-  /*
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getFirestore, doc, setDoc, increment } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-  
-  const firebaseConfig = {
-    apiKey: "YOUR_KEY",
-    authDomain: "YOUR_PROJECT.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT.appspot.com",
-    messagingSenderId: "YOUR_ID",
-    appId: "YOUR_APP_ID"
-  };
-  
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  
-  // Track visit
-  setDoc(doc(db, "analytics", "visits"), { count: increment(1) }, { merge: true });
-  */
 </script>
 
 </body>

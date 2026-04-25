@@ -1094,6 +1094,26 @@
   <a href="/press-kit.zip" class="inline-block bg-green-600 hover:bg-green-700 px-5 py-2 rounded-full text-sm font-semibold">📥 Download Press Kit</a>
   <p class="text-xs text-gray-400 mt-2">For media inquiries: <a href="mailto:pr@whapay.space" class="text-green-300">pr@whapay.space</a></p>
 </div>
+
+<!-- Sticky Mobile CTA -->
+<div class="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-white border-t border-gray-200 shadow-2xl px-4 py-3 flex gap-3">
+  <a href="https://wa.me/0140933042?text=REGISTER" 
+     class="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl text-center text-sm flex items-center justify-center gap-2 transition">
+    <i class="fab fa-whatsapp"></i> Register Free
+  </a>
+  <a href="tel:0140933042" 
+     class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-3 rounded-xl text-center text-sm flex items-center justify-center gap-2 transition">
+    <i class="fas fa-phone-alt text-green-600"></i> Call Us
+  </a>
+</div>
+<!-- Add bottom padding so content isn't hidden behind sticky bar on mobile -->
+<style>
+  @media (max-width: 768px) {
+    body { padding-bottom: 80px; }
+  }
+</style>
+
+  
 <!-- Exit Intent Popup -->
 <div id="exitPopup" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 backdrop-blur-sm px-4">
   <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 text-center relative">

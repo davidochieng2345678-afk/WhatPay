@@ -619,7 +619,245 @@ function convertCurrency() {
   </div>
 </div>
   
+<!-- WhaPay In Your Country -->
+<div class="bg-white rounded-2xl shadow-lg p-6 mb-12">
+  <div class="text-center mb-6">
+    <h2 class="text-2xl font-bold text-gray-800">🌍 WhaPay Works In Your Country</h2>
+    <p class="text-gray-500 text-sm mt-1">Select your country to see how WhaPay works for you</p>
+  </div>
+  <div class="max-w-xl mx-auto mb-6">
+    <select id="countrySelect" onchange="showCountryInfo()"
+      class="w-full border-2 border-gray-200 focus:border-green-500 rounded-xl px-4 py-3 outline-none transition text-gray-700">
+      <option value="">-- Select Your Country --</option>
+      <option value="KE">🇰🇪 Kenya</option>
+      <option value="UG">🇺🇬 Uganda</option>
+      <option value="TZ">🇹🇿 Tanzania</option>
+      <option value="NG">🇳🇬 Nigeria</option>
+      <option value="GH">🇬🇭 Ghana</option>
+      <option value="GB">🇬🇧 United Kingdom</option>
+      <option value="US">🇺🇸 United States</option>
+      <option value="AE">🇦🇪 UAE</option>
+      <option value="CA">🇨🇦 Canada</option>
+      <option value="AU">🇦🇺 Australia</option>
+      <option value="IN">🇮🇳 India</option>
+      <option value="SA">🇸🇦 Saudi Arabia</option>
+      <option value="CN">🇨🇳 China</option>
+      <option value="ZA">🇿🇦 South Africa</option>
+      <option value="OTHER">🌐 Other Country</option>
+    </select>
+  </div>
 
+  <div id="countryInfo" class="hidden max-w-2xl mx-auto">
+    <div id="countryContent" class="bg-green-50 border border-green-200 rounded-2xl p-6"></div>
+  </div>
+</div>
+
+<script>
+const countryData = {
+  KE: {
+    flag: '🇰🇪', name: 'Kenya',
+    content: `
+      <h3 class="font-bold text-green-800 text-lg mb-3">🇰🇪 WhaPay in Kenya</h3>
+      <ul class="space-y-2 text-sm text-green-700">
+        <li>✅ Accept <strong>M-Pesa STK Push</strong> and <strong>M-Pesa Paybill</strong> payments</li>
+        <li>✅ <strong>Offline registration</strong> via SMS or voice call to <strong>0140933042</strong></li>
+        <li>✅ Accept Visa, Mastercard, Airtel Money, T-Kash, Equitel</li>
+        <li>✅ <strong>Member Code</strong> payments — customers pay without internet</li>
+        <li>✅ WhatsApp payment links and QR codes</li>
+        <li>✅ Fee: <strong>1.5% + KES 20</strong> per card. M-Pesa: Safaricom rates only</li>
+      </ul>
+      <a href="https://wa.me/0140933042?text=REGISTER" class="inline-flex items-center gap-2 bg-green-600 text-white font-bold px-6 py-3 rounded-full mt-4 hover:bg-green-700 transition">
+        <i class="fab fa-whatsapp"></i> Register as Kenyan Merchant
+      </a>`
+  },
+  UG: {
+    flag: '🇺🇬', name: 'Uganda',
+    content: `
+      <h3 class="font-bold text-green-800 text-lg mb-3">🇺🇬 WhaPay in Uganda</h3>
+      <ul class="space-y-2 text-sm text-green-700">
+        <li>✅ Accept <strong>MTN MoMo</strong> and <strong>Airtel Money Uganda</strong></li>
+        <li>✅ Accept Visa and Mastercard from Ugandan customers</li>
+        <li>✅ International payments from diaspora in UK, USA, UAE</li>
+        <li>✅ WhatsApp payment links — share with customers instantly</li>
+        <li>✅ Register via WhatsApp to <strong>+254140933042</strong></li>
+      </ul>
+      <a href="https://wa.me/254140933042?text=REGISTER%20Uganda" class="inline-flex items-center gap-2 bg-green-600 text-white font-bold px-6 py-3 rounded-full mt-4 hover:bg-green-700 transition">
+        <i class="fab fa-whatsapp"></i> Register as Ugandan Merchant
+      </a>`
+  },
+  TZ: {
+    flag: '🇹🇿', name: 'Tanzania',
+    content: `
+      <h3 class="font-bold text-green-800 text-lg mb-3">🇹🇿 WhaPay in Tanzania</h3>
+      <ul class="space-y-2 text-sm text-green-700">
+        <li>✅ Accept <strong>M-Pesa Tanzania</strong>, <strong>Tigo Pesa</strong> and <strong>Halopesa</strong></li>
+        <li>✅ Accept Visa and Mastercard</li>
+        <li>✅ Receive payments in <strong>TZS</strong> or KES</li>
+        <li>✅ Cross-border payments from Kenya to Tanzania</li>
+        <li>✅ Register via WhatsApp to <strong>+254140933042</strong></li>
+      </ul>
+      <a href="https://wa.me/254140933042?text=REGISTER%20Tanzania" class="inline-flex items-center gap-2 bg-green-600 text-white font-bold px-6 py-3 rounded-full mt-4 hover:bg-green-700 transition">
+        <i class="fab fa-whatsapp"></i> Register as Tanzanian Merchant
+      </a>`
+  },
+  NG: {
+    flag: '🇳🇬', name: 'Nigeria',
+    content: `
+      <h3 class="font-bold text-green-800 text-lg mb-3">🇳🇬 WhaPay in Nigeria</h3>
+      <ul class="space-y-2 text-sm text-green-700">
+        <li>✅ Accept Visa and Mastercard from Nigerian customers</li>
+        <li>✅ Receive payments in <strong>NGN</strong> converted to KES</li>
+        <li>✅ Cross-border payments — Nigeria to Kenya merchants</li>
+        <li>✅ WhatsApp payment links for Nigerian e-commerce</li>
+        <li>✅ Register via WhatsApp to <strong>+254140933042</strong></li>
+      </ul>
+      <a href="https://wa.me/254140933042?text=REGISTER%20Nigeria" class="inline-flex items-center gap-2 bg-green-600 text-white font-bold px-6 py-3 rounded-full mt-4 hover:bg-green-700 transition">
+        <i class="fab fa-whatsapp"></i> Register as Nigerian Merchant
+      </a>`
+  },
+  GB: {
+    flag: '🇬🇧', name: 'United Kingdom',
+    content: `
+      <h3 class="font-bold text-green-800 text-lg mb-3">🇬🇧 WhaPay from the UK</h3>
+      <ul class="space-y-2 text-sm text-green-700">
+        <li>✅ Send money to Kenya from the UK in <strong>GBP</strong></li>
+        <li>✅ Pay Kenyan merchants using your UK Visa or Mastercard</li>
+        <li>✅ Support Kenyan family businesses — pay directly via WhatsApp link</li>
+        <li>✅ No need for Western Union or bank transfer — faster and cheaper</li>
+        <li>✅ Google Pay and Apple Pay accepted from UK customers</li>
+      </ul>
+      <a href="https://wa.me/254140933042?text=UK%20Payment%20Query" class="inline-flex items-center gap-2 bg-green-600 text-white font-bold px-6 py-3 rounded-full mt-4 hover:bg-green-700 transition">
+        <i class="fab fa-whatsapp"></i> Pay a Kenyan Merchant from UK
+      </a>`
+  },
+  US: {
+    flag: '🇺🇸', name: 'United States',
+    content: `
+      <h3 class="font-bold text-green-800 text-lg mb-3">🇺🇸 WhaPay from the USA</h3>
+      <ul class="space-y-2 text-sm text-green-700">
+        <li>✅ Send money to Kenya from the USA in <strong>USD</strong></li>
+        <li>✅ Pay Kenyan merchants using your US Visa, Mastercard or Amex</li>
+        <li>✅ Google Pay and Apple Pay accepted from US customers</li>
+        <li>✅ Faster than wire transfers — merchant receives KES instantly</li>
+        <li>✅ Support Kenyan diaspora businesses directly via WhatsApp</li>
+      </ul>
+      <a href="https://wa.me/254140933042?text=USA%20Payment%20Query" class="inline-flex items-center gap-2 bg-green-600 text-white font-bold px-6 py-3 rounded-full mt-4 hover:bg-green-700 transition">
+        <i class="fab fa-whatsapp"></i> Pay a Kenyan Merchant from USA
+      </a>`
+  },
+  AE: {
+    flag: '🇦🇪', name: 'UAE',
+    content: `
+      <h3 class="font-bold text-green-800 text-lg mb-3">🇦🇪 WhaPay from the UAE</h3>
+      <ul class="space-y-2 text-sm text-green-700">
+        <li>✅ Send money to Kenya from UAE in <strong>AED</strong></li>
+        <li>✅ Pay Kenyan merchants using UAE Visa or Mastercard</li>
+        <li>✅ Large Kenyan community in Dubai — pay businesses back home</li>
+        <li>✅ Faster and cheaper than bank transfers or exchange houses</li>
+        <li>✅ Google Pay and Apple Pay accepted from UAE customers</li>
+      </ul>
+      <a href="https://wa.me/254140933042?text=UAE%20Payment%20Query" class="inline-flex items-center gap-2 bg-green-600 text-white font-bold px-6 py-3 rounded-full mt-4 hover:bg-green-700 transition">
+        <i class="fab fa-whatsapp"></i> Pay a Kenyan Merchant from UAE
+      </a>`
+  },
+  CA: {
+    flag: '🇨🇦', name: 'Canada',
+    content: `
+      <h3 class="font-bold text-green-800 text-lg mb-3">🇨🇦 WhaPay from Canada</h3>
+      <ul class="space-y-2 text-sm text-green-700">
+        <li>✅ Send money to Kenya from Canada in <strong>CAD</strong></li>
+        <li>✅ Pay Kenyan merchants using Canadian Visa or Mastercard</li>
+        <li>✅ Google Pay and Apple Pay accepted from Canadian customers</li>
+        <li>✅ No need for expensive wire transfers</li>
+      </ul>
+      <a href="https://wa.me/254140933042?text=Canada%20Payment%20Query" class="inline-flex items-center gap-2 bg-green-600 text-white font-bold px-6 py-3 rounded-full mt-4 hover:bg-green-700 transition">
+        <i class="fab fa-whatsapp"></i> Pay a Kenyan Merchant from Canada
+      </a>`
+  },
+  AU: {
+    flag: '🇦🇺', name: 'Australia',
+    content: `
+      <h3 class="font-bold text-green-800 text-lg mb-3">🇦🇺 WhaPay from Australia</h3>
+      <ul class="space-y-2 text-sm text-green-700">
+        <li>✅ Send money to Kenya from Australia in <strong>AUD</strong></li>
+        <li>✅ Pay Kenyan merchants using Australian Visa or Mastercard</li>
+        <li>✅ Google Pay and Apple Pay accepted</li>
+        <li>✅ Merchant receives KES instantly</li>
+      </ul>
+      <a href="https://wa.me/254140933042?text=Australia%20Payment%20Query" class="inline-flex items-center gap-2 bg-green-600 text-white font-bold px-6 py-3 rounded-full mt-4 hover:bg-green-700 transition">
+        <i class="fab fa-whatsapp"></i> Pay a Kenyan Merchant from Australia
+      </a>`
+  },
+  IN: {
+    flag: '🇮🇳', name: 'India',
+    content: `
+      <h3 class="font-bold text-green-800 text-lg mb-3">🇮🇳 WhaPay from India</h3>
+      <ul class="space-y-2 text-sm text-green-700">
+        <li>✅ Send money to Kenya from India in <strong>INR</strong></li>
+        <li>✅ Pay Kenyan merchants using Indian Visa or Mastercard</li>
+        <li>✅ Large Indian business community in Kenya — pay suppliers directly</li>
+        <li>✅ UPI cross-border payments supported</li>
+        <li>✅ Google Pay accepted from Indian customers</li>
+      </ul>
+      <a href="https://wa.me/254140933042?text=India%20Payment%20Query" class="inline-flex items-center gap-2 bg-green-600 text-white font-bold px-6 py-3 rounded-full mt-4 hover:bg-green-700 transition">
+        <i class="fab fa-whatsapp"></i> Pay a Kenyan Merchant from India
+      </a>`
+  },
+  SA: {
+    flag: '🇸🇦', name: 'Saudi Arabia',
+    content: `
+      <h3 class="font-bold text-green-800 text-lg mb-3">🇸🇦 WhaPay from Saudi Arabia</h3>
+      <ul class="space-y-2 text-sm text-green-700">
+        <li>✅ Send money to Kenya from Saudi Arabia in <strong>SAR</strong></li>
+        <li>✅ Pay Kenyan merchants using Saudi Visa or Mastercard</li>
+        <li>✅ Large Kenyan workforce in KSA — support family businesses at home</li>
+        <li>✅ Faster than bank transfers or exchange offices</li>
+      </ul>
+      <a href="https://wa.me/254140933042?text=Saudi%20Payment%20Query" class="inline-flex items-center gap-2 bg-green-600 text-white font-bold px-6 py-3 rounded-full mt-4 hover:bg-green-700 transition">
+        <i class="fab fa-whatsapp"></i> Pay a Kenyan Merchant from Saudi Arabia
+      </a>`
+  },
+  ZA: {
+    flag: '🇿🇦', name: 'South Africa',
+    content: `
+      <h3 class="font-bold text-green-800 text-lg mb-3">🇿🇦 WhaPay from South Africa</h3>
+      <ul class="space-y-2 text-sm text-green-700">
+        <li>✅ Send money to Kenya from South Africa in <strong>ZAR</strong></li>
+        <li>✅ Pay Kenyan merchants using SA Visa or Mastercard</li>
+        <li>✅ Cross-border East Africa and Southern Africa payments</li>
+        <li>✅ Google Pay and Apple Pay accepted</li>
+      </ul>
+      <a href="https://wa.me/254140933042?text=South%20Africa%20Payment%20Query" class="inline-flex items-center gap-2 bg-green-600 text-white font-bold px-6 py-3 rounded-full mt-4 hover:bg-green-700 transition">
+        <i class="fab fa-whatsapp"></i> Pay a Kenyan Merchant from South Africa
+      </a>`
+  },
+  OTHER: {
+    flag: '🌐', name: 'Your Country',
+    content: `
+      <h3 class="font-bold text-green-800 text-lg mb-3">🌐 WhaPay Works Worldwide</h3>
+      <ul class="space-y-2 text-sm text-green-700">
+        <li>✅ WhaPay accepts payments from <strong>180+ countries</strong></li>
+        <li>✅ Pay using Visa, Mastercard, Google Pay or Apple Pay from any country</li>
+        <li>✅ 135+ currencies accepted and converted to KES</li>
+        <li>✅ Merchant receives KES instantly regardless of where you pay from</li>
+        <li>✅ Contact us to discuss payment options for your specific country</li>
+      </ul>
+      <a href="https://wa.me/254140933042?text=International%20Payment%20Query" class="inline-flex items-center gap-2 bg-green-600 text-white font-bold px-6 py-3 rounded-full mt-4 hover:bg-green-700 transition">
+        <i class="fab fa-whatsapp"></i> Ask About Your Country
+      </a>`
+  }
+};
+
+function showCountryInfo() {
+  const code = document.getElementById('countrySelect').value;
+  const infoDiv = document.getElementById('countryInfo');
+  const contentDiv = document.getElementById('countryContent');
+  if (!code || !countryData[code]) { infoDiv.classList.add('hidden'); return; }
+  contentDiv.innerHTML = countryData[code].content;
+  infoDiv.classList.remove('hidden');
+}
+</script>
+  
   <!-- Offline Sync Panel -->
   <div class="bg-white rounded-xl shadow p-4 mb-6">
     <div class="flex justify-between items-center flex-wrap gap-2">

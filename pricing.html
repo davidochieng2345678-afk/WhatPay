@@ -25,17 +25,151 @@
 {
   "@context": "https://schema.org",
   "@type": "Product",
-  "name": "WhaPay Payment Platform",
-  "description": "Payment platform for Kenyan merchants. Free registration, no monthly fees, 1.5% + KES 20 per card transaction, M-Pesa at Safaricom rates.",
+  "name": "WhaPay Global Payment Platform",
+  "description": "Online and offline payment gateway for merchants in Kenya and worldwide. Accept M-Pesa, Visa, Mastercard, Google Pay, Apple Pay and 135+ currencies. Free registration, zero monthly fees, 1.5% plus KES 20 per card transaction.",
   "brand": { "@type": "Brand", "name": "WhaPay" },
+  "offers": [
+    {
+      "@type": "Offer",
+      "name": "Starter Plan",
+      "price": "0",
+      "priceCurrency": "KES",
+      "description": "Free registration. 1.5% plus KES 20 per card transaction. Zero monthly fees."
+    },
+    {
+      "@type": "Offer",
+      "name": "Business Plan",
+      "price": "999",
+      "priceCurrency": "KES",
+      "description": "KES 999 per month. Lower card fees at 1.2% plus KES 15 per transaction. Includes API access, webhooks, invoicing and recurring billing."
+    },
+    {
+      "@type": "Offer",
+      "name": "Enterprise Plan",
+      "price": "0",
+      "priceCurrency": "KES",
+      "description": "Custom pricing for high-volume merchants. Negotiated rates, dedicated account manager, white-label options."
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How much does WhaPay charge per M-Pesa transaction in Kenya?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "WhaPay charges zero extra fees on M-Pesa transactions. You only pay Safaricom's standard Paybill rates. WhaPay is the most affordable M-Pesa payment gateway for small businesses in Kenya, Uganda and East Africa."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the transaction fee for accepting Visa or Mastercard payments globally through WhaPay?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "WhaPay charges 1.5% plus KES 20 (approximately $0.15 USD) per successful Visa or Mastercard transaction. There are no monthly fees, no setup fees and no hidden charges. This is lower than Pesapal at 2.9% plus KES 20 and Paystack at 2.9% plus KES 30."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can international customers from the USA, UK or UAE pay Kenyan merchants through WhaPay?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. WhaPay accepts Visa and Mastercard from over 180 countries including the USA, UK, UAE, India, Canada and Australia. International customers can pay in USD, GBP, EUR, AED, INR and 135+ other currencies. The merchant receives the equivalent amount settled in KES."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is there a monthly fee to use WhaPay as a merchant in Kenya or internationally?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No monthly fees on the Starter plan. You only pay 1.5% plus KES 20 per successful card transaction. The Business plan at KES 999 per month gives lower card fees of 1.2% plus KES 15 and includes API access, webhooks, invoicing and recurring billing."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How much does it cost to register as a WhaPay merchant without internet in Kenya?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Registration is completely free. Register offline by dialing 0140933042 and following the voice prompts, or by sending REG YourBusinessName via SMS to the same number. You receive your unique Merchant Code and QR code instantly at no cost."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which is cheaper for merchants in Africa, WhaPay or Pesapal or Paystack?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "WhaPay is cheaper. WhaPay charges 1.5% plus KES 20 per card transaction with zero monthly fees. Pesapal charges 2.9% plus KES 20. Paystack charges 2.9% plus KES 30. WhaPay also adds zero extra fees on M-Pesa, while other platforms add 0.5% to 1% on top of Safaricom rates."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can Kenyan diaspora in the UK, USA or UAE send money to merchants in Kenya using WhaPay?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. WhaPay supports international payments from the UK (GBP), USA (USD), UAE (AED), Canada (CAD), Australia (AUD) and 135+ other currencies. Diaspora customers can pay Kenyan merchants using their local Visa or Mastercard and the merchant receives KES instantly."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does WhaPay support Google Pay and Apple Pay for international customers?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. WhaPay supports Google Pay, Apple Pay, Samsung Pay and PayPal for international customers. These digital wallets allow customers from any country to pay Kenyan and African merchants instantly without entering card details manually."
+      }
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": "WhaPay Global Merchant Payment Service",
+  "description": "Payment gateway for merchants in Kenya, Uganda, Tanzania, Nigeria, Ghana and worldwide. Accept M-Pesa, Visa, Mastercard, Google Pay, Apple Pay, PayPal and 135+ currencies. Free registration, zero monthly fees.",
+  "provider": {
+    "@type": "Organization",
+    "name": "WhaPay",
+    "url": "https://whapay.space",
+    "telephone": "+254140933042",
+    "email": "support@whapay.space"
+  },
+  "areaServed": [
+    { "@type": "Country", "name": "Kenya" },
+    { "@type": "Country", "name": "Uganda" },
+    { "@type": "Country", "name": "Tanzania" },
+    { "@type": "Country", "name": "Nigeria" },
+    { "@type": "Country", "name": "Ghana" },
+    { "@type": "Country", "name": "United States" },
+    { "@type": "Country", "name": "United Kingdom" },
+    { "@type": "Country", "name": "United Arab Emirates" },
+    { "@type": "Country", "name": "Canada" },
+    { "@type": "Country", "name": "Australia" },
+    { "@type": "Country", "name": "India" },
+    { "@type": "Country", "name": "Saudi Arabia" }
+  ],
   "offers": {
     "@type": "Offer",
     "price": "0",
     "priceCurrency": "KES",
-    "description": "Free registration, pay only per transaction"
+    "description": "Free registration. 1.5% plus KES 20 per card transaction. Zero monthly fees."
+  },
+  "serviceType": "Global Payment Gateway",
+  "availableChannel": {
+    "@type": "ServiceChannel",
+    "serviceUrl": "https://whapay.space/pricing.html",
+    "servicePhone": "+254140933042",
+    "availableLanguage": ["English", "Swahili", "Arabic", "French"]
   }
 }
 </script>
+
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">

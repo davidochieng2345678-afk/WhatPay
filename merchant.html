@@ -474,6 +474,93 @@ function calcMerchantFee() {
     <p class="text-xs text-gray-400 m-auto">Login to see your revenue chart</p>
   </div>
 </div>
+
+    <!-- Invoice Generator -->
+<div class="bg-white rounded-2xl shadow-lg p-6 mt-6 mb-6">
+  <h3 class="font-bold text-lg text-gray-800 mb-4">🧾 Generate Invoice</h3>
+  <div class="grid md:grid-cols-2 gap-4">
+    <div>
+      <label class="text-sm text-gray-500 mb-1 block">Customer Name</label>
+      <input type="text" id="invCustomer" placeholder="e.g. John Kamau"
+        class="w-full border-2 border-gray-200 focus:border-green-500 rounded-xl px-4 py-2.5 outline-none transition">
+    </div>
+    <div>
+      <label class="text-sm text-gray-500 mb-1 block">Customer Phone</label>
+      <input type="tel" id="invPhone" placeholder="+254712345678"
+        class="w-full border-2 border-gray-200 focus:border-green-500 rounded-xl px-4 py-2.5 outline-none transition">
+    </div>
+    <div>
+      <label class="text-sm text-gray-500 mb-1 block">Item / Service</label>
+      <input type="text" id="invItem" placeholder="e.g. Groceries"
+        class="w-full border-2 border-gray-200 focus:border-green-500 rounded-xl px-4 py-2.5 outline-none transition">
+    </div>
+    <div>
+      <label class="text-sm text-gray-500 mb-1 block">Amount (KES)</label>
+      <input type="number" id="invAmount" placeholder="e.g. 1500"
+        class="w-full border-2 border-gray-200 focus:border-green-500 rounded-xl px-4 py-2.5 outline-none transition">
+    </div>
+  </div>
+  <div class="flex gap-3 mt-4">
+    <button onclick="generateInvoice()"
+      class="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl transition flex items-center justify-center gap-2">
+      <i class="fas fa-file-invoice"></i> Generate & Download Invoice
+    </button>
+    <button onclick="sendInvoiceWhatsApp()"
+      class="flex-1 bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-xl transition flex items-center justify-center gap-2">
+      <i class="fab fa-whatsapp"></i> Send via WhatsApp
+    </button>
+  </div>
+</div>
+
+<script>
+function generateInvoice() {
+  const customer = document.getElementById('invCustomer').value || 'Customer';
+  const phone = document.getElementById('invPhone').value || '';
+  const item = document.getElementById('invItem').value || 'Service';
+  const amount = parseFloat(document.getElementById('invAmount').value) || 0;
+  const invoiceNo = 'WP-' + Date.now().toString().slice(-6);
+  const date = new Date().toLocaleDateString('en-KE', { year: 'numeric', month: 'long', day: 'numeric' });
+  const html = `
+    <html><head><title>Invoice ${invoiceNo}</title>
+    <style>
+      body { font-family: Arial, sans-serif; padding: 40px; color: #1f2937; }
+      .header { background: #16a34a; color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+      .row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #e5e7eb; }
+      .total { font-size: 1.5rem; font-weight: bold; color: #16a34a; }
+      .footer { margin-top: 30px; font-size: 0.8rem; color: #6b7280; text-align: center; }
+    </style></head>
+    <body>
+      <div class="header">
+        <h1>WhaPay Invoice</h1>
+        <p>Invoice No: ${invoiceNo} | Date: ${date}</p>
+      </div>
+      <div class="row"><span>Bill To:</span><strong>${customer} ${phone ? '| ' + phone : ''}</strong></div>
+      <div class="row"><span>Item / Service:</span><span>${item}</span></div>
+      <div class="row"><span>Amount:</span><span class="total">KES ${amount.toLocaleString()}</span></div>
+      <div class="row"><span>Payment via:</span><span>WhaPay (M-Pesa / Card)</span></div>
+      <div class="footer">
+        <p>WhaPay | whapay.space | WhatsApp: 0140933042 | support@whapay.space</p>
+        <p>Thank you for your business!</p>
+      </div>
+    </body></html>`;
+  const blob = new Blob([html], { type: 'text/html' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = `invoice_${invoiceNo}.html`;
+  link.click();
+  URL.revokeObjectURL(link.href);
+}
+
+function sendInvoiceWhatsApp() {
+  const customer = document.getElementById('invCustomer').value || 'Customer';
+  const item = document.getElementById('invItem').value || 'Service';
+  const amount = document.getElementById('invAmount').value || '0';
+  const phone = document.getElementById('invPhone').value.replace(/\D/g,'');
+  const msg = `🧾 *WhaPay Invoice*\n\nDear ${customer},\nItem: ${item}\nAmount: KES ${amount}\n\nPay via WhaPay:\n👉 https://whapay.space\n\nThank you!`;
+  const waPhone = phone || '0140933042';
+  window.open(`https://wa.me/${waPhone}?text=${encodeURIComponent(msg)}`, '_blank');
+}
+</script>
     
 
 <footer class="bg-gray-900 text-gray-300 text-center p-4 text-sm mt-8">

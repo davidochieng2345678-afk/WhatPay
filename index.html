@@ -382,6 +382,64 @@
         </a>
       </div>
 
+      
+      <!-- Feature badges -->
+      <div class="flex flex-wrap justify-center gap-6 text-sm text-white/80">
+        <div class="flex items-center gap-2"><i class="fas fa-check-circle text-green-300"></i> No monthly fees</div>
+        <div class="flex items-center gap-2"><i class="fas fa-check-circle text-green-300"></i> 1.5% + KES 20 per card</div>
+        <div class="flex items-center gap-2"><i class="fas fa-check-circle text-green-300"></i> Free offline registration</div>
+        <div class="flex items-center gap-2"><i class="fas fa-check-circle text-green-300"></i> 24/7 WhatsApp support</div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Bottom wave decoration -->
+  <div class="absolute bottom-0 left-0 right-0">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" class="w-full h-auto text-gray-100 dark:text-gray-900" fill="currentColor">
+      <path d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
+    </svg>
+  </div>
+</div>
+  <!-- Live Stats (from Firestore) -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+    <div class="bg-white rounded-xl shadow p-4 text-center"><p class="text-gray-500">Total Merchants</p><h2 id="totalMerchants" class="text-2xl font-bold">—</h2></div>
+    <div class="bg-white rounded-xl shadow p-4 text-center"><p class="text-gray-500">Total Transactions</p><h2 id="totalTransactions" class="text-2xl font-bold">—</h2></div>
+    <div class="bg-white rounded-xl shadow p-4 text-center"><p class="text-gray-500">Total Volume (KES)</p><h2 id="totalVolume" class="text-2xl font-bold">—</h2></div>
+  </div>
+<!-- Social Proof - Real & Honest -->
+<div class="bg-white rounded-2xl shadow-md py-6 px-6 mb-12">
+  <div class="text-center mb-4">
+    <span class="text-gray-400 text-sm font-semibold uppercase tracking-wider">What Our Merchants Say</span>
+  </div>
+  <!-- Trustpilot-style embed placeholder (replace with real widget when you have reviews) -->
+  <div class="flex flex-wrap justify-center items-center gap-6">
+    <a href="https://www.google.com/search?q=whapay+reviews" target="_blank"
+       class="flex items-center gap-2 border border-gray-200 rounded-xl px-5 py-3 hover:shadow-md transition">
+      <i class="fab fa-google text-blue-500 text-2xl"></i>
+      <div>
+        <div class="flex text-yellow-400 text-sm">★★★★★</div>
+        <div class="text-xs text-gray-500">See Google Reviews</div>
+      </div>
+    </a>
+    <a href="https://wa.me/0140933042?text=REVIEW" target="_blank"
+       class="flex items-center gap-2 border border-gray-200 rounded-xl px-5 py-3 hover:shadow-md transition">
+      <i class="fab fa-whatsapp text-green-500 text-2xl"></i>
+      <div>
+        <div class="font-semibold text-sm text-gray-700">500+ Active Merchants</div>
+        <div class="text-xs text-gray-500">Send us your feedback</div>
+      </div>
+    </a>
+    <div class="flex items-center gap-2 border border-gray-200 rounded-xl px-5 py-3">
+      <i class="fas fa-shield-alt text-green-600 text-2xl"></i>
+      <div>
+        <div class="font-semibold text-sm text-gray-700">Secure Payments</div>
+        <div class="text-xs text-gray-500">SSL encrypted transactions</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <!-- Live Currency Converter -->
 <div class="bg-white rounded-2xl shadow-lg p-6 mb-12">
   <div class="text-center mb-6">
@@ -482,62 +540,7 @@ function convertCurrency() {
 }
 </script>
       
-      
-      <!-- Feature badges -->
-      <div class="flex flex-wrap justify-center gap-6 text-sm text-white/80">
-        <div class="flex items-center gap-2"><i class="fas fa-check-circle text-green-300"></i> No monthly fees</div>
-        <div class="flex items-center gap-2"><i class="fas fa-check-circle text-green-300"></i> 1.5% + KES 20 per card</div>
-        <div class="flex items-center gap-2"><i class="fas fa-check-circle text-green-300"></i> Free offline registration</div>
-        <div class="flex items-center gap-2"><i class="fas fa-check-circle text-green-300"></i> 24/7 WhatsApp support</div>
-      </div>
-    </div>
-  </div>
   
-  <!-- Bottom wave decoration -->
-  <div class="absolute bottom-0 left-0 right-0">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" class="w-full h-auto text-gray-100 dark:text-gray-900" fill="currentColor">
-      <path d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
-    </svg>
-  </div>
-</div>
-  <!-- Live Stats (from Firestore) -->
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-    <div class="bg-white rounded-xl shadow p-4 text-center"><p class="text-gray-500">Total Merchants</p><h2 id="totalMerchants" class="text-2xl font-bold">—</h2></div>
-    <div class="bg-white rounded-xl shadow p-4 text-center"><p class="text-gray-500">Total Transactions</p><h2 id="totalTransactions" class="text-2xl font-bold">—</h2></div>
-    <div class="bg-white rounded-xl shadow p-4 text-center"><p class="text-gray-500">Total Volume (KES)</p><h2 id="totalVolume" class="text-2xl font-bold">—</h2></div>
-  </div>
-<!-- Social Proof - Real & Honest -->
-<div class="bg-white rounded-2xl shadow-md py-6 px-6 mb-12">
-  <div class="text-center mb-4">
-    <span class="text-gray-400 text-sm font-semibold uppercase tracking-wider">What Our Merchants Say</span>
-  </div>
-  <!-- Trustpilot-style embed placeholder (replace with real widget when you have reviews) -->
-  <div class="flex flex-wrap justify-center items-center gap-6">
-    <a href="https://www.google.com/search?q=whapay+reviews" target="_blank"
-       class="flex items-center gap-2 border border-gray-200 rounded-xl px-5 py-3 hover:shadow-md transition">
-      <i class="fab fa-google text-blue-500 text-2xl"></i>
-      <div>
-        <div class="flex text-yellow-400 text-sm">★★★★★</div>
-        <div class="text-xs text-gray-500">See Google Reviews</div>
-      </div>
-    </a>
-    <a href="https://wa.me/0140933042?text=REVIEW" target="_blank"
-       class="flex items-center gap-2 border border-gray-200 rounded-xl px-5 py-3 hover:shadow-md transition">
-      <i class="fab fa-whatsapp text-green-500 text-2xl"></i>
-      <div>
-        <div class="font-semibold text-sm text-gray-700">500+ Active Merchants</div>
-        <div class="text-xs text-gray-500">Send us your feedback</div>
-      </div>
-    </a>
-    <div class="flex items-center gap-2 border border-gray-200 rounded-xl px-5 py-3">
-      <i class="fas fa-shield-alt text-green-600 text-2xl"></i>
-      <div>
-        <div class="font-semibold text-sm text-gray-700">Secure Payments</div>
-        <div class="text-xs text-gray-500">SSL encrypted transactions</div>
-      </div>
-    </div>
-  </div>
-</div>
 <!-- Trust & Security - Honest Version -->
 <div class="bg-white rounded-2xl shadow-lg p-8 mb-12 border border-gray-100">
   <div class="text-center mb-6">

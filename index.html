@@ -2323,5 +2323,53 @@ function showCountryInfo() {
   };
 })();
 </script>
+  <!-- Social Proof Notifications -->
+<div id="socialProof" class="fixed bottom-24 left-5 z-40 hidden">
+  <div class="bg-white rounded-2xl shadow-xl p-4 flex items-center gap-3 max-w-xs border border-gray-100">
+    <div id="spAvatar" class="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0"></div>
+    <div>
+      <p id="spMessage" class="text-sm font-semibold text-gray-800"></p>
+      <p id="spTime" class="text-xs text-gray-400"></p>
+    </div>
+    <button onclick="document.getElementById('socialProof').classList.add('hidden')"
+      class="ml-auto text-gray-300 hover:text-gray-500 flex-shrink-0">✖</button>
+  </div>
+</div>
+
+<script>
+(function() {
+  const notifications = [
+    { name: 'Mary W.', city: 'Kisumu', action: 'just registered as a merchant', color: 'bg-green-500', time: '2 min ago' },
+    { name: 'James O.', city: 'Nairobi', action: 'received KES 3,500 via WhaPay', color: 'bg-blue-500', time: '4 min ago' },
+    { name: 'Sarah K.', city: 'Mombasa', action: 'just registered offline via SMS', color: 'bg-purple-500', time: '6 min ago' },
+    { name: 'Peter M.', city: 'Eldoret', action: 'received payment from UAE customer', color: 'bg-yellow-500', time: '8 min ago' },
+    { name: 'Grace N.', city: 'Nakuru', action: 'just set up her WhatsApp payment link', color: 'bg-pink-500', time: '11 min ago' },
+    { name: 'John K.', city: 'UK', action: 'paid a Kenyan merchant in GBP', color: 'bg-indigo-500', time: '13 min ago' },
+    { name: 'Amina H.', city: 'UAE', action: 'sent KES 15,000 to family in Kenya', color: 'bg-orange-500', time: '15 min ago' },
+    { name: 'David O.', city: 'Thika', action: 'printed his WhaPay QR code', color: 'bg-teal-500', time: '18 min ago' },
+  ];
+
+  let index = 0;
+  function showNext() {
+    const n = notifications[index % notifications.length];
+    const box = document.getElementById('socialProof');
+    const avatar = document.getElementById('spAvatar');
+    const message = document.getElementById('spMessage');
+    const time = document.getElementById('spTime');
+    avatar.className = `w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0 ${n.color}`;
+    avatar.innerText = n.name.charAt(0);
+    message.innerText = `${n.name} from ${n.city} ${n.action}`;
+    time.innerText = n.time;
+    box.classList.remove('hidden');
+    setTimeout(() => box.classList.add('hidden'), 5000);
+    index++;
+  }
+
+  setTimeout(() => {
+    showNext();
+    setInterval(showNext, 15000);
+  }, 12000);
+})();
+</script>
 </body>
 </html>

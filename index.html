@@ -437,7 +437,87 @@
     </div>
   </div>
 </div>
+<!-- Revenue Potential Calculator -->
+<div class="bg-white rounded-2xl shadow-lg p-6 mb-12">
+  <div class="text-center mb-6">
+    <h2 class="text-2xl font-bold text-gray-800">📈 How Much Could You Earn?</h2>
+    <p class="text-gray-500 text-sm mt-1">Enter your daily sales to see your monthly revenue potential with WhaPay</p>
+  </div>
+  <div class="max-w-xl mx-auto">
+    <div class="grid md:grid-cols-2 gap-4 mb-4">
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">Average Daily Sales (KES)</label>
+        <input type="number" id="earnDaily" placeholder="e.g. 5000"
+          oninput="calcEarning()"
+          class="w-full border-2 border-gray-200 focus:border-green-500 rounded-xl px-4 py-3 outline-none transition">
+      </div>
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">% Paid by Card</label>
+        <select id="earnCardPct" onchange="calcEarning()"
+          class="w-full border-2 border-gray-200 focus:border-green-500 rounded-xl px-4 py-3 outline-none transition">
+          <option value="10">10% by card</option>
+          <option value="25">25% by card</option>
+          <option value="50" selected>50% by card</option>
+          <option value="75">75% by card</option>
+          <option value="100">100% by card</option>
+        </select>
+      </div>
+    </div>
+    <div id="earnResult" class="hidden">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+        <div class="bg-green-50 rounded-xl p-4 text-center">
+          <p class="text-xs text-gray-500 mb-1">Monthly Revenue</p>
+          <p id="earnMonthly" class="text-xl font-bold text-green-600">—</p>
+        </div>
+        <div class="bg-blue-50 rounded-xl p-4 text-center">
+          <p class="text-xs text-gray-500 mb-1">Annual Revenue</p>
+          <p id="earnAnnual" class="text-xl font-bold text-blue-600">—</p>
+        </div>
+        <div class="bg-red-50 rounded-xl p-4 text-center">
+          <p class="text-xs text-gray-500 mb-1">Monthly WhaPay Fees</p>
+          <p id="earnFees" class="text-xl font-bold text-red-500">—</p>
+        </div>
+        <div class="bg-emerald-50 rounded-xl p-4 text-center">
+          <p class="text-xs text-gray-500 mb-1">You Keep</p>
+          <p id="earnKeep" class="text-xl font-bold text-emerald-600">—</p>
+        </div>
+      </div>
+      <div class="bg-gray-50 rounded-xl p-4 text-center text-sm text-gray-600">
+        <p id="earnNote"></p>
+      </div>
+      <div class="text-center mt-4">
+        <a href="https://wa.me/0140933042?text=REGISTER"
+          class="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-bold px-8 py-3 rounded-full transition">
+          <i class="fab fa-whatsapp"></i> Start Accepting Payments
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
 
+<script>
+function calcEarning() {
+  const daily = parseFloat(document.getElementById('earnDaily').value);
+  const cardPct = parseFloat(document.getElementById('earnCardPct').value) / 100;
+  const result = document.getElementById('earnResult');
+  if (!daily || daily <= 0) { result.classList.add('hidden'); return; }
+
+  const monthly = daily * 30;
+  const annual = daily * 365;
+  const cardMonthly = monthly * cardPct;
+  const avgTx = 800;
+  const txCount = cardMonthly / avgTx;
+  const fees = (cardMonthly * 0.015) + (txCount * 20);
+  const keep = monthly - fees;
+
+  document.getElementById('earnMonthly').innerText = `KES ${monthly.toLocaleString(undefined,{maximumFractionDigits:0})}`;
+  document.getElementById('earnAnnual').innerText = `KES ${annual.toLocaleString(undefined,{maximumFractionDigits:0})}`;
+  document.getElementById('earnFees').innerText = `KES ${fees.toLocaleString(undefined,{maximumFractionDigits:0})}`;
+  document.getElementById('earnKeep').innerText = `KES ${keep.toLocaleString(undefined,{maximumFractionDigits:0})}`;
+  document.getElementById('earnNote').innerText = `With KES ${daily.toLocaleString()} in daily sales and ${document.getElementById('earnCardPct').value}% paid by card, WhaPay fees are only KES ${fees.toLocaleString(undefined,{maximumFractionDigits:0})}/month — you keep ${((keep/monthly)*100).toFixed(1)}% of your revenue.`;
+  result.classList.remove('hidden');
+}
+</script>
 
 <!-- Live Currency Converter -->
 <div class="bg-white rounded-2xl shadow-lg p-6 mb-12">

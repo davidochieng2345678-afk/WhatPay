@@ -678,5 +678,76 @@
   };
 })();
 </script>
+  <!-- Smart WhatsApp Widget -->
+<div id="waWidget" class="fixed bottom-5 right-5 z-50">
+  <div id="waPopup" class="hidden mb-3 bg-white rounded-2xl shadow-2xl p-4 w-72 border border-gray-100">
+    <div class="flex items-center gap-3 mb-3 pb-3 border-b border-gray-100">
+      <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
+        <i class="fab fa-whatsapp text-white text-xl"></i>
+      </div>
+      <div>
+        <p class="font-bold text-gray-800 text-sm">WhaPay Support</p>
+        <p class="text-xs text-green-500">● Online now</p>
+      </div>
+      <button onclick="closeWA()" class="ml-auto text-gray-400 hover:text-gray-600">✖</button>
+    </div>
+    <p class="text-sm text-gray-600 mb-3">Hi! How can we help you today? Choose a topic:</p>
+    <div class="space-y-2" id="waOptions"></div>
+  </div>
+  <button onclick="toggleWA()"
+    class="bg-green-500 hover:bg-green-600 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center transition-all hover:scale-110 relative">
+    <i class="fab fa-whatsapp text-2xl"></i>
+    <span id="waBadge" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">1</span>
+  </button>
+</div>
+
+<script>
+(function() {
+  const page = window.location.pathname;
+  const options = [];
+
+  if (page.includes('pricing')) {
+    options.push({ label: '💰 Ask about pricing & fees', msg: 'I want to know more about WhaPay pricing and fees' });
+    options.push({ label: '📊 Business plan details', msg: 'Tell me more about the WhaPay Business plan at KES 999/month' });
+  } else if (page.includes('merchant')) {
+    options.push({ label: '🏪 Register my business', msg: 'REGISTER' });
+    options.push({ label: '📊 View my dashboard', msg: 'I need help with my merchant dashboard' });
+    options.push({ label: '💳 Accept card payments', msg: 'How do I start accepting card payments on WhaPay?' });
+  } else if (page.includes('payment')) {
+    options.push({ label: '💸 Make a payment', msg: 'I want to make a payment using WhaPay' });
+    options.push({ label: '❓ Payment failed', msg: 'My payment failed, please help' });
+  } else {
+    options.push({ label: '🚀 Register for free', msg: 'REGISTER' });
+    options.push({ label: '💰 Ask about pricing', msg: 'What are WhaPay pricing and fees?' });
+    options.push({ label: '🌍 International payment', msg: 'I want to pay a Kenyan merchant from outside Kenya' });
+  }
+
+  options.push({ label: '📞 Call us instead', msg: 'I prefer to call: 0140933042' });
+
+  const container = document.getElementById('waOptions');
+  options.forEach(opt => {
+    const btn = document.createElement('a');
+    btn.href = `https://wa.me/254140933042?text=${encodeURIComponent(opt.msg)}`;
+    btn.target = '_blank';
+    btn.className = 'block w-full text-left bg-gray-50 hover:bg-green-50 border border-gray-200 hover:border-green-300 rounded-xl px-3 py-2 text-sm text-gray-700 transition';
+    btn.innerText = opt.label;
+    container.appendChild(btn);
+  });
+
+  setTimeout(() => {
+    document.getElementById('waPopup').classList.remove('hidden');
+    document.getElementById('waBadge').classList.add('hidden');
+  }, 8000);
+
+  window.toggleWA = function() {
+    const popup = document.getElementById('waPopup');
+    popup.classList.toggle('hidden');
+    document.getElementById('waBadge').classList.add('hidden');
+  };
+  window.closeWA = function() {
+    document.getElementById('waPopup').classList.add('hidden');
+  };
+})();
+</script>
 </body>
 </html>

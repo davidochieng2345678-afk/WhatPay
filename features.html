@@ -674,7 +674,188 @@
     <p class="text-xs opacity-80">After registration, you'll receive a unique Member Code (e.g., DK12345) and QR code – use them to pay or receive money instantly, even without internet.</p>
   </div>
 </main>
+<!-- WhaPay By Industry -->
+<div class="bg-white rounded-2xl shadow-lg p-6 mb-12">
+  <div class="text-center mb-8">
+    <h2 class="text-2xl font-bold text-gray-800">🏪 WhaPay Works For Every Business</h2>
+    <p class="text-gray-500 text-sm mt-2">From street vendors to enterprise — online and offline</p>
+  </div>
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <div class="bg-green-50 rounded-xl p-4 text-center hover:shadow-md transition cursor-pointer"
+      onclick="showIndustry('grocery')">
+      <div class="text-3xl mb-2">🛒</div>
+      <p class="font-bold text-sm text-gray-800">Grocery & Retail</p>
+      <p class="text-xs text-gray-500 mt-1">Shops, supermarkets, kiosks</p>
+    </div>
+    <div class="bg-blue-50 rounded-xl p-4 text-center hover:shadow-md transition cursor-pointer"
+      onclick="showIndustry('salon')">
+      <div class="text-3xl mb-2">💇</div>
+      <p class="font-bold text-sm text-gray-800">Salons & Beauty</p>
+      <p class="text-xs text-gray-500 mt-1">Hair, nails, spa services</p>
+    </div>
+    <div class="bg-purple-50 rounded-xl p-4 text-center hover:shadow-md transition cursor-pointer"
+      onclick="showIndustry('school')">
+      <div class="text-3xl mb-2">🏫</div>
+      <p class="font-bold text-sm text-gray-800">Schools & Tuition</p>
+      <p class="text-xs text-gray-500 mt-1">Fee collection, subscriptions</p>
+    </div>
+    <div class="bg-yellow-50 rounded-xl p-4 text-center hover:shadow-md transition cursor-pointer"
+      onclick="showIndustry('landlord')">
+      <div class="text-3xl mb-2">🏠</div>
+      <p class="font-bold text-sm text-gray-800">Landlords & Property</p>
+      <p class="text-xs text-gray-500 mt-1">Rent collection, deposits</p>
+    </div>
+    <div class="bg-red-50 rounded-xl p-4 text-center hover:shadow-md transition cursor-pointer"
+      onclick="showIndustry('restaurant')">
+      <div class="text-3xl mb-2">🍽️</div>
+      <p class="font-bold text-sm text-gray-800">Restaurants & Food</p>
+      <p class="text-xs text-gray-500 mt-1">Cafes, food stalls, delivery</p>
+    </div>
+    <div class="bg-orange-50 rounded-xl p-4 text-center hover:shadow-md transition cursor-pointer"
+      onclick="showIndustry('ecommerce')">
+      <div class="text-3xl mb-2">📦</div>
+      <p class="font-bold text-sm text-gray-800">E-commerce & Online</p>
+      <p class="text-xs text-gray-500 mt-1">Online stores, dropshipping</p>
+    </div>
+    <div class="bg-teal-50 rounded-xl p-4 text-center hover:shadow-md transition cursor-pointer"
+      onclick="showIndustry('freelancer')">
+      <div class="text-3xl mb-2">💻</div>
+      <p class="font-bold text-sm text-gray-800">Freelancers & Creatives</p>
+      <p class="text-xs text-gray-500 mt-1">Designers, developers, writers</p>
+    </div>
+    <div class="bg-indigo-50 rounded-xl p-4 text-center hover:shadow-md transition cursor-pointer"
+      onclick="showIndustry('ngo')">
+      <div class="text-3xl mb-2">🤝</div>
+      <p class="font-bold text-sm text-gray-800">NGOs & Charities</p>
+      <p class="text-xs text-gray-500 mt-1">Donations, fundraising</p>
+    </div>
+  </div>
 
+  <div id="industryDetail" class="hidden mt-6 bg-gray-50 rounded-2xl p-6 border border-gray-200">
+    <div id="industryContent"></div>
+  </div>
+</div>
+
+<script>
+const industries = {
+  grocery: {
+    icon: '🛒', title: 'WhaPay for Grocery Shops & Retail',
+    points: [
+      'Accept M-Pesa payments at your counter without a POS machine',
+      'Display your QR code — customers scan and pay in seconds',
+      'Offline Member Code payments work even when your internet is down',
+      'Share your WhatsApp payment link with bulk buyers and regular customers',
+      'Export daily sales to CSV for your accounting records',
+      'Works for dukas, supermarkets, open-air markets and roadside kiosks'
+    ],
+    cta: 'Register Your Shop'
+  },
+  salon: {
+    icon: '💇', title: 'WhaPay for Salons & Beauty Businesses',
+    points: [
+      'Accept card payments from middle-class urban customers who prefer cards',
+      'Set up recurring billing for monthly treatment packages',
+      'Share WhatsApp payment link on your Instagram and Facebook pages',
+      'Accept Google Pay and Apple Pay from international clients',
+      'Generate professional invoices for corporate clients',
+      'Works for hair salons, nail studios, spas and barber shops'
+    ],
+    cta: 'Register Your Salon'
+  },
+  school: {
+    icon: '🏫', title: 'WhaPay for Schools & Tuition Centers',
+    points: [
+      'Collect school fees via M-Pesa, card or offline Member Code',
+      'Set up recurring billing for monthly tuition fees',
+      'Parents pay from anywhere — even from UK, USA or UAE via card',
+      'Generate fee receipts and invoices automatically',
+      'No more handling cash — all payments tracked in your dashboard',
+      'Works for primary schools, secondary schools, colleges and tuition centers'
+    ],
+    cta: 'Register Your School'
+  },
+  landlord: {
+    icon: '🏠', title: 'WhaPay for Landlords & Property Managers',
+    points: [
+      'Collect rent via M-Pesa, card or offline Member Code every month',
+      'Set up automatic recurring billing for monthly rent',
+      'Tenants pay from anywhere — even overseas via card or PayPal',
+      'Export all payments to CSV for your accounting and tax records',
+      'Generate rent receipts and deposit invoices automatically',
+      'Works for residential, commercial and student accommodation landlords'
+    ],
+    cta: 'Register as Landlord'
+  },
+  restaurant: {
+    icon: '🍽️', title: 'WhaPay for Restaurants & Food Businesses',
+    points: [
+      'Accept table payments via QR code scan — no card machine needed',
+      'Take online orders and receive payment via WhatsApp link',
+      'Accept Google Pay and Apple Pay from urban customers',
+      'Delivery payments via WhatsApp link sent to customer phone',
+      'Accept cards from international tourists and expats',
+      'Works for restaurants, cafes, food stalls, catering and delivery'
+    ],
+    cta: 'Register Your Restaurant'
+  },
+  ecommerce: {
+    icon: '📦', title: 'WhaPay for E-commerce & Online Stores',
+    points: [
+      'Accept Visa, Mastercard, M-Pesa and Google Pay on your online store',
+      'Share payment links via WhatsApp, Instagram, Facebook and TikTok',
+      'Accept payments from customers in USA, UK, UAE and 180+ countries',
+      'API integration for custom e-commerce websites and apps',
+      'Webhook notifications for instant order confirmation',
+      'Works for online shops, dropshipping, digital products and services'
+    ],
+    cta: 'Register Your Online Store'
+  },
+  freelancer: {
+    icon: '💻', title: 'WhaPay for Freelancers & Creative Professionals',
+    points: [
+      'Get paid by international clients in USD, GBP, EUR and 135+ currencies',
+      'Generate professional invoices and send via WhatsApp',
+      'Accept PayPal, Stripe cards and M-Pesa from different clients',
+      'Share your payment link on LinkedIn, Upwork profile and portfolio',
+      'No monthly fees — only pay when you get paid',
+      'Works for designers, developers, writers, photographers and consultants'
+    ],
+    cta: 'Register as Freelancer'
+  },
+  ngo: {
+    icon: '🤝', title: 'WhaPay for NGOs & Charitable Organizations',
+    points: [
+      'Accept donations from supporters worldwide in any currency',
+      'Share donation link on social media and email campaigns',
+      'Accept card donations from diaspora in UK, USA, UAE and beyond',
+      'Generate donation receipts automatically for tax purposes',
+      'Recurring donations for monthly supporters and patrons',
+      'Works for NGOs, churches, community groups and fundraising campaigns'
+    ],
+    cta: 'Register Your Organization'
+  }
+};
+
+function showIndustry(key) {
+  const data = industries[key];
+  const detail = document.getElementById('industryDetail');
+  const content = document.getElementById('industryContent');
+  content.innerHTML = `
+    <div class="flex items-center gap-3 mb-4">
+      <span class="text-4xl">${data.icon}</span>
+      <h3 class="text-xl font-bold text-gray-800">${data.title}</h3>
+    </div>
+    <ul class="space-y-2 mb-5">
+      ${data.points.map(p => `<li class="flex items-start gap-2 text-sm text-gray-700"><i class="fas fa-check-circle text-green-500 mt-0.5 flex-shrink-0"></i>${p}</li>`).join('')}
+    </ul>
+    <a href="https://wa.me/0140933042?text=REGISTER%20${encodeURIComponent(data.cta)}"
+      class="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-bold px-6 py-3 rounded-full transition">
+      <i class="fab fa-whatsapp"></i> ${data.cta}
+    </a>`;
+  detail.classList.remove('hidden');
+  detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+</script>
 <footer class="bg-gray-900 text-gray-300 pt-8 pb-4 text-center text-sm">
   <p>© 2026 WhaPay – <strong>Offline registration: call <span class="font-mono">0140933042</span> (voicemail) or SMS to same number</strong> | WhatsApp: <strong class="font-mono">0140933042</strong></p>
   <div class="mt-2 space-x-4"><a href="privacy.html" class="hover:text-green-400">Privacy Policy</a> | <a href="terms.html" class="hover:text-green-400">Terms of Service</a> | <a href="contact.html" class="hover:text-green-400">Contact</a></div>

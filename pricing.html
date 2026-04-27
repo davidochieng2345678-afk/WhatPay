@@ -480,6 +480,79 @@ function convertCurrency() {
     </div>
     <p class="text-xs text-gray-500 text-center mt-4">*All fees are transparent. No setup costs, no hidden charges, no monthly minimums, no daily fees.</p>
   </div>
+  <!-- Monthly Savings Calculator -->
+<div class="bg-white rounded-2xl shadow-lg p-6 mb-12">
+  <div class="text-center mb-6">
+    <h2 class="text-2xl font-bold text-gray-800">📊 How Much Do You Save With WhaPay?</h2>
+    <p class="text-gray-500 text-sm mt-1">Compare your monthly costs against Pesapal, Paystack and Stripe</p>
+  </div>
+  <div class="max-w-xl mx-auto">
+    <div class="mb-4">
+      <label class="block text-sm font-semibold text-gray-700 mb-2">Your Monthly Card Transaction Volume (KES)</label>
+      <input type="number" id="savingsAmount" placeholder="e.g. 100000"
+        oninput="calcSavings()"
+        class="w-full border-2 border-gray-200 focus:border-green-500 rounded-xl px-4 py-3 text-xl outline-none transition">
+    </div>
+    <div id="savingsResult" class="hidden space-y-3">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div class="bg-green-100 border-2 border-green-500 rounded-xl p-4 text-center">
+          <p class="text-xs font-bold text-green-700 mb-1">✅ WhaPay</p>
+          <p id="savWhapay" class="text-xl font-bold text-green-700">—</p>
+          <p class="text-xs text-green-600">per month</p>
+        </div>
+        <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 text-center">
+          <p class="text-xs font-bold text-gray-600 mb-1">Pesapal</p>
+          <p id="savPesapal" class="text-xl font-bold text-gray-700">—</p>
+          <p class="text-xs text-gray-400">per month</p>
+        </div>
+        <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 text-center">
+          <p class="text-xs font-bold text-gray-600 mb-1">Paystack</p>
+          <p id="savPaystack" class="text-xl font-bold text-gray-700">—</p>
+          <p class="text-xs text-gray-400">per month</p>
+        </div>
+        <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 text-center">
+          <p class="text-xs font-bold text-gray-600 mb-1">Stripe</p>
+          <p id="savStripe" class="text-xl font-bold text-gray-700">—</p>
+          <p class="text-xs text-gray-400">per month</p>
+        </div>
+      </div>
+      <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-4 text-center">
+        <p class="text-sm text-yellow-800 font-semibold">💰 By using WhaPay you save <span id="savingVsPesapal" class="text-green-700 font-bold"></span> vs Pesapal and <span id="savingVsStripe" class="text-green-700 font-bold"></span> vs Stripe every month</p>
+      </div>
+      <div class="text-center">
+        <a href="https://wa.me/0140933042?text=REGISTER"
+          class="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-bold px-8 py-3 rounded-full transition">
+          <i class="fab fa-whatsapp"></i> Start Saving with WhaPay
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function calcSavings() {
+  const vol = parseFloat(document.getElementById('savingsAmount').value);
+  const result = document.getElementById('savingsResult');
+  if (!vol || vol <= 0) { result.classList.add('hidden'); return; }
+
+  // Approximate fees per platform on card transactions
+  // WhaPay: 1.5% + KES 20 per tx (assume avg tx KES 1000 = ~50 txs)
+  const avgTx = 1000;
+  const txCount = vol / avgTx;
+  const whapay = (vol * 0.015) + (txCount * 20);
+  const pesapal = (vol * 0.029) + (txCount * 20);
+  const paystack = (vol * 0.029) + (txCount * 30);
+  const stripe = (vol * 0.029) + (txCount * 40); // ~$0.30 at 129 KES
+
+  document.getElementById('savWhapay').innerText = `KES ${whapay.toLocaleString(undefined, {maximumFractionDigits:0})}`;
+  document.getElementById('savPesapal').innerText = `KES ${pesapal.toLocaleString(undefined, {maximumFractionDigits:0})}`;
+  document.getElementById('savPaystack').innerText = `KES ${paystack.toLocaleString(undefined, {maximumFractionDigits:0})}`;
+  document.getElementById('savStripe').innerText = `KES ${stripe.toLocaleString(undefined, {maximumFractionDigits:0})}`;
+  document.getElementById('savingVsPesapal').innerText = `KES ${(pesapal - whapay).toLocaleString(undefined, {maximumFractionDigits:0})}`;
+  document.getElementById('savingVsStripe').innerText = `KES ${(stripe - whapay).toLocaleString(undefined, {maximumFractionDigits:0})}`;
+  result.classList.remove('hidden');
+}
+</script>
 
   <!-- Comparison Table (WhaPay vs Others) -->
   <div class="bg-white rounded-2xl shadow-xl p-6 mb-12">

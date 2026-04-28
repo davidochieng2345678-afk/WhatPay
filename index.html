@@ -329,58 +329,299 @@
   </p>
 </div>
   
-<!-- Hero Section - Professional Grade -->
-<div class="relative overflow-hidden bg-gradient-to-br from-emerald-900 via-emerald-700 to-emerald-500 rounded-3xl shadow-2xl mb-16">
-  <!-- Animated background pattern -->
-  <div class="absolute inset-0 opacity-10">
-    <div class="absolute inset-0" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 1px); background-size: 40px 40px;"></div>
-  </div>
-  
-  <!-- Floating elements animation -->
-  <div class="absolute top-20 left-10 w-32 h-32 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
-  <div class="absolute bottom-20 right-10 w-48 h-48 bg-white/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
- <div class="relative px-6 py-16 md:py-24 text-center">
-    <div class="max-w-4xl mx-auto">
-      <!-- Trust badge -->
-      <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm mb-8 border border-white/30 shadow-lg">
-        <span class="relative flex h-2 w-2">
-          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-          <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-        </span>
-        <span class="font-medium">Trusted by 500+ Kenyan Businesses</span>
-        <i class="fas fa-star text-yellow-300 text-xs ml-1"></i>
-        <i class="fas fa-star text-yellow-300 text-xs"></i>
-        <i class="fas fa-star text-yellow-300 text-xs"></i>
-        <i class="fas fa-star text-yellow-300 text-xs"></i>
-        <i class="fas fa-star text-yellow-300 text-xs"></i>
-      </div>
-      
-      <!-- Main heading with gradient text -->
-      <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-        Payments for 
-        <span class="bg-gradient-to-r from-yellow-300 via-amber-200 to-yellow-300 bg-clip-text text-transparent">Everyone</span>
-        <br>
-        <span class="text-white">Everywhere</span>
-      </h1>
-      
-      <p class="text-lg md:text-xl mb-8 text-white/90 max-w-2xl mx-auto leading-relaxed">
-        Register online via <i class="fab fa-whatsapp"></i> WhatsApp or offline by voice/SMS to 
-        <span class="font-mono bg-white/20 px-3 py-1.5 rounded-lg inline-block backdrop-blur-sm">0140933042</span>
-      </p>
-      
-      <!-- CTA Buttons -->
-      <div class="flex flex-wrap justify-center gap-4 mb-12">
-        <a href="https://wa.me/0140933042?text=REGISTER" class="group relative inline-flex items-center gap-2 bg-white text-emerald-700 font-bold px-8 py-4 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 overflow-hidden">
-          <span class="absolute inset-0 bg-gradient-to-r from-emerald-50 to-white opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-          <span class="relative z-10">Get Started Free</span>
-          <i class="fas fa-arrow-right relative z-10 group-hover:translate-x-1 transition-transform"></i>
-        </a>
-        <a href="tel:0140933042" class="inline-flex items-center gap-2 bg-transparent border-2 border-white hover:bg-white hover:text-emerald-700 text-white font-bold px-8 py-4 rounded-full transition-all duration-300 hover:-translate-y-1">
-          <i class="fas fa-phone-alt"></i>
-          <span>Call to Register</span>
-        </a>
+
+<!-- G+D Style Image Hero - Paste to replace your current hero -->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap');
+.img-hero * { font-family: 'Outfit', sans-serif; }
+
+.img-hero {
+  position: relative;
+  background: #0a0f1e;
+  overflow: hidden;
+  min-height: 100vh;
+}
+
+/* Full bleed background image with overlay */
+.img-hero-bg {
+  position: absolute;
+  inset: 0;
+  background-image: url('https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1800&q=80');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.25;
+}
+
+/* Dark gradient overlay */
+.img-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(10,15,30,0.97) 0%,
+    rgba(10,15,30,0.85) 40%,
+    rgba(10,15,30,0.5) 100%
+  );
+}
+
+.img-headline {
+  font-size: clamp(3rem, 6vw, 5.5rem);
+  font-weight: 900;
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+  color: white;
+}
+
+.img-accent {
+  background: linear-gradient(135deg, #22c55e, #86efac);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Image cards that float on right */
+.img-card {
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.img-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+}
+
+.photo-strip img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2px solid rgba(255,255,255,0.1);
+  transition: all 0.3s ease;
+}
+
+.photo-strip img:hover {
+  border-color: #22c55e;
+  transform: scale(1.05);
+}
+</style>
+
+<div class="img-hero" style="min-height:100vh;display:flex;align-items:center;">
+  <!-- Background image with overlay -->
+  <div class="img-hero-bg"></div>
+  <div class="img-hero-overlay"></div>
+
+  <!-- Green grid pattern -->
+  <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(22,163,74,0.04) 1px, transparent 1px),linear-gradient(90deg, rgba(22,163,74,0.04) 1px, transparent 1px);background-size:60px 60px;"></div>
+
+  <div style="position:relative;z-index:10;width:100%;max-width:1280px;margin:0 auto;padding:80px 24px;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;" class="flex-col md:grid">
+
+      <!-- LEFT — Text content -->
+      <div>
+        <!-- Live badge -->
+        <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(22,163,74,0.12);border:1px solid rgba(22,163,74,0.25);color:#86efac;padding:6px 16px;border-radius:999px;font-size:0.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:28px;">
+          <span style="width:6px;height:6px;background:#22c55e;border-radius:50%;box-shadow:0 0 0 3px rgba(34,197,94,0.3);animation:livePing 2s ease infinite;"></span>
+          Live — 500+ Active Merchants
+        </div>
+
+        <h1 class="img-headline" style="margin-bottom:24px;">
+          Accept Payments<br>
+          <span class="img-accent">Anywhere.</span><br>
+          <span style="font-weight:300;color:rgba(255,255,255,0.6);">Even Offline.</span>
+        </h1>
+
+        <p style="color:rgba(255,255,255,0.5);font-size:1.1rem;line-height:1.8;max-width:460px;margin-bottom:40px;">
+          M-Pesa, Visa, Mastercard, Google Pay — online or offline. 
+          Kenya's only payment platform that works without internet. 
+          Trusted by merchants from Nairobi to New York.
+        </p>
+
+        <!-- CTAs -->
+        <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:48px;">
+          <a href="https://wa.me/0140933042?text=REGISTER"
+            style="display:inline-flex;align-items:center;gap:10px;background:#16a34a;color:white;font-weight:700;font-size:1rem;padding:16px 28px;border-radius:6px;text-decoration:none;transition:all 0.3s;">
+            <i class="fab fa-whatsapp" style="font-size:1.1rem;"></i>
+            Register Free
+          </a>
+          <a href="pricing.html"
+            style="display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);color:white;font-weight:600;font-size:1rem;padding:16px 28px;border-radius:6px;text-decoration:none;transition:all 0.3s;">
+            See Pricing
+            <i class="fas fa-arrow-right" style="font-size:0.85rem;"></i>
+          </a>
+        </div>
+
+        <!-- Trust logos row -->
+        <div style="margin-bottom:40px;">
+          <p style="color:rgba(255,255,255,0.25);font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:12px;">Accepted Payments</p>
+          <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:center;">
+            <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 16px;">
+              <i class="fas fa-mobile-alt" style="color:#22c55e;margin-right:6px;"></i>
+              <span style="color:rgba(255,255,255,0.6);font-size:0.8rem;">M-Pesa</span>
+            </div>
+            <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 16px;">
+              <i class="fab fa-cc-visa" style="color:#3b82f6;margin-right:6px;"></i>
+              <span style="color:rgba(255,255,255,0.6);font-size:0.8rem;">Visa</span>
+            </div>
+            <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 16px;">
+              <i class="fab fa-cc-mastercard" style="color:#f97316;margin-right:6px;"></i>
+              <span style="color:rgba(255,255,255,0.6);font-size:0.8rem;">Mastercard</span>
+            </div>
+            <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 16px;">
+              <i class="fab fa-google" style="color:#ea4335;margin-right:6px;"></i>
+              <span style="color:rgba(255,255,255,0.6);font-size:0.8rem;">Google Pay</span>
+            </div>
+            <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 16px;">
+              <i class="fab fa-paypal" style="color:#0070ba;margin-right:6px;"></i>
+              <span style="color:rgba(255,255,255,0.6);font-size:0.8rem;">PayPal</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stats -->
+        <div style="display:flex;gap:32px;flex-wrap:wrap;">
+          <div style="border-left:2px solid rgba(22,163,74,0.4);padding-left:16px;">
+            <div style="font-size:2.2rem;font-weight:900;background:linear-gradient(135deg,#fff,#22c55e);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1;">500+</div>
+            <div style="color:rgba(255,255,255,0.35);font-size:0.7rem;letter-spacing:0.08em;text-transform:uppercase;margin-top:4px;">Merchants</div>
+          </div>
+          <div style="border-left:2px solid rgba(22,163,74,0.4);padding-left:16px;">
+            <div style="font-size:2.2rem;font-weight:900;background:linear-gradient(135deg,#fff,#22c55e);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1;">180+</div>
+            <div style="color:rgba(255,255,255,0.35);font-size:0.7rem;letter-spacing:0.08em;text-transform:uppercase;margin-top:4px;">Countries</div>
+          </div>
+          <div style="border-left:2px solid rgba(22,163,74,0.4);padding-left:16px;">
+            <div style="font-size:2.2rem;font-weight:900;background:linear-gradient(135deg,#fff,#22c55e);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1;">KES 0</div>
+            <div style="color:rgba(255,255,255,0.35);font-size:0.7rem;letter-spacing:0.08em;text-transform:uppercase;margin-top:4px;">Monthly Fee</div>
+          </div>
+        </div>
       </div>
 
+      <!-- RIGHT — Real photo collage -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto auto;gap:12px;position:relative;" class="hidden md:grid">
+
+        <!-- Large hero image -->
+        <div style="grid-column:1/3;border-radius:12px;overflow:hidden;height:240px;position:relative;">
+          <img
+            src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&q=80"
+            alt="African merchant accepting mobile payment"
+            style="width:100%;height:100%;object-fit:cover;"
+            onerror="this.style.background='#1e293b';this.style.display='flex';"
+          >
+          <div style="position:absolute;inset:0;background:linear-gradient(to top, rgba(10,15,30,0.7) 0%, transparent 60%);"></div>
+          <div style="position:absolute;bottom:16px;left:16px;display:flex;align-items:center;gap:8px;">
+            <div style="background:rgba(22,163,74,0.9);border-radius:999px;padding:4px 12px;font-size:0.72rem;color:white;font-weight:700;">✓ Payment Confirmed</div>
+          </div>
+        </div>
+
+        <!-- Bottom left image -->
+        <div style="border-radius:12px;overflow:hidden;height:180px;position:relative;">
+          <img
+            src="https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=400&q=80"
+            alt="Mobile payment QR code scan"
+            style="width:100%;height:100%;object-fit:cover;"
+            onerror="this.style.background='#1e293b';"
+          >
+          <div style="position:absolute;inset:0;background:linear-gradient(to top, rgba(10,15,30,0.6) 0%, transparent 60%);"></div>
+          <div style="position:absolute;bottom:10px;left:10px;">
+            <div style="color:white;font-size:0.7rem;font-weight:700;">QR Payments</div>
+          </div>
+        </div>
+
+        <!-- Bottom right — stat card over image -->
+        <div style="border-radius:12px;overflow:hidden;height:180px;position:relative;">
+          <img
+            src="https://images.unsplash.com/photo-1607863680198-23d4b2565df0?w=400&q=80"
+            alt="African woman using smartphone for payment"
+            style="width:100%;height:100%;object-fit:cover;"
+            onerror="this.style.background='#1e293b';"
+          >
+          <div style="position:absolute;inset:0;background:linear-gradient(to top, rgba(10,15,30,0.7) 0%, transparent 50%);"></div>
+          <div style="position:absolute;bottom:10px;left:10px;">
+            <div style="color:white;font-size:0.7rem;font-weight:700;">Works Offline</div>
+            <div style="color:rgba(255,255,255,0.5);font-size:0.65rem;">No internet needed</div>
+          </div>
+        </div>
+
+        <!-- Floating stat overlay on the grid -->
+        <div style="position:absolute;top:-20px;right:-20px;background:rgba(22,163,74,0.1);backdrop-filter:blur(20px);border:1px solid rgba(22,163,74,0.2);border-radius:10px;padding:16px 20px;z-index:10;">
+          <div style="color:rgba(255,255,255,0.4);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;">Lowest Fee</div>
+          <div style="font-size:1.6rem;font-weight:900;color:#22c55e;font-family:'JetBrains Mono',monospace;">1.5%</div>
+          <div style="color:rgba(255,255,255,0.35);font-size:0.7rem;">+ KES 20 per card</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Angled section cut -->
+  <div style="position:absolute;bottom:0;left:0;right:0;height:80px;background:#f8fafc;clip-path:polygon(0 100%, 100% 100%, 100% 0);"></div>
+</div>
+
+<!-- IMAGE FEATURE SECTION - G+D style split layout -->
+<div style="background:#f8fafc;padding:80px 0;">
+  <div style="max-width:1280px;margin:0 auto;padding:0 24px;">
+
+    <!-- Feature 1 — Image left, text right -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;margin-bottom:80px;" class="flex-col md:grid">
+      <div style="border-radius:16px;overflow:hidden;height:400px;position:relative;">
+        <img
+          src="https://images.unsplash.com/photo-1551650975-87deedd944c3?w=700&q=80"
+          alt="Kenyan merchant accepting offline M-Pesa payment"
+          style="width:100%;height:100%;object-fit:cover;"
+          onerror="this.style.background='#e2e8f0';"
+        >
+        <!-- Overlay badge -->
+        <div style="position:absolute;bottom:20px;left:20px;background:rgba(10,15,30,0.85);backdrop-filter:blur(16px);border:1px solid rgba(22,163,74,0.3);border-radius:10px;padding:14px 18px;">
+          <div style="color:rgba(255,255,255,0.5);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;">Offline Mode Active</div>
+          <div style="color:#22c55e;font-weight:700;font-size:0.9rem;display:flex;align-items:center;gap:6px;">
+            <span style="width:6px;height:6px;background:#22c55e;border-radius:50%;"></span>
+            Member Code: DK12345
+          </div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:0.7rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#16a34a;margin-bottom:16px;">Offline First</div>
+        <h2 style="font-size:clamp(2rem,4vw,3rem);font-weight:900;color:#0a0f1e;letter-spacing:-0.02em;font-family:'Outfit',sans-serif;line-height:1.1;margin-bottom:20px;">
+          No Internet?<br>No Problem.
+        </h2>
+        <p style="color:#64748b;font-size:1rem;line-height:1.8;margin-bottom:28px;">WhaPay is the only payment platform in the world that lets you register and accept payments with zero internet. Call or SMS 0140933042, get your Member Code, and start accepting M-Pesa Paybill payments immediately.</p>
+        <ul style="list-style:none;padding:0;margin-bottom:32px;display:flex;flex-direction:column;gap:12px;">
+          <li style="display:flex;align-items:center;gap:12px;color:#374151;font-size:0.9rem;">
+            <span style="width:24px;height:24px;background:#f0fdf4;border:1px solid #dcfce7;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <i class="fas fa-check" style="color:#16a34a;font-size:0.65rem;"></i>
+            </span>
+            Register via voice call to 0140933042
+          </li>
+          <li style="display:flex;align-items:center;gap:12px;color:#374151;font-size:0.9rem;">
+            <span style="width:24px;height:24px;background:#f0fdf4;border:1px solid #dcfce7;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <i class="fas fa-check" style="color:#16a34a;font-size:0.65rem;"></i>
+            </span>
+            Register via SMS — send REG YourName to 0140933042
+          </li>
+          <li style="display:flex;align-items:center;gap:12px;color:#374151;font-size:0.9rem;">
+            <span style="width:24px;height:24px;background:#f0fdf4;border:1px solid #dcfce7;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <i class="fas fa-check" style="color:#16a34a;font-size:0.65rem;"></i>
+            </span>
+            Accept payments via M-Pesa Paybill with your Member Code
+          </li>
+          <li style="display:flex;align-items:center;gap:12px;color:#374151;font-size:0.9rem;">
+            <span style="width:24px;height:24px;background:#f0fdf4;border:1px solid #dcfce7;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <i class="fas fa-check" style="color:#16a34a;font-size:0.65rem;"></i>
+            </span>
+            Auto-sync when internet restores
+          </li>
+        </ul>
+        <a href="https://wa.me/0140933042?text=REGISTER" style="display:inline-flex;align-items:center;gap:8px;background:#16a34a;color:white;font-weight:700;padding:14px 24px;border-radius:6px;text-decoration:none;font-family:'Outfit',sans-serif;">
+          <i class="fab fa-whatsapp"></i> Register Offline Now
+        </a>
+      </div>
+    </div>
+
+    <!-- Feature 2 — Text left, image right -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items
       
       <!-- Feature badges -->
       <div class="flex flex-wrap justify-center gap-6 text-sm text-white/80">

@@ -92,6 +92,134 @@
     <span id="waBadge" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">1</span>
   </button>
 </div>
+<!-- Aggressive Image Hero – Offline-First Messaging -->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap');
+.hero-aggressive * { font-family: 'Outfit', sans-serif; }
+
+.hero-aggressive {
+  position: relative;
+  background: #0a0f1e;
+  overflow: hidden;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.hero-aggressive-bg {
+  position: absolute;
+  inset: 0;
+  background-image: url('https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1800&q=80');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.25;
+}
+
+.hero-aggressive-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(10,15,30,0.97) 0%, rgba(10,15,30,0.85) 40%, rgba(10,15,30,0.5) 100%);
+}
+
+.hero-headline {
+  font-size: clamp(3rem, 6vw, 5.5rem);
+  font-weight: 900;
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+  color: white;
+}
+
+.hero-accent {
+  background: linear-gradient(135deg, #22c55e, #86efac);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@keyframes livePing {
+  0% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.5); }
+  100% { opacity: 1; transform: scale(1); }
+}
+</style>
+
+<div class="hero-aggressive">
+  <div class="hero-aggressive-bg"></div>
+  <div class="hero-aggressive-overlay"></div>
+  <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(22,163,74,0.04) 1px, transparent 1px),linear-gradient(90deg, rgba(22,163,74,0.04) 1px, transparent 1px);background-size:60px 60px;"></div>
+
+  <div style="position:relative;z-index:10;width:100%;max-width:1280px;margin:0 auto;padding:80px 24px;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;" class="flex-col md:grid">
+
+      <!-- LEFT side -->
+      <div>
+        <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(22,163,74,0.12);border:1px solid rgba(22,163,74,0.25);color:#86efac;padding:6px 16px;border-radius:999px;font-size:0.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:28px;">
+          <span style="width:6px;height:6px;background:#22c55e;border-radius:50%;box-shadow:0 0 0 3px rgba(34,197,94,0.3);animation:livePing 2s ease infinite;"></span>
+          Offline Technology — Live
+        </div>
+
+        <h1 class="hero-headline" style="margin-bottom:24px;">
+          Payments That<br>
+          <span class="hero-accent">Never Stop.</span><br>
+          <span style="font-weight:300;color:rgba(255,255,255,0.6);">Even Without Internet.</span>
+        </h1>
+
+        <p style="color:rgba(255,255,255,0.5);font-size:1.1rem;line-height:1.8;max-width:460px;margin-bottom:40px;">
+          The only platform where you can <strong>register by voice call or SMS</strong> and <strong>accept payments offline</strong> via M-Pesa Paybill. No internet? No problem.
+        </p>
+
+        <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:48px;">
+          <a href="https://wa.me/0140933042?text=REGISTER" style="display:inline-flex;align-items:center;gap:10px;background:#16a34a;color:white;font-weight:700;font-size:1rem;padding:16px 28px;border-radius:6px;text-decoration:none;transition:all 0.3s;">
+            <i class="fab fa-whatsapp"></i> Register Free
+          </a>
+          <a href="tel:0140933042" style="display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);color:white;font-weight:600;font-size:1rem;padding:16px 28px;border-radius:6px;text-decoration:none;transition:all 0.3s;">
+            <i class="fas fa-phone-alt"></i> Call 0140933042
+          </a>
+        </div>
+
+        <div style="display:flex;gap:32px;flex-wrap:wrap;margin-top:20px;">
+          <div style="border-left:2px solid rgba(22,163,74,0.4);padding-left:16px;">
+            <div style="font-size:2.2rem;font-weight:900;background:linear-gradient(135deg,#fff,#22c55e);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1;">Voice/SMS</div>
+            <div style="color:rgba(255,255,255,0.35);font-size:0.7rem;letter-spacing:0.08em;text-transform:uppercase;">Offline Registration</div>
+          </div>
+          <div style="border-left:2px solid rgba(22,163,74,0.4);padding-left:16px;">
+            <div style="font-size:2.2rem;font-weight:900;background:linear-gradient(135deg,#fff,#22c55e);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1;">Member Code</div>
+            <div style="color:rgba(255,255,255,0.35);font-size:0.7rem;letter-spacing:0.08em;text-transform:uppercase;">Offline Payment</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT side – aggressive collage -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto auto;gap:12px;position:relative;" class="hidden md:grid">
+        <div style="grid-column:1/3;border-radius:12px;overflow:hidden;height:240px;position:relative;">
+          <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?w=800&q=80" alt="Merchant with smartphone payment" style="width:100%;height:100%;object-fit:cover;">
+          <div style="position:absolute;inset:0;background:linear-gradient(to top, rgba(10,15,30,0.7) 0%, transparent 60%);"></div>
+          <div style="position:absolute;bottom:16px;left:16px;display:flex;align-items:center;gap:8px;">
+            <div style="background:rgba(22,163,74,0.9);border-radius:999px;padding:4px 12px;font-size:0.72rem;color:white;font-weight:700;">✓ Offline Payment Accepted</div>
+          </div>
+        </div>
+        <div style="border-radius:12px;overflow:hidden;height:180px;position:relative;">
+          <img src="https://images.unsplash.com/photo-1607863680198-23d4b2565df0?w=400&q=80" alt="Mobile payment QR" style="width:100%;height:100%;object-fit:cover;">
+          <div style="position:absolute;inset:0;background:linear-gradient(to top, rgba(10,15,30,0.6) 0%, transparent 60%);"></div>
+          <div style="position:absolute;bottom:10px;left:10px;color:white;font-size:0.7rem;font-weight:700;">QR Payments</div>
+        </div>
+        <div style="border-radius:12px;overflow:hidden;height:180px;position:relative;">
+          <img src="https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=400&q=80" alt="WhatsApp payment interface" style="width:100%;height:100%;object-fit:cover;">
+          <div style="position:absolute;inset:0;background:linear-gradient(to top, rgba(10,15,30,0.7) 0%, transparent 50%);"></div>
+          <div style="position:absolute;bottom:10px;left:10px;color:white;font-size:0.7rem;font-weight:700;">WhatsApp Link</div>
+        </div>
+        <div style="position:absolute;top:-20px;right:-20px;background:rgba(22,163,74,0.1);backdrop-filter:blur(20px);border:1px solid rgba(22,163,74,0.2);border-radius:10px;padding:16px 20px;z-index:10;">
+          <div style="color:rgba(255,255,255,0.4);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;">No Monthly Fee</div>
+          <div style="font-size:1.6rem;font-weight:900;color:#22c55e;">KES 0</div>
+          <div style="color:rgba(255,255,255,0.35);font-size:0.7rem;">Free registration</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="position:absolute;bottom:0;left:0;right:0;height:80px;background:#f8fafc;clip-path:polygon(0 100%, 100% 100%, 100% 0);"></div>
+</div>
+    
 <!-- ===== GLOBAL COMPARISON SECTION - ADD TO EVERY PAGE ===== -->
 <div class="bg-white rounded-2xl shadow-lg p-6 mb-12 overflow-x-auto">
   <div class="text-center mb-6">

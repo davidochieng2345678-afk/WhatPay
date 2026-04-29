@@ -58,7 +58,137 @@
 </header>
 
 <main class="max-w-5xl mx-auto px-4 py-8">
+<!-- Payment Page Hero Image Section -->
+<div style="position:relative;border-radius:24px;overflow:hidden;margin-bottom:48px;height:480px;">
 
+  <!-- Main background image -->
+  <img
+    src="https://images.unsplash.com/photo-1512428813834-c702c7702b78?w=1600&q=85"
+    alt="Customer making mobile payment at shop"
+    style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;"
+    onerror="this.src='https://images.unsplash.com/photo-1601597111158-2fceff292cdc?w=1600&q=85'"
+  >
+
+  <!-- Dark overlay -->
+  <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(10,15,30,0.96) 0%,rgba(10,15,30,0.78) 55%,rgba(10,15,30,0.35) 100%);"></div>
+
+  <!-- Grid overlay -->
+  <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(22,163,74,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(22,163,74,0.04) 1px,transparent 1px);background-size:40px 40px;"></div>
+
+  <!-- Glow top right -->
+  <div style="position:absolute;top:-100px;right:-80px;width:450px;height:450px;background:radial-gradient(circle,rgba(22,163,74,0.12) 0%,transparent 70%);border-radius:50%;"></div>
+
+  <!-- Content -->
+  <div style="position:absolute;inset:0;display:flex;align-items:center;padding:48px;">
+    <div style="max-width:1280px;margin:0 auto;width:100%;display:flex;justify-content:space-between;align-items:center;gap:40px;flex-wrap:wrap;">
+
+      <!-- Left — Title -->
+      <div style="max-width:520px;">
+        <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(22,163,74,0.12);border:1px solid rgba(22,163,74,0.25);color:#86efac;padding:6px 16px;border-radius:999px;font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:20px;">
+          <span style="width:6px;height:6px;background:#22c55e;border-radius:50%;animation:livePulse 2s ease infinite;box-shadow:0 0 0 3px rgba(34,197,94,0.25);"></span>
+          3 Ways to Pay
+        </div>
+
+        <h1 style="font-size:clamp(2rem,4vw,3.2rem);font-weight:900;color:white;line-height:1.1;letter-spacing:-0.02em;margin-bottom:16px;font-family:sans-serif;">
+          Pay Instantly.<br>
+          <span style="background:linear-gradient(135deg,#22c55e,#86efac);-webkit-background-clip:text;background-clip:text;color:transparent;">Online or Offline.</span><br>
+          <span style="font-weight:300;color:rgba(255,255,255,0.5);">No Internet Needed.</span>
+        </h1>
+
+        <p style="color:rgba(255,255,255,0.5);font-size:1rem;line-height:1.8;margin-bottom:28px;">
+          Pay any WhaPay merchant using a WhatsApp link, QR code scan or offline Member Code via M-Pesa Paybill. Works on any phone — smartphone or basic feature phone — from Kenya or anywhere in the world.
+        </p>
+
+        <!-- Method badges -->
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px;">
+          <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(22,163,74,0.15);border:1px solid rgba(22,163,74,0.3);color:#86efac;padding:8px 14px;border-radius:6px;font-size:0.8rem;font-weight:600;">
+            <i class="fab fa-whatsapp" style="font-size:0.8rem;"></i> WhatsApp Link
+          </span>
+          <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(59,130,246,0.12);border:1px solid rgba(59,130,246,0.25);color:#93c5fd;padding:8px 14px;border-radius:6px;font-size:0.8rem;font-weight:600;">
+            <i class="fas fa-qrcode" style="font-size:0.8rem;"></i> QR Code Scan
+          </span>
+          <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(168,85,247,0.12);border:1px solid rgba(168,85,247,0.25);color:#c084fc;padding:8px 14px;border-radius:6px;font-size:0.8rem;font-weight:600;">
+            <i class="fas fa-key" style="font-size:0.8rem;"></i> Member Code Offline
+          </span>
+        </div>
+
+        <div style="display:flex;flex-wrap:wrap;gap:10px;">
+          <a href="https://wa.me/0140933042?text=PAY"
+            style="display:inline-flex;align-items:center;gap:8px;background:#16a34a;color:white;font-weight:700;padding:13px 24px;border-radius:6px;text-decoration:none;font-size:0.9rem;">
+            <i class="fab fa-whatsapp"></i> Pay Now
+          </a>
+          <a href="tel:0140933042"
+            style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.8);font-weight:600;padding:13px 24px;border-radius:6px;text-decoration:none;font-size:0.9rem;">
+            <i class="fas fa-phone-alt"></i> Pay Offline
+          </a>
+        </div>
+      </div>
+
+      <!-- Right — 3 payment method cards -->
+      <div style="display:flex;flex-direction:column;gap:12px;min-width:280px;max-width:330px;">
+
+        <!-- Method 1 - WhatsApp -->
+        <div style="background:rgba(255,255,255,0.06);backdrop-filter:blur(20px);border:1px solid rgba(22,163,74,0.2);border-radius:12px;padding:18px;display:flex;align-items:flex-start;gap:14px;">
+          <div style="width:44px;height:44px;background:rgba(22,163,74,0.2);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <i class="fab fa-whatsapp" style="color:#22c55e;font-size:1.2rem;"></i>
+          </div>
+          <div style="flex:1;">
+            <div style="color:white;font-weight:800;font-size:0.9rem;margin-bottom:4px;">WhatsApp Link</div>
+            <div style="color:rgba(255,255,255,0.4);font-size:0.75rem;line-height:1.5;">Click merchant's link → choose M-Pesa or card → pay in seconds. Works from any country.</div>
+            <div style="margin-top:8px;display:inline-flex;align-items:center;gap:4px;background:rgba(22,163,74,0.1);border:1px solid rgba(22,163,74,0.2);color:#86efac;padding:3px 10px;border-radius:999px;font-size:0.65rem;font-weight:700;">
+              ✓ Online
+            </div>
+          </div>
+        </div>
+
+        <!-- Method 2 - QR Code -->
+        <div style="background:rgba(255,255,255,0.06);backdrop-filter:blur(20px);border:1px solid rgba(59,130,246,0.2);border-radius:12px;padding:18px;display:flex;align-items:flex-start;gap:14px;">
+          <div style="width:44px;height:44px;background:rgba(59,130,246,0.2);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <i class="fas fa-qrcode" style="color:#60a5fa;font-size:1.2rem;"></i>
+          </div>
+          <div style="flex:1;">
+            <div style="color:white;font-weight:800;font-size:0.9rem;margin-bottom:4px;">Scan QR Code</div>
+            <div style="color:rgba(255,255,255,0.4);font-size:0.75rem;line-height:1.5;">Scan merchant's printed QR → payment page opens → enter amount → pay instantly.</div>
+            <div style="margin-top:8px;display:inline-flex;align-items:center;gap:4px;background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.2);color:#93c5fd;padding:3px 10px;border-radius:999px;font-size:0.65rem;font-weight:700;">
+              ✓ Online
+            </div>
+          </div>
+        </div>
+
+        <!-- Method 3 - Offline -->
+        <div style="background:rgba(255,255,255,0.06);backdrop-filter:blur(20px);border:1px solid rgba(168,85,247,0.2);border-radius:12px;padding:18px;display:flex;align-items:flex-start;gap:14px;">
+          <div style="width:44px;height:44px;background:rgba(168,85,247,0.2);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <i class="fas fa-key" style="color:#c084fc;font-size:1.1rem;"></i>
+          </div>
+          <div style="flex:1;">
+            <div style="color:white;font-weight:800;font-size:0.9rem;margin-bottom:4px;">Member Code — Offline</div>
+            <div style="color:rgba(255,255,255,0.4);font-size:0.75rem;line-height:1.5;">M-Pesa → Lipa na M-Pesa → Paybill → enter Member Code → amount → PIN. No internet at all.</div>
+            <div style="margin-top:8px;display:inline-flex;align-items:center;gap:4px;background:rgba(168,85,247,0.1);border:1px solid rgba(168,85,247,0.2);color:#c084fc;padding:3px 10px;border-radius:999px;font-size:0.65rem;font-weight:700;">
+              ✓ Works Offline
+            </div>
+          </div>
+        </div>
+
+        <!-- Global note -->
+        <div style="background:rgba(22,163,74,0.07);border:1px solid rgba(22,163,74,0.15);border-radius:12px;padding:13px 16px;display:flex;align-items:center;gap:10px;">
+          <i class="fas fa-globe" style="color:#22c55e;flex-shrink:0;font-size:0.9rem;"></i>
+          <div style="color:rgba(255,255,255,0.45);font-size:0.75rem;line-height:1.5;">
+            Paying from <strong style="color:#86efac;">UK, USA, UAE or anywhere?</strong> Use WhatsApp link and pay with your local Visa, Mastercard or Google Pay.
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<style>
+@keyframes livePulse {
+  0%,100% { box-shadow: 0 0 0 3px rgba(34,197,94,0.25); }
+  50% { box-shadow: 0 0 0 6px rgba(34,197,94,0.1); }
+}
+</style>
   <!-- HERO SECTION - FULL ORIGINAL VERSION (CLEANED, NO DUPLICATES) -->
   <div class="relative overflow-hidden bg-gradient-to-br from-emerald-900 via-emerald-700 to-emerald-500 rounded-3xl shadow-2xl mb-10">
     

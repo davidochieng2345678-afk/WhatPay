@@ -388,37 +388,234 @@
 </style>
 </head>
 <body class="bg-gray-100 font-sans">
+<!-- G+D Style Grouped Navigation — Replace existing header on ALL pages -->
+<style>
+.gd-nav { font-family: sans-serif; }
+.gd-nav-link { color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.85rem;font-weight:500;transition:color 0.2s;padding:4px 0; }
+.gd-nav-link:hover { color:white; }
+.gd-nav-link.active { color:#22c55e;font-weight:700; }
+.gd-dropdown { position:relative; }
+.gd-dropdown-menu { position:absolute;top:calc(100% + 12px);left:50%;transform:translateX(-50%);background:#0f1629;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:8px;min-width:220px;opacity:0;visibility:hidden;transition:all 0.2s ease;z-index:100;box-shadow:0 20px 40px rgba(0,0,0,0.4); }
+.gd-dropdown:hover .gd-dropdown-menu { opacity:1;visibility:visible; }
+.gd-dropdown-item { display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;text-decoration:none;transition:background 0.2s; }
+.gd-dropdown-item:hover { background:rgba(255,255,255,0.06); }
+.gd-dropdown-item .icon { width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+.gd-dropdown-item .label { color:white;font-size:0.82rem;font-weight:600; }
+.gd-dropdown-item .desc { color:rgba(255,255,255,0.35);font-size:0.72rem;margin-top:1px; }
+.gd-dropdown-trigger { display:flex;align-items:center;gap:4px;cursor:pointer; }
+.gd-dropdown-trigger i.arrow { font-size:0.6rem;color:rgba(255,255,255,0.4);transition:transform 0.2s; }
+.gd-dropdown:hover .gd-dropdown-trigger i.arrow { transform:rotate(180deg); }
+</style>
 
-<header class="bg-green-600 text-white p-4 shadow-md sticky top-0 z-50">
-  <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
-    <h1 class="text-2xl font-bold mb-2 md:mb-0"><a href="index.html">WhaPay Features</a></h1>
-    <div class="flex flex-wrap items-center gap-2 md:gap-4">
-      <span id="pendingSyncBadge" class="bg-yellow-500 text-white text-xs px-2 py-1 rounded-full hidden">Sync Pending</span>
-      <button id="syncOfflineBtn" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm hidden">Sync Leads</button>
-      <span id="navUserDisplay" class="text-sm hidden md:inline"></span>
-      <button id="navLoginBtn" class="bg-white text-green-700 px-3 py-1 rounded text-sm font-semibold hover:bg-gray-100">Login/Register</button>
-      <button id="navLogoutBtn" class="bg-red-500 text-white px-3 py-1 rounded text-sm font-semibold hover:bg-red-600 hidden">Logout</button>
-      <nav class="flex flex-wrap gap-2">
-        <a href="index.html" class="hover:underline">Home</a>
-        <a href="about.html" class="hover:underline">About</a>
-        <a href="features.html" class="hover:underline font-bold text-green-200">Features</a>
-        <a href="pricing.html" class="hover:underline">Pricing</a>
-        <a href="merchant.html" class="hover:underline">Merchant</a>
-        <a href="payment.html" class="hover:underline">Payments</a>
-        <a href="pay-anyone.html" class="hover:underline">Pay Anyone</a>
-        <a href="reports.html" class="hover:underline">Reports</a>
-        <a href="blog.html" class="hover:underline">Blog</a>
-        <a href="users.html" class="hover:underline">My Account</a>
-        <a href="contact.html" class="hover:underline">Contact</a>
-        <a href="admin.html" class="hover:underline">Admin</a>
-        <a href="privacy.html" class="hover:underline">Privacy</a>
-        <a href="terms.html" class="hover:underline">Terms</a>
-        <a href="registration.html" class="hover:underline">Registration</a>
-      </nav>
+<header class="gd-nav" style="background:#080c18;border-bottom:1px solid rgba(255,255,255,0.06);position:sticky;top:0;z-index:999;">
+
+  <!-- Top utility bar -->
+  <div style="background:rgba(22,163,74,0.08);border-bottom:1px solid rgba(22,163,74,0.1);padding:6px 24px;display:flex;justify-between;align-items:center;font-size:0.72rem;flex-wrap:wrap;gap:8px;">
+    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+      <a href="tel:0140933042" style="color:rgba(255,255,255,0.5);text-decoration:none;display:flex;align-items:center;gap:5px;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">
+        <i class="fas fa-phone-alt" style="color:#22c55e;font-size:0.65rem;"></i> 0140933042
+      </a>
+      <a href="mailto:support@whapay.space" style="color:rgba(255,255,255,0.5);text-decoration:none;display:flex;align-items:center;gap:5px;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">
+        <i class="fas fa-envelope" style="color:#22c55e;font-size:0.65rem;"></i> support@whapay.space
+      </a>
+      <span style="color:rgba(255,255,255,0.3);display:flex;align-items:center;gap:5px;">
+        <i class="fas fa-globe" style="color:#22c55e;font-size:0.65rem;"></i> Serving 180+ countries
+      </span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span id="navUserTopDisplay" style="color:rgba(255,255,255,0.4);font-size:0.72rem;"></span>
+      <a href="users.html" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.72rem;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">My Account</a>
     </div>
   </div>
+
+  <!-- Main nav bar -->
+  <div style="max-width:1280px;margin:0 auto;padding:0 24px;display:flex;justify-content:space-between;align-items:center;height:64px;">
+
+    <!-- Logo -->
+    <a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;">
+      <div style="width:32px;height:32px;background:#16a34a;border-radius:6px;display:flex;align-items:center;justify-content:center;">
+        <i class="fas fa-bolt" style="color:white;font-size:0.85rem;"></i>
+      </div>
+      <span style="color:white;font-size:1.2rem;font-weight:900;letter-spacing:-0.02em;">WhaPay</span>
+    </a>
+
+    <!-- Desktop nav groups -->
+    <nav style="display:flex;align-items:center;gap:4px;" class="hidden md:flex">
+
+      <!-- Payments dropdown -->
+      <div class="gd-dropdown" style="padding:0 12px;">
+        <div class="gd-dropdown-trigger">
+          <span class="gd-nav-link">Payments</span>
+          <i class="fas fa-chevron-down arrow"></i>
+        </div>
+        <div class="gd-dropdown-menu">
+          <a href="payment.html" class="gd-dropdown-item">
+            <div class="icon" style="background:rgba(22,163,74,0.15);"><i class="fas fa-credit-card" style="color:#22c55e;font-size:0.85rem;"></i></div>
+            <div><div class="label">How to Pay</div><div class="desc">WhatsApp, QR, Member Code</div></div>
+          </a>
+          <a href="pay-anyone.html" class="gd-dropdown-item">
+            <div class="icon" style="background:rgba(59,130,246,0.15);"><i class="fas fa-paper-plane" style="color:#60a5fa;font-size:0.85rem;"></i></div>
+            <div><div class="label">Pay Anyone</div><div class="desc">Member Code, Phone, Paybill</div></div>
+          </a>
+          <a href="first-time-pay.html" class="gd-dropdown-item">
+            <div class="icon" style="background:rgba(168,85,247,0.15);"><i class="fas fa-bolt" style="color:#c084fc;font-size:0.85rem;"></i></div>
+            <div><div class="label">Register & Pay</div><div class="desc">One-step payment & signup</div></div>
+          </a>
+          <div style="border-top:1px solid rgba(255,255,255,0.06);margin:6px 0;"></div>
+          <a href="index.html#offline-features" class="gd-dropdown-item">
+            <div class="icon" style="background:rgba(251,191,36,0.12);"><i class="fas fa-wifi-slash" style="color:#fbbf24;font-size:0.85rem;"></i></div>
+            <div><div class="label">Offline Payments</div><div class="desc">No internet needed</div></div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Merchants dropdown -->
+      <div class="gd-dropdown" style="padding:0 12px;">
+        <div class="gd-dropdown-trigger">
+          <span class="gd-nav-link">Merchants</span>
+          <i class="fas fa-chevron-down arrow"></i>
+        </div>
+        <div class="gd-dropdown-menu">
+          <a href="merchant.html" class="gd-dropdown-item">
+            <div class="icon" style="background:rgba(22,163,74,0.15);"><i class="fas fa-store" style="color:#22c55e;font-size:0.85rem;"></i></div>
+            <div><div class="label">Merchant Dashboard</div><div class="desc">QR, links, transactions</div></div>
+          </a>
+          <a href="registration.html" class="gd-dropdown-item">
+            <div class="icon" style="background:rgba(59,130,246,0.15);"><i class="fas fa-user-plus" style="color:#60a5fa;font-size:0.85rem;"></i></div>
+            <div><div class="label">Register Business</div><div class="desc">Free — online or offline</div></div>
+          </a>
+          <a href="reports.html" class="gd-dropdown-item">
+            <div class="icon" style="background:rgba(168,85,247,0.15);"><i class="fas fa-chart-line" style="color:#c084fc;font-size:0.85rem;"></i></div>
+            <div><div class="label">Analytics & Reports</div><div class="desc">Revenue, trends, CSV export</div></div>
+          </a>
+          <a href="pricing.html" class="gd-dropdown-item">
+            <div class="icon" style="background:rgba(251,191,36,0.12);"><i class="fas fa-tag" style="color:#fbbf24;font-size:0.85rem;"></i></div>
+            <div><div class="label">Pricing</div><div class="desc">1.5% + KES 20, KES 0/month</div></div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Features dropdown -->
+      <div class="gd-dropdown" style="padding:0 12px;">
+        <div class="gd-dropdown-trigger">
+          <span class="gd-nav-link">Features</span>
+          <i class="fas fa-chevron-down arrow"></i>
+        </div>
+        <div class="gd-dropdown-menu">
+          <a href="features.html" class="gd-dropdown-item">
+            <div class="icon" style="background:rgba(22,163,74,0.15);"><i class="fas fa-bolt" style="color:#22c55e;font-size:0.85rem;"></i></div>
+            <div><div class="label">All Features</div><div class="desc">Complete platform overview</div></div>
+          </a>
+          <a href="process.html" class="gd-dropdown-item">
+            <div class="icon" style="background:rgba(59,130,246,0.15);"><i class="fas fa-route" style="color:#60a5fa;font-size:0.85rem;"></i></div>
+            <div><div class="label">How It Works</div><div class="desc">3 simple steps</div></div>
+          </a>
+          <a href="index.html#currencies" class="gd-dropdown-item">
+            <div class="icon" style="background:rgba(168,85,247,0.15);"><i class="fas fa-globe" style="color:#c084fc;font-size:0.85rem;"></i></div>
+            <div><div class="label">Global Currencies</div><div class="desc">135+ currencies, 180+ countries</div></div>
+          </a>
+          <a href="index.html#diaspora" class="gd-dropdown-item">
+            <div class="icon" style="background:rgba(251,191,36,0.12);"><i class="fas fa-plane" style="color:#fbbf24;font-size:0.85rem;"></i></div>
+            <div><div class="label">Diaspora Payments</div><div class="desc">UK, USA, UAE → Kenya</div></div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Company dropdown -->
+      <div class="gd-dropdown" style="padding:0 12px;">
+        <div class="gd-dropdown-trigger">
+          <span class="gd-nav-link">Company</span>
+          <i class="fas fa-chevron-down arrow"></i>
+        </div>
+        <div class="gd-dropdown-menu">
+          <a href="about.html" class="gd-dropdown-item">
+            <div class="icon" style="background:rgba(22,163,74,0.15);"><i class="fas fa-heart" style="color:#22c55e;font-size:0.85rem;"></i></div>
+            <div><div class="label">About WhaPay</div><div class="desc">Our story and mission</div></div>
+          </a>
+          <a href="blog.html" class="gd-dropdown-item">
+            <div class="icon" style="background:rgba(59,130,246,0.15);"><i class="fas fa-pen-nib" style="color:#60a5fa;font-size:0.85rem;"></i></div>
+            <div><div class="label">Blog & Insights</div><div class="desc">Payments, fintech, Africa</div></div>
+          </a>
+          <a href="contact.html" class="gd-dropdown-item">
+            <div class="icon" style="background:rgba(168,85,247,0.15);"><i class="fas fa-headset" style="color:#c084fc;font-size:0.85rem;"></i></div>
+            <div><div class="label">Contact & Support</div><div class="desc">24/7 WhatsApp support</div></div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Direct links -->
+      <a href="pricing.html" class="gd-nav-link" style="padding:0 12px;">Pricing</a>
+      <a href="blog.html" class="gd-nav-link" style="padding:0 12px;">Blog</a>
+
+    </nav>
+
+    <!-- Right side CTAs -->
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span id="navUserDisplay" style="color:rgba(255,255,255,0.5);font-size:0.78rem;"></span>
+      <button id="navLoginBtn" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.7);font-size:0.82rem;font-weight:600;padding:8px 16px;border-radius:6px;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.06)'">
+        Login
+      </button>
+      <button id="logoutBtn" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:#f87171;font-size:0.82rem;font-weight:600;padding:8px 16px;border-radius:6px;cursor:pointer;display:none;">
+        Logout
+      </button>
+      <a href="https://wa.me/0140933042?text=REGISTER"
+        style="background:#16a34a;color:white;font-weight:700;font-size:0.85rem;padding:10px 20px;border-radius:6px;text-decoration:none;display:flex;align-items:center;gap:6px;transition:background 0.2s;"
+        onmouseover="this.style.background='#15803d'" onmouseout="this.style.background='#16a34a'">
+        <i class="fab fa-whatsapp"></i> Register Free
+      </a>
+
+      <!-- Mobile menu button -->
+      <button id="mobileMenuBtn" onclick="toggleMobileMenu()"
+        style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:white;width:40px;height:40px;border-radius:6px;cursor:pointer;display:none;align-items:center;justify-content:center;"
+        class="md:hidden">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+
+  </div>
+
+  <!-- Mobile menu -->
+  <div id="mobileMenu" style="display:none;background:#080c18;border-top:1px solid rgba(255,255,255,0.06);padding:16px 24px;">
+    <div style="display:flex;flex-direction:column;gap:4px;">
+      <div style="color:rgba(255,255,255,0.3);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;padding:8px 0 4px;">Payments</div>
+      <a href="payment.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">How to Pay</a>
+      <a href="pay-anyone.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">Pay Anyone</a>
+      <a href="first-time-pay.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">Register & Pay</a>
+      <div style="color:rgba(255,255,255,0.3);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;padding:8px 0 4px;margin-top:8px;">Merchants</div>
+      <a href="merchant.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">Merchant Dashboard</a>
+      <a href="registration.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">Register Business</a>
+      <a href="reports.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">Analytics & Reports</a>
+      <a href="pricing.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">Pricing</a>
+      <div style="color:rgba(255,255,255,0.3);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;padding:8px 0 4px;margin-top:8px;">Features</div>
+      <a href="features.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">All Features</a>
+      <a href="process.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">How It Works</a>
+      <div style="color:rgba(255,255,255,0.3);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;padding:8px 0 4px;margin-top:8px;">Company</div>
+      <a href="about.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">About</a>
+      <a href="blog.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">Blog</a>
+      <a href="contact.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;">Contact</a>
+      <a href="https://wa.me/0140933042?text=REGISTER" style="display:flex;align-items:center;justify-content:center;gap:8px;background:#16a34a;color:white;font-weight:700;padding:13px;border-radius:6px;text-decoration:none;margin-top:16px;"><i class="fab fa-whatsapp"></i> Register Free</a>
+    </div>
+  </div>
+
 </header>
 
+<script>
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobileMenu');
+  const btn = document.getElementById('mobileMenuBtn');
+  const isOpen = menu.style.display === 'block';
+  menu.style.display = isOpen ? 'none' : 'block';
+  btn.innerHTML = isOpen ? '<i class="fas fa-bars"></i>' : '<i class="fas fa-times"></i>';
+}
+// Show mobile button on small screens
+(function() {
+  const btn = document.getElementById('mobileMenuBtn');
+  if (btn && window.innerWidth < 768) btn.style.display = 'flex';
+  window.addEventListener('resize', () => {
+    if (btn) btn.style.display = window.innerWidth < 768 ? 'flex' : 'none';
+  });
+})();
+</script>
 
 <main class="max-w-7xl mx-auto px-4 py-8">
   <!-- Hero Section - Professional -->

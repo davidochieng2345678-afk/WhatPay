@@ -800,7 +800,7 @@
     showModal('Add Blog', [
       { id: 'title', label: 'Title' },
       { id: 'slug', label: 'Slug' },
-      { id: 'content', label: 'Content (HTML)' }
+      { id: 'content', label: 'Content (HTML)', type: 'textarea' }  // ✅ added type
     ], async (vals) => {
       await addDoc(collection(db, 'blogs'), {
         title: vals.title,

@@ -676,7 +676,7 @@
         showModal('Edit Blog', [
           { id: 'title', label: 'Title', value: title },
           { id: 'slug', label: 'Slug', value: slug },
-          { id: 'content', label: 'Content (HTML)', value: content }
+          { id: 'content', label: 'Content (HTML)', value: content, type: 'textarea' }  // ✅ added type
         ], async (vals) => {
           await updateDoc(doc(db, 'blogs', id), {
             title: vals.title,

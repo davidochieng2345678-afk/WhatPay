@@ -800,12 +800,17 @@
       showToast(`User added with code: ${code}`);
     });
   });
-  document.getElementById('addBlogBtn')?.addEventListener('click', () => {
-    showModal('Add Blog', [
-      { id: 'title', label: 'Title' },
-      { id: 'slug', label: 'Slug' },
-      { id: 'content', label: 'Content (HTML)', type: 'textarea' }  // ✅ added type
-    ], async (vals) => {
+document.getElementById('addBlogBtn')?.addEventListener('click', () => {
+  showModal('Add Blog', [
+    { id: 'title', label: 'Title' },
+    { id: 'slug', label: 'Slug' },
+    { id: 'content', label: 'Content (HTML)', type: 'textarea' }
+  ], async (vals) => {
+    if (!vals.title || !vals.slug || !vals.content) {
+      showToast('All fields are required', true);
+      return;
+    }
+    try {
       await addDoc(collection(db, 'blogs'), {
         title: vals.title,
         slug: vals.slug,
@@ -813,9 +818,15 @@
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp()
       });
-      showToast('Blog added');
-    });
+      showToast('Blog added successfully');
+    } catch (err) {
+      console.error(err);
+      showToast('Failed to add blog', true);
+    }
   });
+});
+  
+  
 
   // Tab switching
   const tabs = document.querySelectorAll('.tab-btn');

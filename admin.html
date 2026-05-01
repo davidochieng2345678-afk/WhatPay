@@ -1302,6 +1302,18 @@ window.updateCharts = function() { originalUpdateCharts(); updateDetailedReports
 updateCharts = function() { originalUpdateCharts(); updateDetailedReports(); };
 
 setTimeout(() => updateDetailedReports(), 1500);
+      <!-- Login Modal -->
+<div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+  <div class="bg-white rounded-xl p-6 max-w-md w-full mx-4">
+    <h2 class="text-xl font-bold mb-4">Admin Login</h2>
+    <input type="email" id="adminEmail" placeholder="Email" class="w-full border p-2 rounded mb-3">
+    <input type="password" id="adminPassword" placeholder="Password" class="w-full border p-2 rounded mb-3">
+    <button id="adminLoginBtn" class="bg-green-600 text-white w-full py-2 rounded">Login</button>
+    <button id="closeModalBtn" class="text-gray-500 text-sm w-full mt-2">Cancel</button>
+    <div id="loginError" class="text-red-500 text-sm mt-2 text-center"></div>
+    <p class="text-xs text-gray-500 text-center mt-3">Use your admin email and password</p>
+  </div>
+</div>
 </script>
   <!-- Before </body> -->
 <script src="global.js"></script>

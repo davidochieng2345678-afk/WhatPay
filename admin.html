@@ -669,38 +669,42 @@
     });
     attachBlogActions();
   }
-
-  function attachBlogActions() {
-    document.querySelectorAll('.editBlog').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const id = btn.getAttribute('data-id');
-        const title = btn.getAttribute('data-title');
-        const slug = btn.getAttribute('data-slug');
-        const content = btn.getAttribute('data-content');
-        showModal('Edit Blog', [
-  { id: 'title', label: 'Title', value: title },
-  { id: 'slug', label: 'Slug', value: slug },
-  { id: 'content', label: 'Content (HTML)', value: content, type: 'textarea' }
-], async (vals) => {
-  await updateDoc(doc(db, 'blogs', id), {
-    title: vals.title,
-    slug: vals.slug,
-    content: vals.content,
-    updatedAt: serverTimestamp()
-  });
-  showToast('Blog updated');
-});
-  
-    document.querySelectorAll('.deleteBlog').forEach(btn => {
-      btn.addEventListener('click', async () => {
-        if (confirm('Delete this blog post?')) {
-          await deleteDoc(doc(db, 'blogs', btn.getAttribute('data-id')));
-          showToast('Blog deleted');
-        }
+function attachBlogActions() {
+  // Edit Blog
+  document.querySelectorAll('.editBlog').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.getAttribute('data-id');
+      const title = btn.getAttribute('data-title');
+      const slug = btn.getAttribute('data-slug');
+      const content = btn.getAttribute('data-content');
+      showModal('Edit Blog', [
+        { id: 'title', label: 'Title', value: title },
+        { id: 'slug', label: 'Slug', value: slug },
+        { id: 'content', label: 'Content (HTML)', value: content, type: 'textarea' }
+      ], async (vals) => {
+        await updateDoc(doc(db, 'blogs', id), {
+          title: vals.title,
+          slug: vals.slug,
+          content: vals.content,
+          updatedAt: serverTimestamp()
+        });
+        showToast('Blog updated');
       });
     });
-  }
+  });
 
+  // Delete Blog
+  document.querySelectorAll('.deleteBlog').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      if (confirm('Delete this blog post?')) {
+        await deleteDoc(doc(db, 'blogs', btn.getAttribute('data-id')));
+        showToast('Blog deleted');
+      }
+    });
+  });
+}
+  
+  
   // Charts
   function updateCharts() {
     const now = new Date();

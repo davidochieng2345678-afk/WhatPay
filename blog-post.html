@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="pageTitle">Blog Post | WhaPay</title>
+<meta name="description" id="pageDescription" content="WhaPay blog post">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="global.css">
+<style>
+body { background:#f8fafc; font-family:sans-serif; }
+.post-content h2 { font-size:1.6rem;font-weight:800;color:#0f172a;margin:2rem 0 1rem; }
+.post-content h3 { font-size:1.25rem;font-weight:700;color:#0f172a;margin:1.5rem 0 0.75rem; }
+.post-content p { line-height:1.85;margin-bottom:1.25rem;color:#374151; }
+.post-content ul,.post-content ol { margin:1rem 0 1.5rem 1.5rem; }
+.post-content li { margin-bottom:0.5rem;line-height:1.75;color:#374151; }
+.post-content strong { color:#0f172a;font-weight:700; }
+.post-content a { color:#16a34a;text-decoration:underline; }
+.post-content img { border-radius:12px;max-width:100%;margin:1.5rem 0; }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header style="background:#080c18;border-bottom:1px solid rgba(255,255,255,0.06);padding:0 24px;position:sticky;top:0;z-index:99;">
+  <div style="max-width:1200px;margin:0 auto;height:64px;display:flex;justify-content:space-between;align-items:center;">
+    <a href="index.html" style="display:flex;align-items:center;gap:8px;text-decoration:none;">
+      <div style="width:28px;height:28px;background:#16a34a;border-radius:6px;display:flex;align-items:center;justify-content:center;"><i class="fas fa-bolt" style="color:white;font-size:0.75rem;"></i></div>
+      <span style="color:white;font-weight:900;font-size:1.1rem;">WhaPay</span>
+    </a>
+    <nav style="display:flex;gap:16px;align-items:center;">
+      <a href="index.html" style="color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.85rem;">Home</a>
+      <a href="merchant.html" style="color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.85rem;">Merchant</a>
+      <a href="pricing.html" style="color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.85rem;">Pricing</a>
+      <a href="blog.html" style="color:#22c55e;font-weight:700;text-decoration:none;font-size:0.85rem;">Blog</a>
+      <a href="https://wa.me/0140933042?text=REGISTER" style="background:#16a34a;color:white;font-weight:700;padding:8px 16px;border-radius:6px;text-decoration:none;font-size:0.82rem;"><i class="fab fa-whatsapp"></i> Register Free</a>
+    </nav>
+  </div>
+</header>
+
+<!-- Loading state -->
+<div id="postLoading" style="text-align:center;padding:100px 20px;">
+  <div style="width:40px;height:40px;border:3px solid #f0fdf4;border-top:3px solid #16a34a;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 16px;"></div>
+  <p style="color:#94a3b8;">Loading post...</p>
+</div>
+
+<!-- Not found -->
+<div id="postNotFound" style="display:none;text-align:center;padding:100px 20px;">
+  <div style="font-size:3rem;margin-bottom:16px;">😕</div>
+  <h2 style="font-size:1.5rem;font-weight:800;margin-bottom:8px;">Post not found</h2>
+  <p style="color:#64748b;margin-bottom:24px;">This post may have been removed or the link is incorrect.</p>
+  <a href="blog.html" style="background:#16a34a;color:white;font-weight:700;padding:12px 24px;border-radius:8px;text-decoration:none;">← Back to Blog</a>
+</div>
+
+<!-- Post content -->
+<div id="postContent" style="display:none;max-width:820px;margin:0 auto;padding:48px 24px;">
+
+  <!-- Breadcrumb -->
+  <div style="margin-bottom:24px;font-size:0.82rem;color:#94a3b8;">
+    <a href="index.html" style="color:#16a34a;text-decoration:none;">Home</a>
+    <span style="margin:0 8px;">→</span>
+    <a href="blog.html" style="color:#16a34a;text-decoration:none;">Blog</a>
+    <span style="margin:0 8px;">→</span>
+    <span id="postBreadcrumb" style="color:#64748b;"></span>
+  </div>
+
+  <!-- Category -->
+  <div id="postCategory" style="margin-bottom:16px;"></div>
+
+  <!-- Title -->
+  <h1 id="postTitle" style="font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;color:#0f172a;line-height:1.15;margin-bottom:20px;"></h1>
+
+  <!-- Meta -->
+  <div style="display:flex;gap:20px;flex-wrap:wrap;margin-bottom:28px;padding-bottom:28px;border-bottom:1px solid #e2e8f0;">
+    <span id="postDate" style="color:#94a3b8;font-size:0.82rem;display:flex;align-items:center;gap:6px;"><i class="fas fa-calendar" style="color:#16a34a;"></i></span>
+    <span style="color:#94a3b8;font-size:0.82rem;display:flex;align-items:center;gap:6px;"><i class="fas fa-user" style="color:#16a34a;"></i> WhaPay Team</span>
+    <span style="color:#94a3b8;font-size:0.82rem;display:flex;align-items:center;gap:6px;"><i class="fas fa-clock" style="color:#16a34a;"></i> 5 min read</span>
+  </div>
+
+  <!-- Hero image -->
+  <div id="postImageWrapper" style="border-radius:16px;overflow:hidden;height:380px;margin-bottom:36px;">
+    <img id="postImage" src="" alt="" style="width:100%;height:100%;object-fit:cover;">
+  </div>
+
+  <!-- Body -->
+  <div id="postBody" class="post-content"></div>
+
+  <!-- CTA -->
+  <div style="background:linear-gradient(135deg,#052e16,#064e3b);border-radius:20px;padding:36px;margin:40px 0;text-align:center;">
+    <h3 style="color:white;font-size:1.4rem;font-weight:800;margin-bottom:10px;">Ready to Accept Payments?</h3>
+    <p style="color:rgba(255,255,255,0.65);margin-bottom:24px;">Free registration. No monthly fees. Works online and offline.</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <a href="https://wa.me/0140933042?text=REGISTER" style="display:inline-flex;align-items:center;gap:8px;background:#22c55e;color:white;font-weight:700;padding:13px 22px;border-radius:8px;text-decoration:none;"><i class="fab fa-whatsapp"></i> Register Free</a>
+      <a href="pricing.html" style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.1);color:white;font-weight:600;padding:13px 22px;border-radius:8px;text-decoration:none;border:1px solid rgba(255,255,255,0.2);">See Pricing</a>
+      <a href="merchant.html" style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.1);color:white;font-weight:600;padding:13px 22px;border-radius:8px;text-decoration:none;border:1px solid rgba(255,255,255,0.2);">Merchant Dashboard</a>
+    </div>
+  </div>
+
+  <!-- Back link -->
+  <div style="margin-top:32px;">
+    <a href="blog.html" style="display:inline-flex;align-items:center;gap:8px;color:#16a34a;font-weight:700;text-decoration:none;">← Back to All Posts</a>
+  </div>
+
+</div>
+
+<footer style="background:#080c18;padding:32px 24px;margin-top:48px;border-top:1px solid rgba(255,255,255,0.06);">
+  <div style="max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+    <a href="index.html" style="color:white;font-weight:900;text-decoration:none;">WhaPay</a>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;">
+      <a href="blog.html" style="color:rgba(255,255,255,0.4);text-decoration:none;font-size:0.8rem;">Blog</a>
+      <a href="privacy.html" style="color:rgba(255,255,255,0.4);text-decoration:none;font-size:0.8rem;">Privacy</a>
+      <a href="terms.html" style="color:rgba(255,255,255,0.4);text-decoration:none;font-size:0.8rem;">Terms</a>
+      <a href="contact.html" style="color:rgba(255,255,255,0.4);text-decoration:none;font-size:0.8rem;">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<a href="https://wa.me/0140933042?text=Hello" target="_blank" style="position:fixed;bottom:20px;right:20px;background:#22c55e;color:white;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(34,197,94,0.4);z-index:50;text-decoration:none;"><i class="fab fa-whatsapp" style="font-size:1.4rem;"></i></a>
+
+<style>
+@keyframes spin { 0%{transform:rotate(0deg);}100%{transform:rotate(360deg);} }
+</style>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDPAvq6BgpdfZAkfoEwdwmHrWedHgzjRSk",
+  authDomain: "whapay-c93ab.firebaseapp.com",
+  projectId: "whapay-c93ab",
+  storageBucket: "whapay-c93ab.firebasestorage.app",
+  messagingSenderId: "205456952458",
+  appId: "1:205456952458:web:6533921ca10a2988417173"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const params = new URLSearchParams(window.location.search);
+const postId = params.get('id');
+
+if (!postId) {
+  document.getElementById('postLoading').style.display = 'none';
+  document.getElementById('postNotFound').style.display = 'block';
+} else {
+  const docRef = doc(db, 'blogs', postId);
+  const docSnap = await getDoc(docRef);
+
+  if (!docSnap.exists()) {
+    document.getElementById('postLoading').style.display = 'none';
+    document.getElementById('postNotFound').style.display = 'block';
+  } else {
+    const post = { id: docSnap.id, ...docSnap.data() };
+
+    const date = post.createdAt?.toDate
+      ? post.createdAt.toDate().toLocaleDateString('en-KE', { year:'numeric', month:'long', day:'numeric' })
+      : 'Recent';
+
+    const image = post.image || 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200&q=85';
+
+    // Update page meta
+    document.getElementById('pageTitle').innerText = (post.title || 'Blog Post') + ' | WhaPay';
+    document.getElementById('pageDescription').setAttribute('content', post.excerpt || post.title || '');
+
+    // Populate content
+    document.getElementById('postBreadcrumb').innerText = post.title || '';
+    if (post.category) {
+      document.getElementById('postCategory').innerHTML = `<span style="background:#f0fdf4;color:#166534;padding:4px 14px;border-radius:999px;font-size:0.75rem;font-weight:700;">${post.category}</span>`;
+    }
+    document.getElementById('postTitle').innerText = post.title || '';
+    document.getElementById('postDate').innerHTML = `<i class="fas fa-calendar" style="color:#16a34a;"></i> ${date}`;
+    document.getElementById('postImage').src = image;
+    document.getElementById('postImage').alt = post.title || '';
+    document.getElementById('postBody').innerHTML = post.content || '';
+
+    document.getElementById('postLoading').style.display = 'none';
+    document.getElementById('postContent').style.display = 'block';
+  }
+}
+</script>
+</body>
+</html>

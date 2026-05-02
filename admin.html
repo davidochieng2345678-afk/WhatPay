@@ -804,32 +804,46 @@ function attachBlogActions() {
     });
   });
 document.getElementById('addBlogBtn')?.addEventListener('click', () => {
-  showModal('Add Blog', [
-    { id: 'title', label: 'Title' },
-    { id: 'slug', label: 'Slug' },
-    { id: 'content', label: 'Content (HTML)', type: 'textarea' }
+  showModal('Add Blog Post', [
+    { id: 'title', label: 'Title (e.g. How to Accept M-Pesa Without Internet)' },
+    { id: 'slug', label: 'URL Slug (e.g. mpesa-without-internet)' },
+    { id: 'excerpt', label: 'Short Description (shown on blog listing page)' },
+    { id: 'category', label: 'Category (e.g. M-Pesa, Offline Payments, Kenya)' },
+    { id: 'image', label: 'Hero Image URL (from Unsplash or leave blank)' },
+    { id: 'content', label: 'Full Content (HTML allowed)', type: 'textarea' }
   ], async (vals) => {
     if (!vals.title || !vals.slug || !vals.content) {
-      showToast('All fields are required', true);
+      showToast('Title, Slug and Content are required', true);
       return;
     }
+    const submitBtn = document.getElementById('modalSubmit');
+    submitBtn.disabled = true;
+    submitBtn.innerText = 'Saving...';
     try {
-      await addDoc(collection(db, 'blogs'), {
-        title: vals.title,
-        slug: vals.slug,
+      const docRef = await addDoc(collection(db, 'blogs'), {
+        title: vals.title.trim(),
+        slug: vals.slug.trim().toLowerCase().replace(/\s+/g, '-'),
+        excerpt: vals.excerpt.trim(),
+        category: vals.category.trim(),
+        image: vals.image.trim() || 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&q=80',
         content: vals.content,
+        published: true,
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp()
       });
-      showToast('Blog added successfully');
+      console.log('Blog saved with ID:', docRef.id);
+      showToast('✅ Blog post saved successfully! ID: ' + docRef.id);
     } catch (err) {
-      console.error(err);
-      showToast('Failed to add blog', true);
+      console.error('Blog save error:', err);
+      showToast('❌ Failed to save: ' + err.message, true);
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerText = 'Save';
     }
   });
 });
   
-  
+
 
   // Tab switching
   const tabs = document.querySelectorAll('.tab-btn');

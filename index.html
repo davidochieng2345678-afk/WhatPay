@@ -2972,18 +2972,20 @@ function showIndustry(key) {
     }
   });
 
-  // ========== Live Stats ==========
   async function loadStats() {
-    try {
-      const merchantsSnap = await getDocs(collection(db, "merchants"));
-      document.getElementById('totalMerchants').innerText = merchantsSnap.size;
-      const txSnap = await getDocs(collection(db, "transactions"));
-      let totalVol = 0;
-      txSnap.forEach(doc => { if (doc.data().status === 'completed') totalVol += (doc.data().amount || 0); });
-      document.getElementById('totalTransactions').innerText = txSnap.size;
-      document.getElementById('totalVolume').innerHTML = formatKES(totalVol);
-    } catch (err) { console.error("Stats error:", err); }
+  try {
+    const response = await fetch('https://whapay-backend.onrender.com/api/stats');
+    const data = await response.json();
+    if (data.success) {
+      document.getElementById('totalMerchants').innerText = data.totalMerchants;
+      document.getElementById('totalTransactions').innerText = data.totalTransactions;
+      document.getElementById('totalVolume').innerHTML = formatKES(data.totalVolume);
+    }
+  } catch (err) { 
+    console.error("Stats error:", err); 
   }
+}
+  
 
   // ========== Live Transactions Table ==========
   const q = query(collection(db, "transactions"), orderBy("timestamp", "desc"));

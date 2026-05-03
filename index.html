@@ -2869,21 +2869,7 @@ function showIndustry(key) {
 <a href="https://wa.me/0140933042?text=Hello" target="_blank" class="fixed bottom-5 right-5 bg-green-500 text-white p-3 rounded-full shadow-lg"><i class="fab fa-whatsapp text-2xl"></i></a>
 
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, updateDoc, doc, serverTimestamp, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-  import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyDPAvq6BgpdfZAkfoEwdwmHrWedHgzjRSk",
-    authDomain: "whapay-c93ab.firebaseapp.com",
-    projectId: "whapay-c93ab",
-    storageBucket: "whapay-c93ab.firebasestorage.app",
-    messagingSenderId: "205456952458",
-    appId: "1:205456952458:web:6533921ca10a2988417173"
-  };
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  const auth = getAuth(app);
+  
 
   // ========== Global State & Helpers ==========
   let currentUser = null;

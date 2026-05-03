@@ -2923,59 +2923,48 @@ function showIndustry(key) {
   }
 
   async function syncOfflineItems() {
-    const syncStatusDiv = document.getElementById('syncStatus');
-    syncStatusDiv.classList.remove('hidden');
-    syncStatusDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Syncing pending registrations & payments...';
-    try {
-      const pending = await localforage.getItem(PENDING_KEY) || [];
-      const toSync = pending.filter(p => !p.synced);
-      if (toSync.length === 0) {
-        syncStatusDiv.innerHTML = '✅ No pending items.';
-        setTimeout(() => syncStatusDiv.classList.add('hidden'), 2000);
-        return;
-      }
-      for (const item of toSync) {
-        if (item.type === 'registration') {
-          await addDoc(collection(db, "users"), {
-            fullName: item.name,
-            phone: item.phone,
-            memberCode: item.memberCode,
-            status: "active",
-            createdAt: serverTimestamp()
-          });
-          await addDoc(collection(db, "transactions"), {
-            customer: item.name,
-            customerPhone: item.phone,
-            amount: item.amount,
-            method: item.method,
-            status: "completed",
-            timestamp: serverTimestamp()
-          });
-        } else if (item.type === 'payment') {
-          await addDoc(collection(db, "transactions"), {
-            customer: item.name,
-            customerPhone: item.phone,
-            amount: item.amount,
-            method: item.method,
-            status: "completed",
-            timestamp: serverTimestamp()
-          });
-        }
-        item.synced = true;
+  const syncStatusDiv = document.getElementById('syncStatus');
+  syncStatusDiv.classList.remove('hidden');
+  syncStatusDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Syncing...';
+  try {
+    const pending = await localforage.getItem(PENDING_KEY) || [];
+    const toSync = pending.filter(p => !p.synced);
+    if (toSync.length === 0) {
+      syncStatusDiv.innerHTML = '✅ No pending items.';
+      setTimeout(() => syncStatusDiv.classList.add('hidden'), 2000);
+      return;
+    }
+    
+    // Send to backend sync endpoint
+    const response = await fetch('https://whapay-backend.onrender.com/api/sync', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ items: toSync })
+    });
+    const result = await response.json();
+    
+    if (result.success) {
+      // Mark synced items as true
+      for (const synced of result.results) {
+        const item = toSync.find(i => i.createdAt == synced.key.split('_')[2]);
+        if (item) item.synced = true;
       }
       await localforage.setItem(PENDING_KEY, pending);
       updatePendingBadge();
-      syncStatusDiv.innerHTML = `✅ Synced ${toSync.length} item(s).`;
+      syncStatusDiv.innerHTML = `✅ Synced ${result.results.length} items.`;
       setTimeout(() => syncStatusDiv.classList.add('hidden'), 3000);
-      showToast(`Synced ${toSync.length} offline items`);
-    } catch (err) {
-      console.error(err);
-      syncStatusDiv.innerHTML = '❌ Sync failed. Will retry later.';
-      setTimeout(() => syncStatusDiv.classList.add('hidden'), 3000);
-      showToast("Sync failed", true);
+      showToast(`Synced ${result.results.length} offline items`);
+    } else {
+      throw new Error(result.error);
     }
+  } catch (err) {
+    console.error(err);
+    syncStatusDiv.innerHTML = '❌ Sync failed. Will retry later.';
+    setTimeout(() => syncStatusDiv.classList.add('hidden'), 3000);
+    showToast("Sync failed", true);
   }
-
+}
+  
   window.addEventListener('online', () => {
     if (navigator.onLine) {
       showToast("Connection restored. Syncing offline items...");

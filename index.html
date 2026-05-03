@@ -2095,7 +2095,6 @@ function showCountryInfo() {
     btn.addEventListener('click', () => switchForm(btn.getAttribute('data-type')));
   });
 
-  // Helper: process payment (offline-aware)
   async function processPayment(paymentData, submitBtn, messageDiv, successMsg) {
     submitBtn.disabled = true;
     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
@@ -2116,33 +2115,8 @@ function showCountryInfo() {
         window.showToast(successMsg);
       } else {
         await window.savePendingPayment(paymentData);
-        messageDiv.innerHTML = '<div class="bg-yellow-50 p-2 rounded text-yellow-800">📡 No internet. Payment saved offline. Will sync when online.</div>';
-        window.showToast("Payment saved offline. Will sync when online.");
-      }
-      // Clear inputs
-      if (paymentData.type === 'member_code') {
-        document.getElementById('payMemberCode').value = '';
-        document.getElementById('payMemberPhone').value = '';
-        document.getElementById('payMemberAmount').value = '';
-      } else if (paymentData.type === 'phone_payment') {
-        document.getElementById('payRecipientPhone').value = '';
-        document.getElementById('payYourPhone').value = '';
-        document.getElementById('payPhoneAmount').value = '';
-      } else if (paymentData.type === 'paybill') {
-        document.getElementById('payBusinessNumber').value = '';
-        document.getElementById('payAccountNumber').value = '';
-        document.getElementById('payPayerPhone').value = '';
-        document.getElementById('payPaybillAmount').value = '';
-      }
-    } catch (err) {
-      messageDiv.innerHTML = `<div class="bg-red-50 p-2 rounded text-red-800">❌ ${err.message}</div>`;
-      window.showToast(err.message, true);
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.innerHTML = submitBtn.id === 'payMemberBtn' ? 'Pay Now' : (submitBtn.id === 'payPhoneBtn' ? 'Pay to Phone Number' : 'Pay to Paybill/Till');
-    }
-  }
-
+        // ...
+  
   // Member Code payment
   document.getElementById('payMemberBtn').addEventListener('click', async () => {
     const code = document.getElementById('payMemberCode').value.trim();

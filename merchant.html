@@ -399,7 +399,95 @@ function toggleMobileMenu() {
 })();
 </script>
 
+<script>
+// ========== STANDALONE OFFLINE SYNC (Just paste, works automatically) ==========
 
+// Save user phone when they use the site
+function setUserPhone(phone) {
+  localStorage.setItem('whapay_user_phone', phone);
+}
+
+// Get user phone
+function getUserPhone() {
+  return localStorage.getItem('whapay_user_phone');
+}
+
+// Store offline payment
+async function storeOfflinePayment(amount, merchantName) {
+  const phone = getUserPhone();
+  if (!phone) return false;
+  
+  await fetch('/api/offline/store', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      customerPhone: phone,
+      customerName: "Customer",
+      merchantName: merchantName,
+      merchantPhone: "0140933042",
+      amount: amount,
+      paymentMethod: "card"
+    })
+  });
+  
+  return true;
+}
+
+// Sync all pending transactions
+async function syncOfflinePayments() {
+  const phone = getUserPhone();
+  if (!phone) return;
+  
+  const response = await fetch(`/api/offline/pending/${phone}`);
+  const data = await response.json();
+  
+  if (data.pending > 0) {
+    console.log(`📱 Syncing ${data.pending} offline transactions...`);
+    
+    const syncRes = await fetch('/api/offline/sync', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ customerPhone: phone })
+    });
+    
+    const syncData = await syncRes.json();
+    
+    if (syncData.synced > 0) {
+      showToast(`✅ Synced ${syncData.synced} offline payments!`);
+      if (window.location.pathname.includes('reports.html')) {
+        location.reload();
+      }
+    }
+  }
+}
+
+// Auto-sync when internet comes back
+window.addEventListener('online', () => {
+  console.log("🌐 Online - syncing...");
+  showToast("Connection restored. Syncing payments...");
+  syncOfflinePayments();
+});
+
+// Check on page load
+if (navigator.onLine) {
+  setTimeout(syncOfflinePayments, 3000);
+}
+
+function showToast(msg) {
+  let toast = document.getElementById('offlineToast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'offlineToast';
+    toast.style.cssText = 'fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-full text-sm z-50 transition-opacity opacity-0';
+    document.body.appendChild(toast);
+  }
+  toast.innerText = msg;
+  toast.style.backgroundColor = '#16a34a';
+  toast.classList.remove('opacity-0');
+  toast.classList.add('opacity-100');
+  setTimeout(() => toast.classList.add('opacity-0'), 3000);
+}
+</script>
 
 
     

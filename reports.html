@@ -171,45 +171,229 @@ function toggleMobileMenu() {
   if (btn) btn.innerHTML = isOpen ? '<i class="fas fa-bars"></i>' : '<i class="fas fa-times"></i>';
 }
 </script>
-
-
-     <div style="position:relative;border-radius:24px;overflow:hidden;margin-bottom:48px;height:480px;">
-  <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1600&q=85" alt="WhaPay analytics and payment reports dashboard" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;" onerror="this.src='https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1600&q=85'">
-  <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(10,15,30,0.96) 0%,rgba(10,15,30,0.78) 55%,rgba(10,15,30,0.35) 100%);"></div>
-  <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(22,163,74,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(22,163,74,0.04) 1px,transparent 1px);background-size:40px 40px;"></div>
-  <div style="position:absolute;bottom:-80px;right:-80px;width:400px;height:400px;background:radial-gradient(circle,rgba(22,163,74,0.1) 0%,transparent 70%);border-radius:50%;"></div>
-  <div style="position:absolute;inset:0;display:flex;align-items:center;padding:48px;">
-    <div style="max-width:1280px;margin:0 auto;width:100%;display:flex;justify-content:space-between;align-items:center;gap:40px;flex-wrap:wrap;">
-      <div style="max-width:520px;">
-        <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(22,163,74,0.12);border:1px solid rgba(22,163,74,0.25);color:#86efac;padding:6px 16px;border-radius:999px;font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:20px;"><span style="width:6px;height:6px;background:#22c55e;border-radius:50%;animation:livePulse 2s ease infinite;"></span> Live Analytics Dashboard</div>
-        <h1 style="font-size:clamp(2rem,4vw,3.2rem);font-weight:900;color:white;line-height:1.1;letter-spacing:-0.02em;margin-bottom:16px;font-family:sans-serif;">Your Payments.<br><span style="background:linear-gradient(135deg,#22c55e,#86efac);-webkit-background-clip:text;background-clip:text;color:transparent;">Full Visibility.</span><br><span style="font-weight:300;color:rgba(255,255,255,0.5);">Real Time.</span></h1>
-        <p style="color:rgba(255,255,255,0.5);font-size:1rem;line-height:1.8;margin-bottom:28px;">View revenue trends, transaction history, top customers and payment method breakdown. Export CSV reports for accounting. Includes offline transaction sync — free for all merchants.</p>
-        <div style="display:flex;flex-wrap:wrap;gap:10px;">
-          <a href="https://wa.me/0140933042?text=REGISTER" style="display:inline-flex;align-items:center;gap:8px;background:#16a34a;color:white;font-weight:700;padding:13px 24px;border-radius:6px;text-decoration:none;font-size:0.9rem;"><i class="fab fa-whatsapp"></i> Get Dashboard Access</a>
-          <a href="merchant.html" style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.8);font-weight:600;padding:13px 24px;border-radius:6px;text-decoration:none;font-size:0.9rem;">Merchant Portal</a>
-        </div>
+<!-- Login Overlay -->
+<div id="loginOverlay" class="max-w-md mx-auto mt-20 px-4">
+  <div class="bg-white rounded-2xl shadow-xl p-8">
+    <div class="text-center mb-6">
+      <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <i class="fas fa-chart-line text-2xl text-green-600"></i>
       </div>
-      <div style="display:flex;flex-direction:column;gap:10px;min-width:260px;max-width:300px;">
-        <div style="background:rgba(255,255,255,0.06);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:16px;display:flex;align-items:center;gap:14px;">
-          <div style="width:40px;height:40px;background:rgba(22,163,74,0.2);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fas fa-chart-line" style="color:#22c55e;"></i></div>
-          <div><div style="color:white;font-weight:700;font-size:0.88rem;">Revenue Trends</div><div style="color:rgba(255,255,255,0.4);font-size:0.72rem;">Daily, weekly, monthly charts</div></div>
-        </div>
-        <div style="background:rgba(255,255,255,0.06);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:16px;display:flex;align-items:center;gap:14px;">
-          <div style="width:40px;height:40px;background:rgba(59,130,246,0.2);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fas fa-download" style="color:#60a5fa;"></i></div>
-          <div><div style="color:white;font-weight:700;font-size:0.88rem;">Export CSV Reports</div><div style="color:rgba(255,255,255,0.4);font-size:0.72rem;">Excel & accounting compatible</div></div>
-        </div>
-        <div style="background:rgba(255,255,255,0.06);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:16px;display:flex;align-items:center;gap:14px;">
-          <div style="width:40px;height:40px;background:rgba(168,85,247,0.2);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fas fa-sync-alt" style="color:#c084fc;"></i></div>
-          <div><div style="color:white;font-weight:700;font-size:0.88rem;">Offline Sync</div><div style="color:rgba(255,255,255,0.4);font-size:0.72rem;">Auto-syncs when back online</div></div>
-        </div>
-        <div style="background:rgba(255,255,255,0.06);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:16px;display:flex;align-items:center;gap:14px;">
-          <div style="width:40px;height:40px;background:rgba(251,191,36,0.15);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fas fa-users" style="color:#fbbf24;"></i></div>
-          <div><div style="color:white;font-weight:700;font-size:0.88rem;">Top Customers</div><div style="color:rgba(255,255,255,0.4);font-size:0.72rem;">Revenue by customer analysis</div></div>
-        </div>
+      <h2 class="text-2xl font-bold text-gray-800">WhaPay Analytics</h2>
+      <p class="text-gray-500 text-sm mt-1">Login to access your payment reports</p>
+    </div>
+    <div class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+        <input type="email" id="loginEmail" placeholder="admin@whapay.space" class="w-full border-2 border-gray-200 focus:border-green-500 rounded-xl px-4 py-3 outline-none">
       </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+        <input type="password" id="loginPassword" placeholder="••••••••" class="w-full border-2 border-gray-200 focus:border-green-500 rounded-xl px-4 py-3 outline-none">
+      </div>
+      <p id="loginError" class="text-red-500 text-sm"></p>
+      <button id="loginBtn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl">Login to Dashboard</button>
+    </div>
+    <div class="mt-6 pt-4 border-t border-gray-100 text-center">
+      <p class="text-sm text-gray-500 mb-3">Not a merchant yet?</p>
+      <a href="https://wa.me/0140933042?text=REGISTER" class="inline-flex items-center gap-2 bg-green-50 text-green-700 font-semibold px-5 py-2.5 rounded-full">Register Free via WhatsApp</a>
     </div>
   </div>
 </div>
-<style>
-@keyframes livePulse { 0%,100% { box-shadow:0 0 0 3px rgba(34,197,94,0.25); } 50% { box-shadow:0 0 0 6px rgba(34,197,94,0.1); } }
-</style>
+
+<!-- Main Dashboard -->
+<main id="dashboardContent" class="hidden max-w-7xl mx-auto px-6 py-8">
+  <!-- Hero Banner -->
+  <div class="bg-gradient-to-br from-emerald-900 via-emerald-700 to-emerald-500 rounded-3xl shadow-2xl mb-8 p-8 text-white">
+    <h1 class="text-3xl md:text-4xl font-bold">Payment Intelligence</h1>
+    <p class="text-emerald-100 mt-2">Real-time insights into your transaction data</p>
+    <div class="flex gap-3 mt-4">
+      <button id="refreshBtn" class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-xl"><i class="fas fa-sync-alt"></i> Refresh</button>
+      <button id="exportAllBtn" class="bg-white hover:bg-gray-100 text-emerald-700 px-4 py-2 rounded-xl"><i class="fas fa-download"></i> Export CSV</button>
+    </div>
+  </div>
+
+  <!-- Date Filter -->
+  <div class="filter-bar mb-8">
+    <div class="flex flex-wrap gap-3">
+      <input type="date" id="dateFrom" class="border rounded-lg px-3 py-2 text-sm">
+      <input type="date" id="dateTo" class="border rounded-lg px-3 py-2 text-sm">
+      <button id="applyDateFilter" class="bg-green-600 text-white px-4 py-2 rounded-lg text-sm">Apply</button>
+      <button id="resetDateFilter" class="border border-gray-300 px-4 py-2 rounded-lg text-sm">Reset</button>
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
+    <div class="metric-card"><p class="text-gray-500 text-sm">Total Revenue</p><p id="kpiRevenue" class="text-2xl font-bold">KES 0</p><p id="revenueTrend" class="text-xs mt-1"></p></div>
+    <div class="metric-card"><p class="text-gray-500 text-sm">Transactions</p><p id="kpiTransactions" class="text-2xl font-bold">0</p><p id="txTrend" class="text-xs mt-1"></p></div>
+    <div class="metric-card"><p class="text-gray-500 text-sm">Average Value</p><p id="kpiAverage" class="text-2xl font-bold">KES 0</p></div>
+    <div class="metric-card"><p class="text-gray-500 text-sm">Success Rate</p><p id="kpiSuccessRate" class="text-2xl font-bold text-green-600">0%</p></div>
+    <div class="metric-card"><p class="text-gray-500 text-sm">Unique Customers</p><p id="kpiCustomers" class="text-2xl font-bold">0</p></div>
+  </div>
+
+  <!-- Charts -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+    <div class="chart-container"><h3 class="font-semibold mb-4">Revenue Trend</h3><canvas id="revenueChart" height="250"></canvas></div>
+    <div class="chart-container"><h3 class="font-semibold mb-4">Payment Methods</h3><canvas id="methodsChart" height="250"></canvas></div>
+  </div>
+
+  <!-- Transactions Table -->
+  <div class="chart-container">
+    <div class="flex flex-wrap justify-between items-center mb-4 gap-3">
+      <h3 class="font-semibold">Recent Transactions</h3>
+      <input type="text" id="searchTransaction" placeholder="Search customer..." class="border rounded-lg px-3 py-1.5 text-sm w-48">
+      <select id="statusFilter" class="border rounded-lg px-3 py-1.5 text-sm"><option value="">All status</option><option value="completed">Completed</option><option value="pending">Pending</option><option value="failed">Failed</option></select>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="data-table"><thead><tr><th>ID</th><th>Customer</th><th>Amount</th><th>Method</th><th>Status</th><th>Date</th></tr></thead><tbody id="transactionsTableBody"></tbody></table>
+    </div>
+    <div id="pagination" class="flex justify-between items-center mt-4 text-sm">
+      <span id="showingInfo" class="text-gray-500"></span>
+      <div class="flex gap-2"><button id="prevPage" class="px-3 py-1 border rounded-lg">← Previous</button><button id="nextPage" class="px-3 py-1 border rounded-lg">Next →</button></div>
+    </div>
+  </div>
+</main>
+
+<!-- Footer -->
+<footer style="background:#080c18;padding:40px 24px;text-align:center;margin-top:48px;">
+  <p style="color:rgba(255,255,255,0.4);font-size:0.8rem;">© 2026 WhaPay. All rights reserved. | Nairobi, Kenya</p>
+  <div class="mt-3 space-x-4"><a href="privacy.html" style="color:rgba(255,255,255,0.3);font-size:0.75rem;">Privacy</a><a href="terms.html" style="color:rgba(255,255,255,0.3);font-size:0.75rem;">Terms</a><a href="contact.html" style="color:rgba(255,255,255,0.3);font-size:0.75rem;">Contact</a></div>
+</footer>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDPAvq6BgpdfZAkfoEwdwmHrWedHgzjRSk",
+    authDomain: "whapay-c93ab.firebaseapp.com",
+    projectId: "whapay-c93ab",
+    storageBucket: "whapay-c93ab.firebasestorage.app",
+    messagingSenderId: "205456952458",
+    appId: "1:205456952458:web:6533921ca10a2988417173"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
+
+  let allTransactions = [];
+  let filteredTransactions = [];
+  let currentPage = 1;
+  let pageSize = 15;
+  let charts = { revenue: null, methods: null };
+  let dateFrom = null;
+  let dateTo = null;
+
+  const loginOverlay = document.getElementById('loginOverlay');
+  const dashboard = document.getElementById('dashboardContent');
+  const logoutBtn = document.getElementById('logoutBtn');
+
+  function formatKES(amount) { return `KES ${amount.toLocaleString()}`; }
+  function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m])); }
+
+  function getDateRange() {
+    let start, end;
+    if (dateFrom && dateTo) { start = new Date(dateFrom); end = new Date(dateTo); end.setHours(23,59,59,999); }
+    else { end = new Date(); start = new Date(); start.setDate(start.getDate() - 30); }
+    return { start, end };
+  }
+
+  function filterTransactionsByDate() {
+    const { start, end } = getDateRange();
+    filteredTransactions = allTransactions.filter(t => { const txDate = t.timestampDate; return txDate >= start && txDate <= end; });
+    return filteredTransactions;
+  }
+
+  function updateKPIs() {
+    const completed = filteredTransactions.filter(t => t.status === 'completed');
+    const totalRevenue = completed.reduce((sum, t) => sum + t.amount, 0);
+    const totalTx = completed.length;
+    const avgValue = totalTx > 0 ? totalRevenue / totalTx : 0;
+    const successRate = filteredTransactions.length > 0 ? (completed.length / filteredTransactions.length * 100).toFixed(1) : 0;
+    const uniqueCustomers = new Set(completed.map(t => t.customer)).size;
+    document.getElementById('kpiRevenue').innerHTML = formatKES(totalRevenue);
+    document.getElementById('kpiTransactions').innerText = totalTx;
+    document.getElementById('kpiAverage').innerHTML = formatKES(avgValue);
+    document.getElementById('kpiSuccessRate').innerHTML = `${successRate}%`;
+    document.getElementById('kpiCustomers').innerText = uniqueCustomers;
+  }
+
+  function updateRevenueChart() {
+    const completed = filteredTransactions.filter(t => t.status === 'completed');
+    let labels = [], data = [];
+    const now = new Date();
+    for (let i = 29; i >= 0; i--) { const d = new Date(); d.setDate(now.getDate() - i); labels.push(d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })); data.push(0); }
+    completed.forEach(t => { const diffDays = Math.floor((now - t.timestampDate) / (1000*3600*24)); if (diffDays >= 0 && diffDays < 30) data[29 - diffDays] += t.amount; });
+    if (charts.revenue) charts.revenue.destroy();
+    const ctx = document.getElementById('revenueChart').getContext('2d');
+    charts.revenue = new Chart(ctx, { type: 'line', data: { labels, datasets: [{ label: 'Revenue (KES)', data, borderColor: '#16a34a', fill: true, tension: 0.3 }] }, options: { responsive: true, scales: { y: { beginAtZero: true } } } });
+  }
+
+  function updateMethodsChart() {
+    const completed = filteredTransactions.filter(t => t.status === 'completed');
+    const methods = new Map();
+    completed.forEach(t => { const method = t.method || 'mpesa'; methods.set(method, (methods.get(method) || 0) + t.amount); });
+    if (charts.methods) charts.methods.destroy();
+    const ctx = document.getElementById('methodsChart').getContext('2d');
+    charts.methods = new Chart(ctx, { type: 'doughnut', data: { labels: Array.from(methods.keys()).map(m => m.toUpperCase()), datasets: [{ data: Array.from(methods.values()), backgroundColor: ['#16a34a', '#3b82f6', '#f59e0b', '#8b5cf6'] }] }, options: { responsive: true } });
+  }
+
+  function renderTransactionsTable() {
+    let data = filteredTransactions;
+    const searchTerm = document.getElementById('searchTransaction')?.value.toLowerCase() || '';
+    const statusFilter = document.getElementById('statusFilter')?.value || '';
+    if (searchTerm) data = data.filter(t => t.customer?.toLowerCase().includes(searchTerm));
+    if (statusFilter) data = data.filter(t => (t.status || 'pending') === statusFilter);
+    const start = (currentPage - 1) * pageSize;
+    const paginated = data.slice(start, start + pageSize);
+    const tbody = document.getElementById('transactionsTableBody');
+    if (!tbody) return;
+    if (paginated.length === 0) { tbody.innerHTML = '<tr><td colspan="6" class="text-center py-8 text-gray-400">No transactions found</td></tr>'; }
+    else { tbody.innerHTML = paginated.map(tx => `<tr><td class="font-mono text-xs">${tx.id?.slice(0,8)}</td><td>${escapeHtml(tx.customer || '-')}</td><td>${formatKES(tx.amount || 0)}</td><td class="capitalize">${tx.method || 'mpesa'}</td><td><span class="badge-${tx.status === 'completed' ? 'success' : (tx.status === 'pending' ? 'pending' : 'failed')}">${tx.status || 'pending'}</span></td><td>${tx.timestampDate.toLocaleString()}</td></tr>`).join(''); }
+    document.getElementById('showingInfo').innerHTML = `Showing ${start + 1} to ${Math.min(start + pageSize, data.length)} of ${data.length}`;
+    document.getElementById('prevPage').disabled = currentPage <= 1;
+    document.getElementById('nextPage').disabled = currentPage >= Math.ceil(data.length / pageSize);
+  }
+
+  function refreshAll() { if (!allTransactions.length) return; filterTransactionsByDate(); updateKPIs(); updateRevenueChart(); updateMethodsChart(); renderTransactionsTable(); }
+
+  document.getElementById('applyDateFilter')?.addEventListener('click', () => { dateFrom = document.getElementById('dateFrom').value; dateTo = document.getElementById('dateTo').value; currentPage = 1; refreshAll(); });
+  document.getElementById('resetDateFilter')?.addEventListener('click', () => { document.getElementById('dateFrom').value = ''; document.getElementById('dateTo').value = ''; dateFrom = null; dateTo = null; currentPage = 1; refreshAll(); });
+  document.getElementById('refreshBtn')?.addEventListener('click', refreshAll);
+  document.getElementById('exportAllBtn')?.addEventListener('click', () => { const data = filteredTransactions.map(t => ({ Customer: t.customer, Amount: t.amount, Method: t.method, Status: t.status, Date: t.timestampDate.toISOString() })); const csv = ['Customer,Amount (KES),Method,Status,Date', ...data.map(d => `"${d.Customer}",${d.Amount},${d.Method},${d.Status},${d.Date}`)].join('\n'); const blob = new Blob([csv], {type: 'text/csv'}); const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = `whapay_report_${new Date().toISOString().slice(0,10)}.csv`; link.click(); });
+  document.getElementById('searchTransaction')?.addEventListener('input', () => { currentPage = 1; renderTransactionsTable(); });
+  document.getElementById('statusFilter')?.addEventListener('change', () => { currentPage = 1; renderTransactionsTable(); });
+  document.getElementById('prevPage')?.addEventListener('click', () => { if (currentPage > 1) { currentPage--; renderTransactionsTable(); } });
+  document.getElementById('nextPage')?.addEventListener('click', () => { currentPage++; renderTransactionsTable(); });
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      document.getElementById('navUserDisplay').innerText = user.email;
+      document.getElementById('navUserDisplay').classList.remove('hidden');
+      document.getElementById('navLoginBtn').style.display = 'none';
+      logoutBtn.style.display = 'block';
+      loginOverlay.style.display = 'none';
+      dashboard.classList.remove('hidden');
+      const q = query(collection(db, "transactions"), orderBy("timestamp", "desc"));
+      onSnapshot(q, (snapshot) => { allTransactions = snapshot.docs.map(doc => { const data = doc.data(); return { id: doc.id, ...data, amount: data.amount || 0, status: data.status || "pending", method: data.method || "mpesa", customer: data.customer || "Anonymous", timestampDate: data.timestamp?.toDate ? data.timestamp.toDate() : new Date() }; }).filter(t => t.timestampDate); refreshAll(); });
+    } else {
+      loginOverlay.style.display = 'block';
+      dashboard.classList.add('hidden');
+      document.getElementById('navLoginBtn').style.display = 'block';
+      logoutBtn.style.display = 'none';
+    }
+  });
+
+  document.getElementById('loginBtn').onclick = async () => { const email = document.getElementById('loginEmail').value.trim(); const password = document.getElementById('loginPassword').value; try { await signInWithEmailAndPassword(auth, email, password); } catch (err) { document.getElementById('loginError').innerText = err.message; } };
+  logoutBtn.onclick = async () => { await signOut(auth); };
+</script>
+
+<!-- Floating WhatsApp -->
+<a href="https://wa.me/0140933042?text=Hello" target="_blank" class="fixed bottom-5 right-5 bg-green-500 text-white p-3 rounded-full shadow-lg z-50"><i class="fab fa-whatsapp text-2xl"></i></a>
+
+</body>
+</html>
+
+    

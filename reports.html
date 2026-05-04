@@ -100,6 +100,77 @@
 </style>
 </head>
 <body>
+ <!-- Navigation Header -->
+<style>
+.gd-nav { font-family: sans-serif; }
+.gd-nav-link { color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.85rem;font-weight:500;transition:color 0.2s;padding:4px 0; }
+.gd-nav-link:hover { color:white; }
+.gd-nav-link.active { color:#22c55e;font-weight:700; }
+.gd-dropdown { position:relative; }
+.gd-dropdown-menu { position:absolute;top:calc(100% + 12px);left:50%;transform:translateX(-50%);background:#0f1629;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:8px;min-width:220px;opacity:0;visibility:hidden;transition:all 0.2s ease;z-index:100;box-shadow:0 20px 40px rgba(0,0,0,0.4); }
+.gd-dropdown:hover .gd-dropdown-menu { opacity:1;visibility:visible; }
+.gd-dropdown-item { display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;text-decoration:none;transition:background 0.2s; }
+.gd-dropdown-item:hover { background:rgba(255,255,255,0.06); }
+.gd-dropdown-item .icon { width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+.gd-dropdown-item .label { color:white;font-size:0.82rem;font-weight:600; }
+.gd-dropdown-item .desc { color:rgba(255,255,255,0.35);font-size:0.72rem;margin-top:1px; }
+.gd-dropdown-trigger { display:flex;align-items:center;gap:4px;cursor:pointer; }
+.gd-dropdown-trigger i.arrow { font-size:0.6rem;color:rgba(255,255,255,0.4);transition:transform 0.2s; }
+.gd-dropdown:hover .gd-dropdown-trigger i.arrow { transform:rotate(180deg); }
+</style>
+
+<header class="gd-nav" style="background:#080c18;border-bottom:1px solid rgba(255,255,255,0.06);position:sticky;top:0;z-index:999;">
+  <div style="background:rgba(22,163,74,0.08);border-bottom:1px solid rgba(22,163,74,0.1);padding:6px 24px;display:flex;justify-between;align-items:center;font-size:0.72rem;flex-wrap:wrap;gap:8px;">
+    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+      <a href="tel:0140933042" style="color:rgba(255,255,255,0.5);text-decoration:none;display:flex;align-items:center;gap:5px;"><i class="fas fa-phone-alt" style="color:#22c55e;font-size:0.65rem;"></i> 0140933042</a>
+      <a href="mailto:support@whapay.space" style="color:rgba(255,255,255,0.5);text-decoration:none;display:flex;align-items:center;gap:5px;"><i class="fas fa-envelope" style="color:#22c55e;font-size:0.65rem;"></i> support@whapay.space</a>
+      <span style="color:rgba(255,255,255,0.3);display:flex;align-items:center;gap:5px;"><i class="fas fa-globe" style="color:#22c55e;font-size:0.65rem;"></i> Serving 180+ countries</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span id="navUserTopDisplay" style="color:rgba(255,255,255,0.4);font-size:0.72rem;"></span>
+      <a href="users.html" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.72rem;">My Account</a>
+    </div>
+  </div>
+
+  <div style="max-width:1280px;margin:0 auto;padding:0 24px;display:flex;justify-content:space-between;align-items:center;height:64px;">
+    <a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;">
+      <div style="width:32px;height:32px;background:#16a34a;border-radius:6px;display:flex;align-items:center;justify-content:center;"><i class="fas fa-bolt" style="color:white;font-size:0.85rem;"></i></div>
+      <span style="color:white;font-size:1.2rem;font-weight:900;">WhaPay</span>
+    </a>
+
+    <nav style="display:flex;align-items:center;gap:4px;" class="hidden md:flex">
+      <div class="gd-dropdown" style="padding:0 12px;">
+        <div class="gd-dropdown-trigger"><span class="gd-nav-link">Merchants</span><i class="fas fa-chevron-down arrow"></i></div>
+        <div class="gd-dropdown-menu">
+          <a href="merchant.html" class="gd-dropdown-item"><div class="icon" style="background:rgba(22,163,74,0.15);"><i class="fas fa-store" style="color:#22c55e;"></i></div><div><div class="label">Merchant Dashboard</div><div class="desc">QR, links, transactions</div></div></a>
+          <a href="registration.html" class="gd-dropdown-item"><div class="icon" style="background:rgba(59,130,246,0.15);"><i class="fas fa-user-plus" style="color:#60a5fa;"></i></div><div><div class="label">Register Business</div><div class="desc">Free — online or offline</div></div></a>
+          <a href="reports.html" class="gd-dropdown-item"><div class="icon" style="background:rgba(168,85,247,0.15);"><i class="fas fa-chart-line" style="color:#c084fc;"></i></div><div><div class="label">Analytics & Reports</div><div class="desc">Revenue, trends, CSV export</div></div></a>
+          <a href="pricing.html" class="gd-dropdown-item"><div class="icon" style="background:rgba(251,191,36,0.12);"><i class="fas fa-tag" style="color:#fbbf24;"></i></div><div><div class="label">Pricing</div><div class="desc">1.5% + KES 20</div></div></a>
+        </div>
+      </div>
+      <a href="blog.html" class="gd-nav-link" style="padding:0 12px;">Blog</a>
+      <a href="contact.html" class="gd-nav-link" style="padding:0 12px;">Contact</a>
+    </nav>
+
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span id="navUserDisplay" style="color:rgba(255,255,255,0.5);font-size:0.78rem;"></span>
+      <button id="navLoginBtn" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.7);padding:8px 16px;border-radius:6px;cursor:pointer;">Login</button>
+      <button id="logoutBtn" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:#f87171;padding:8px 16px;border-radius:6px;cursor:pointer;display:none;">Logout</button>
+      <a href="https://wa.me/0140933042?text=REGISTER" style="background:#16a34a;color:white;padding:10px 20px;border-radius:6px;text-decoration:none;"><i class="fab fa-whatsapp"></i> Register Free</a>
+    </div>
+  </div>
+</header>
+
+<script>
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobileMenu');
+  const btn = document.getElementById('mobileMenuBtn');
+  if (!menu) return;
+  const isOpen = menu.style.display === 'block';
+  menu.style.display = isOpen ? 'none' : 'block';
+  if (btn) btn.innerHTML = isOpen ? '<i class="fas fa-bars"></i>' : '<i class="fas fa-times"></i>';
+}
+</script>
 
 
      <div style="position:relative;border-radius:24px;overflow:hidden;margin-bottom:48px;height:480px;">

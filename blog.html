@@ -2,991 +2,75 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>WhaPay Blog – WhatsApp Payment Insights for Kenyan Merchants</title>
-<meta name="description" content="Read the latest tips, guides, and tutorials about WhatsApp payments, M-Pesa integration, card payments, and growing your business in Kenya with WhaPay. Offline registration: 0140933042.">
-<meta name="keywords" content="WhaPay blog, WhatsApp payments Kenya, M-Pesa tips, card payments, merchant guides, Kenyan fintech, offline registration 0140933042">
-<meta name="author" content="WhaPay Solutions">
-  <!-- In <head> -->
-<link rel="stylesheet" href="global.css">
-
-
-<meta name="robots" content="index, follow">
-
-<!-- Open Graph -->
-<meta property="og:title" content="WhaPay Blog – WhatsApp Payment Insights">
-<meta property="og:description" content="Practical guides for Kenyan merchants accepting WhatsApp payments, M-Pesa, and cards. Offline registration: 0140933042.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://whapay.space/blog.html">
-<meta property="og:image" content="https://whapay.space/images/whapay-blog-og.jpg">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WhaPay Blog – Payment Insights for Kenyan Merchants</title>
+<meta name="description" content="Read the latest tips and guides about WhatsApp payments, M-Pesa, and growing your business with WhaPay.">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-<link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#16a34a">
 <style>
+  .blog-card { transition: transform 0.2s, box-shadow 0.2s; cursor: pointer; }
+  .blog-card:hover { transform: translateY(-4px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
   .toast { transition: opacity 0.3s; }
-  .step-card { transition: 0.2s; }
-  .step-card:hover { transform: translateY(-3px); }
-  /* Professional Animations */
-@keyframes pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.7; transform: scale(1.05); }
-}
-
-@keyframes ping {
-  75%, 100% { transform: scale(2); opacity: 0; }
-}
-
-.animate-pulse {
-  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-.animate-ping {
-  animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
-}
-
-.delay-500 { animation-delay: 0.5s; }
-.delay-1000 { animation-delay: 1s; }
-
-.group:hover .group-hover\:scale-105 {
-  transform: scale(1.05);
-}
-
-.group:hover .group-hover\:translate-x-1 {
-  transform: translateX(4px);
-}
-
-/* Line clamp for text truncation */
-.line-clamp-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.line-clamp-3 {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-  /* Line clamp for text truncation */
-.line-clamp-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.line-clamp-3 {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-/* Blog card hover effects */
-.blog-card {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.group:hover .group-hover\:scale-105 {
-  transform: scale(1.05);
-}
-
-.group:hover .group-hover\:translate-x-1 {
-  transform: translateX(4px);
-}
 </style>
 </head>
-<body class="bg-gray-100 font-sans">
-<!-- G+D Style Grouped Navigation — Replace existing header on ALL pages -->
-<style>
-.gd-nav { font-family: sans-serif; }
-.gd-nav-link { color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.85rem;font-weight:500;transition:color 0.2s;padding:4px 0; }
-.gd-nav-link:hover { color:white; }
-.gd-nav-link.active { color:#22c55e;font-weight:700; }
-.gd-dropdown { position:relative; }
-.gd-dropdown-menu { position:absolute;top:calc(100% + 12px);left:50%;transform:translateX(-50%);background:#0f1629;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:8px;min-width:220px;opacity:0;visibility:hidden;transition:all 0.2s ease;z-index:100;box-shadow:0 20px 40px rgba(0,0,0,0.4); }
-.gd-dropdown:hover .gd-dropdown-menu { opacity:1;visibility:visible; }
-.gd-dropdown-item { display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;text-decoration:none;transition:background 0.2s; }
-.gd-dropdown-item:hover { background:rgba(255,255,255,0.06); }
-.gd-dropdown-item .icon { width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0; }
-.gd-dropdown-item .label { color:white;font-size:0.82rem;font-weight:600; }
-.gd-dropdown-item .desc { color:rgba(255,255,255,0.35);font-size:0.72rem;margin-top:1px; }
-.gd-dropdown-trigger { display:flex;align-items:center;gap:4px;cursor:pointer; }
-.gd-dropdown-trigger i.arrow { font-size:0.6rem;color:rgba(255,255,255,0.4);transition:transform 0.2s; }
-.gd-dropdown:hover .gd-dropdown-trigger i.arrow { transform:rotate(180deg); }
-</style>
+<body class="bg-gray-100">
 
-<header class="gd-nav" style="background:#080c18;border-bottom:1px solid rgba(255,255,255,0.06);position:sticky;top:0;z-index:999;">
-
-  <!-- Top utility bar -->
-  <div style="background:rgba(22,163,74,0.08);border-bottom:1px solid rgba(22,163,74,0.1);padding:6px 24px;display:flex;justify-between;align-items:center;font-size:0.72rem;flex-wrap:wrap;gap:8px;">
-    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
-      <a href="tel:0140933042" style="color:rgba(255,255,255,0.5);text-decoration:none;display:flex;align-items:center;gap:5px;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">
-        <i class="fas fa-phone-alt" style="color:#22c55e;font-size:0.65rem;"></i> 0140933042
-      </a>
-      <a href="mailto:support@whapay.space" style="color:rgba(255,255,255,0.5);text-decoration:none;display:flex;align-items:center;gap:5px;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">
-        <i class="fas fa-envelope" style="color:#22c55e;font-size:0.65rem;"></i> support@whapay.space
-      </a>
-      <span style="color:rgba(255,255,255,0.3);display:flex;align-items:center;gap:5px;">
-        <i class="fas fa-globe" style="color:#22c55e;font-size:0.65rem;"></i> Serving 180+ countries
-      </span>
-    </div>
-    <div style="display:flex;align-items:center;gap:12px;">
-      <span id="navUserTopDisplay" style="color:rgba(255,255,255,0.4);font-size:0.72rem;"></span>
-      <a href="users.html" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.72rem;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">My Account</a>
+<!-- Same header as your site – simplified for space -->
+<header class="bg-gray-900 text-white p-4">
+  <div class="max-w-7xl mx-auto flex justify-between items-center">
+    <a href="index.html" class="text-2xl font-bold text-green-500">WhaPay</a>
+    <div class="flex items-center gap-4">
+      <span id="navUserDisplay" class="text-sm text-gray-300 hidden"></span>
+      <button id="navLoginBtn" class="bg-green-600 px-4 py-2 rounded-lg text-sm">Login</button>
+      <button id="navLogoutBtn" class="bg-red-600 px-4 py-2 rounded-lg text-sm hidden">Logout</button>
+      <a href="https://wa.me/0140933042?text=REGISTER" class="bg-green-500 px-4 py-2 rounded-lg text-sm">Register</a>
     </div>
   </div>
-
-  <!-- Main nav bar -->
-  <div style="max-width:1280px;margin:0 auto;padding:0 24px;display:flex;justify-content:space-between;align-items:center;height:64px;">
-
-    <!-- Logo -->
-    <a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;">
-      <div style="width:32px;height:32px;background:#16a34a;border-radius:6px;display:flex;align-items:center;justify-content:center;">
-        <i class="fas fa-bolt" style="color:white;font-size:0.85rem;"></i>
-      </div>
-      <span style="color:white;font-size:1.2rem;font-weight:900;letter-spacing:-0.02em;">WhaPay</span>
-    </a>
-
-    <!-- Desktop nav groups -->
-    <nav style="display:flex;align-items:center;gap:4px;" class="hidden md:flex">
-
-      <!-- Payments dropdown -->
-      <div class="gd-dropdown" style="padding:0 12px;">
-        <div class="gd-dropdown-trigger">
-          <span class="gd-nav-link">Payments</span>
-          <i class="fas fa-chevron-down arrow"></i>
-        </div>
-        <div class="gd-dropdown-menu">
-          <a href="payment.html" class="gd-dropdown-item">
-            <div class="icon" style="background:rgba(22,163,74,0.15);"><i class="fas fa-credit-card" style="color:#22c55e;font-size:0.85rem;"></i></div>
-            <div><div class="label">How to Pay</div><div class="desc">WhatsApp, QR, Member Code</div></div>
-          </a>
-          <a href="pay-anyone.html" class="gd-dropdown-item">
-            <div class="icon" style="background:rgba(59,130,246,0.15);"><i class="fas fa-paper-plane" style="color:#60a5fa;font-size:0.85rem;"></i></div>
-            <div><div class="label">Pay Anyone</div><div class="desc">Member Code, Phone, Paybill</div></div>
-          </a>
-          <a href="first-time-pay.html" class="gd-dropdown-item">
-            <div class="icon" style="background:rgba(168,85,247,0.15);"><i class="fas fa-bolt" style="color:#c084fc;font-size:0.85rem;"></i></div>
-            <div><div class="label">Register & Pay</div><div class="desc">One-step payment & signup</div></div>
-          </a>
-          <div style="border-top:1px solid rgba(255,255,255,0.06);margin:6px 0;"></div>
-          <a href="index.html#offline-features" class="gd-dropdown-item">
-            <div class="icon" style="background:rgba(251,191,36,0.12);"><i class="fas fa-wifi-slash" style="color:#fbbf24;font-size:0.85rem;"></i></div>
-            <div><div class="label">Offline Payments</div><div class="desc">No internet needed</div></div>
-          </a>
-        </div>
-      </div>
-
-      <!-- Merchants dropdown -->
-      <div class="gd-dropdown" style="padding:0 12px;">
-        <div class="gd-dropdown-trigger">
-          <span class="gd-nav-link">Merchants</span>
-          <i class="fas fa-chevron-down arrow"></i>
-        </div>
-        <div class="gd-dropdown-menu">
-          <a href="merchant.html" class="gd-dropdown-item">
-            <div class="icon" style="background:rgba(22,163,74,0.15);"><i class="fas fa-store" style="color:#22c55e;font-size:0.85rem;"></i></div>
-            <div><div class="label">Merchant Dashboard</div><div class="desc">QR, links, transactions</div></div>
-          </a>
-          <a href="registration.html" class="gd-dropdown-item">
-            <div class="icon" style="background:rgba(59,130,246,0.15);"><i class="fas fa-user-plus" style="color:#60a5fa;font-size:0.85rem;"></i></div>
-            <div><div class="label">Register Business</div><div class="desc">Free — online or offline</div></div>
-          </a>
-          <a href="reports.html" class="gd-dropdown-item">
-            <div class="icon" style="background:rgba(168,85,247,0.15);"><i class="fas fa-chart-line" style="color:#c084fc;font-size:0.85rem;"></i></div>
-            <div><div class="label">Analytics & Reports</div><div class="desc">Revenue, trends, CSV export</div></div>
-          </a>
-          <a href="pricing.html" class="gd-dropdown-item">
-            <div class="icon" style="background:rgba(251,191,36,0.12);"><i class="fas fa-tag" style="color:#fbbf24;font-size:0.85rem;"></i></div>
-            <div><div class="label">Pricing</div><div class="desc">1.5% + KES 20, KES 0/month</div></div>
-          </a>
-        </div>
-      </div>
-
-      <!-- Features dropdown -->
-      <div class="gd-dropdown" style="padding:0 12px;">
-        <div class="gd-dropdown-trigger">
-          <span class="gd-nav-link">Features</span>
-          <i class="fas fa-chevron-down arrow"></i>
-        </div>
-        <div class="gd-dropdown-menu">
-          <a href="features.html" class="gd-dropdown-item">
-            <div class="icon" style="background:rgba(22,163,74,0.15);"><i class="fas fa-bolt" style="color:#22c55e;font-size:0.85rem;"></i></div>
-            <div><div class="label">All Features</div><div class="desc">Complete platform overview</div></div>
-          </a>
-          <a href="process.html" class="gd-dropdown-item">
-            <div class="icon" style="background:rgba(59,130,246,0.15);"><i class="fas fa-route" style="color:#60a5fa;font-size:0.85rem;"></i></div>
-            <div><div class="label">How It Works</div><div class="desc">3 simple steps</div></div>
-          </a>
-          <a href="index.html#currencies" class="gd-dropdown-item">
-            <div class="icon" style="background:rgba(168,85,247,0.15);"><i class="fas fa-globe" style="color:#c084fc;font-size:0.85rem;"></i></div>
-            <div><div class="label">Global Currencies</div><div class="desc">135+ currencies, 180+ countries</div></div>
-          </a>
-          <a href="index.html#diaspora" class="gd-dropdown-item">
-            <div class="icon" style="background:rgba(251,191,36,0.12);"><i class="fas fa-plane" style="color:#fbbf24;font-size:0.85rem;"></i></div>
-            <div><div class="label">Diaspora Payments</div><div class="desc">UK, USA, UAE → Kenya</div></div>
-          </a>
-        </div>
-      </div>
-
-      <!-- Company dropdown -->
-      <div class="gd-dropdown" style="padding:0 12px;">
-        <div class="gd-dropdown-trigger">
-          <span class="gd-nav-link">Company</span>
-          <i class="fas fa-chevron-down arrow"></i>
-        </div>
-        <div class="gd-dropdown-menu">
-          <a href="about.html" class="gd-dropdown-item">
-            <div class="icon" style="background:rgba(22,163,74,0.15);"><i class="fas fa-heart" style="color:#22c55e;font-size:0.85rem;"></i></div>
-            <div><div class="label">About WhaPay</div><div class="desc">Our story and mission</div></div>
-          </a>
-          <a href="blog.html" class="gd-dropdown-item">
-            <div class="icon" style="background:rgba(59,130,246,0.15);"><i class="fas fa-pen-nib" style="color:#60a5fa;font-size:0.85rem;"></i></div>
-            <div><div class="label">Blog & Insights</div><div class="desc">Payments, fintech, Africa</div></div>
-          </a>
-          <a href="contact.html" class="gd-dropdown-item">
-            <div class="icon" style="background:rgba(168,85,247,0.15);"><i class="fas fa-headset" style="color:#c084fc;font-size:0.85rem;"></i></div>
-            <div><div class="label">Contact & Support</div><div class="desc">24/7 WhatsApp support</div></div>
-          </a>
-        </div>
-      </div>
-
-      <!-- Direct links -->
-      <a href="pricing.html" class="gd-nav-link" style="padding:0 12px;">Pricing</a>
-      <a href="blog.html" class="gd-nav-link" style="padding:0 12px;">Blog</a>
-
-    </nav>
-
-    <!-- Right side CTAs -->
-    <div style="display:flex;align-items:center;gap:10px;">
-      <span id="navUserDisplay" style="color:rgba(255,255,255,0.5);font-size:0.78rem;"></span>
-      <button id="navLoginBtn" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.7);font-size:0.82rem;font-weight:600;padding:8px 16px;border-radius:6px;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.06)'">
-        Login
-      </button>
-      <button id="logoutBtn" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:#f87171;font-size:0.82rem;font-weight:600;padding:8px 16px;border-radius:6px;cursor:pointer;display:none;">
-        Logout
-      </button>
-      <a href="https://wa.me/0140933042?text=REGISTER"
-        style="background:#16a34a;color:white;font-weight:700;font-size:0.85rem;padding:10px 20px;border-radius:6px;text-decoration:none;display:flex;align-items:center;gap:6px;transition:background 0.2s;"
-        onmouseover="this.style.background='#15803d'" onmouseout="this.style.background='#16a34a'">
-        <i class="fab fa-whatsapp"></i> Register Free
-      </a>
-
-      <!-- Mobile menu button -->
-      <button id="mobileMenuBtn" onclick="toggleMobileMenu()"
-        style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:white;width:40px;height:40px;border-radius:6px;cursor:pointer;display:none;align-items:center;justify-content:center;"
-        class="md:hidden">
-        <i class="fas fa-bars"></i>
-      </button>
-    </div>
-
-  </div>
-
-  <!-- Mobile menu -->
-  <div id="mobileMenu" style="display:none;background:#080c18;border-top:1px solid rgba(255,255,255,0.06);padding:16px 24px;">
-    <div style="display:flex;flex-direction:column;gap:4px;">
-      <div style="color:rgba(255,255,255,0.3);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;padding:8px 0 4px;">Payments</div>
-      <a href="payment.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">How to Pay</a>
-      <a href="pay-anyone.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">Pay Anyone</a>
-      <a href="first-time-pay.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">Register & Pay</a>
-      <div style="color:rgba(255,255,255,0.3);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;padding:8px 0 4px;margin-top:8px;">Merchants</div>
-      <a href="merchant.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">Merchant Dashboard</a>
-      <a href="registration.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">Register Business</a>
-      <a href="reports.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">Analytics & Reports</a>
-      <a href="pricing.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">Pricing</a>
-      <div style="color:rgba(255,255,255,0.3);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;padding:8px 0 4px;margin-top:8px;">Features</div>
-      <a href="features.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">All Features</a>
-      <a href="process.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">How It Works</a>
-      <div style="color:rgba(255,255,255,0.3);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;padding:8px 0 4px;margin-top:8px;">Company</div>
-      <a href="about.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">About</a>
-      <a href="blog.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">Blog</a>
-      <a href="contact.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;">Contact</a>
-      <a href="https://wa.me/0140933042?text=REGISTER" style="display:flex;align-items:center;justify-content:center;gap:8px;background:#16a34a;color:white;font-weight:700;padding:13px;border-radius:6px;text-decoration:none;margin-top:16px;"><i class="fab fa-whatsapp"></i> Register Free</a>
-    </div>
-  </div>
-
 </header>
 
-<script>
-function toggleMobileMenu() {
-  const menu = document.getElementById('mobileMenu');
-  const btn = document.getElementById('mobileMenuBtn');
-  const isOpen = menu.style.display === 'block';
-  menu.style.display = isOpen ? 'none' : 'block';
-  btn.innerHTML = isOpen ? '<i class="fas fa-bars"></i>' : '<i class="fas fa-times"></i>';
-}
-// Show mobile button on small screens
-(function() {
-  const btn = document.getElementById('mobileMenuBtn');
-  if (btn && window.innerWidth < 768) btn.style.display = 'flex';
-  window.addEventListener('resize', () => {
-    if (btn) btn.style.display = window.innerWidth < 768 ? 'flex' : 'none';
-  });
-})();
-</script>
+<main class="max-w-7xl mx-auto px-4 py-8">
+  <!-- Hero -->
+  <div class="bg-gradient-to-r from-green-700 to-green-500 rounded-2xl p-8 mb-8 text-white text-center">
+    <h1 class="text-3xl md:text-4xl font-bold mb-2">WhaPay Blog</h1>
+    <p class="text-green-100">Tips, guides, and insights for Kenyan merchants</p>
+  </div>
 
-<div style="position:relative;border-radius:24px;overflow:hidden;margin-bottom:48px;height:420px;">
-  <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1600&q=85" alt="WhaPay blog insights payments Africa" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;" onerror="this.src='https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=1600&q=85'">
-  <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(10,15,30,0.95) 0%,rgba(10,15,30,0.75) 55%,rgba(10,15,30,0.4) 100%);"></div>
-  <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(22,163,74,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(22,163,74,0.04) 1px,transparent 1px);background-size:40px 40px;"></div>
-  <div style="position:absolute;inset:0;display:flex;align-items:center;padding:48px;">
-    <div style="max-width:1280px;margin:0 auto;width:100%;">
-      <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(22,163,74,0.12);border:1px solid rgba(22,163,74,0.25);color:#86efac;padding:6px 16px;border-radius:999px;font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:20px;"><i class="fas fa-pen-nib" style="font-size:0.65rem;"></i> Insights & Updates</div>
-      <h1 style="font-size:clamp(2rem,5vw,4rem);font-weight:900;color:white;line-height:1.1;letter-spacing:-0.02em;margin-bottom:16px;font-family:sans-serif;max-width:700px;">Payments. Africa.<br><span style="background:linear-gradient(135deg,#22c55e,#86efac);-webkit-background-clip:text;background-clip:text;color:transparent;">The Future of Money.</span></h1>
-      <p style="color:rgba(255,255,255,0.5);font-size:1rem;line-height:1.7;max-width:520px;margin-bottom:28px;">Guides, news and insights on M-Pesa, mobile money, offline payments, diaspora transfers and the African fintech revolution — from the team building WhaPay.</p>
-      <div style="display:flex;flex-wrap:wrap;gap:8px;">
-        <span style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.6);padding:6px 14px;border-radius:999px;font-size:0.78rem;">M-Pesa Tips</span>
-        <span style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.6);padding:6px 14px;border-radius:999px;font-size:0.78rem;">Offline Payments</span>
-        <span style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.6);padding:6px 14px;border-radius:999px;font-size:0.78rem;">Diaspora Transfers</span>
-        <span style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.6);padding:6px 14px;border-radius:999px;font-size:0.78rem;">African Fintech</span>
-        <span style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.6);padding:6px 14px;border-radius:999px;font-size:0.78rem;">Merchant Guides</span>
-        <span style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.6);padding:6px 14px;border-radius:999px;font-size:0.78rem;">Global Currencies</span>
+  <!-- Admin Panel (only visible when logged in) -->
+  <div id="adminPanel" class="bg-white rounded-2xl shadow-lg p-6 mb-8 hidden">
+    <h2 class="text-2xl font-bold mb-4">✍️ Write New Blog Post</h2>
+    <div class="grid grid-cols-1 gap-4">
+      <input type="text" id="postTitle" placeholder="Post Title" class="border rounded-lg p-3">
+      <select id="postCategory" class="border rounded-lg p-3">
+        <option value="M-Pesa">M-Pesa</option>
+        <option value="Offline Payments">Offline Payments</option>
+        <option value="Kenya">Kenya</option>
+        <option value="Global">Global</option>
+        <option value="Tips">Tips</option>
+      </select>
+      <input type="text" id="postImage" placeholder="Image URL (optional)" class="border rounded-lg p-3">
+      <textarea id="postExcerpt" rows="3" placeholder="Short excerpt (summary)" class="border rounded-lg p-3"></textarea>
+      <textarea id="postContent" rows="10" placeholder="Full blog content (HTML supported)" class="border rounded-lg p-3"></textarea>
+      <input type="text" id="postTags" placeholder="Tags (comma separated, e.g., payments, mpesa)" class="border rounded-lg p-3">
+      <div class="flex gap-3">
+        <button id="savePostBtn" class="bg-green-600 text-white px-6 py-3 rounded-lg font-bold">Save & Publish</button>
+        <button id="cancelPostBtn" class="bg-gray-300 px-6 py-3 rounded-lg hidden">Cancel</button>
       </div>
-    </div>
-  </div>
-</div>
-
-<!-- Hero Section - Professional Global Standard -->
-<div class="relative overflow-hidden bg-gradient-to-br from-emerald-900 via-emerald-700 to-emerald-500 rounded-3xl shadow-2xl mb-12">
-  <!-- Animated background particles -->
-  <div class="absolute inset-0 opacity-10">
-    <div class="absolute top-0 left-0 w-64 h-64 bg-white rounded-full blur-3xl animate-pulse"></div>
-    <div class="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl animate-pulse delay-1000"></div>
-    <div class="absolute top-1/2 left-1/2 w-48 h-48 bg-white rounded-full blur-3xl animate-pulse delay-500"></div>
-  </div>
-  
-  <!-- Grid pattern overlay -->
-  <div class="absolute inset-0 opacity-5" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 1px); background-size: 40px 40px;"></div>
-  
-  <div class="relative px-6 py-12 md:py-16 text-center">
-    <div class="max-w-3xl mx-auto">
-      <!-- Trust badge -->
-      <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-1.5 rounded-full text-sm mb-6 border border-white/30">
-        <span class="relative flex h-2 w-2">
-          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-          <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-        </span>
-        <span class="font-medium">Latest Insights & Guides</span>
-        <i class="fas fa-newspaper text-xs ml-1"></i>
-      </div>
-      
-      <!-- Main heading with gradient -->
-      <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-4 leading-tight">
-        WhaPay 
-        <span class="bg-gradient-to-r from-yellow-300 via-amber-200 to-yellow-300 bg-clip-text text-transparent">Blog</span>
-      </h1>
-      
-      <p class="text-base md:text-lg text-emerald-100 mb-6 max-w-xl mx-auto">
-        Tips, guides, and tutorials to help you master WhatsApp payments in Kenya and beyond.
-      </p>
-      
-      <!-- Category pills -->
-      <div class="flex flex-wrap justify-center gap-2 mb-6">
-        <span class="bg-white/15 backdrop-blur-sm px-3 py-1 rounded-full text-xs text-white">WhatsApp Payments</span>
-        <span class="bg-white/15 backdrop-blur-sm px-3 py-1 rounded-full text-xs text-white">M-Pesa Tips</span>
-        <span class="bg-white/15 backdrop-blur-sm px-3 py-1 rounded-full text-xs text-white">Card Payments</span>
-        <span class="bg-white/15 backdrop-blur-sm px-3 py-1 rounded-full text-xs text-white">Merchant Guides</span>
-      </div>
-
-      <!-- Blog listing section — reads live from Firestore -->
-<div id="blogListingSection" class="max-w-7xl mx-auto px-4 py-12">
-
-  <!-- Filter bar -->
-  <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:32px;align-items:center;justify-content:space-between;">
-    <div style="display:flex;flex-wrap:wrap;gap:8px;">
-      <button onclick="filterBlogCategory('all')" id="cat-all"
-        style="background:#16a34a;color:white;padding:7px 16px;border-radius:999px;border:none;cursor:pointer;font-size:0.82rem;font-weight:700;">
-        All Posts
-      </button>
-      <button onclick="filterBlogCategory('M-Pesa')" id="cat-mpesa"
-        style="background:#f0fdf4;color:#166534;padding:7px 16px;border-radius:999px;border:1px solid #bbf7d0;cursor:pointer;font-size:0.82rem;font-weight:600;">
-        M-Pesa
-      </button>
-      <button onclick="filterBlogCategory('Offline Payments')" id="cat-offline"
-        style="background:#f0fdf4;color:#166534;padding:7px 16px;border-radius:999px;border:1px solid #bbf7d0;cursor:pointer;font-size:0.82rem;font-weight:600;">
-        Offline Payments
-      </button>
-      <button onclick="filterBlogCategory('Kenya')" id="cat-kenya"
-        style="background:#f0fdf4;color:#166534;padding:7px 16px;border-radius:999px;border:1px solid #bbf7d0;cursor:pointer;font-size:0.82rem;font-weight:600;">
-        Kenya
-      </button>
-      <button onclick="filterBlogCategory('Global')" id="cat-global"
-        style="background:#f0fdf4;color:#166534;padding:7px 16px;border-radius:999px;border:1px solid #bbf7d0;cursor:pointer;font-size:0.82rem;font-weight:600;">
-        Global
-      </button>
-    </div>
-    <input type="text" id="blogSearchInput" placeholder="🔍 Search posts..."
-      oninput="searchBlogs()"
-      style="border:1px solid #e2e8f0;border-radius:10px;padding:8px 16px;font-size:0.85rem;outline:none;min-width:220px;">
-  </div>
-
-  <!-- Loading state -->
-  <div id="blogLoadingState" style="text-align:center;padding:60px 0;">
-    <div style="width:40px;height:40px;border:3px solid #f0fdf4;border-top:3px solid #16a34a;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 16px;"></div>
-    <p style="color:#94a3b8;font-size:0.9rem;">Loading blog posts...</p>
-  </div>
-
-  <!-- Empty state -->
-  <div id="blogEmptyState" style="display:none;text-align:center;padding:80px 20px;">
-    <div style="font-size:3rem;margin-bottom:16px;">📝</div>
-    <h3 style="font-size:1.3rem;font-weight:700;color:#0f172a;margin-bottom:8px;">No posts yet</h3>
-    <p style="color:#64748b;margin-bottom:24px;">Blog posts added from the admin dashboard will appear here.</p>
-    <a href="https://wa.me/0140933042?text=REGISTER"
-      style="display:inline-flex;align-items:center;gap:8px;background:#16a34a;color:white;font-weight:700;padding:12px 24px;border-radius:8px;text-decoration:none;">
-      <i class="fab fa-whatsapp"></i> Register as Merchant
-    </a>
-  </div>
-
-  <!-- Blog grid -->
-  <div id="blogGrid" style="display:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:28px;"></div>
-
-  <!-- Load more -->
-  <div id="blogLoadMore" style="display:none;text-align:center;margin-top:40px;">
-    <button onclick="loadMoreBlogs()"
-      style="background:white;border:2px solid #16a34a;color:#16a34a;font-weight:700;padding:12px 32px;border-radius:8px;cursor:pointer;font-size:0.9rem;">
-      Load More Posts
-    </button>
-  </div>
-
-</div>
-
-<style>
-@keyframes spin { 0%{transform:rotate(0deg);} 100%{transform:rotate(360deg);} }
-.blog-card { background:white;border-radius:16px;overflow:hidden;border:1px solid #e2e8f0;transition:transform 0.2s,box-shadow 0.2s;cursor:pointer; }
-.blog-card:hover { transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,0.1); }
-.blog-card img { width:100%;height:200px;object-fit:cover;display:block; }
-</style>
-
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getFirestore, collection, query, orderBy, where, getDocs, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyDPAvq6BgpdfZAkfoEwdwmHrWedHgzjRSk",
-  authDomain: "whapay-c93ab.firebaseapp.com",
-  projectId: "whapay-c93ab",
-  storageBucket: "whapay-c93ab.firebasestorage.app",
-  messagingSenderId: "205456952458",
-  appId: "1:205456952458:web:6533921ca10a2988417173"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-let allBlogPosts = [];
-let currentCategory = 'all';
-let displayedCount = 9;
-
-// Load all published blog posts in real time
-const q = query(collection(db, 'blogs'), orderBy('createdAt', 'desc'));
-onSnapshot(q, (snapshot) => {
-  allBlogPosts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
-    .filter(post => post.published !== false);
-  document.getElementById('blogLoadingState').style.display = 'none';
-  renderBlogGrid();
-});
-
-function renderBlogGrid() {
-  const grid = document.getElementById('blogGrid');
-  const empty = document.getElementById('blogEmptyState');
-  const loadMore = document.getElementById('blogLoadMore');
-  const searchTerm = document.getElementById('blogSearchInput')?.value.toLowerCase() || '';
-
-  let filtered = allBlogPosts;
-
-  if (currentCategory !== 'all') {
-    filtered = filtered.filter(p =>
-      (p.category || '').toLowerCase().includes(currentCategory.toLowerCase())
-    );
-  }
-
-  if (searchTerm) {
-    filtered = filtered.filter(p =>
-      (p.title || '').toLowerCase().includes(searchTerm) ||
-      (p.excerpt || '').toLowerCase().includes(searchTerm) ||
-      (p.category || '').toLowerCase().includes(searchTerm)
-    );
-  }
-
-  if (filtered.length === 0) {
-    grid.style.display = 'none';
-    empty.style.display = 'block';
-    loadMore.style.display = 'none';
-    return;
-  }
-
-  empty.style.display = 'none';
-  grid.style.display = 'grid';
-
-  const toShow = filtered.slice(0, displayedCount);
-  grid.innerHTML = toShow.map(post => buildBlogCard(post)).join('');
-  loadMore.style.display = filtered.length > displayedCount ? 'block' : 'none';
-}
-
-function buildBlogCard(post) {
-  const date = post.createdAt?.toDate
-    ? post.createdAt.toDate().toLocaleDateString('en-KE', { year:'numeric', month:'long', day:'numeric' })
-    : 'Recent';
-
-  const image = post.image ||
-    'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&q=80';
-
-  const excerpt = (post.excerpt || post.content?.replace(/<[^>]*>/g,'').substring(0, 140) + '...' || 'Read this post on WhaPay.');
-
-  return `
-    <div class="blog-card" onclick="openBlogPost('${post.id}','${encodeURIComponent(post.slug || post.id)}')">
-      <img src="${image}" alt="${escapeHtml(post.title)}"
-        onerror="this.src='https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&q=80'">
-      <div style="padding:20px;">
-        ${post.category ? `<span style="background:#f0fdf4;color:#166534;padding:3px 10px;border-radius:999px;font-size:0.7rem;font-weight:700;display:inline-block;margin-bottom:10px;">${escapeHtml(post.category)}</span>` : ''}
-        <h3 style="font-size:1.05rem;font-weight:800;color:#0f172a;line-height:1.35;margin-bottom:8px;">${escapeHtml(post.title)}</h3>
-        <p style="color:#64748b;font-size:0.82rem;line-height:1.6;margin-bottom:14px;">${escapeHtml(excerpt)}</p>
-        <div style="display:flex;justify-content:space-between;align-items:center;">
-          <span style="color:#94a3b8;font-size:0.75rem;">${date}</span>
-          <span style="color:#16a34a;font-size:0.82rem;font-weight:700;">Read more →</span>
-        </div>
-      </div>
-    </div>`;
-}
-
-function openBlogPost(id, slug) {
-  // Opens individual blog post — looks up by ID in Firestore
-  window.location.href = `blog-post.html?id=${id}&slug=${decodeURIComponent(slug)}`;
-}
-
-function escapeHtml(str) {
-  if (!str) return '';
-  return String(str).replace(/[&<>"']/g, m =>
-    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])
-  );
-}
-
-window.filterBlogCategory = function(category) {
-  currentCategory = category;
-  displayedCount = 9;
-  renderBlogGrid();
-  document.querySelectorAll('[id^="cat-"]').forEach(btn => {
-    btn.style.background = '#f0fdf4';
-    btn.style.color = '#166534';
-  });
-  const active = document.getElementById('cat-' + category.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z-]/g,''));
-  if (active) { active.style.background = '#16a34a'; active.style.color = 'white'; }
-};
-
-window.searchBlogs = function() { displayedCount = 9; renderBlogGrid(); };
-
-window.loadMoreBlogs = function() { displayedCount += 9; renderBlogGrid(); };
-</script>
-      
-      <!-- Search bar -->
-      <div class="max-w-md mx-auto">
-        <div class="relative">
-          <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-          <input type="text" id="searchInput" placeholder="Search articles..." class="w-full pl-10 pr-4 py-3 rounded-full bg-white/90 backdrop-blur-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500">
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Bottom wave decoration -->
-  <div class="absolute bottom-0 left-0 right-0">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 60" class="w-full h-auto text-gray-100" fill="currentColor">
-      <path d="M0,32L80,37.3C160,43,320,53,480,48C640,43,800,21,960,21.3C1120,21,1280,43,1360,53.3L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
-    </svg>
-  </div>
-</div>
-<!-- Aggressive Image Hero – Offline-First Messaging -->
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap');
-.hero-aggressive * { font-family: 'Outfit', sans-serif; }
-
-.hero-aggressive {
-  position: relative;
-  background: #0a0f1e;
-  overflow: hidden;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-}
-
-.hero-aggressive-bg {
-  position: absolute;
-  inset: 0;
-  background-image: url('https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1800&q=80');
-  background-size: cover;
-  background-position: center;
-  opacity: 0.25;
-}
-
-.hero-aggressive-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(10,15,30,0.97) 0%, rgba(10,15,30,0.85) 40%, rgba(10,15,30,0.5) 100%);
-}
-
-.hero-headline {
-  font-size: clamp(3rem, 6vw, 5.5rem);
-  font-weight: 900;
-  line-height: 1.0;
-  letter-spacing: -0.03em;
-  color: white;
-}
-
-.hero-accent {
-  background: linear-gradient(135deg, #22c55e, #86efac);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-@keyframes livePing {
-  0% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(1.5); }
-  100% { opacity: 1; transform: scale(1); }
-}
-</style>
-
-<div class="hero-aggressive">
-  <div class="hero-aggressive-bg"></div>
-  <div class="hero-aggressive-overlay"></div>
-  <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(22,163,74,0.04) 1px, transparent 1px),linear-gradient(90deg, rgba(22,163,74,0.04) 1px, transparent 1px);background-size:60px 60px;"></div>
-
-  <div style="position:relative;z-index:10;width:100%;max-width:1280px;margin:0 auto;padding:80px 24px;">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;" class="flex-col md:grid">
-
-      <!-- LEFT side -->
-      <div>
-        <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(22,163,74,0.12);border:1px solid rgba(22,163,74,0.25);color:#86efac;padding:6px 16px;border-radius:999px;font-size:0.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:28px;">
-          <span style="width:6px;height:6px;background:#22c55e;border-radius:50%;box-shadow:0 0 0 3px rgba(34,197,94,0.3);animation:livePing 2s ease infinite;"></span>
-          Offline Technology — Live
-        </div>
-
-        <h1 class="hero-headline" style="margin-bottom:24px;">
-          Payments That<br>
-          <span class="hero-accent">Never Stop.</span><br>
-          <span style="font-weight:300;color:rgba(255,255,255,0.6);">Even Without Internet.</span>
-        </h1>
-
-        <p style="color:rgba(255,255,255,0.5);font-size:1.1rem;line-height:1.8;max-width:460px;margin-bottom:40px;">
-          The only platform where you can <strong>register by voice call or SMS</strong> and <strong>accept payments offline</strong> via M-Pesa Paybill. No internet? No problem.
-        </p>
-
-        <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:48px;">
-          <a href="https://wa.me/0140933042?text=REGISTER" style="display:inline-flex;align-items:center;gap:10px;background:#16a34a;color:white;font-weight:700;font-size:1rem;padding:16px 28px;border-radius:6px;text-decoration:none;transition:all 0.3s;">
-            <i class="fab fa-whatsapp"></i> Register Free
-          </a>
-          <a href="tel:0140933042" style="display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);color:white;font-weight:600;font-size:1rem;padding:16px 28px;border-radius:6px;text-decoration:none;transition:all 0.3s;">
-            <i class="fas fa-phone-alt"></i> Call 0140933042
-          </a>
-        </div>
-
-        <div style="display:flex;gap:32px;flex-wrap:wrap;margin-top:20px;">
-          <div style="border-left:2px solid rgba(22,163,74,0.4);padding-left:16px;">
-            <div style="font-size:2.2rem;font-weight:900;background:linear-gradient(135deg,#fff,#22c55e);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1;">Voice/SMS</div>
-            <div style="color:rgba(255,255,255,0.35);font-size:0.7rem;letter-spacing:0.08em;text-transform:uppercase;">Offline Registration</div>
-          </div>
-          <div style="border-left:2px solid rgba(22,163,74,0.4);padding-left:16px;">
-            <div style="font-size:2.2rem;font-weight:900;background:linear-gradient(135deg,#fff,#22c55e);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1;">Member Code</div>
-            <div style="color:rgba(255,255,255,0.35);font-size:0.7rem;letter-spacing:0.08em;text-transform:uppercase;">Offline Payment</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- RIGHT side – aggressive collage -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto auto;gap:12px;position:relative;" class="hidden md:grid">
-        <div style="grid-column:1/3;border-radius:12px;overflow:hidden;height:240px;position:relative;">
-          <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?w=800&q=80" alt="Merchant with smartphone payment" style="width:100%;height:100%;object-fit:cover;">
-          <div style="position:absolute;inset:0;background:linear-gradient(to top, rgba(10,15,30,0.7) 0%, transparent 60%);"></div>
-          <div style="position:absolute;bottom:16px;left:16px;display:flex;align-items:center;gap:8px;">
-            <div style="background:rgba(22,163,74,0.9);border-radius:999px;padding:4px 12px;font-size:0.72rem;color:white;font-weight:700;">✓ Offline Payment Accepted</div>
-          </div>
-        </div>
-        <div style="border-radius:12px;overflow:hidden;height:180px;position:relative;">
-          <img src="https://images.unsplash.com/photo-1607863680198-23d4b2565df0?w=400&q=80" alt="Mobile payment QR" style="width:100%;height:100%;object-fit:cover;">
-          <div style="position:absolute;inset:0;background:linear-gradient(to top, rgba(10,15,30,0.6) 0%, transparent 60%);"></div>
-          <div style="position:absolute;bottom:10px;left:10px;color:white;font-size:0.7rem;font-weight:700;">QR Payments</div>
-        </div>
-        <div style="border-radius:12px;overflow:hidden;height:180px;position:relative;">
-          <img src="https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=400&q=80" alt="WhatsApp payment interface" style="width:100%;height:100%;object-fit:cover;">
-          <div style="position:absolute;inset:0;background:linear-gradient(to top, rgba(10,15,30,0.7) 0%, transparent 50%);"></div>
-          <div style="position:absolute;bottom:10px;left:10px;color:white;font-size:0.7rem;font-weight:700;">WhatsApp Link</div>
-        </div>
-        <div style="position:absolute;top:-20px;right:-20px;background:rgba(22,163,74,0.1);backdrop-filter:blur(20px);border:1px solid rgba(22,163,74,0.2);border-radius:10px;padding:16px 20px;z-index:10;">
-          <div style="color:rgba(255,255,255,0.4);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;">No Monthly Fee</div>
-          <div style="font-size:1.6rem;font-weight:900;color:#22c55e;">KES 0</div>
-          <div style="color:rgba(255,255,255,0.35);font-size:0.7rem;">Free registration</div>
-        </div>
-      </div>
+      <div id="postMessage" class="text-sm"></div>
     </div>
   </div>
 
-  <div style="position:absolute;bottom:0;left:0;right:0;height:80px;background:#f8fafc;clip-path:polygon(0 100%, 100% 100%, 100% 0);"></div>
-</div>
-  
-  <!-- Newsletter Signup -->
-<div class="bg-gradient-to-r from-emerald-50 to-blue-50 rounded-2xl p-6 mb-8 border border-emerald-100">
-  <div class="flex flex-col md:flex-row items-center justify-between gap-4">
-    <div class="flex-1 text-center md:text-left">
-      <div class="inline-flex items-center gap-2 bg-emerald-100 px-3 py-1 rounded-full text-xs text-emerald-700 mb-2">
-        <i class="fas fa-envelope"></i> Never miss an update
-      </div>
-      <h3 class="text-xl font-bold text-gray-800">Subscribe to our newsletter</h3>
-      <p class="text-gray-500 text-sm mt-1">Get the latest payment tips and guides delivered to your inbox.</p>
-    </div>
-    <div class="flex-1">
-      <form id="newsletterForm" class="flex flex-col sm:flex-row gap-3">
-        <input type="email" id="newsletterEmail" placeholder="Your email address" class="flex-1 px-4 py-2 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-500">
-        <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-full transition font-medium">Subscribe</button>
-      </form>
-      <p id="newsletterMessage" class="text-xs text-gray-500 mt-2"></p>
-    </div>
+  <!-- Blog Posts Grid -->
+  <div id="blogGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+  <div id="loadingState" class="text-center py-12">Loading blog posts...</div>
+  <div id="emptyState" class="text-center py-12 hidden">
+    <p class="text-gray-500">No blog posts yet. Check back soon!</p>
   </div>
-</div>
-
-  <!-- How It Works Section -->
-  <div class="mt-8 bg-white rounded-2xl shadow-lg p-6">
-    <h2 class="text-xl font-bold text-center mb-4">👆 How WhaPay Works – Simple Steps</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-      <div class="step-card bg-gray-50 p-3 rounded-xl"><div class="text-3xl mb-1">1️⃣</div><i class="fas fa-user-plus text-2xl text-green-600"></i><p class="font-bold mt-1">Get Your Code & QR</p><p class="text-xs">Register online (WhatsApp) or offline (voice/SMS to <strong class="font-mono">0140933042</strong>). Receive your unique Member Code and QR code instantly.</p></div>
-      <div class="step-card bg-gray-50 p-3 rounded-xl"><div class="text-3xl mb-1">2️⃣</div><i class="fas fa-hand-holding-usd text-2xl text-green-600"></i><p class="font-bold mt-1">Share or Scan</p><p class="text-xs">Merchant shares their WhatsApp link, QR code, or Member Code. Customer scans or copies the code.</p></div>
-      <div class="step-card bg-gray-50 p-3 rounded-xl"><div class="text-3xl mb-1">3️⃣</div><i class="fas fa-check-circle text-2xl text-green-600"></i><p class="font-bold mt-1">Pay & Confirm</p><p class="text-xs">Pay via M-Pesa or card (online) or Member Code + M-Pesa Paybill <strong class="font-mono">0140933042</strong> (offline). Both receive instant confirmation.</p></div>
-    </div>
-  </div>
-
-  <!-- ===== GLOBAL COMPARISON SECTION - ADD TO EVERY PAGE ===== -->
-<div class="bg-white rounded-2xl shadow-lg p-6 mb-12 overflow-x-auto">
-  <div class="text-center mb-6">
-    <h2 class="text-2xl font-bold text-gray-800">🌍 WhaPay vs The World's Biggest Payment Platforms</h2>
-    <p class="text-gray-500 text-sm mt-2">See how WhaPay compares to Stripe, PayPal, Square, Adyen and Kenya's top platforms</p>
-  </div>
-  <table class="min-w-full border-collapse text-sm">
-    <thead class="bg-gray-100">
-      <tr>
-        <th class="px-4 py-3 text-left">Feature</th>
-        <th class="px-4 py-3 text-center bg-green-100 text-green-800">WhaPay</th>
-        <th class="px-4 py-3 text-center">Stripe</th>
-        <th class="px-4 py-3 text-center">PayPal</th>
-        <th class="px-4 py-3 text-center">Square</th>
-        <th class="px-4 py-3 text-center">Adyen</th>
-        <th class="px-4 py-3 text-center">Pesapal</th>
-        <th class="px-4 py-3 text-center">Paystack</th>
-        <th class="px-4 py-3 text-center">Flutterwave</th>
-      </tr>
-    </thead>
-    <tbody class="divide-y divide-gray-100">
-      <tr>
-        <td class="px-4 py-3 font-semibold">Monthly Fee</td>
-        <td class="px-4 py-3 text-center text-green-600 font-bold bg-green-50">KES 0</td>
-        <td class="px-4 py-3 text-center">$0 (basic)</td>
-        <td class="px-4 py-3 text-center">$0 (basic)</td>
-        <td class="px-4 py-3 text-center">$0 (basic)</td>
-        <td class="px-4 py-3 text-center">Custom</td>
-        <td class="px-4 py-3 text-center">KES 1,999+</td>
-        <td class="px-4 py-3 text-center">$0</td>
-        <td class="px-4 py-3 text-center">$0</td>
-      </tr>
-      <tr class="bg-gray-50">
-        <td class="px-4 py-3 font-semibold">Card Transaction Fee</td>
-        <td class="px-4 py-3 text-center text-green-600 font-bold bg-green-50">1.5% + KES 20</td>
-        <td class="px-4 py-3 text-center">2.9% + $0.30</td>
-        <td class="px-4 py-3 text-center">3.49% + $0.49</td>
-        <td class="px-4 py-3 text-center">2.6% + $0.10</td>
-        <td class="px-4 py-3 text-center">0.3%–0.8%</td>
-        <td class="px-4 py-3 text-center">2.9% + KES 20</td>
-        <td class="px-4 py-3 text-center">2.9% + KES 30</td>
-        <td class="px-4 py-3 text-center">1.4%–3.8%</td>
-      </tr>
-      <tr>
-        <td class="px-4 py-3 font-semibold">M-Pesa Integration</td>
-        <td class="px-4 py-3 text-center text-green-600 font-bold bg-green-50">✅ 0% extra</td>
-        <td class="px-4 py-3 text-center text-red-500">❌ No</td>
-        <td class="px-4 py-3 text-center text-red-500">❌ No</td>
-        <td class="px-4 py-3 text-center text-red-500">❌ No</td>
-        <td class="px-4 py-3 text-center text-red-500">❌ No</td>
-        <td class="px-4 py-3 text-center text-yellow-600">⚠️ Yes + fee</td>
-        <td class="px-4 py-3 text-center text-yellow-600">⚠️ Yes + fee</td>
-        <td class="px-4 py-3 text-center text-yellow-600">⚠️ Yes + fee</td>
-      </tr>
-      <tr class="bg-gray-50">
-        <td class="px-4 py-3 font-semibold">Offline Registration (SMS/Voice)</td>
-        <td class="px-4 py-3 text-center text-green-600 font-bold bg-green-50">✅ Free</td>
-        <td class="px-4 py-3 text-center text-red-500">❌ No</td>
-        <td class="px-4 py-3 text-center text-red-500">❌ No</td>
-        <td class="px-4 py-3 text-center text-red-500">❌ No</td>
-        <td class="px-4 py-3 text-center text-red-500">❌ No</td>
-        <td class="px-4 py-3 text-center text-red-500">❌ No</td>
-        <td class="px-4 py-3 text-center text-red-500">❌ No</td>
-        <td class="px-4 py-3 text-center text-red-500">❌ No</td>
-      </tr>
-      <tr>
-        <td class="px-4 py-3 font-semibold">Offline Payments (No Internet)</td>
-        <td class="px-4 py-3 text-center text-green-600 font-bold bg-green-50">✅ Member Code</td>
-        <td class="px-4 py-3 text-center text-red-500">❌ No</td>
-        <td class="px-4 py-3 text-center text-red-500">❌ No</td>
-        <td class="px-4 py-3 text-center text-red-500">❌ No</td>
-        <td class="px-4 py-3 text-center text-red-500">❌ No</td>
-        <td class="px-4 py-3 text-center text-red-500">❌ No</td>
-        <td class="px-4 py-3 text-center text-red-500">❌ No</td>
-        <td class="px-4 py-3 text-center text-red-500">❌ No</td>
-      </tr>
-      <tr class="bg-gray-50">
-        <td class="px-4 py-3 font-semibold">WhatsApp Payment Links</td>
-        <td class="px-4 py-3 text-center text-green-600 font-bold bg-green-50">✅ Yes</td>
-        <td class="px-4 py-3 text-center text-red-500">❌ No</td>
-        <td class="px-4 py-3 text-center text-red-500">❌ No</td>
-        <td class="px-4 py-3 text-center text-red-500">❌ No</td>
-        <td class="px-4 py-3 text-center text-red-500">❌ No</td>
-        <td class="px-4 py-3 text-center text-red-500">❌ No</td>
-        <td class="px-4 py-3 text-center text-red-500">❌ No</td>
-        <td class="px-4 py-3 text-center text-red-500">❌ No</td>
-      </tr>
-      <tr>
-        <td class="px-4 py-3 font-semibold">QR Code Payments</td>
-        <td class="px-4 py-3 text-center text-green-600 font-bold bg-green-50">✅ Free</td>
-        <td class="px-4 py-3 text-center text-green-600">✅ Yes</td>
-        <td class="px-4 py-3 text-center text-green-600">✅ Yes</td>
-        <td class="px-4 py-3 text-center text-green-600">✅ Yes</td>
-        <td class="px-4 py-3 text-center text-green-600">✅ Yes</td>
-        <td class="px-4 py-3 text-center text-yellow-600">⚠️ Limited</td>
-        <td class="px-4 py-3 text-center text-yellow-600">⚠️ Limited</td>
-        <td class="px-4 py-3 text-center text-yellow-600">⚠️ Limited</td>
-      </tr>
-      <tr class="bg-gray-50">
-        <td class="px-4 py-3 font-semibold">135+ Global Currencies</td>
-        <td class="px-4 py-3 text-center text-green-600 font-bold bg-green-50">✅ Yes</td>
-        <td class="px-4 py-3 text-center text-green-600">✅ 135+</td>
-        <td class="px-4 py-3 text-center text-green-600">✅ 100+</td>
-        <td class="px-4 py-3 text-center text-yellow-600">⚠️ Limited</td>
-        <td class="px-4 py-3 text-center text-green-600">✅ 150+</td>
-        <td class="px-4 py-3 text-center text-yellow-600">⚠️ KES focus</td>
-        <td class="px-4 py-3 text-center text-yellow-600">⚠️ Africa focus</td>
-        <td class="px-4 py-3 text-center text-green-600">✅ Africa+</td>
-      </tr>
-      <tr>
-        <td class="px-4 py-3 font-semibold">Google Pay / Apple Pay</td>
-        <td class="px-4 py-3 text-center text-green-600 font-bold bg-green-50">✅ Yes</td>
-        <td class="px-4 py-3 text-center text-green-600">✅ Yes</td>
-        <td class="px-4 py-3 text-center text-green-600">✅ Yes</td>
-        <td class="px-4 py-3 text-center text-green-600">✅ Yes</td>
-        <td class="px-4 py-3 text-center text-green-600">✅ Yes</td>
-        <td class="px-4 py-3 text-center text-red-500">❌ No</td>
-        <td class="px-4 py-3 text-center text-red-500">❌ No</td>
-        <td class="px-4 py-3 text-center text-red-500">❌ No</td>
-      </tr>
-      <tr class="bg-gray-50">
-        <td class="px-4 py-3 font-semibold">Works Without Smartphone</td>
-        <td class="px-4 py-3 text-center text-green-600 font-bold bg-green-50">✅ Yes</td>
-        <td class="px-4 py-3 text-center text-red-500">❌ No</td>
-        <td class="px-4 py-3 text-center text-red-500">❌ No</td>
-        <td class="px-4 py-3 text-center text-red-500">❌ No</td>
-        <td class="px-4 py-3 text-center text-red-500">❌ No</td>
-        <td class="px-4 py-3 text-center text-red-500">❌ No</td>
-        <td class="px-4 py-3 text-center text-red-500">❌ No</td>
-        <td class="px-4 py-3 text-center text-red-500">❌ No</td>
-      </tr>
-      <tr>
-        <td class="px-4 py-3 font-semibold">Recurring Billing</td>
-        <td class="px-4 py-3 text-center text-green-600 font-bold bg-green-50">✅ Yes</td>
-        <td class="px-4 py-3 text-center text-green-600">✅ Yes</td>
-        <td class="px-4 py-3 text-center text-green-600">✅ Yes</td>
-        <td class="px-4 py-3 text-center text-green-600">✅ Yes</td>
-        <td class="px-4 py-3 text-center text-green-600">✅ Yes</td>
-        <td class="px-4 py-3 text-center text-red-500">❌ No</td>
-        <td class="px-4 py-3 text-center text-red-500">❌ No</td>
-        <td class="px-4 py-3 text-center text-yellow-600">⚠️ Limited</td>
-      </tr>
-      <tr class="bg-gray-50">
-        <td class="px-4 py-3 font-semibold">Diaspora / International Transfers</td>
-        <td class="px-4 py-3 text-center text-green-600 font-bold bg-green-50">✅ USD/GBP/EUR+</td>
-        <td class="px-4 py-3 text-center text-green-600">✅ Yes</td>
-        <td class="px-4 py-3 text-center text-green-600">✅ Yes</td>
-        <td class="px-4 py-3 text-center text-yellow-600">⚠️ US only</td>
-        <td class="px-4 py-3 text-center text-green-600">✅ Yes</td>
-        <td class="px-4 py-3 text-center text-red-500">❌ No</td>
-        <td class="px-4 py-3 text-center text-red-500">❌ No</td>
-        <td class="px-4 py-3 text-center text-yellow-600">⚠️ Limited</td>
-      </tr>
-    </tbody>
-  </table>
-  <p class="text-xs text-gray-400 text-center mt-4">*Fees approximate and subject to change. WhaPay is the only platform with full offline registration and payment capability globally.</p>
-
-  <div class="mt-6 text-center">
-    <a href="https://wa.me/0140933042?text=REGISTER"
-      class="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-bold px-8 py-3 rounded-full transition shadow-lg">
-      <i class="fab fa-whatsapp"></i> Register Free on WhaPay
-    </a>
-  </div>
-</div>
-<!-- ===== END GLOBAL COMPARISON SECTION ===== -->
-
 </main>
-
-<footer class="bg-gray-900 text-gray-300 pt-12 pb-6 mt-10">
-  <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-    <div>
-      <h2 class="text-2xl font-bold text-white mb-3">WhaPay</h2>
-      <p class="text-gray-400 text-sm leading-relaxed mb-4">Kenya's modern WhatsApp payment solution. Accept M-Pesa & card payments seamlessly, even offline.</p>
-      <p class=ext-sm text-gray-500">Trusted by businesses across Kenya 🇰🇪</p>
-    </div>
-    <div>
-      <h3 class="text-white font-semibold mb-4">Quick Links</h3>
-      <ul class="space-y-2 text-sm">
-        <li><a href="index.html" class="hover:text-green-400">Home</a></li>
-        <li><a href="about.html" class="hover:text-green-400">About</a></li>
-        <li><a href="features.html" class="hover:text-green-400">Features</a></li>
-        <li><a href="pricing.html" class="hover:text-green-400">Pricing</a></li>
-        <li><a href="contact.html" class="hover:text-green-400">Contact</a></li>
-      </ul>
-    </div>
-    <div>
-      <h3 class="text-white font-semibold mb-4">Solutions</h3>
-      <ul class="space-y-2 text-sm">
-        <li>WhatsApp Payments Kenya</li>
-        <li>M-Pesa Integration</li>
-        <li>QR & Barcode Payments</li>
-        <li>Live Dashboard</li>
-        <li>Weekly & Monthly Reports</li>
-      </ul>
-    </div>
-    <div>
-      <h3 class="text-white font-semibold mb-4">Get Started</h3>
-      <p class="text-sm text-gray-400 mb-3">Start accepting payments via WhatsApp today.</p>
-      <a href="https://wa.me/0140933042" target="_blank" class="block bg-green-500 hover:bg-green-600 text-white text-center py-2 px-4 rounded mb-3">Chat on WhatsApp</a>
-      <p class="text-sm text-gray-400">Email: <a href="mailto:support@whapay.com" class="hover:text-green-400">support@whapay.com</a></p>
-      <p class="text-sm text-gray-400">Offline registration: <a href="tel:0140933042" class="hover:text-green-400">0140933042</a> (voice/SMS)</p>
-    </div>
-  </div>
-  <div class="border-t border-gray-800 mt-10 pt-6 text-center text-sm text-gray-500">
-    <p>&copy; 2026 WhaPay Solutions. All rights reserved.</p>
-    <p class="text-xs mt-1">Offline registration: call <strong class="font-mono">0140933042</strong> (voicemail) or SMS to same number | WhatsApp: <strong class="font-mono">0140933042</strong></p>
-    <div class="mt-2 space-x-4">
-      <a href="privacy.html" class="hover:text-green-400">Privacy Policy</a>
-      <a href="terms.html" class="hover:text-green-400">Terms of Service</a>
-      <a href="#" class="hover:text-green-400">Cookies</a>
-    </div>
-  </div>
-</footer>
-
-<!-- Floating WhatsApp Button -->
-<a href="https://wa.me/0140933042?text=Hello%20I%20want%20to%20use%20WhaPay" target="_blank" 
-   class="fixed bottom-5 right-5 z-50 flex items-center gap-3 bg-green-500 hover:bg-green-600 text-white px-4 py-3 rounded-full shadow-lg transition-all duration-300">
-  <i class="fab fa-whatsapp text-xl"></i>
-  <span class="hidden md:inline text-sm font-semibold">Chat with us</span>
-</a>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { getFirestore, collection, query, orderBy, getDocs, where, limit } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { getFirestore, collection, addDoc, getDocs, query, orderBy, deleteDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
   import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
   const firebaseConfig = {
@@ -1002,6 +86,22 @@ window.loadMoreBlogs = function() { displayedCount += 9; renderBlogGrid(); };
   const db = getFirestore(app);
   const auth = getAuth(app);
 
+  let currentUser = null;
+  let editingPostId = null;
+
+  // DOM elements
+  const adminPanel = document.getElementById('adminPanel');
+  const navUserDisplay = document.getElementById('navUserDisplay');
+  const navLoginBtn = document.getElementById('navLoginBtn');
+  const navLogoutBtn = document.getElementById('navLogoutBtn');
+  const blogGrid = document.getElementById('blogGrid');
+  const loadingState = document.getElementById('loadingState');
+  const emptyState = document.getElementById('emptyState');
+  const savePostBtn = document.getElementById('savePostBtn');
+  const cancelPostBtn = document.getElementById('cancelPostBtn');
+  const postMessage = document.getElementById('postMessage');
+
+  // Helper functions
   function showToast(msg, isErr = false) {
     let toast = document.getElementById('globalToast');
     if (!toast) {
@@ -1018,150 +118,11 @@ window.loadMoreBlogs = function() { displayedCount += 9; renderBlogGrid(); };
   }
 
   function formatDate(timestamp) {
-    if (!timestamp) return "Recent";
+    if (!timestamp) return 'Just now';
     const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
-    return date.toLocaleDateString("en-KE", { year: 'numeric', month: 'long', day: 'numeric' });
+    return date.toLocaleDateString('en-KE', { year: 'numeric', month: 'short', day: 'numeric' });
   }
 
-  // Admin Auth UI
-  const loginModal = document.getElementById('loginModal');
-  const navLoginBtn = document.getElementById('navLoginBtn');
-  const navLogoutBtn = document.getElementById('navLogoutBtn');
-  const navUserDisplay = document.getElementById('navUserDisplay');
-
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      navUserDisplay.innerText = user.email;
-      navUserDisplay.classList.remove('hidden');
-      navLoginBtn.classList.add('hidden');
-      navLogoutBtn.classList.remove('hidden');
-      loginModal.classList.add('hidden');
-    } else {
-      navUserDisplay.classList.add('hidden');
-      navLoginBtn.classList.remove('hidden');
-      navLogoutBtn.classList.add('hidden');
-    }
-  });
-
-  navLoginBtn.onclick = () => loginModal.classList.remove('hidden');
-  document.getElementById('closeModalBtn').onclick = () => loginModal.classList.add('hidden');
-  document.getElementById('loginBtn').onclick = async () => {
-    const email = document.getElementById('loginEmail').value.trim();
-    const password = document.getElementById('loginPassword').value.trim();
-    const errorDiv = document.getElementById('loginError');
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      errorDiv.innerText = '';
-      showToast('Logged in as admin');
-      loginModal.classList.add('hidden');
-    } catch (err) {
-      errorDiv.innerText = err.message;
-    }
-  };
-  navLogoutBtn.onclick = async () => { await signOut(auth); showToast('Logged out'); };
-
-  // Blog loading logic
-  const params = new URLSearchParams(window.location.search);
-  const slug = params.get("slug");
-  const container = document.getElementById("blogContent");
-
-  async function showSinglePost(slug) {
-    const q = query(collection(db, "blogs"), where("slug", "==", slug), limit(1));
-    const snapshot = await getDocs(q);
-    if (snapshot.empty) {
-      container.innerHTML = `
-        <div class="text-center py-12">
-          <i class="fas fa-newspaper text-5xl text-gray-400 mb-4"></i>
-          <h2 class="text-2xl font-bold text-gray-700">Post not found</h2>
-          <p class="text-gray-500 mt-2">The article you're looking for doesn't exist or has been moved.</p>
-          <a href="blog.html" class="inline-block mt-4 bg-green-600 text-white px-4 py-2 rounded-lg">← Back to all posts</a>
-        </div>
-      `;
-      return;
-    }
-    const post = snapshot.docs[0].data();
-    container.innerHTML = `
-      <article>
-        <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-3">${escapeHtml(post.title) || "Untitled"}</h1>
-        <div class="flex flex-wrap gap-3 text-sm text-gray-500 mb-6 border-b pb-3">
-          <span><i class="far fa-calendar-alt mr-1"></i> ${formatDate(post.createdAt)}</span>
-          ${post.author ? `<span><i class="far fa-user mr-1"></i> ${escapeHtml(post.author)}</span>` : ''}
-          ${post.category ? `<span><i class="far fa-folder mr-1"></i> ${escapeHtml(post.category)}</span>` : ''}
-        </div>
-        ${post.image ? `<img src="${escapeHtml(post.image)}" alt="${escapeHtml(post.title)}" class="rounded-lg w-full object-cover mb-6 max-h-96">` : ''}
-        <div class="prose max-w-none text-gray-700 leading-relaxed space-y-4">
-          ${post.content || "No content available."}
-        </div>
-        ${post.tags ? `<div class="mt-6 pt-4 border-t flex flex-wrap gap-2"><span class="text-sm text-gray-500"><i class="fas fa-tags mr-1"></i> Tags:</span> ${post.tags.map(t => `<span class="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-full">${escapeHtml(t)}</span>`).join(' ')}</div>` : ''}
-        <div class="mt-8 text-center">
-          <a href="blog.html" class="text-green-600 hover:underline">← Back to all posts</a>
-        </div>
-      </article>
-    `;
-  }
-async function showAllPosts() {
-  const q = query(collection(db, "blogs"), orderBy("createdAt", "desc"));
-  const snapshot = await getDocs(q);
-  const posts = [];
-  snapshot.forEach(doc => posts.push({ id: doc.id, ...doc.data() }));
-
-  if (posts.length === 0) {
-    container.innerHTML = `
-      <div class="text-center py-12">
-        <i class="fas fa-pen-fancy text-5xl text-gray-400 mb-4"></i>
-        <h2 class="text-2xl font-bold text-gray-700">No blog posts yet</h2>
-        <p class="text-gray-500 mt-2">Check back soon for updates and guides.</p>
-        <div class="mt-4 p-3 bg-green-50 rounded-lg text-sm">
-          <i class="fas fa-phone-volume text-green-600 mr-2"></i> 
-          Need help? Register offline by calling <strong class="font-mono">0140933042</strong> or send SMS to the same number.
-        </div>
-      </div>
-    `;
-    return;
-  }
-
-  container.innerHTML = `
-    <div class="mb-8">
-      <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl md:text-3xl font-bold text-gray-800">All Articles</h1>
-        <div class="text-sm text-gray-500">${posts.length} articles</div>
-      </div>
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        ${posts.map(post => `
-          <div class="blog-card group bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 hover:-translate-y-1">
-            ${post.image ? `<img src="${escapeHtml(post.image)}" alt="${escapeHtml(post.title)}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500">` : `
-              <div class="w-full h-48 bg-gradient-to-br from-emerald-100 to-emerald-50 flex items-center justify-center">
-                <i class="fas fa-newspaper text-5xl text-emerald-300"></i>
-              </div>
-            `}
-            <div class="p-5">
-              <div class="flex items-center gap-2 text-xs text-gray-400 mb-2">
-                <i class="far fa-calendar-alt"></i>
-                <span>${formatDate(post.createdAt)}</span>
-                ${post.category ? `<span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full text-xs">${escapeHtml(post.category)}</span>` : ''}
-              </div>
-              <h2 class="text-xl font-bold text-gray-800 mb-2 line-clamp-2">
-                <a href="blog.html?slug=${encodeURIComponent(post.slug)}" class="hover:text-emerald-600 transition">${escapeHtml(post.title)}</a>
-              </h2>
-              <p class="text-gray-500 text-sm mb-4 line-clamp-3">${escapeHtml(post.excerpt || (post.content ? post.content.substring(0, 120).replace(/<[^>]*>/g, '') + '...' : 'Click to read more.'))}</p>
-              <div class="flex items-center justify-between">
-                <div class="flex items-center gap-2 text-xs text-gray-400">
-                  <i class="far fa-user"></i>
-                  <span>${post.author ? escapeHtml(post.author) : 'WhaPay Team'}</span>
-                </div>
-                <a href="blog.html?slug=${encodeURIComponent(post.slug)}" class="text-emerald-600 font-semibold text-sm hover:underline flex items-center gap-1">
-                  Read more <i class="fas fa-arrow-right text-xs group-hover:translate-x-1 transition"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-        `).join('')}
-      </div>
-    </div>
-  `;
-}
-  
-  
   function escapeHtml(str) {
     if (!str) return '';
     return str.replace(/[&<>]/g, function(m) {
@@ -1172,138 +133,205 @@ async function showAllPosts() {
     });
   }
 
-  if (slug) {
-    showSinglePost(slug);
-  } else {
-    showAllPosts();
+  // Clear admin form
+  function clearAdminForm() {
+    document.getElementById('postTitle').value = '';
+    document.getElementById('postCategory').value = 'M-Pesa';
+    document.getElementById('postImage').value = '';
+    document.getElementById('postExcerpt').value = '';
+    document.getElementById('postContent').value = '';
+    document.getElementById('postTags').value = '';
+    editingPostId = null;
+    cancelPostBtn.classList.add('hidden');
+    postMessage.innerHTML = '';
   }
 
-  // Service worker
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js').catch(e => console.log("SW failed", e));
+  // Load all blog posts
+  async function loadBlogPosts() {
+    blogGrid.innerHTML = '';
+    loadingState.classList.remove('hidden');
+    emptyState.classList.add('hidden');
+    
+    try {
+      const q = query(collection(db, 'blogs'), orderBy('createdAt', 'desc'));
+      const snapshot = await getDocs(q);
+      
+      loadingState.classList.add('hidden');
+      
+      if (snapshot.empty) {
+        emptyState.classList.remove('hidden');
+        return;
+      }
+      
+      const posts = [];
+      snapshot.forEach(doc => posts.push({ id: doc.id, ...doc.data() }));
+      
+      blogGrid.innerHTML = posts.map(post => `
+        <div class="blog-card bg-white rounded-2xl shadow-md overflow-hidden border border-gray-100">
+          ${post.image ? `<img src="${escapeHtml(post.image)}" class="w-full h-48 object-cover" onerror="this.src='https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&q=80'">` : `
+            <div class="w-full h-48 bg-gradient-to-r from-green-100 to-green-50 flex items-center justify-center">
+              <i class="fas fa-newspaper text-5xl text-green-300"></i>
+            </div>
+          `}
+          <div class="p-5">
+            <div class="flex items-center gap-2 text-xs text-gray-400 mb-2">
+              <span>${formatDate(post.createdAt)}</span>
+              <span class="bg-green-100 text-green-700 px-2 py-0.5 rounded-full">${escapeHtml(post.category || 'General')}</span>
+            </div>
+            <h3 class="text-xl font-bold text-gray-800 mb-2 line-clamp-2">${escapeHtml(post.title)}</h3>
+            <p class="text-gray-500 text-sm mb-4 line-clamp-3">${escapeHtml(post.excerpt || (post.content ? post.content.substring(0, 120).replace(/<[^>]*>/g, '') + '...' : ''))}</p>
+            <div class="flex justify-between items-center">
+              <span class="text-xs text-gray-400"><i class="far fa-user mr-1"></i> ${escapeHtml(post.author || 'WhaPay Team')}</span>
+              <a href="blog-post.html?id=${post.id}" class="text-green-600 text-sm font-semibold hover:underline">Read more →</a>
+            </div>
+            ${currentUser ? `
+              <div class="mt-3 pt-3 border-t flex gap-2">
+                <button onclick="editPost('${post.id}')" class="text-blue-600 text-xs">Edit</button>
+                <button onclick="deletePost('${post.id}')" class="text-red-600 text-xs">Delete</button>
+              </div>
+            ` : ''}
+          </div>
+        </div>
+      `).join('');
+      
+    } catch (err) {
+      console.error(err);
+      loadingState.innerHTML = '<p class="text-red-500">Error loading posts. Please refresh.</p>';
+    }
   }
 
-  // Hide pending badge (no forms on this page)
-  document.getElementById('pendingSyncBadge')?.classList.add('hidden');
-  // Newsletter Subscription
-const newsletterForm = document.getElementById('newsletterForm');
-if (newsletterForm) {
-  newsletterForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const email = document.getElementById('newsletterEmail').value.trim();
-    if (!email) {
-      document.getElementById('newsletterMessage').innerHTML = '<span class="text-red-500">Please enter your email</span>';
+  // Save or update post
+  async function savePost() {
+    const title = document.getElementById('postTitle').value.trim();
+    const category = document.getElementById('postCategory').value;
+    const image = document.getElementById('postImage').value.trim();
+    const excerpt = document.getElementById('postExcerpt').value.trim();
+    const content = document.getElementById('postContent').value.trim();
+    const tagsInput = document.getElementById('postTags').value.trim();
+    const tags = tagsInput ? tagsInput.split(',').map(t => t.trim()) : [];
+    
+    if (!title || !content) {
+      postMessage.innerHTML = '<span class="text-red-500">Title and content are required</span>';
       return;
     }
-    const submitBtn = newsletterForm.querySelector('button[type="submit"]');
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = 'Subscribing...';
+    
+    const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    
+    savePostBtn.disabled = true;
+    savePostBtn.innerHTML = 'Saving...';
+    
     try {
-      await addDoc(collection(db, "newsletter_subscribers"), { email, subscribedAt: serverTimestamp() });
-      document.getElementById('newsletterMessage').innerHTML = '<span class="text-green-600">✅ Subscribed successfully!</span>';
-      document.getElementById('newsletterEmail').value = '';
-      showToast('Thanks for subscribing!');
-    } catch (err) {
-      document.getElementById('newsletterMessage').innerHTML = '<span class="text-red-500">Error. Please try again.</span>';
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.innerHTML = 'Subscribe';
-    }
-  });
-}
-
-  // Search functionality
-const searchInput = document.getElementById('searchInput');
-if (searchInput) {
-  searchInput.addEventListener('input', () => {
-    const searchTerm = searchInput.value.toLowerCase();
-    const blogCards = document.querySelectorAll('.blog-card');
-    blogCards.forEach(card => {
-      const title = card.querySelector('h2 a')?.innerText.toLowerCase() || '';
-      const excerpt = card.querySelector('p')?.innerText.toLowerCase() || '';
-      if (title.includes(searchTerm) || excerpt.includes(searchTerm)) {
-        card.style.display = 'block';
+      if (editingPostId) {
+        // Update existing post
+        await updateDoc(doc(db, 'blogs', editingPostId), {
+          title, category, image, excerpt, content, tags,
+          updatedAt: serverTimestamp()
+        });
+        showToast('Post updated successfully');
       } else {
-        card.style.display = 'none';
+        // Create new post
+        await addDoc(collection(db, 'blogs'), {
+          title, category, image, excerpt, content, tags,
+          slug,
+          author: currentUser?.email || 'Admin',
+          published: true,
+          createdAt: serverTimestamp()
+        });
+        showToast('Post published successfully');
       }
-    });
-  });
-}
-</script>
-  <!-- Before </body> -->
-<script src="global.js"></script>
-  <!-- Smart WhatsApp Widget -->
-<div id="waWidget" class="fixed bottom-5 right-5 z-50">
-  <div id="waPopup" class="hidden mb-3 bg-white rounded-2xl shadow-2xl p-4 w-72 border border-gray-100">
-    <div class="flex items-center gap-3 mb-3 pb-3 border-b border-gray-100">
-      <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
-        <i class="fab fa-whatsapp text-white text-xl"></i>
-      </div>
-      <div>
-        <p class="font-bold text-gray-800 text-sm">WhaPay Support</p>
-        <p class="text-xs text-green-500">● Online now</p>
-      </div>
-      <button onclick="closeWA()" class="ml-auto text-gray-400 hover:text-gray-600">✖</button>
-    </div>
-    <p class="text-sm text-gray-600 mb-3">Hi! How can we help you today? Choose a topic:</p>
-    <div class="space-y-2" id="waOptions"></div>
-  </div>
-  <button onclick="toggleWA()"
-    class="bg-green-500 hover:bg-green-600 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center transition-all hover:scale-110 relative">
-    <i class="fab fa-whatsapp text-2xl"></i>
-    <span id="waBadge" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">1</span>
-  </button>
-</div>
-
-<script>
-(function() {
-  const page = window.location.pathname;
-  const options = [];
-
-  if (page.includes('pricing')) {
-    options.push({ label: '💰 Ask about pricing & fees', msg: 'I want to know more about WhaPay pricing and fees' });
-    options.push({ label: '📊 Business plan details', msg: 'Tell me more about the WhaPay Business plan at KES 999/month' });
-  } else if (page.includes('merchant')) {
-    options.push({ label: '🏪 Register my business', msg: 'REGISTER' });
-    options.push({ label: '📊 View my dashboard', msg: 'I need help with my merchant dashboard' });
-    options.push({ label: '💳 Accept card payments', msg: 'How do I start accepting card payments on WhaPay?' });
-  } else if (page.includes('payment')) {
-    options.push({ label: '💸 Make a payment', msg: 'I want to make a payment using WhaPay' });
-    options.push({ label: '❓ Payment failed', msg: 'My payment failed, please help' });
-  } else {
-    options.push({ label: '🚀 Register for free', msg: 'REGISTER' });
-    options.push({ label: '💰 Ask about pricing', msg: 'What are WhaPay pricing and fees?' });
-    options.push({ label: '🌍 International payment', msg: 'I want to pay a Kenyan merchant from outside Kenya' });
+      
+      clearAdminForm();
+      loadBlogPosts();
+      
+    } catch (err) {
+      console.error(err);
+      postMessage.innerHTML = `<span class="text-red-500">Error: ${err.message}</span>`;
+    } finally {
+      savePostBtn.disabled = false;
+      savePostBtn.innerHTML = 'Save & Publish';
+    }
   }
 
-  options.push({ label: '📞 Call us instead', msg: 'I prefer to call: 0140933042' });
+  // Edit post
+  window.editPost = async (postId) => {
+    if (!currentUser) return;
+    
+    const q = query(collection(db, 'blogs'));
+    const snapshot = await getDocs(q);
+    const post = snapshot.docs.find(doc => doc.id === postId)?.data();
+    if (!post) return;
+    
+    editingPostId = postId;
+    document.getElementById('postTitle').value = post.title || '';
+    document.getElementById('postCategory').value = post.category || 'M-Pesa';
+    document.getElementById('postImage').value = post.image || '';
+    document.getElementById('postExcerpt').value = post.excerpt || '';
+    document.getElementById('postContent').value = post.content || '';
+    document.getElementById('postTags').value = (post.tags || []).join(', ');
+    cancelPostBtn.classList.remove('hidden');
+    adminPanel.classList.remove('hidden');
+    adminPanel.scrollIntoView({ behavior: 'smooth' });
+  };
+  
+  // Delete post
+  window.deletePost = async (postId) => {
+    if (!currentUser) return;
+    if (!confirm('Are you sure you want to delete this post?')) return;
+    
+    try {
+      await deleteDoc(doc(db, 'blogs', postId));
+      showToast('Post deleted');
+      loadBlogPosts();
+    } catch (err) {
+      showToast('Error deleting post', true);
+    }
+  };
 
-  const container = document.getElementById('waOptions');
-  options.forEach(opt => {
-    const btn = document.createElement('a');
-    btn.href = `https://wa.me/254140933042?text=${encodeURIComponent(opt.msg)}`;
-    btn.target = '_blank';
-    btn.className = 'block w-full text-left bg-gray-50 hover:bg-green-50 border border-gray-200 hover:border-green-300 rounded-xl px-3 py-2 text-sm text-gray-700 transition';
-    btn.innerText = opt.label;
-    container.appendChild(btn);
+  // Auth state
+  onAuthStateChanged(auth, (user) => {
+    currentUser = user;
+    if (user) {
+      navUserDisplay.innerText = user.email;
+      navUserDisplay.classList.remove('hidden');
+      navLoginBtn.classList.add('hidden');
+      navLogoutBtn.classList.remove('hidden');
+      adminPanel.classList.remove('hidden');
+    } else {
+      navUserDisplay.classList.add('hidden');
+      navLoginBtn.classList.remove('hidden');
+      navLogoutBtn.classList.add('hidden');
+      adminPanel.classList.add('hidden');
+      clearAdminForm();
+    }
+    loadBlogPosts();
   });
-
-  setTimeout(() => {
-    document.getElementById('waPopup').classList.remove('hidden');
-    document.getElementById('waBadge').classList.add('hidden');
-  }, 8000);
-
-  window.toggleWA = function() {
-    const popup = document.getElementById('waPopup');
-    popup.classList.toggle('hidden');
-    document.getElementById('waBadge').classList.add('hidden');
+  
+  // Login modal (simplified inline)
+  let loginModal = null;
+  navLoginBtn.onclick = () => {
+    const email = prompt('Enter admin email:');
+    const password = prompt('Enter password:');
+    if (email && password) {
+      signInWithEmailAndPassword(auth, email, password)
+        .then(() => showToast('Logged in'))
+        .catch(err => showToast(err.message, true));
+    }
   };
-  window.closeWA = function() {
-    document.getElementById('waPopup').classList.add('hidden');
-  };
-})();
+  navLogoutBtn.onclick = () => signOut(auth).then(() => showToast('Logged out'));
+  
+  savePostBtn.onclick = savePost;
+  cancelPostBtn.onclick = clearAdminForm;
+  
+  // Load posts on page load
+  loadBlogPosts();
 </script>
+
+<div id="globalToast" class="fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-full text-sm z-50 transition-opacity opacity-0 hidden"></div>
+
+<!-- Floating WhatsApp -->
+<a href="https://wa.me/0140933042?text=Hello" target="_blank" class="fixed bottom-5 right-5 bg-green-500 text-white p-3 rounded-full shadow-lg z-50">
+  <i class="fab fa-whatsapp text-2xl"></i>
+</a>
+
 </body>
 </html>
-
-

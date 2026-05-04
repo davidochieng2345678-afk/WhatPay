@@ -661,7 +661,104 @@ function toggleMobileMenu() {
       </div>
     </div>
   </div>
-    
+
+
+    <!-- Subscription Plan Section -->
+<div class="bg-white rounded-xl shadow p-6 mb-6">
+  <h2 class="text-xl font-bold mb-3">📦 Your Subscription Plan</h2>
+  <div id="planDisplay" class="mb-3 text-lg"></div>
+  <div class="flex gap-3 flex-wrap">
+    <button onclick="changePlan('basic')" class="bg-green-600 text-white px-4 py-2 rounded-lg">Basic (KES 499/mo)</button>
+    <button onclick="changePlan('pro')" class="bg-green-600 text-white px-4 py-2 rounded-lg">Pro (KES 999/mo)</button>
+  </div>
+  <div id="planMsg" class="text-sm text-gray-500 mt-2"></div>
+</div>
+
+<!-- Retail Checkout (for stores) -->
+<div class="bg-white rounded-xl shadow p-6 mb-6">
+  <h2 class="text-xl font-bold mb-3">🏪 Retail Checkout</h2>
+  <p class="text-sm text-gray-500 mb-3">Customer forgot card? Charge using their Member Code</p>
+  <div class="grid gap-3">
+    <input type="text" id="customerMemberCode" placeholder="Customer Member Code (e.g., DK005)" class="border p-2 rounded">
+    <input type="text" id="storeTill" placeholder="Your Till/Paybill Number" class="border p-2 rounded">
+    <input type="number" id="storeAmount" placeholder="Amount (KES)" class="border p-2 rounded">
+    <button onclick="chargeCustomer()" class="bg-green-600 text-white py-2 rounded-lg">Charge Customer</button>
+  </div>
+  <div id="retailMsg" class="text-sm mt-2"></div>
+</div>
+
+<script>
+let currentMerchantCode = '';
+
+// Load current plan
+async function loadCurrentPlan() {
+  if (!currentMerchantCode) return;
+  const res = await fetch(`/api/subscription/${currentMerchantCode}`);
+  const data = await res.json();
+  if (data.success) {
+    document.getElementById('planDisplay').innerHTML = `<span class="font-bold">${data.details.name}</span> - KES ${data.details.price}/month`;
+  }
+}
+
+// Change plan
+async function changePlan(plan) {
+  const msg = document.getElementById('planMsg');
+  msg.innerHTML = 'Updating...';
+  const res = await fetch('/api/subscription/create', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ merchantCode: currentMerchantCode, plan })
+  });
+  const data = await res.json();
+  if (data.success) {
+    msg.innerHTML = `<span class="text-green-600">✅ Plan updated to ${plan.toUpperCase()}!</span>`;
+    loadCurrentPlan();
+  } else {
+    msg.innerHTML = `<span class="text-red-600">❌ ${data.error}</span>`;
+  }
+}
+
+// Charge customer via retail checkout
+async function chargeCustomer() {
+  const customerCode = document.getElementById('customerMemberCode').value.trim().toUpperCase();
+  const merchantTill = document.getElementById('storeTill').value.trim();
+  const amount = parseFloat(document.getElementById('storeAmount').value);
+  const msgDiv = document.getElementById('retailMsg');
+  
+  if (!customerCode || !merchantTill || !amount) {
+    msgDiv.innerHTML = '<span class="text-red-500">Fill all fields</span>';
+    return;
+  }
+  
+  msgDiv.innerHTML = '<span class="text-blue-500">Processing...</span>';
+  
+  const res = await fetch('/api/retail-pay', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      customerCode,
+      merchantTill,
+      amount,
+      merchantName: "My Store"
+    })
+  });
+  const data = await res.json();
+  
+  if (data.success) {
+    msgDiv.innerHTML = '<span class="text-green-600">✅ Payment request sent to customer! They will receive a WhatsApp prompt.</span>';
+    document.getElementById('customerMemberCode').value = '';
+    document.getElementById('storeAmount').value = '';
+  } else {
+    msgDiv.innerHTML = `<span class="text-red-600">❌ ${data.error}</span>`;
+  }
+}
+
+// Call this after merchant login
+function setMerchantCode(code) {
+  currentMerchantCode = code;
+  loadCurrentPlan();
+}
+</script>
     <!-- Revenue Potential Calculator -->
 <div class="bg-white rounded-2xl shadow-lg p-6 mb-12">
   <div class="text-center mb-6">

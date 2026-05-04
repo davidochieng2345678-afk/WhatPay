@@ -402,8 +402,141 @@ function toggleMobileMenu() {
 
 
 
+    
 <main class="max-w-7xl mx-auto px-4 py-6">
+    
+<!-- Merchant Page Hero Image Section -->
+<div style="position:relative;border-radius:24px;overflow:hidden;margin-bottom:48px;height:480px;">
 
+  <!-- Main background image -->
+  <img
+    src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1600&q=85"
+    alt="Kenyan merchant accepting mobile payments at their shop"
+    style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;"
+    onerror="this.src='https://images.unsplash.com/photo-1607863680198-23d4b2565df0?w=1600&q=85'"
+  >
+
+  <!-- Dark overlay -->
+  <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(10,15,30,0.96) 0%,rgba(10,15,30,0.78) 55%,rgba(10,15,30,0.35) 100%);"></div>
+
+  <!-- Grid overlay -->
+  <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(22,163,74,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(22,163,74,0.04) 1px,transparent 1px);background-size:40px 40px;"></div>
+
+  <!-- Glow -->
+  <div style="position:absolute;top:-80px;right:-80px;width:450px;height:450px;background:radial-gradient(circle,rgba(22,163,74,0.12) 0%,transparent 70%);border-radius:50%;"></div>
+
+  <!-- Content -->
+  <div style="position:absolute;inset:0;display:flex;align-items:center;padding:48px;">
+    <div style="max-width:1280px;margin:0 auto;width:100%;display:flex;justify-content:space-between;align-items:center;gap:40px;flex-wrap:wrap;">
+
+      <!-- Left — Title -->
+      <div style="max-width:520px;">
+        <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(22,163,74,0.12);border:1px solid rgba(22,163,74,0.25);color:#86efac;padding:6px 16px;border-radius:999px;font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:20px;">
+          <span style="width:6px;height:6px;background:#22c55e;border-radius:50%;animation:livePulse 2s ease infinite;box-shadow:0 0 0 3px rgba(34,197,94,0.25);"></span>
+          500+ Active Merchants
+        </div>
+        <h1 style="font-size:clamp(2rem,4vw,3.2rem);font-weight:900;color:white;line-height:1.1;letter-spacing:-0.02em;margin-bottom:16px;font-family:sans-serif;">
+          Your Business.<br>
+          <span style="background:linear-gradient(135deg,#22c55e,#86efac);-webkit-background-clip:text;background-clip:text;color:transparent;">Your Dashboard.</span><br>
+          <span style="font-weight:300;color:rgba(255,255,255,0.5);">Your Payment Link.</span>
+        </h1>
+        <p style="color:rgba(255,255,255,0.55);font-size:1rem;line-height:1.8;margin-bottom:28px;">
+          Accept M-Pesa, Visa, Mastercard and Google Pay from your merchant dashboard. Share your WhatsApp payment link, print your QR code, track revenue — all in one place. Free forever.
+        </p>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;">
+          <a href="https://wa.me/0140933042?text=REGISTER"
+            style="display:inline-flex;align-items:center;gap:8px;background:#16a34a;color:white;font-weight:700;padding:13px 24px;border-radius:6px;text-decoration:none;font-size:0.9rem;">
+            <i class="fab fa-whatsapp"></i> Register Free
+          </a>
+          <a href="tel:0140933042"
+            style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.8);font-weight:600;padding:13px 24px;border-radius:6px;text-decoration:none;font-size:0.9rem;">
+            <i class="fas fa-phone-alt"></i> Call 0140933042
+          </a>
+          <a href="sms:0140933042?body=REG%20MyBusiness"
+            style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.8);font-weight:600;padding:13px 24px;border-radius:6px;text-decoration:none;font-size:0.9rem;">
+            <i class="fas fa-envelope"></i> SMS to Register
+          </a>
+        </div>
+      </div>
+
+      <!-- Right — Dashboard feature cards -->
+      <div style="display:flex;flex-direction:column;gap:12px;min-width:280px;max-width:320px;">
+
+        <!-- WhatsApp Link -->
+        <div style="background:rgba(255,255,255,0.06);backdrop-filter:blur(20px);border:1px solid rgba(22,163,74,0.2);border-radius:12px;padding:16px;display:flex;align-items:center;gap:14px;">
+          <div style="width:42px;height:42px;background:rgba(22,163,74,0.2);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <i class="fab fa-whatsapp" style="color:#22c55e;font-size:1.1rem;"></i>
+          </div>
+          <div>
+            <div style="color:white;font-weight:700;font-size:0.88rem;margin-bottom:3px;">WhatsApp Payment Link</div>
+            <div style="color:rgba(255,255,255,0.4);font-size:0.75rem;">Share and get paid in 30 seconds</div>
+          </div>
+          <span style="margin-left:auto;color:#22c55e;font-size:0.7rem;font-weight:700;background:rgba(22,163,74,0.1);padding:3px 8px;border-radius:999px;">Free</span>
+        </div>
+
+        <!-- QR Code -->
+        <div style="background:rgba(255,255,255,0.06);backdrop-filter:blur(20px);border:1px solid rgba(59,130,246,0.2);border-radius:12px;padding:16px;display:flex;align-items:center;gap:14px;">
+          <div style="width:42px;height:42px;background:rgba(59,130,246,0.2);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <i class="fas fa-qrcode" style="color:#60a5fa;font-size:1.1rem;"></i>
+          </div>
+          <div>
+            <div style="color:white;font-weight:700;font-size:0.88rem;margin-bottom:3px;">QR Code — Print & Display</div>
+            <div style="color:rgba(255,255,255,0.4);font-size:0.75rem;">Customers scan and pay instantly</div>
+          </div>
+          <span style="margin-left:auto;color:#60a5fa;font-size:0.7rem;font-weight:700;background:rgba(59,130,246,0.1);padding:3px 8px;border-radius:999px;">Free</span>
+        </div>
+
+        <!-- Offline Member Code -->
+        <div style="background:rgba(255,255,255,0.06);backdrop-filter:blur(20px);border:1px solid rgba(168,85,247,0.2);border-radius:12px;padding:16px;display:flex;align-items:center;gap:14px;">
+          <div style="width:42px;height:42px;background:rgba(168,85,247,0.2);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <i class="fas fa-wifi-slash" style="color:#c084fc;font-size:1rem;"></i>
+          </div>
+          <div>
+            <div style="color:white;font-weight:700;font-size:0.88rem;margin-bottom:3px;">Offline Member Code</div>
+            <div style="color:rgba(255,255,255,0.4);font-size:0.75rem;">Accept M-Pesa with no internet</div>
+          </div>
+          <span style="margin-left:auto;color:#c084fc;font-size:0.7rem;font-weight:700;background:rgba(168,85,247,0.1);padding:3px 8px;border-radius:999px;">Unique</span>
+        </div>
+
+        <!-- Analytics -->
+        <div style="background:rgba(255,255,255,0.06);backdrop-filter:blur(20px);border:1px solid rgba(251,191,36,0.2);border-radius:12px;padding:16px;display:flex;align-items:center;gap:14px;">
+          <div style="width:42px;height:42px;background:rgba(251,191,36,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <i class="fas fa-chart-line" style="color:#fbbf24;font-size:1rem;"></i>
+          </div>
+          <div>
+            <div style="color:white;font-weight:700;font-size:0.88rem;margin-bottom:3px;">Live Analytics Dashboard</div>
+            <div style="color:rgba(255,255,255,0.4);font-size:0.75rem;">Revenue, trends, CSV export</div>
+          </div>
+          <span style="margin-left:auto;color:#fbbf24;font-size:0.7rem;font-weight:700;background:rgba(251,191,36,0.1);padding:3px 8px;border-radius:999px;">Free</span>
+        </div>
+
+        <!-- Zero fees strip -->
+        <div style="background:rgba(22,163,74,0.08);border:1px solid rgba(22,163,74,0.18);border-radius:12px;padding:13px 16px;display:flex;justify-content:space-between;align-items:center;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <i class="fas fa-tag" style="color:#22c55e;font-size:0.9rem;"></i>
+            <span style="color:rgba(255,255,255,0.6);font-size:0.78rem;">Card fee</span>
+          </div>
+          <span style="color:#22c55e;font-weight:800;font-size:0.9rem;font-family:monospace;">1.5% + KES 20</span>
+          <div style="width:1px;height:20px;background:rgba(255,255,255,0.1);"></div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <i class="fas fa-calendar" style="color:#22c55e;font-size:0.9rem;"></i>
+            <span style="color:rgba(255,255,255,0.6);font-size:0.78rem;">Monthly</span>
+          </div>
+          <span style="color:#22c55e;font-weight:800;font-size:0.9rem;font-family:monospace;">KES 0</span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<style>
+@keyframes livePulse {
+  0%,100% { box-shadow: 0 0 0 3px rgba(34,197,94,0.25); }
+  50% { box-shadow: 0 0 0 6px rgba(34,197,94,0.1); }
+}
+</style>
 
   <!-- Dashboard Hero - Rich Professional -->
 <div class="relative overflow-hidden bg-gradient-to-br from-emerald-900 via-emerald-700 to-emerald-500 rounded-2xl shadow-2xl mb-8">

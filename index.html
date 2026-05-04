@@ -2186,6 +2186,21 @@ function showCountryInfo() {
   });
 
   async function processPayment(paymentData, submitBtn, messageDiv, successMsg) {
+    // OFFLINE CHECK - ADD THIS
+if (!navigator.onLine) {
+    let offlinePayments = JSON.parse(localStorage.getItem('whapay_offline_payments') || '[]');
+    offlinePayments.push({
+        ...paymentData,
+        timestamp: Date.now(),
+        synced: false
+    });
+    localStorage.setItem('whapay_offline_payments', JSON.stringify(offlinePayments));
+    messageDiv.innerHTML = `<div class="bg-yellow-50 p-2 rounded text-yellow-800">📡 You're offline. Payment saved. Will complete when connection returns.</div>`;
+    window.showToast("Payment saved offline");
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = 'Pay Now';
+    return;
+}
     submitBtn.disabled = true;
     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
     messageDiv.innerHTML = '';

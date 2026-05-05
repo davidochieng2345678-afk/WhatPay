@@ -893,106 +893,99 @@ function toggleMobileMenu() {
     setTimeout(() => toast.classList.add('opacity-0'), 3000);
   }
 
-  // ========== Offline Sync ==========
-  const PENDING_KEY = 'whapay_pending_regpay';
-  async function savePendingRegistration(data) {
+  // ========== Offline Sync (Simplified - Stores locally, syncs to backend) ==========
+const PENDING_KEY = 'whapay_pending_regpay';
+
+async function savePendingRegistration(data) {
+  const pending = await localforage.getItem(PENDING_KEY) || [];
+  pending.push({ ...data, synced: false, createdAt: Date.now() });
+  await localforage.setItem(PENDING_KEY, pending);
+  updatePendingBadge();
+}
+
+async function updatePendingBadge() {
+  const pending = await localforage.getItem(PENDING_KEY) || [];
+  const unsynced = pending.filter(p => !p.synced).length;
+  const badge = document.getElementById('pendingSyncBadge');
+  const syncBtn = document.getElementById('syncOfflineBtn');
+  if (unsynced > 0) {
+    if (badge) badge.classList.remove('hidden');
+    if (syncBtn) syncBtn.classList.remove('hidden');
+    if (badge) badge.innerText = unsynced;
+  } else {
+    if (badge) badge.classList.add('hidden');
+    if (syncBtn) syncBtn.classList.add('hidden');
+  }
+}
+
+async function syncOfflineRegistrations() {
+  let statusDiv = document.getElementById('syncStatus');
+  if (!statusDiv) {
+    const div = document.createElement('div');
+    div.id = 'syncStatus';
+    div.className = 'text-xs text-gray-500 mt-2 hidden';
+    const container = document.querySelector('.bg-white.rounded-2xl.shadow-xl.p-6');
+    if (container) container.appendChild(div);
+    statusDiv = div;
+  }
+  statusDiv.classList.remove('hidden');
+  statusDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Syncing offline registrations...';
+  try {
     const pending = await localforage.getItem(PENDING_KEY) || [];
-    pending.push({ ...data, synced: false, createdAt: Date.now() });
+    const toSync = pending.filter(p => !p.synced);
+    if (toSync.length === 0) {
+      statusDiv.innerHTML = '✅ No pending items.';
+      setTimeout(() => statusDiv.classList.add('hidden'), 2000);
+      return;
+    }
+    
+    for (const item of toSync) {
+      // Call backend to process the registration
+      const response = await fetch('https://whapay-backend.onrender.com/api/register-pay', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fullname: item.name,
+          phoneNumber: item.phone,
+          amount: item.amount,
+          paymentMethod: item.method === 'mpesa' ? 'mpesa' : 'card',
+          registerUser: true
+        })
+      });
+      const data = await response.json();
+      if (data.success) {
+        item.synced = true;
+        item.backendMemberCode = data.user?.dkCode;
+      } else {
+        throw new Error(data.error);
+      }
+    }
+    
     await localforage.setItem(PENDING_KEY, pending);
     updatePendingBadge();
+    statusDiv.innerHTML = `✅ Synced ${toSync.length} registration(s).`;
+    setTimeout(() => statusDiv.classList.add('hidden'), 3000);
+    showToast(`Synced ${toSync.length} offline registrations`);
+  } catch (err) {
+    console.error(err);
+    statusDiv.innerHTML = '❌ Sync failed. Will retry later.';
+    setTimeout(() => statusDiv.classList.add('hidden'), 3000);
+    showToast("Sync failed", true);
   }
+}
 
-  async function updatePendingBadge() {
-    const pending = await localforage.getItem(PENDING_KEY) || [];
-    const unsynced = pending.filter(p => !p.synced).length;
-    const badge = document.getElementById('pendingSyncBadge');
-    const syncBtn = document.getElementById('syncOfflineBtn');
-    if (unsynced > 0) {
-      badge.classList.remove('hidden');
-      syncBtn.classList.remove('hidden');
-      badge.innerText = unsynced;
-    } else {
-      badge.classList.add('hidden');
-      syncBtn.classList.add('hidden');
-    }
+window.addEventListener('online', () => {
+  if (navigator.onLine) {
+    showToast("Connection restored. Syncing offline registrations...");
+    syncOfflineRegistrations();
   }
+});
 
-  async function syncOfflineRegistrations() {
-    const syncStatusDiv = document.getElementById('syncStatus');
-    if (!syncStatusDiv) {
-      const div = document.createElement('div');
-      div.id = 'syncStatus';
-      div.className = 'text-xs text-gray-500 mt-2 hidden';
-      document.querySelector('.bg-white.rounded-2xl.shadow-xl.p-6').appendChild(div);
-    }
-    const statusDiv = document.getElementById('syncStatus');
-    statusDiv.classList.remove('hidden');
-    statusDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Syncing offline registrations...';
-    try {
-      const pending = await localforage.getItem(PENDING_KEY) || [];
-      const toSync = pending.filter(p => !p.synced);
-      if (toSync.length === 0) {
-        statusDiv.innerHTML = '✅ No pending items.';
-        setTimeout(() => statusDiv.classList.add('hidden'), 2000);
-        return;
-      }
-      for (const item of toSync) {
-        const q = query(collection(db, "users"), where("phone", "==", item.phone));
-        const existing = await getDocs(q);
-        if (existing.empty) {
-          await addDoc(collection(db, "users"), {
-            fullName: item.name,
-            phone: item.phone,
-            memberCode: item.memberCode,
-            status: "active",
-            createdAt: serverTimestamp()
-          });
-        }
-        await addDoc(collection(db, "transactions"), {
-          customer: item.name,
-          customerPhone: item.phone,
-          amount: item.amount,
-          method: item.method,
-          status: "completed",
-          timestamp: serverTimestamp()
-        });
-        item.synced = true;
-      }
-      await localforage.setItem(PENDING_KEY, pending);
-      updatePendingBadge();
-      statusDiv.innerHTML = `✅ Synced ${toSync.length} registration(s).`;
-      setTimeout(() => statusDiv.classList.add('hidden'), 3000);
-      showToast(`Synced ${toSync.length} offline registrations`);
-    } catch (err) {
-      console.error(err);
-      statusDiv.innerHTML = '❌ Sync failed. Will retry later.';
-      setTimeout(() => statusDiv.classList.add('hidden'), 3000);
-      showToast("Sync failed", true);
-    }
-  }
+const syncBtn = document.getElementById('syncOfflineBtn');
+if (syncBtn) syncBtn.addEventListener('click', syncOfflineRegistrations);
 
-  window.addEventListener('online', () => {
-    if (navigator.onLine) {
-      showToast("Connection restored. Syncing offline registrations...");
-      syncOfflineRegistrations();
-    }
-  });
 
-  document.getElementById('syncOfflineBtn')?.addEventListener('click', syncOfflineRegistrations);
-
-  // ========== Unique Member Code Generation ==========
-  async function getUniqueMemberCode(name) {
-    const prefix = name.replace(/[^a-zA-Z0-9]/g, '').substring(0, 3).toUpperCase() || 'NEW';
-    let code, exists = true;
-    while (exists) {
-      const random = Math.floor(10000 + Math.random() * 90000);
-      code = `${prefix}${random}`;
-      const q = query(collection(db, "users"), where("memberCode", "==", code));
-      const snap = await getDocs(q);
-      if (snap.empty) exists = false;
-    }
-    return code;
-  }
+    
 
 // ========== Form Submission (Calls Backend) ==========
 const form = document.getElementById('registerPayForm');

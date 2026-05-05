@@ -1158,6 +1158,58 @@ function toggleMobileMenu() {
     });
   }
 
+  // ---- Phone Number Payment (Calls Backend) ----
+const payPhoneBtn = document.getElementById('payPhoneBtn');
+const recipientPhoneInput = document.getElementById('recipientPhone');
+const yourPhoneInput = document.getElementById('yourPhone');
+const amountPhoneInput = document.getElementById('amountPhone');
+const methodPhoneSelect = document.getElementById('methodPhone');
+const messagePhoneDiv = document.getElementById('messagePhone');
+
+if (payPhoneBtn) {
+  payPhoneBtn.addEventListener('click', async () => {
+    const recipientRaw = recipientPhoneInput ? recipientPhoneInput.value.trim() : '';
+    const yourRaw = yourPhoneInput ? yourPhoneInput.value.trim() : '';
+    const amount = parseFloat(amountPhoneInput ? amountPhoneInput.value : 0);
+    const method = methodPhoneSelect ? methodPhoneSelect.value : 'mpesa';
+    if (!recipientRaw || !validatePhone(recipientRaw)) { showToast("Enter valid recipient phone number", true); return; }
+    if (!yourRaw || !validatePhone(yourRaw)) { showToast("Enter your phone number", true); return; }
+    if (!amount || amount<=0) { showToast("Enter valid amount", true); return; }
+    const recipient = normalizePhone(recipientRaw);
+    const yourPhone = normalizePhone(yourRaw);
+    payPhoneBtn.disabled = true;
+    payPhoneBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+    if (messagePhoneDiv) messagePhoneDiv.innerHTML = '';
+    try {
+      const response = await fetch('https://whapay-backend.onrender.com/api/pay-offline', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          merchantCode: 'TRANSFER',
+          customerPhone: yourPhone,
+          customerName: 'Guest',
+          amount: amount,
+          paymentMethod: method === 'mpesa' ? 'mpesa' : 'card',
+          description: `Payment to ${recipient}`
+        })
+      });
+      const data = await response.json();
+      if (data.success) {
+        if (messagePhoneDiv) messagePhoneDiv.innerHTML = '<div class="bg-green-50 p-2 rounded text-green-800">✅ Payment successful! Recipient will be notified.</div>';
+        showToast(`Payment of KES ${amount} sent to ${recipient}`);
+      } else {
+        throw new Error(data.error || 'Payment failed');
+      }
+    } catch (err) {
+      showToast(err.message, true);
+      if (messagePhoneDiv) messagePhoneDiv.innerHTML = `<div class="bg-red-50 p-2 rounded text-red-800">❌ ${err.message}</div>`;
+    } finally {
+      payPhoneBtn.disabled = false;
+      payPhoneBtn.innerHTML = 'Pay to Phone Number';
+    }
+  });
+}
+
   // ---- Paybill / Till Payment ----
   const payPaybillBtn = document.getElementById('payPaybillBtn');
   const businessNumberInput = document.getElementById('businessNumber');

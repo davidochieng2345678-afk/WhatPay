@@ -2185,14 +2185,14 @@ function showCountryInfo() {
     btn.addEventListener('click', () => switchForm(btn.getAttribute('data-type')));
   });
 
-  async function processPayment(paymentData, submitBtn, messageDiv, successMsg) {
-    // OFFLINE CHECK - ADD THIS
-if (!navigator.onLine) {
+async function processPayment(paymentData, submitBtn, messageDiv, successMsg) {
+  // OFFLINE CHECK
+  if (!navigator.onLine) {
     let offlinePayments = JSON.parse(localStorage.getItem('whapay_offline_payments') || '[]');
     offlinePayments.push({
-        ...paymentData,
-        timestamp: Date.now(),
-        synced: false
+      ...paymentData,
+      timestamp: Date.now(),
+      synced: false
     });
     localStorage.setItem('whapay_offline_payments', JSON.stringify(offlinePayments));
     messageDiv.innerHTML = `<div class="bg-yellow-50 p-2 rounded text-yellow-800">📡 You're offline. Payment saved. Will complete when connection returns.</div>`;
@@ -2200,27 +2200,41 @@ if (!navigator.onLine) {
     submitBtn.disabled = false;
     submitBtn.innerHTML = 'Pay Now';
     return;
+  }
+  
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+  messageDiv.innerHTML = '';
+  try {
+    const response = await fetch('https://whapay-backend.onrender.com/api/pay-offline', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        merchantCode: paymentData.merchantCode,
+        customerPhone: paymentData.customerPhone,
+        customerName: paymentData.customerName || 'Guest',
+        amount: paymentData.amount,
+        description: paymentData.description || 'Payment',
+        paymentMethod: paymentData.method === 'mpesa' ? 'mpesa' : 'card'
+      })
+    });
+    const data = await response.json();
+    if (data.success) {
+      messageDiv.innerHTML = `<div class="bg-green-50 p-2 rounded text-green-800">✅ ${successMsg}</div>`;
+      window.showToast(successMsg);
+    } else {
+      throw new Error(data.error || 'Payment failed');
+    }
+  } catch (err) {
+    messageDiv.innerHTML = `<div class="bg-red-50 p-2 rounded text-red-800">❌ ${err.message}</div>`;
+    window.showToast(err.message, true);
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = 'Pay Now';
+  }
 }
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-    messageDiv.innerHTML = '';
-    try {
-      if (navigator.onLine) {
-        // Simulate payment – replace with real M-Pesa/Stripe call
-        await new Promise(r => setTimeout(r, 2000));
-        if (window.db) {
-          const { addDoc, collection, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
-          await addDoc(collection(window.db, "transactions"), {
-            ...paymentData,
-            status: 'completed',
-            timestamp: serverTimestamp()
-          });
-        }
-        messageDiv.innerHTML = `<div class="bg-green-50 p-2 rounded text-green-800">✅ ${successMsg}</div>`;
-        window.showToast(successMsg);
-      } else {
-        await window.savePendingPayment(paymentData);
-        // ...
+  
+  
   
   // Member Code payment
   document.getElementById('payMemberBtn').addEventListener('click', async () => {

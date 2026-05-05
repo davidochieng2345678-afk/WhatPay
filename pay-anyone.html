@@ -1210,47 +1210,60 @@ if (payPhoneBtn) {
   });
 }
 
-  // ---- Paybill / Till Payment ----
-  const payPaybillBtn = document.getElementById('payPaybillBtn');
-  const businessNumberInput = document.getElementById('businessNumber');
-  const accountNumberInput = document.getElementById('accountNumber');
-  const payerPhoneInput = document.getElementById('payerPhone');
-  const amountPaybillInput = document.getElementById('amountPaybill');
-  const methodPaybillSelect = document.getElementById('methodPaybill');
-  const messagePaybillDiv = document.getElementById('messagePaybill');
+// ---- Paybill / Till Payment (Calls Backend) ----
+const payPaybillBtn = document.getElementById('payPaybillBtn');
+const businessNumberInput = document.getElementById('businessNumber');
+const accountNumberInput = document.getElementById('accountNumber');
+const payerPhoneInput = document.getElementById('payerPhone');
+const amountPaybillInput = document.getElementById('amountPaybill');
+const methodPaybillSelect = document.getElementById('methodPaybill');
+const messagePaybillDiv = document.getElementById('messagePaybill');
 
-  if (payPaybillBtn) {
-    payPaybillBtn.addEventListener('click', async () => {
-      const businessNumber = businessNumberInput ? businessNumberInput.value.trim() : '';
-      const accountNumber = accountNumberInput ? accountNumberInput.value.trim() : '';
-      const payerRaw = payerPhoneInput ? payerPhoneInput.value.trim() : '';
-      const amount = parseFloat(amountPaybillInput ? amountPaybillInput.value : 0);
-      const method = methodPaybillSelect ? methodPaybillSelect.value : 'mpesa';
-      if (!businessNumber) { showToast("Enter Business Number (Paybill/Till)", true); return; }
-      if (!payerRaw || !validatePhone(payerRaw)) { showToast("Enter your phone number", true); return; }
-      if (!amount || amount<=0) { showToast("Enter valid amount", true); return; }
-      const payerPhone = normalizePhone(payerRaw);
-      payPaybillBtn.disabled = true;
-      payPaybillBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-      if (messagePaybillDiv) messagePaybillDiv.innerHTML = '';
-      try {
-        if (method === 'mpesa') {
-          await new Promise(resolve => setTimeout(resolve, 2000));
-          if (db) {
-            await addDoc(collection(db, "transactions"), { customerPhone: payerPhone, businessNumber, accountNumber, amount, method: 'mpesa', type: 'paybill', status: 'completed', createdAt: serverTimestamp() });
-          }
-          if (messagePaybillDiv) messagePaybillDiv.innerHTML = '<div class="bg-green-50 p-2 rounded text-green-800">✅ Check your phone for M-Pesa prompt.</div>';
-          showToast('Payment initiated');
-        }
-      } catch (err) {
-        showToast(err.message, true);
-        if (messagePaybillDiv) messagePaybillDiv.innerHTML = `<div class="bg-red-50 p-2 rounded text-red-800">❌ ${err.message}</div>`;
-      } finally {
-        payPaybillBtn.disabled = false;
-        payPaybillBtn.innerHTML = 'Pay to Paybill/Till';
+if (payPaybillBtn) {
+  payPaybillBtn.addEventListener('click', async () => {
+    const businessNumber = businessNumberInput ? businessNumberInput.value.trim() : '';
+    const accountNumber = accountNumberInput ? accountNumberInput.value.trim() : '';
+    const payerRaw = payerPhoneInput ? payerPhoneInput.value.trim() : '';
+    const amount = parseFloat(amountPaybillInput ? amountPaybillInput.value : 0);
+    const method = methodPaybillSelect ? methodPaybillSelect.value : 'mpesa';
+    if (!businessNumber) { showToast("Enter Business Number (Paybill/Till)", true); return; }
+    if (!payerRaw || !validatePhone(payerRaw)) { showToast("Enter your phone number", true); return; }
+    if (!amount || amount<=0) { showToast("Enter valid amount", true); return; }
+    const payerPhone = normalizePhone(payerRaw);
+    payPaybillBtn.disabled = true;
+    payPaybillBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+    if (messagePaybillDiv) messagePaybillDiv.innerHTML = '';
+    try {
+      const response = await fetch('https://whapay-backend.onrender.com/api/pay-offline', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          merchantCode: businessNumber,
+          customerPhone: payerPhone,
+          customerName: accountNumber || 'Paybill Payment',
+          amount: amount,
+          paymentMethod: method === 'mpesa' ? 'mpesa' : 'card',
+          description: `Paybill ${businessNumber} - Account ${accountNumber || 'N/A'}`
+        })
+      });
+      const data = await response.json();
+      if (data.success) {
+        if (messagePaybillDiv) messagePaybillDiv.innerHTML = '<div class="bg-green-50 p-2 rounded text-green-800">✅ Payment successful! Receipt sent.</div>';
+        showToast('Payment initiated successfully');
+      } else {
+        throw new Error(data.error || 'Payment failed');
       }
-    });
-  }
+    } catch (err) {
+      showToast(err.message, true);
+      if (messagePaybillDiv) messagePaybillDiv.innerHTML = `<div class="bg-red-50 p-2 rounded text-red-800">❌ ${err.message}</div>`;
+    } finally {
+      payPaybillBtn.disabled = false;
+      payPaybillBtn.innerHTML = 'Pay to Paybill/Till';
+    }
+  });
+}
+  
+
 </script>
   <!-- Before </body> -->
 <script src="global.js"></script>

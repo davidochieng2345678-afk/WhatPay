@@ -663,6 +663,216 @@ function toggleMobileMenu() {
   </div>
 </div>
 <!-- ===== END GLOBAL COMPARISON SECTION ===== -->
+  <!-- ========== WHAPAY LEGAL & OPERATIONAL MODEL SECTION ========== -->
+<div class="bg-white rounded-2xl shadow-lg overflow-hidden mb-12">
+  
+  <!-- Header -->
+  <div class="bg-gradient-to-r from-emerald-700 to-emerald-500 px-6 py-8 text-white">
+    <div class="max-w-4xl mx-auto">
+      <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-sm mb-3">
+        <i class="fas fa-gavel text-emerald-200 text-xs"></i>
+        <span class="text-emerald-100">Legal & Operational Model</span>
+      </div>
+      <h2 class="text-2xl md:text-3xl font-bold mb-2">How WhaPay Works – <span class="text-yellow-300">Legally Explained</span></h2>
+      <p class="text-emerald-100 text-sm md:text-base max-w-2xl">WhaPay is a technology platform that connects customers and merchants. We never handle, hold, or settle money. We only provide payment instructions and links – the actual payment goes directly from the customer to the merchant.</p>
+    </div>
+  </div>
+
+  <div class="p-6 md:p-8">
+    
+    <!-- 1. Customer Perspective -->
+    <div class="mb-8">
+      <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+        <i class="fas fa-user text-emerald-600 text-xl"></i>
+        Customer Perspective (You are paying)
+      </h3>
+      <div class="overflow-x-auto">
+        <table class="min-w-full border-collapse text-sm">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-4 py-3 text-left border">Step</th>
+              <th class="px-4 py-3 text-left border">What Happens</th>
+              <th class="px-4 py-3 text-left border">Who Handles Money</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100">
+            <tr><td class="px-4 py-2 border">1</td><td class="px-4 py-2 border">You enter the merchant's Member Code (e.g., DK12345) and amount on WhaPay.</td><td class="px-4 py-2 border text-red-500">❌ WhaPay does not touch your money.</td></tr>
+            <tr><td class="px-4 py-2 border">2</td><td class="px-4 py-2 border">WhaPay shows you the merchant's Paybill/Till number or generates a payment link.</td><td class="px-4 py-2 border text-red-500">❌ WhaPay does not touch your money.</td></tr>
+            <tr><td class="px-4 py-2 border">3</td><td class="px-4 py-2 border">You open your own M-Pesa app or your own card (Stripe/Pesapal) and complete the payment.</td><td class="px-4 py-2 border text-green-600">✅ Your bank, M-Pesa, or card company processes the payment.</td></tr>
+            <tr><td class="px-4 py-2 border">4</td><td class="px-4 py-2 border">The money goes directly from your account to the merchant's account.</td><td class="px-4 py-2 border text-green-600">✅ The merchant receives the money directly.</td></tr>
+            <tr><td class="px-4 py-2 border">5</td><td class="px-4 py-2 border">WhaPay receives a confirmation (via SMS webhook or API) and updates your dashboard.</td><td class="px-4 py-2 border text-red-500">❌ WhaPay never held your money.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-sm text-gray-600 mt-3 italic">Key point: You pay the merchant directly. WhaPay is just the messenger that tells you how to pay.</p>
+    </div>
+
+    <!-- 2. Merchant Perspective -->
+    <div class="mb-8">
+      <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+        <i class="fas fa-store text-emerald-600 text-xl"></i>
+        Merchant Perspective (You are receiving payment)
+      </h3>
+      <div class="overflow-x-auto">
+        <table class="min-w-full border-collapse text-sm">
+          <thead class="bg-gray-50">
+            <tr><th class="px-4 py-3 text-left border">Step</th><th class="px-4 py-3 text-left border">What Happens</th><th class="px-4 py-3 text-left border">Who Handles Money</th></tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100">
+            <tr><td class="px-4 py-2 border">1</td><td class="px-4 py-2 border">You register on WhaPay and receive a Member Code (e.g., DK12345) and a QR code.</td><td class="px-4 py-2 border text-red-500">❌ WhaPay does not take any money from you.</td></tr>
+            <tr><td class="px-4 py-2 border">2</td><td class="px-4 py-2 border">You share your Member Code or QR code with customers.</td><td class="px-4 py-2 border text-red-500">❌ WhaPay does not take any money from you.</td></tr>
+            <tr><td class="px-4 py-2 border">3</td><td class="px-4 py-2 border">Customer follows the payment instructions (M-Pesa Paybill or card link).</td><td class="px-4 py-2 border text-green-600">✅ The money goes directly into your M-Pesa or bank account.</td></tr>
+            <tr><td class="px-4 py-2 border">4</td><td class="px-4 py-2 border">You receive an SMS or WhatsApp confirmation from your bank or M-Pesa.</td><td class="px-4 py-2 border text-green-600">✅ You confirm the payment yourself.</td></tr>
+            <tr><td class="px-4 py-2 border">5</td><td class="px-4 py-2 border">WhaPay's dashboard shows the transaction (by reading the confirmation or your manual entry).</td><td class="px-4 py-2 border text-red-500">❌ WhaPay never held your customer's money.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-sm text-gray-600 mt-3 italic">Key point: You receive money directly into your own account. WhaPay never sits between you and your customer's payment.</p>
+    </div>
+
+    <!-- 3. M-Pesa Payments -->
+    <div class="mb-8 bg-gray-50 rounded-xl p-5">
+      <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center gap-2">
+        <i class="fas fa-mobile-alt text-emerald-600 text-xl"></i>
+        M-Pesa Payments (Offline & Online)
+      </h3>
+      <div class="space-y-3 text-sm text-gray-700">
+        <p><span class="font-semibold">📱 Paybill:</span> WhaPay shows the merchant's Paybill/Till number and your Member Code as the account number. You open M-Pesa, enter those details, and pay. <span class="text-green-600 font-medium">Money goes directly from your M-Pesa → Safaricom → Merchant's Paybill account.</span> WhaPay is not involved.</p>
+        <p><span class="font-semibold">⚡ STK Push:</span> WhaPay generates a payment request. Safaricom sends you a prompt on your phone. You enter your PIN. <span class="text-green-600 font-medium">Money goes directly from your M-Pesa → Safaricom → Merchant's account.</span> WhaPay only initiated the request, never touched the money.</p>
+        <p><span class="font-semibold">📡 Offline (No Internet):</span> You dial a USSD code, enter the merchant's Paybill number and your Member Code as the account number. <span class="text-green-600 font-medium">Same as above – direct from your M-Pesa to the merchant.</span></p>
+      </div>
+      <p class="text-sm text-gray-600 mt-3 italic">Key point: In every M-Pesa transaction, the money moves directly from your Safaricom account to the merchant's Safaricom account. WhaPay is simply the directory that provides the correct numbers.</p>
+    </div>
+
+    <!-- 4. Card Payments -->
+    <div class="mb-8">
+      <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+        <i class="fab fa-cc-visa text-emerald-600 text-xl"></i>
+        Card Payments (Visa, Mastercard, etc.)
+      </h3>
+      <div class="overflow-x-auto">
+        <table class="min-w-full border-collapse text-sm">
+          <thead class="bg-gray-50"><tr><th class="px-4 py-3 border">Step</th><th class="px-4 py-3 border">What Happens</th><th class="px-4 py-3 border">Money Route</th></tr></thead>
+          <tbody class="divide-y divide-gray-100">
+            <tr><td class="px-4 py-2 border">1</td><td class="px-4 py-2 border">WhaPay generates a secure payment link or redirects you to the merchant's checkout page.</td><td class="px-4 py-2 border text-red-500">❌ WhaPay does not process the card.</td></tr>
+            <tr><td class="px-4 py-2 border">2</td><td class="px-4 py-2 border">You enter your card details on Stripe, Pesapal, or the merchant's own payment gateway.</td><td class="px-4 py-2 border text-green-600">✅ Your card network (Visa, Mastercard) processes the payment.</td></tr>
+            <tr><td class="px-4 py-2 border">3</td><td class="px-4 py-2 border">The money goes directly from your card to the merchant's bank account.</td><td class="px-4 py-2 border text-green-600">✅ The merchant receives the funds directly.</td></tr>
+            <tr><td class="px-4 py-2 border">4</td><td class="px-4 py-2 border">WhaPay receives a confirmation from the payment gateway and updates your dashboard.</td><td class="px-4 py-2 border text-red-500">❌ WhaPay never held your card details or the money.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-sm text-gray-600 mt-3 italic">Key point: WhaPay does not have a merchant account with Visa or Mastercard. We simply link you to the merchant's existing card payment provider.</p>
+    </div>
+
+    <!-- 5. Member Code Explanation -->
+    <div class="mb-8 bg-emerald-50 rounded-xl p-5 border border-emerald-200">
+      <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center gap-2">
+        <i class="fas fa-key text-emerald-600 text-xl"></i>
+        The Member Code – What It Is and Is Not
+      </h3>
+      <div class="grid md:grid-cols-2 gap-4 text-sm">
+        <div class="space-y-2">
+          <p><span class="font-semibold">❓ What is the Member Code?</span><br>A unique identifier (e.g., DK12345) that helps the merchant know which customer paid. It is like a reference number on a bank deposit slip.</p>
+          <p><span class="font-semibold">💰 Does the Member Code hold money?</span><br>No. It is just a label or account number. The money goes directly to the merchant's Paybill/Till.</p>
+          <p><span class="font-semibold">🏦 Is the Member Code a bank account?</span><br>No. It is not a bank account, wallet, or stored value. You cannot withdraw from it.</p>
+        </div>
+        <div class="space-y-2">
+          <p><span class="font-semibold">🤔 Why do I need a Member Code?</span><br>It allows the merchant to match your payment to your order. Without it, they would not know who paid.</p>
+          <p><span class="font-semibold">🔄 Can I use my Member Code to receive money?</span><br>Yes – you give your code to a customer. They enter it as the account number when paying via M-Pesa Paybill. The money goes directly to your M-Pesa account.</p>
+        </div>
+      </div>
+      <p class="text-sm text-gray-600 mt-3 italic">Key point: The Member Code is like an email address or a reference number. It is not a wallet, not a bank account, and does not store value.</p>
+    </div>
+
+    <!-- 6. Why No CBK License -->
+    <div class="mb-8">
+      <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+        <i class="fas fa-balance-scale text-emerald-600 text-xl"></i>
+        Why WhaPay Does Not Need a CBK License
+      </h3>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="bg-green-50 rounded-xl p-4 border border-green-200">
+          <p class="font-semibold text-green-800 mb-2">✅ What WhaPay Does</p>
+          <ul class="space-y-1 text-sm text-gray-700">
+            <li>• Provides payment instructions (Paybill numbers, links)</li>
+            <li>• Generates QR codes and Member Codes (reference numbers)</li>
+            <li>• Displays transaction history (from merchant's or customer's own records)</li>
+            <li>• Sends payment reminders and receipts</li>
+            <li>• Connects customers to the merchant's existing payment gateways</li>
+          </ul>
+        </div>
+        <div class="bg-red-50 rounded-xl p-4 border border-red-200">
+          <p class="font-semibold text-red-800 mb-2">❌ What WhaPay Does NOT Do</p>
+          <ul class="space-y-1 text-sm text-gray-700">
+            <li>• Never holds customer money</li>
+            <li>• Never settles transactions between parties</li>
+            <li>• Never takes money into WhaPay's bank account</li>
+            <li>• Never offers escrow, lending, or BNPL</li>
+            <li>• Never processes card payments directly</li>
+          </ul>
+        </div>
+      </div>
+      <p class="text-sm text-gray-600 mt-3 italic">Because WhaPay never holds or settles money, we are a pure technology provider – not a financial services provider. Under Kenyan law, we do not require a Payment Service Provider (PSP) license from the Central Bank of Kenya.</p>
+    </div>
+
+    <!-- 7. What Would Require a License -->
+    <div class="mb-8 bg-yellow-50 rounded-xl p-5 border border-yellow-200">
+      <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center gap-2">
+        <i class="fas fa-exclamation-triangle text-yellow-600 text-xl"></i>
+        What Would Require a License (We Do Not Do This)
+      </h3>
+      <div class="overflow-x-auto">
+        <table class="min-w-full border-collapse text-sm">
+          <thead class="bg-yellow-100"><tr><th class="px-4 py-2 border">Activity</th><th class="px-4 py-2 border">Why It Requires a License</th></tr></thead>
+          <tbody>
+            <tr><td class="px-4 py-2 border">Accepting money into WhaPay's bank account before sending it to the merchant</td><td class="px-4 py-2 border">We would become a custodian of customer funds.</td></tr>
+            <tr><td class="px-4 py-2 border">Holding a balance for merchants (e.g., a wallet)</td><td class="px-4 py-2 border">That is a deposit‑taking activity.</td></tr>
+            <tr><td class="px-4 py-2 border">Settling payments – receiving from customer, then paying the merchant</td><td class="px-4 py-2 border">That is the definition of a payment service provider.</td></tr>
+            <tr><td class="px-4 py-2 border">Offering escrow services (holding money until goods are delivered)</td><td class="px-4 py-2 border">That is a regulated financial service.</td></tr>
+            <tr><td class="px-4 py-2 border">Lending money or offering Buy Now Pay Later (BNPL)</td><td class="px-4 py-2 border">The Business Laws (Amendment) Act 2024 requires licensing.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-sm text-gray-600 mt-3 italic">WhaPay does not, and will not, do any of these things without first obtaining the proper license.</p>
+    </div>
+
+    <!-- 8. Summary Q&A -->
+    <div class="mb-8">
+      <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+        <i class="fas fa-question-circle text-emerald-600 text-xl"></i>
+        Summary for Your Customers and Merchants
+      </h3>
+      <div class="grid md:grid-cols-2 gap-3">
+        <div class="border rounded-xl p-3"><span class="font-bold">Is my money safe with WhaPay?</span><br>Your money never goes to WhaPay. It goes directly from you to the merchant via M-Pesa or card networks.</div>
+        <div class="border rounded-xl p-3"><span class="font-bold">Does WhaPay hold my funds?</span><br>No. Never.</div>
+        <div class="border rounded-xl p-3"><span class="font-bold">Is WhaPay licensed?</span><br>As a pure technology provider, we do not need a CBK license.</div>
+        <div class="border rounded-xl p-3"><span class="font-bold">What if I have a dispute with a merchant?</span><br>You must resolve it directly with the merchant. WhaPay is not involved in the actual payment.</div>
+        <div class="border rounded-xl p-3"><span class="font-bold">Can WhaPay freeze or reverse a payment?</span><br>No. Only your bank or M-Pesa can do that.</div>
+        <div class="border rounded-xl p-3"><span class="font-bold">Who processes my card payment?</span><br>Stripe, Pesapal, or the merchant's own payment gateway – not WhaPay.</div>
+      </div>
+    </div>
+
+    <!-- Legal Disclaimer -->
+    <div class="bg-gray-800 rounded-xl p-5 text-gray-300 text-sm">
+      <div class="flex items-start gap-3">
+        <i class="fas fa-gavel text-emerald-400 text-xl mt-0.5"></i>
+        <div>
+          <p class="font-bold text-white mb-2">📝 Legal Disclaimer</p>
+          <p>WhaPay Technologies is a technology platform that facilitates payment information between customers and merchants. WhaPay does not process, settle, or hold any funds. All payments are made directly from the customer to the merchant via third‑party payment processors (M‑Pesa, Visa, Mastercard, Stripe, Pesapal, etc.). WhaPay is not a bank, not a payment service provider, and does not require a Central Bank of Kenya license under the current regulatory framework. If you have a dispute with a merchant, you must resolve it directly with that merchant. WhaPay is not liable for any payment disputes.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<style>
+  @media (max-width: 640px) {
+    .border-collapse td, .border-collapse th { font-size: 0.75rem; padding: 8px; }
+  }
+</style>
+<!-- ========== END WHAPAY LEGAL & OPERATIONAL MODEL SECTION ========== -->
+  
+  
   <!-- ===== COMPREHENSIVE WHAPAY FOOTER — PASTE ON ALL PAGES ===== -->
 <footer style="background:#080c18;padding:0;margin-top:48px;">
 

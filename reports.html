@@ -590,6 +590,251 @@ function showToast(msg) {
 </footer>
 
 <script type="module">
+ // ===== QUICK FILTER BUTTONS =====
+document.querySelectorAll('.qf-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const days = parseInt(btn.dataset.days);
+    const to = new Date();
+    const from = new Date();
+    from.setDate(to.getDate() - days);
+    document.getElementById('dateFrom').value = from.toISOString().split('T')[0];
+    document.getElementById('dateTo').value = to.toISOString().split('T')[0];
+    dateFrom = from;
+    dateTo = to;
+    currentPage = 1;
+    refreshAll();
+    // Visual feedback
+    document.querySelectorAll('.qf-btn').forEach(b => {
+      b.style.background = 'white';
+      b.style.borderColor = '#e2e8f0';
+      b.style.color = '#64748b';
+    });
+    btn.style.background = '#f0fdf4';
+    btn.style.borderColor = '#16a34a';
+    btn.style.color = '#16a34a';
+  });
+});
+
+// ===== TREND VIEW BUTTONS =====
+let currentView = 'daily';
+document.querySelectorAll('.tv-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tv-btn').forEach(b => {
+      b.style.background = 'white';
+      b.style.color = '#64748b';
+      b.classList.remove('active');
+    });
+    btn.style.background = '#f0fdf4';
+    btn.style.color = '#16a34a';
+    btn.classList.add('active');
+    currentView = btn.dataset.view;
+    updateRevenueChartByView();
+  });
+});
+
+function updateRevenueChartByView() {
+  const completed = filteredTransactions.filter(t => t.status === 'completed');
+  let labels = [], data = [];
+  const now = new Date();
+  if (currentView === 'weekly') {
+    for (let i = 11; i >= 0; i--) { labels.push(`Week ${12 - i}`); data.push(0); }
+    completed.forEach(t => {
+      const diff = Math.floor((now - t.timestampDate) / (86400000 * 7));
+      if (diff >= 0 && diff < 12) data[11 - diff] += t.amount;
+    });
+  } else if (currentView === 'monthly') {
+    for (let i = 11; i >= 0; i--) {
+      const d = new Date(); d.setMonth(now.getMonth() - i);
+      labels.push(d.toLocaleDateString('en-KE', { month: 'short', year: '2-digit' }));
+      data.push(0);
+    }
+    completed.forEach(t => {
+      const dm = (now.getFullYear() - t.timestampDate.getFullYear()) * 12 + (now.getMonth() - t.timestampDate.getMonth());
+      if (dm >= 0 && dm < 12) data[11 - dm] += t.amount;
+    });
+  } else {
+    for (let i = 29; i >= 0; i--) {
+      const d = new Date(); d.setDate(now.getDate() - i);
+      labels.push(d.toLocaleDateString('en-KE', { month: 'short', day: 'numeric' }));
+      data.push(0);
+    }
+    completed.forEach(t => {
+      const diff = Math.floor((now - t.timestampDate) / 86400000);
+      if (diff >= 0 && diff < 30) data[29 - diff] += t.amount;
+    });
+  }
+  if (charts.revenue) charts.revenue.destroy();
+  charts.revenue = new Chart(document.getElementById('revenueChart').getContext('2d'), {
+    type: 'line',
+    data: { labels, datasets: [{ label: 'Revenue (KES)', data, borderColor: '#16a34a', backgroundColor: 'rgba(22,163,74,0.06)', fill: true, tension: 0.3, pointRadius: 3, pointBackgroundColor: '#16a34a' }] },
+    options: { responsive: true, plugins: { tooltip: { callbacks: { label: ctx => `KES ${ctx.raw.toLocaleString()}` } } }, scales: { y: { beginAtZero: true, ticks: { callback: v => 'KES ' + v.toLocaleString() } } } }
+  });
+}
+
+// ===== STATUS CHART =====
+function updateStatusChart() {
+  const statuses = new Map();
+  filteredTransactions.forEach(t => {
+    const s = t.status || 'pending';
+    statuses.set(s, (statuses.get(s) || 0) + 1);
+  });
+  if (charts.status) charts.status.destroy();
+  if (!statuses.size) return;
+  charts.status = new Chart(document.getElementById('statusChart').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: Array.from(statuses.keys()),
+      datasets: [{ label: 'Transactions', data: Array.from(statuses.values()), backgroundColor: ['#16a34a', '#f59e0b', '#ef4444'], borderRadius: 8 }]
+    },
+    options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+  });
+}
+
+// ===== TOP CUSTOMERS TABLE =====
+function updateTopCustomers() {
+  const customers = new Map();
+  const counts = new Map();
+  filteredTransactions.filter(t => t.status === 'completed').forEach(t => {
+    if (t.customer) {
+      customers.set(t.customer, (customers.get(t.customer) || 0) + t.amount);
+      counts.set(t.customer, (counts.get(t.customer) || 0) + 1);
+    }
+  });
+  const sorted = Array.from(customers.entries()).sort((a, b) => b[1] - a[1]).slice(0, 8);
+  const tbody = document.getElementById('topCustomersTable');
+  if (!tbody) return;
+  tbody.innerHTML = sorted.length === 0
+    ? '<tr><td colspan="4" style="text-align:center;padding:24px;color:#94a3b8;">No data yet</td></tr>'
+    : sorted.map(([name, amt], i) => `
+        <tr style="border-bottom:1px solid #f1f5f9;">
+          <td style="padding:10px 12px;font-weight:700;color:#94a3b8;font-size:0.8rem;">${i + 1}</td>
+          <td style="padding:10px 12px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div style="width:28px;height:28px;background:#f0fdf4;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.72rem;color:#16a34a;flex-shrink:0;">${name.charAt(0).toUpperCase()}</div>
+              <span style="font-size:0.85rem;font-weight:600;color:#0f172a;">${escapeHtml(name)}</span>
+            </div>
+          </td>
+          <td style="padding:10px 12px;text-align:right;font-weight:700;color:#0f172a;font-size:0.85rem;">${formatKES(amt)}</td>
+          <td style="padding:10px 12px;text-align:right;color:#64748b;font-size:0.8rem;">${counts.get(name)}</td>
+        </tr>`
+    ).join('');
+}
+
+// ===== RECEIPT DOWNLOAD =====
+function downloadReceipt(tx) {
+  const receiptHtml = `
+    <html><head><title>WhaPay Receipt</title>
+    <style>
+      body{font-family:Arial,sans-serif;padding:40px;max-width:400px;margin:0 auto;color:#0f172a;}
+      .logo{color:#16a34a;font-size:1.4rem;font-weight:900;margin-bottom:24px;}
+      .amount{font-size:2rem;font-weight:900;color:#16a34a;margin:16px 0;}
+      hr{border:none;border-top:1px solid #e2e8f0;margin:20px 0;}
+      .row{display:flex;justify-content:space-between;margin:8px 0;font-size:0.9rem;}
+      .label{color:#64748b;}
+      .value{font-weight:600;}
+      .badge{background:#dcfce7;color:#166534;padding:4px 10px;border-radius:20px;font-size:0.8rem;}
+      .footer{margin-top:32px;color:#94a3b8;font-size:0.75rem;text-align:center;}
+    </style></head>
+    <body>
+      <div class="logo">⚡ WhaPay</div>
+      <div class="amount">${formatKES(tx.amount)}</div>
+      <span class="badge">✓ ${tx.status || 'completed'}</span>
+      <hr>
+      <div class="row"><span class="label">Receipt No.</span><span class="value">${tx.id?.slice(0,8) || 'N/A'}</span></div>
+      <div class="row"><span class="label">Customer</span><span class="value">${escapeHtml(tx.customer)}</span></div>
+      <div class="row"><span class="label">Amount</span><span class="value">${formatKES(tx.amount)}</span></div>
+      <div class="row"><span class="label">Payment Method</span><span class="value">${tx.method || 'M-Pesa'}</span></div>
+      <div class="row"><span class="label">Date & Time</span><span class="value">${tx.timestampDate.toLocaleString()}</span></div>
+      <hr>
+      <div class="footer">Thank you for using WhaPay<br>Support: 0140933042 | support@whapay.space<br>whapay.space</div>
+    </body></html>`;
+  const blob = new Blob([receiptHtml], { type: 'text/html' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `WhaPay_Receipt_${tx.id?.slice(0, 8) || Date.now()}.html`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+// ===== CSV EXPORT BUTTON 2 =====
+document.getElementById('exportTxBtn2')?.addEventListener('click', () => {
+  if (!filteredTransactions.length) return;
+  const rows = [
+    ['Customer', 'Amount (KES)', 'Method', 'Status', 'Date'],
+    ...filteredTransactions.map(t => [`"${t.customer}"`, t.amount, t.method, t.status, t.timestampDate.toISOString()])
+  ];
+  const csv = rows.map(r => r.join(',')).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `whapay_transactions_${new Date().toISOString().slice(0, 10)}.csv`;
+  a.click();
+});
+
+// ===== DARK MODE =====
+function toggleDarkMode() {
+  document.body.classList.toggle('dark-mode');
+  const isDark = document.body.classList.contains('dark-mode');
+  document.getElementById('darkModeIcon').className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+  document.getElementById('darkModeText').innerText = isDark ? 'Light' : 'Dark';
+  localStorage.setItem('whapay_dark', isDark ? '1' : '0');
+}
+// Restore dark mode preference
+if (localStorage.getItem('whapay_dark') === '1') toggleDarkMode();
+
+// ===== EXTEND refreshAll TO INCLUDE NEW FEATURES =====
+const _originalRefreshAll = refreshAll;
+refreshAll = function() {
+  _originalRefreshAll();
+  updateStatusChart();
+  updateTopCustomers();
+};
+
+// ===== DARK MODE CSS =====
+const darkStyle = document.createElement('style');
+darkStyle.innerHTML = `
+  .dark-mode body, body.dark-mode { background:#0f172a !important; color:#e2e8f0 !important; }
+  .dark-mode .metric-card, body.dark-mode .metric-card { background:#1e293b !important; border-color:#334155 !important; }
+  .dark-mode .chart-container, body.dark-mode .chart-container { background:#1e293b !important; border-color:#334155 !important; }
+  .dark-mode .filter-bar, body.dark-mode .filter-bar { background:#1e293b !important; border-color:#334155 !important; }
+  .dark-mode .data-table th { background:#0f172a !important; color:#94a3b8 !important; border-color:#334155 !important; }
+  .dark-mode .data-table td { color:#cbd5e1 !important; border-color:#1e293b !important; }
+  .dark-mode .data-table tr:hover { background:#0f172a !important; }
+  .dark-mode input, .dark-mode select, body.dark-mode input, body.dark-mode select { background:#1e293b !important; border-color:#334155 !important; color:#e2e8f0 !important; }
+  .dark-mode #darkModeBtn { background:#1e293b !important; border-color:#334155 !important; color:#e2e8f0 !important; }
+`;
+document.head.appendChild(darkStyle);
+
+// ===== RECEIPT DOWNLOAD — attach to table (re-render adds button) =====
+// Override renderTransactionsTable to include receipt buttons
+const _origRender = renderTransactionsTable;
+renderTransactionsTable = function() {
+  _origRender();
+  // Add receipt buttons to each row
+  const rows = document.querySelectorAll('#transactionsTableBody tr');
+  rows.forEach((row, i) => {
+    if (!row.querySelector('.receipt-btn-new')) {
+      const td = document.createElement('td');
+      td.innerHTML = `<button class="receipt-btn-new" style="color:#16a34a;font-size:0.78rem;font-weight:600;background:#f0fdf4;border:1px solid #dcfce7;border-radius:6px;padding:4px 10px;cursor:pointer;">⬇ Receipt</button>`;
+      row.appendChild(td);
+    }
+  });
+  // Attach click handlers
+  document.querySelectorAll('.receipt-btn-new').forEach((btn, i) => {
+    btn.onclick = () => {
+      const searchTerm = document.getElementById('searchTransaction')?.value.toLowerCase() || '';
+      const statusFilter = document.getElementById('statusFilter')?.value || '';
+      let data = [...filteredTransactions];
+      if (searchTerm) data = data.filter(t => t.customer?.toLowerCase().includes(searchTerm));
+      if (statusFilter) data = data.filter(t => (t.status || 'pending') === statusFilter);
+      const start = (currentPage - 1) * pageSize;
+      const tx = data[start + i];
+      if (tx) downloadReceipt(tx);
+    };
+  });
+};
+
+ 
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
   import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
   import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";

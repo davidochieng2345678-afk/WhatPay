@@ -1163,48 +1163,212 @@ function showSavedCards() {
   initScanner('scanBtnPhone', 'qr-reader-phone', 'amountPhone');
   initScanner('scanBtnPaybill', 'qr-reader-paybill', 'amountPaybill');
 
-  // ---- Member Code Payment ----
-  const payBtn = document.getElementById('payBtn');
-  const memberCodeInput = document.getElementById('memberCode');
-  const phoneInput = document.getElementById('phoneNumber');
-  const amountInput = document.getElementById('amount');
-  const methodSelect = document.getElementById('method');
-  const messageDiv = document.getElementById('message');
+// ---- Member Code Payment (with Saved Cards support) ----
+const payBtn = document.getElementById('payBtn');
+const memberCodeInput = document.getElementById('memberCode');
+const phoneInput = document.getElementById('phoneNumber');
+const amountInput = document.getElementById('amount');
+const methodSelect = document.getElementById('method');
+const messageDiv = document.getElementById('message');
 
-  if (payBtn) {
-    payBtn.addEventListener('click', async () => {
-      const memberCode = memberCodeInput ? memberCodeInput.value.trim() : '';
-      const rawPhone = phoneInput ? phoneInput.value.trim() : '';
-      const amount = parseFloat(amountInput ? amountInput.value : 0);
-      const method = methodSelect ? methodSelect.value : 'mpesa';
-      if (!memberCode) { showToast("Enter merchant code", true); return; }
-      if (!rawPhone || !validatePhone(rawPhone)) { showToast("Enter valid Kenyan phone number", true); return; }
-      if (!amount || amount<=0) { showToast("Enter valid amount", true); return; }
-      const phone = normalizePhone(rawPhone);
-      payBtn.disabled = true;
-      payBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-      if (messageDiv) messageDiv.innerHTML = '';
-      try {
-        if (method === 'mpesa') {
-          // Simulate M-Pesa STK Push (replace with actual API call)
-          await new Promise(resolve => setTimeout(resolve, 2000));
-          if (db) {
-            await addDoc(collection(db, "transactions"), { customerPhone: phone, amount, method: 'mpesa', merchantCode: memberCode, status: 'completed', createdAt: serverTimestamp() });
-          }
-          if (messageDiv) messageDiv.innerHTML = '<div class="bg-green-50 p-2 rounded text-green-800">✅ Check your phone for M-Pesa prompt. (Demo: Payment successful)</div>';
-          showToast('Payment initiated successfully');
-        } else if (method === 'card') {
-          showToast('Card payments coming soon', false);
-        }
-      } catch (err) {
-        showToast(err.message, true);
-        if (messageDiv) messageDiv.innerHTML = `<div class="bg-red-50 p-2 rounded text-red-800">❌ ${err.message}</div>`;
-      } finally {
-        payBtn.disabled = false;
-        payBtn.innerHTML = 'Pay Now';
+// Helper to get user phone from localStorage
+function getUserPhone() {
+  return localStorage.getItem('whapay_user_phone');
+}
+
+function setUserPhone(phone) {
+  localStorage.setItem('whapay_user_phone', phone);
+}
+
+if (payBtn) {
+  payBtn.addEventListener('click', async () => {
+    const memberCode = memberCodeInput ? memberCodeInput.value.trim() : '';
+    let rawPhone = phoneInput ? phoneInput.value.trim() : '';
+    const amount = parseFloat(amountInput ? amountInput.value : 0);
+    const method = methodSelect ? methodSelect.value : 'mpesa';
+    
+    if (!memberCode) { showToast("Enter merchant code", true); return; }
+    
+    // If phone not entered, try to get from localStorage
+    if (!rawPhone) {
+      rawPhone = getUserPhone();
+      if (!rawPhone) {
+        showToast("Enter your phone number", true);
+        return;
       }
-    });
-  }
+    }
+    
+    if (!validatePhone(rawPhone)) { showToast("Enter valid Kenyan phone number", true); return; }
+    if (!amount || amount<=0) { showToast("Enter valid amount", true); return; }
+    
+    const phone = normalizePhone(rawPhone);
+    setUserPhone(phone); // Save for future
+    
+    payBtn.disabled = true;
+    payBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+    if (messageDiv) messageDiv.innerHTML = '';
+    
+    try {
+      // Check if using saved card or new card
+      if (method === 'mpesa') {
+        // M-Pesa payment - call backend
+        const response = await fetch('https://whapay-backend.onrender.com/api/pay-offline', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            merchantCode: memberCode,
+            customerPhone: phone,
+            customerName: 'Guest',
+            amount: amount,
+            paymentMethod: 'mpesa',
+            description: 'Payment'
+          })
+        });
+        const data = await response.json();
+        if (data.success) {
+          if (messageDiv) messageDiv.innerHTML = '<div class="bg-green-50 p-2 rounded text-green-800">✅ Check your phone for M-Pesa prompt.</div>';
+          showToast('Payment initiated successfully');
+        } else {
+          throw new Error(data.error || 'Payment failed');
+        }
+      } 
+      else if (method === 'card') {
+        // Check if user has saved cards
+        const savedCardsResponse = await fetch(`/api/card/saved/${phone}`);
+        const savedCardsData = await savedCardsResponse.json();
+        
+        if (savedCardsData.savedCards && savedCardsData.savedCards.length > 0) {
+          // Show saved cards to choose from
+          let cardOptions = 'Select a saved card:\n';
+          savedCardsData.savedCards.forEach((card, i) => {
+            cardOptions += `${i+1}. Card ending in ${card.last4} (expires ${card.expiry})\n`;
+          });
+          cardOptions += '\nEnter number (1-' + savedCardsData.savedCards.length + ') or "new" for new card:';
+          
+          const choice = prompt(cardOptions);
+          
+          if (choice && choice.toLowerCase() === 'new') {
+            // New card - show card entry form
+            const cardNumber = prompt('Enter card number:');
+            const expiry = prompt('Expiry (MM/YY):');
+            const cvv = prompt('CVV:');
+            if (cardNumber && expiry && cvv) {
+              // Save card first
+              await fetch('/api/card/save', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ customerPhone: phone, cardNumber, expiry, cvv })
+              });
+              // Then process payment
+              const response = await fetch('https://whapay-backend.onrender.com/api/pay-offline', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  merchantCode: memberCode,
+                  customerPhone: phone,
+                  customerName: 'Guest',
+                  amount: amount,
+                  paymentMethod: 'card',
+                  description: 'Payment'
+                })
+              });
+              const data = await response.json();
+              if (data.success) {
+                if (messageDiv) messageDiv.innerHTML = '<div class="bg-green-50 p-2 rounded text-green-800">✅ Payment successful! Receipt sent.</div>';
+                showToast('Payment successful');
+              } else {
+                throw new Error(data.error || 'Payment failed');
+              }
+            }
+          } else if (choice && !isNaN(choice) && choice >= 1 && choice <= savedCardsData.savedCards.length) {
+            // Use selected saved card
+            const selectedCard = savedCardsData.savedCards[choice - 1];
+            // Process offline card payment (store for sync if offline)
+            if (!navigator.onLine) {
+              await fetch('/api/offline/card-pay', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  customerPhone: phone,
+                  merchantCode: memberCode,
+                  amount: amount,
+                  savedCardId: selectedCard.id
+                })
+              });
+              if (messageDiv) messageDiv.innerHTML = '<div class="bg-yellow-50 p-2 rounded text-yellow-800">📡 Offline card payment saved. Will process when online.</div>';
+              showToast('Offline payment saved');
+            } else {
+              const response = await fetch('https://whapay-backend.onrender.com/api/pay-offline', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  merchantCode: memberCode,
+                  customerPhone: phone,
+                  customerName: 'Guest',
+                  amount: amount,
+                  paymentMethod: 'card',
+                  description: 'Payment with saved card'
+                })
+              });
+              const data = await response.json();
+              if (data.success) {
+                if (messageDiv) messageDiv.innerHTML = '<div class="bg-green-50 p-2 rounded text-green-800">✅ Payment successful! Receipt sent.</div>';
+                showToast('Payment successful');
+              } else {
+                throw new Error(data.error || 'Payment failed');
+              }
+            }
+          }
+        } else {
+          // No saved cards - ask to enter new card
+          const useCard = confirm('No saved cards found. Would you like to enter a new card?');
+          if (useCard) {
+            const cardNumber = prompt('Enter card number:');
+            const expiry = prompt('Expiry (MM/YY):');
+            const cvv = prompt('CVV:');
+            if (cardNumber && expiry && cvv) {
+              // Save card
+              await fetch('/api/card/save', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ customerPhone: phone, cardNumber, expiry, cvv })
+              });
+              // Process payment
+              const response = await fetch('https://whapay-backend.onrender.com/api/pay-offline', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  merchantCode: memberCode,
+                  customerPhone: phone,
+                  customerName: 'Guest',
+                  amount: amount,
+                  paymentMethod: 'card',
+                  description: 'Payment'
+                })
+              });
+              const data = await response.json();
+              if (data.success) {
+                if (messageDiv) messageDiv.innerHTML = '<div class="bg-green-50 p-2 rounded text-green-800">✅ Payment successful! Receipt sent.</div>';
+                showToast('Payment successful');
+              } else {
+                throw new Error(data.error || 'Payment failed');
+              }
+            }
+          }
+        }
+      }
+    } catch (err) {
+      showToast(err.message, true);
+      if (messageDiv) messageDiv.innerHTML = `<div class="bg-red-50 p-2 rounded text-red-800">❌ ${err.message}</div>`;
+    } finally {
+      payBtn.disabled = false;
+      payBtn.innerHTML = 'Pay Now';
+    }
+  });
+}
+
+  
+
 
   // ---- Phone Number Payment ----
   const payPhoneBtn = document.getElementById('payPhoneBtn');

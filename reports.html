@@ -582,7 +582,177 @@ function showToast(msg) {
     </div>
   </div>
 </main>
+<!-- ===== MISSING PIECES — PASTE BEFORE </main> ===== -->
 
+<!-- 1. QUICK FILTER BUTTONS — paste inside filter-bar div, after Reset button -->
+<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;">
+  <button class="qf-btn" data-days="7"
+    style="font-size:0.78rem;padding:7px 14px;border-radius:8px;border:1px solid #e2e8f0;background:white;cursor:pointer;color:#64748b;transition:all 0.2s;"
+    onmouseover="this.style.background='#f0fdf4';this.style.borderColor='#16a34a';this.style.color='#16a34a'"
+    onmouseout="this.style.background='white';this.style.borderColor='#e2e8f0';this.style.color='#64748b'">
+    Last 7 days
+  </button>
+  <button class="qf-btn" data-days="30"
+    style="font-size:0.78rem;padding:7px 14px;border-radius:8px;border:1px solid #e2e8f0;background:white;cursor:pointer;color:#64748b;transition:all 0.2s;"
+    onmouseover="this.style.background='#f0fdf4';this.style.borderColor='#16a34a';this.style.color='#16a34a'"
+    onmouseout="this.style.background='white';this.style.borderColor='#e2e8f0';this.style.color='#64748b'">
+    Last 30 days
+  </button>
+  <button class="qf-btn" data-days="90"
+    style="font-size:0.78rem;padding:7px 14px;border-radius:8px;border:1px solid #e2e8f0;background:white;cursor:pointer;color:#64748b;transition:all 0.2s;"
+    onmouseover="this.style.background='#f0fdf4';this.style.borderColor='#16a34a';this.style.color='#16a34a'"
+    onmouseout="this.style.background='white';this.style.borderColor='#e2e8f0';this.style.color='#64748b'">
+    Last 90 days
+  </button>
+  <button class="qf-btn" data-days="365"
+    style="font-size:0.78rem;padding:7px 14px;border-radius:8px;border:1px solid #e2e8f0;background:white;cursor:pointer;color:#64748b;transition:all 0.2s;"
+    onmouseover="this.style.background='#f0fdf4';this.style.borderColor='#16a34a';this.style.color='#16a34a'"
+    onmouseout="this.style.background='white';this.style.borderColor='#e2e8f0';this.style.color='#64748b'">
+    This year
+  </button>
+</div>
+
+<!-- 2. STATUS CHART + TOP CUSTOMERS ROW — paste after existing charts grid -->
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:28px;margin-top:28px;" id="charts-row-2">
+  <!-- Top Customers -->
+  <div class="chart-container">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+      <h3 style="font-weight:700;color:#0f172a;font-size:0.95rem;">🏆 Top Customers</h3>
+      <span style="font-size:0.72rem;color:#94a3b8;">By revenue</span>
+    </div>
+    <div style="overflow-y:auto;max-height:280px;">
+      <table style="width:100%;border-collapse:collapse;">
+        <thead>
+          <tr style="background:#f8fafc;">
+            <th style="text-align:left;padding:10px 12px;font-size:0.75rem;color:#64748b;font-weight:600;border-bottom:1px solid #e2e8f0;">#</th>
+            <th style="text-align:left;padding:10px 12px;font-size:0.75rem;color:#64748b;font-weight:600;border-bottom:1px solid #e2e8f0;">Customer</th>
+            <th style="text-align:right;padding:10px 12px;font-size:0.75rem;color:#64748b;font-weight:600;border-bottom:1px solid #e2e8f0;">Revenue</th>
+            <th style="text-align:right;padding:10px 12px;font-size:0.75rem;color:#64748b;font-weight:600;border-bottom:1px solid #e2e8f0;">Txns</th>
+          </tr>
+        </thead>
+        <tbody id="topCustomersTable">
+          <tr><td colspan="4" style="text-align:center;padding:24px;color:#94a3b8;font-size:0.85rem;">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!-- Status Chart -->
+  <div class="chart-container">
+    <h3 style="font-weight:700;color:#0f172a;font-size:0.95rem;margin-bottom:16px;">📊 Transaction Status</h3>
+    <canvas id="statusChart" height="240"></canvas>
+  </div>
+</div>
+
+<!-- 3. EXPORT BUTTON + SEARCH ROW — replace your existing table header with this -->
+<div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;margin-bottom:16px;gap:12px;">
+  <h3 style="font-weight:700;color:#0f172a;font-size:0.95rem;">Recent Transactions</h3>
+  <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;">
+    <input type="text" id="searchTransaction2" placeholder="🔍 Search customer..."
+      style="border:1px solid #e2e8f0;border-radius:10px;padding:8px 14px;font-size:0.82rem;width:200px;outline:none;">
+    <select id="statusFilter2"
+      style="border:1px solid #e2e8f0;border-radius:10px;padding:8px 12px;font-size:0.82rem;color:#374151;outline:none;">
+      <option value="">All Status</option>
+      <option value="completed">Completed</option>
+      <option value="pending">Pending</option>
+      <option value="failed">Failed</option>
+    </select>
+    <button id="exportTxBtn2"
+      style="background:#f0fdf4;border:1px solid #dcfce7;color:#16a34a;padding:8px 16px;border-radius:10px;font-size:0.82rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;">
+      <i class="fas fa-file-csv"></i> Export CSV
+    </button>
+  </div>
+</div>
+
+<!-- 4. RECEIPT COLUMN — add this to your existing table thead, after Date th -->
+<!-- Find your existing thead and add: <th>Receipt</th> -->
+<!-- Then in tbody rows add: <td><button class="receipt-dl-btn" ...>⬇ Download</button></td> -->
+
+<!-- 5. LOADING SKELETON — shown while transactions load -->
+<div id="skeletonLoader" style="display:none;">
+  <style>
+    @keyframes shimmer { 0%{background-position:-1000px 0} 100%{background-position:1000px 0} }
+    .skeleton-line {
+      background:linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%);
+      background-size:1000px 100%;
+      animation:shimmer 2s infinite;
+      border-radius:6px;
+      height:16px;
+    }
+  </style>
+  <div style="display:flex;flex-direction:column;gap:12px;padding:20px;">
+    <div class="skeleton-line" style="width:60%;"></div>
+    <div class="skeleton-line" style="width:80%;"></div>
+    <div class="skeleton-line" style="width:70%;"></div>
+    <div class="skeleton-line" style="width:90%;"></div>
+    <div class="skeleton-line" style="width:65%;"></div>
+  </div>
+</div>
+
+<!-- 6. DARK MODE TOGGLE — paste at top right of dashboard, next to Export button -->
+<button id="darkModeBtn"
+  style="position:fixed;bottom:80px;left:20px;background:white;border:1px solid #e2e8f0;border-radius:999px;padding:8px 14px;cursor:pointer;font-size:0.78rem;font-weight:600;color:#374151;display:flex;align-items:center;gap:6px;box-shadow:0 4px 12px rgba(0,0,0,0.08);z-index:50;transition:all 0.2s;"
+  onclick="toggleDarkMode()"
+  title="Toggle dark mode">
+  <i class="fas fa-moon" id="darkModeIcon"></i>
+  <span id="darkModeText">Dark</span>
+</button>
+
+<!-- 7. GLOBAL STATS STRIP — paste after hero image, before date filter -->
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:24px;">
+  <div style="background:white;border-radius:14px;padding:14px 18px;border:1px solid #e2e8f0;display:flex;align-items:center;gap:12px;">
+    <div style="width:38px;height:38px;background:#f0fdf4;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+      <i class="fas fa-globe" style="color:#22c55e;font-size:1rem;"></i>
+    </div>
+    <div>
+      <div style="font-size:1.3rem;font-weight:900;color:#0f172a;line-height:1;">180+</div>
+      <div style="font-size:0.7rem;color:#94a3b8;">Countries</div>
+    </div>
+  </div>
+  <div style="background:white;border-radius:14px;padding:14px 18px;border:1px solid #e2e8f0;display:flex;align-items:center;gap:12px;">
+    <div style="width:38px;height:38px;background:#eff6ff;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+      <i class="fas fa-shield-alt" style="color:#3b82f6;font-size:1rem;"></i>
+    </div>
+    <div>
+      <div style="font-size:1.3rem;font-weight:900;color:#0f172a;line-height:1;">PCI DSS</div>
+      <div style="font-size:0.7rem;color:#94a3b8;">Level 1</div>
+    </div>
+  </div>
+  <div style="background:white;border-radius:14px;padding:14px 18px;border:1px solid #e2e8f0;display:flex;align-items:center;gap:12px;">
+    <div style="width:38px;height:38px;background:#fef9c3;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+      <i class="fas fa-clock" style="color:#ca8a04;font-size:1rem;"></i>
+    </div>
+    <div>
+      <div style="font-size:1.3rem;font-weight:900;color:#0f172a;line-height:1;">99.99%</div>
+      <div style="font-size:0.7rem;color:#94a3b8;">Uptime</div>
+    </div>
+  </div>
+  <div style="background:white;border-radius:14px;padding:14px 18px;border:1px solid #e2e8f0;display:flex;align-items:center;gap:12px;">
+    <div style="width:38px;height:38px;background:#f0fdf4;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+      <i class="fas fa-headset" style="color:#22c55e;font-size:1rem;"></i>
+    </div>
+    <div>
+      <div style="font-size:1.3rem;font-weight:900;color:#0f172a;line-height:1;">24/7</div>
+      <div style="font-size:0.7rem;color:#94a3b8;">WhatsApp Support</div>
+    </div>
+  </div>
+</div>
+
+<!-- 8. TREND VIEW BUTTONS — paste inside revenue chart container -->
+<div style="display:flex;gap:6px;margin-bottom:16px;" id="trendViewBtns">
+  <button class="tv-btn active" data-view="daily"
+    style="font-size:0.72rem;padding:5px 12px;border-radius:6px;border:1px solid #e2e8f0;background:#f0fdf4;color:#16a34a;cursor:pointer;font-weight:600;">
+    Daily
+  </button>
+  <button class="tv-btn" data-view="weekly"
+    style="font-size:0.72rem;padding:5px 12px;border-radius:6px;border:1px solid #e2e8f0;background:white;color:#64748b;cursor:pointer;">
+    Weekly
+  </button>
+  <button class="tv-btn" data-view="monthly"
+    style="font-size:0.72rem;padding:5px 12px;border-radius:6px;border:1px solid #e2e8f0;background:white;color:#64748b;cursor:pointer;">
+    Monthly
+  </button>
+</div>
+ 
 <!-- Footer -->
 <footer style="background:#080c18;padding:40px 24px;text-align:center;margin-top:48px;">
   <p style="color:rgba(255,255,255,0.4);font-size:0.8rem;">© 2026 WhaPay. All rights reserved. | Nairobi, Kenya</p>

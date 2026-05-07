@@ -553,7 +553,7 @@ function buildBlogCard(post) {
         <p style="color:#64748b;font-size:0.82rem;line-height:1.6;margin-bottom:14px;">${escapeHtml(excerpt)}</p>
         <div style="display:flex;justify-content:space-between;align-items:center;">
           <span style="color:#94a3b8;font-size:0.75rem;">${date}</span>
-          <span style="color:#16a34a;font-size:0.82rem;font-weight:700;">Read more →</span>
+          <a href="blog.html?slug=${post.slug}" style="color:#16a34a;font-size:0.82rem;font-weight:700;text-decoration:none;">Read more →</a>
         </div>
       </div>
     </div>`;

@@ -1306,6 +1306,332 @@ if(regForm) regForm.addEventListener('submit', async (e) => { e.preventDefault()
   document.getElementById('logoutBtn')?.addEventListener('click', async () => { await signOut(auth); showToast('Logged out'); });
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(e => console.log("SW err", e));
   updatePendingBadge();
+
+  // ========== COMPLETE PAYMENT LOGIC WITH COUNTRY DETECTION ==========
+
+// Helper: Detect customer country from phone number
+function detectCustomerCountry(phoneNumber) {
+  if (!phoneNumber) return { country: 'KE', currency: 'KES', networks: ['M-Pesa'] };
+  
+  const cleanPhone = phoneNumber.replace(/\D/g, '');
+  
+  if (cleanPhone.startsWith('254')) {
+    return { country: 'KE', currency: 'KES', networks: ['M-Pesa'] };
+  } else if (cleanPhone.startsWith('256')) {
+    return { country: 'UG', currency: 'UGX', networks: ['Airtel', 'MTN'] };
+  } else if (cleanPhone.startsWith('255')) {
+    return { country: 'TZ', currency: 'TZS', networks: ['Airtel', 'Tigo', 'Halopesa'] };
+  } else if (cleanPhone.startsWith('233')) {
+    return { country: 'GH', currency: 'GHS', networks: ['MTN', 'Vodafone', 'AirtelTigo'] };
+  } else if (cleanPhone.startsWith('250')) {
+    return { country: 'RW', currency: 'RWF', networks: ['Airtel', 'MTN'] };
+  } else if (cleanPhone.startsWith('237')) {
+    return { country: 'CM', currency: 'XAF', networks: ['MTN', 'Orange'] };
+  } else if (cleanPhone.startsWith('225')) {
+    return { country: 'CI', currency: 'XOF', networks: ['MTN', 'Orange', 'Moov', 'Wave'] };
+  } else if (cleanPhone.startsWith('221')) {
+    return { country: 'SN', currency: 'XOF', networks: ['Orange', 'Free Money', 'Wave'] };
+  }
+  
+  // Default to Kenya
+  return { country: 'KE', currency: 'KES', networks: ['M-Pesa'] };
+}
+
+// Helper: Calculate fee for non-M-Pesa mobile money
+function calculateMobileMoneyFee(amount) {
+  if (amount <= 500) return 10;
+  if (amount <= 2000) return 20;
+  if (amount <= 5000) return 30;
+  if (amount <= 10000) return 50;
+  return 100;
+}
+
+// Helper: Get network value for backend
+function getNetworkValue(networkName, country) {
+  const mapping = {
+    'M-Pesa': 'MPS',
+    'Airtel': 'AIRTEL',
+    'MTN': 'MTN',
+    'Tigo': 'TIGO',
+    'Halopesa': 'HALOPESA',
+    'Orange': 'ORANGE',
+    'Vodafone': 'VODAFONE'
+  };
+  return mapping[networkName] || networkName.toUpperCase();
+}
+
+// Update payment methods based on detected country
+function updatePaymentMethods(networks) {
+  const methodSelect = document.getElementById('method');
+  const mobileNetworkSelect = document.getElementById('mobileNetwork');
+  const mobileMoneySection = document.getElementById('mobileMoneySection');
+  
+  if (!methodSelect) return;
+  
+  // Store current value to restore if possible
+  const currentValue = methodSelect.value;
+  
+  // Rebuild options
+  methodSelect.innerHTML = '<option value="">-- Select payment method --</option>';
+  
+  // Add M-Pesa if available
+  if (networks.includes('M-Pesa')) {
+    const option = new Option('M-Pesa (STK Push) - No fee', 'mpesa');
+    methodSelect.add(option);
+  }
+  
+  // Add Other Mobile Money if there are other networks
+  const otherNetworks = networks.filter(n => n !== 'M-Pesa');
+  if (otherNetworks.length > 0) {
+    const option = new Option('Other Mobile Money (fee applies)', 'mobile_money');
+    methodSelect.add(option);
+  }
+  
+  // Always add Card option
+  methodSelect.add(new Option('Credit / Debit Card', 'card'));
+  
+  // Update mobile network dropdown
+  if (mobileNetworkSelect && otherNetworks.length > 0) {
+    mobileNetworkSelect.innerHTML = '<option value="">-- Choose network --</option>';
+    otherNetworks.forEach(network => {
+      let value = '';
+      if (network === 'Airtel') value = 'AIRTEL';
+      else if (network === 'MTN') value = 'MTN';
+      else if (network === 'Tigo') value = 'TIGO';
+      else if (network === 'Halopesa') value = 'HALOPESA';
+      else if (network === 'Vodafone') value = 'VODAFONE';
+      else if (network === 'Orange') value = 'ORANGE';
+      else value = network.toUpperCase();
+      
+      mobileNetworkSelect.add(new Option(network, value));
+    });
+  }
+  
+  // Show/hide mobile network section based on selection
+  if (methodSelect.value === 'mobile_money' && mobileMoneySection) {
+    mobileMoneySection.style.display = 'block';
+  } else if (mobileMoneySection) {
+    mobileMoneySection.style.display = 'none';
+  }
+  
+  // Add change listener to show/hide mobile network section
+  methodSelect.onchange = function() {
+    if (mobileMoneySection) {
+      mobileMoneySection.style.display = this.value === 'mobile_money' ? 'block' : 'none';
+    }
+    // Update fee display when method changes
+    updateFeeDisplay();
+  };
+}
+
+// Update fee display when amount or method changes
+function updateFeeDisplay() {
+  const amount = parseFloat(document.getElementById('amount')?.value || 0);
+  const paymentMethod = document.getElementById('method')?.value;
+  const feeDisplay = document.getElementById('feeDisplay');
+  const merchantAmountSpan = document.getElementById('merchantAmount');
+  const feeAmountSpan = document.getElementById('feeAmount');
+  const totalAmountSpan = document.getElementById('totalAmount');
+  
+  if (!feeDisplay) return;
+  
+  if (paymentMethod === 'mpesa' || !amount || amount <= 0) {
+    feeDisplay.classList.add('hidden');
+    return;
+  }
+  
+  if (paymentMethod === 'mobile_money') {
+    const fee = calculateMobileMoneyFee(amount);
+    const total = amount + fee;
+    
+    if (merchantAmountSpan) merchantAmountSpan.innerText = `${window.detectedCurrency || 'KES'} ${amount.toLocaleString()}`;
+    if (feeAmountSpan) feeAmountSpan.innerText = `${window.detectedCurrency || 'KES'} ${fee.toLocaleString()}`;
+    if (totalAmountSpan) totalAmountSpan.innerText = `${window.detectedCurrency || 'KES'} ${total.toLocaleString()}`;
+    feeDisplay.classList.remove('hidden');
+  } else {
+    feeDisplay.classList.add('hidden');
+  }
+}
+
+// Process payment
+async function processPayment() {
+  const merchantCode = document.getElementById('merchantCode')?.value.trim();
+  const rawPhone = document.getElementById('phoneNumber')?.value.trim();
+  const amount = parseFloat(document.getElementById('amount')?.value);
+  const customerName = document.getElementById('customerName')?.value.trim() || 'Guest';
+  const paymentMethod = document.getElementById('method')?.value;
+  const selectedNetwork = document.getElementById('mobileNetwork')?.value;
+  
+  // Validation
+  if (!merchantCode) { showToast("Enter merchant code", true); return; }
+  if (!rawPhone) { showToast("Enter your phone number", true); return; }
+  if (!amount || amount <= 0) { showToast("Enter valid amount", true); return; }
+  if (!paymentMethod) { showToast("Select payment method", true); return; }
+  
+  // Validate phone number format
+  let cleanPhone = rawPhone.replace(/\D/g, '');
+  if (cleanPhone.startsWith('0')) cleanPhone = '254' + cleanPhone.substring(1);
+  if (!cleanPhone.startsWith('254')) cleanPhone = '254' + cleanPhone;
+  if (cleanPhone.length !== 12) { showToast("Enter valid phone number (e.g., 0712345678)", true); return; }
+  
+  // Detect country from phone
+  const countryInfo = detectCustomerCountry(cleanPhone);
+  window.detectedCountry = countryInfo.country;
+  window.detectedCurrency = countryInfo.currency;
+  
+  // For mobile money, ensure network is selected
+  if (paymentMethod === 'mobile_money' && !selectedNetwork) {
+    showToast("Select your mobile money network", true);
+    return;
+  }
+  
+  const payBtn = document.getElementById('payBtn');
+  const messageDiv = document.getElementById('message');
+  
+  payBtn.disabled = true;
+  payBtn.innerHTML = '<span class="spinner"></span> Processing...';
+  if (messageDiv) messageDiv.innerHTML = '';
+  
+  try {
+    let response;
+    let data;
+    
+    if (paymentMethod === 'mpesa') {
+      // M-Pesa payment (no fee)
+      response = await fetch('https://whapay-backend.onrender.com/api/mpesa/charge', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          merchantCode: merchantCode,
+          customerPhone: cleanPhone,
+          customerName: customerName,
+          amount: amount
+        })
+      });
+      data = await response.json();
+      
+      if (data.success) {
+        if (messageDiv) messageDiv.innerHTML = '<div class="bg-green-50 p-2 rounded text-green-800">✅ STK Push sent! Check your phone for M-Pesa prompt.</div>';
+        showToast('Check your phone for M-Pesa prompt');
+      } else {
+        throw new Error(data.error || 'Payment failed');
+      }
+      
+    } else if (paymentMethod === 'mobile_money') {
+      // Other mobile money (with fee)
+      response = await fetch('https://whapay-backend.onrender.com/api/mobile-money/charge', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          merchantCode: merchantCode,
+          customerPhone: cleanPhone,
+          customerName: customerName,
+          amount: amount,
+          network: selectedNetwork,
+          country: window.detectedCountry,
+          currency: window.detectedCurrency
+        })
+      });
+      data = await response.json();
+      
+      if (data.success) {
+        if (messageDiv) messageDiv.innerHTML = `<div class="bg-green-50 p-2 rounded text-green-800">✅ ${data.message || 'Payment request sent! Check your phone.'}</div>`;
+        showToast(`Check your phone for ${selectedNetwork} prompt`);
+      } else {
+        throw new Error(data.error || 'Payment failed');
+      }
+      
+    } else if (paymentMethod === 'card') {
+      // Card payment - redirect to card form or show coming soon
+      showToast('Card payments coming soon. Use M-Pesa or Mobile Money for now.', false);
+      payBtn.disabled = false;
+      payBtn.innerHTML = 'Pay Now';
+      return;
+    }
+    
+    // Clear form on success
+    if (data.success) {
+      const amountInput = document.getElementById('amount');
+      const merchantCodeInput = document.getElementById('merchantCode');
+      if (amountInput) amountInput.value = '';
+      if (merchantCodeInput) merchantCodeInput.value = '';
+    }
+    
+  } catch (err) {
+    console.error('Payment error:', err);
+    showToast(err.message, true);
+    if (messageDiv) messageDiv.innerHTML = `<div class="bg-red-50 p-2 rounded text-red-800">❌ ${err.message}</div>`;
+  } finally {
+    payBtn.disabled = false;
+    payBtn.innerHTML = 'Pay Now';
+  }
+}
+
+// Initialize all event listeners
+function initPaymentPage() {
+  // Get elements
+  const phoneInput = document.getElementById('phoneNumber');
+  const amountInput = document.getElementById('amount');
+  const payBtn = document.getElementById('payBtn');
+  
+  // Phone input listener (auto-detect country)
+  if (phoneInput) {
+    phoneInput.addEventListener('input', (e) => {
+      const phone = e.target.value.replace(/\D/g, '');
+      const customer = detectCustomerCountry(phone);
+      updatePaymentMethods(customer.networks);
+      
+      // Store detected info
+      window.detectedCountry = customer.country;
+      window.detectedCurrency = customer.currency;
+    });
+    
+    // Trigger on page load if phone already has value
+    if (phoneInput.value) {
+      const phone = phoneInput.value.replace(/\D/g, '');
+      const customer = detectCustomerCountry(phone);
+      updatePaymentMethods(customer.networks);
+      window.detectedCountry = customer.country;
+      window.detectedCurrency = customer.currency;
+    }
+  }
+  
+  // Amount input listener (update fee display)
+  if (amountInput) {
+    amountInput.addEventListener('input', updateFeeDisplay);
+  }
+  
+  // Pay button listener
+  if (payBtn) {
+    payBtn.addEventListener('click', processPayment);
+  }
+  
+  // Initial fee display check
+  updateFeeDisplay();
+}
+
+// Run initialization when page loads
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initPaymentPage);
+} else {
+  initPaymentPage();
+}
+
+// Helper: Show toast notification
+function showToast(msg, isErr = false) {
+  let toast = document.getElementById('globalToast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'globalToast';
+    toast.className = 'fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-full text-sm z-50 transition-opacity opacity-0';
+    document.body.appendChild(toast);
+  }
+  toast.innerText = msg;
+  toast.style.backgroundColor = isErr ? '#dc2626' : '#16a34a';
+  toast.classList.remove('opacity-0');
+  toast.classList.add('opacity-100');
+  setTimeout(() => toast.classList.add('opacity-0'), 4000);
+}
 </script>
   <!-- Smart WhatsApp Widget -->
 <div id="waWidget" class="fixed bottom-5 right-5 z-50">

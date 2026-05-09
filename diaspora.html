@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>WhaPay Diaspora – Send Money Home from Anywhere</title>
+  <meta name="description" content="Send money to Kenya from UK, USA, UAE, Canada. Pay with Visa, Mastercard, PayPal, M-Pesa, Airtel, MTN, Tigo. Register for your own Diaspora Member Code.">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#16a34a">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://js.stripe.com/v3/"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    .spinner { border: 2px solid #f3f3f3; border-top: 2px solid #16a34a; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; display: inline-block; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .tab-active { border-bottom-width: 2px; border-color: #16a34a; color: #15803d; }
+    .tab-inactive { border-bottom-width: 2px; border-color: transparent; color: #4b5563; }
+    .hidden { display: none; }
+    .step-card { transition: 0.2s; }
+    .step-card:hover { transform: translateY(-3px); }
+    input:focus, select:focus { outline: none; ring: 2px solid #16a34a; border-color: #16a34a; }
+  </style>
+</head>
+<body class="bg-gray-100">
+
+<!-- ==================== SAME HEADER AS OTHER PAGES ==================== -->
+<style>
+.gd-nav { font-family: sans-serif; }
+.gd-nav-link { color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.85rem;font-weight:500;transition:color 0.2s;padding:4px 0; }
+.gd-nav-link:hover { color:white; }
+.gd-nav-link.active { color:#22c55e;font-weight:700; }
+.gd-dropdown { position:relative; }
+.gd-dropdown-menu { position:absolute;top:calc(100% + 12px);left:50%;transform:translateX(-50%);background:#0f1629;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:8px;min-width:220px;opacity:0;visibility:hidden;transition:all 0.2s ease;z-index:100;box-shadow:0 20px 40px rgba(0,0,0,0.4); }
+.gd-dropdown:hover .gd-dropdown-menu { opacity:1;visibility:visible; }
+.gd-dropdown-item { display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;text-decoration:none;transition:background 0.2s; }
+.gd-dropdown-item:hover { background:rgba(255,255,255,0.06); }
+.gd-dropdown-item .icon { width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+.gd-dropdown-item .label { color:white;font-size:0.82rem;font-weight:600; }
+.gd-dropdown-item .desc { color:rgba(255,255,255,0.35);font-size:0.72rem;margin-top:1px; }
+.gd-dropdown-trigger { display:flex;align-items:center;gap:4px;cursor:pointer; }
+.gd-dropdown-trigger i.arrow { font-size:0.6rem;color:rgba(255,255,255,0.4);transition:transform 0.2s; }
+.gd-dropdown:hover .gd-dropdown-trigger i.arrow { transform:rotate(180deg); }
+</style>
+
+<header class="gd-nav" style="background:#080c18;border-bottom:1px solid rgba(255,255,255,0.06);position:sticky;top:0;z-index:999;">
+  <div style="background:rgba(22,163,74,0.08);border-bottom:1px solid rgba(22,163,74,0.1);padding:6px 24px;display:flex;justify-between;align-items:center;font-size:0.72rem;flex-wrap:wrap;gap:8px;">
+    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+      <a href="tel:0140933042" style="color:rgba(255,255,255,0.5);text-decoration:none;display:flex;align-items:center;gap:5px;"><i class="fas fa-phone-alt" style="color:#22c55e;font-size:0.65rem;"></i> 0140933042</a>
+      <a href="mailto:support@whapay.space" style="color:rgba(255,255,255,0.5);text-decoration:none;display:flex;align-items:center;gap:5px;"><i class="fas fa-envelope" style="color:#22c55e;font-size:0.65rem;"></i> support@whapay.space</a>
+      <span style="color:rgba(255,255,255,0.3);display:flex;align-items:center;gap:5px;"><i class="fas fa-globe" style="color:#22c55e;font-size:0.65rem;"></i> Sending from 180+ countries</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span id="navUserTopDisplay" style="color:rgba(255,255,255,0.4);font-size:0.72rem;"></span>
+      <a href="users.html" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.72rem;">My Account</a>
+    </div>
+  </div>
+  <div style="max-width:1280px;margin:0 auto;padding:0 24px;display:flex;justify-content:space-between;align-items:center;height:64px;">
+    <a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;">
+      <div style="width:32px;height:32px;background:#16a34a;border-radius:6px;display:flex;align-items:center;justify-content:center;"><i class="fas fa-bolt" style="color:white;font-size:0.85rem;"></i></div>
+      <span style="color:white;font-size:1.2rem;font-weight:900;">WhaPay</span>
+    </a>
+    <nav style="display:flex;align-items:center;gap:4px;" class="hidden md:flex">
+      <a href="index.html" class="gd-nav-link" style="padding:0 12px;">Home</a>
+      <a href="payment.html" class="gd-nav-link" style="padding:0 12px;">Payments</a>
+      <a href="merchant.html" class="gd-nav-link" style="padding:0 12px;">Merchants</a>
+      <a href="diaspora.html" class="gd-nav-link active" style="padding:0 12px;">Diaspora</a>
+      <a href="pricing.html" class="gd-nav-link" style="padding:0 12px;">Pricing</a>
+    </nav>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <a href="https://wa.me/0140933042?text=REGISTER" style="background:#16a34a;color:white;font-weight:700;font-size:0.85rem;padding:10px 20px;border-radius:6px;text-decoration:none;display:flex;align-items:center;gap:6px;"><i class="fab fa-whatsapp"></i> Register Free</a>
+      <button id="mobileMenuBtn" onclick="toggleMobileMenu()" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:white;width:40px;height:40px;border-radius:6px;cursor:pointer;display:none;" class="md:hidden"><i class="fas fa-bars"></i></button>
+    </div>
+  </div>
+  <div id="mobileMenu" style="display:none;background:#080c18;padding:16px 24px;">
+    <a href="index.html" style="display:block;color:white;padding:8px 0;">Home</a>
+    <a href="payment.html" style="display:block;color:white;padding:8px 0;">Payments</a>
+    <a href="merchant.html" style="display:block;color:white;padding:8px 0;">Merchants</a>
+    <a href="diaspora.html" style="display:block;color:#22c55e;padding:8px 0;">Diaspora</a>
+    <a href="pricing.html" style="display:block;color:white;padding:8px 0;">Pricing</a>
+  </div>
+</header>
+
+<script>
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobileMenu');
+  const btn = document.getElementById('mobileMenuBtn');
+  const isOpen = menu.style.display === 'block';
+  menu.style.display = isOpen ? 'none' : 'block';
+  btn.innerHTML = isOpen ? '<i class="fas fa-bars"></i>' : '<i class="fas fa-times"></i>';
+}
+(function() {
+  const btn = document.getElementById('mobileMenuBtn');
+  if (btn && window.innerWidth < 768) btn.style.display = 'flex';
+  window.addEventListener('resize', () => { if (btn) btn.style.display = window.innerWidth < 768 ? 'flex' : 'none'; });
+})();
+</script>
+
+<!-- ==================== MAIN CONTENT ==================== -->
+<main class="max-w-6xl mx-auto px-4 py-8">
+
+  <!-- Hero Section -->
+  <div class="bg-gradient-to-r from-blue-900 via-emerald-800 to-green-700 rounded-3xl p-8 mb-10 text-center text-white">
+    <h1 class="text-3xl md:text-5xl font-bold mb-4">Send Money Home <span class="text-yellow-300">From Anywhere</span></h1>
+    <p class="text-lg md:text-xl opacity-90 mb-6">UK • USA • UAE • Canada • Europe • Australia → Kenya</p>
+    <div class="flex flex-wrap justify-center gap-4">
+      <span class="bg-white/20 px-4 py-2 rounded-full text-sm">💳 Visa / Mastercard</span>
+      <span class="bg-white/20 px-4 py-2 rounded-full text-sm">📱 M-Pesa</span>
+      <span class="bg-white/20 px-4 py-2 rounded-full text-sm">💰 Airtel / MTN / Tigo</span>
+      <span class="bg-white/20 px-4 py-2 rounded-full text-sm">💸 0% fee on M-Pesa</span>
+    </div>
+  </div>
+
+  <!-- ==================== TWO MAIN SECTIONS ==================== -->
+
+  <!-- SECTION 1: SEND TO MERCHANT (Customer pays a merchant) -->
+  <div class="bg-white rounded-2xl shadow-xl mb-8 overflow-hidden">
+    <div class="bg-emerald-600 px-6 py-3">
+      <h2 class="text-xl font-bold text-white"><i class="fas fa-store mr-2"></i> Option 1: Pay a Merchant in Kenya</h2>
+      <p class="text-emerald-100 text-sm">Use the merchant's Member Code to send payment</p>
+    </div>
+    <div class="p-6">
+      <div class="max-w-xl mx-auto">
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Merchant Member Code *</label>
+            <input type="text" id="merchantCode" placeholder="Enter merchant's code (e.g., DK12345)" class="w-full border border-gray-300 rounded-xl px-4 py-3">
+            <p class="text-xs text-gray-400 mt-1">Ask the merchant for their WhaPay Member Code</p>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Your Phone Number (for confirmation) *</label>
+            <input type="tel" id="senderPhone" placeholder="+254712345678 or +447123456789" class="w-full border border-gray-300 rounded-xl px-4 py-3">
+            <p class="text-xs text-gray-400 mt-1">We'll send payment confirmation via WhatsApp to 0140933042</p>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Amount (KES) *</label>
+            <input type="number" id="amountToMerchant" placeholder="e.g., 5000" class="w-full border border-gray-300 rounded-xl px-4 py-3">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Your Name (optional)</label>
+            <input type="text" id="senderName" placeholder="John Kamau" class="w-full border border-gray-300 rounded-xl px-4 py-3">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Payment Method</label>
+            <select id="merchantPaymentMethod" class="w-full border border-gray-300 rounded-xl px-4 py-3">
+              <option value="card">💳 Credit / Debit Card (Visa/Mastercard/Amex)</option>
+              <option value="mpesa">📱 M-Pesa (0% fee)</option>
+              <option value="airtel">💰 Airtel Money (fee applies)</option>
+              <option value="tigo">💰 Tigo Pesa (fee applies)</option>
+              <option value="mtn">💰 MTN Mobile Money (fee applies)</option>
+              <option value="paypal">💸 PayPal</option>
+            </select>
+          </div>
+          <button id="payMerchantBtn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl text-lg shadow-md transition">💸 Send Payment to Merchant</button>
+          <div id="merchantMessage" class="text-center text-sm mt-2"></div>
+          <div class="text-xs text-gray-400 text-center mt-3"><i class="fas fa-info-circle"></i> No internet? Use M-Pesa Paybill <strong class="font-mono">0140933042</strong> Account = Merchant Code</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: SEND TO ANOTHER DIASPORA MEMBER (Customer to Customer) -->
+  <div class="bg-white rounded-2xl shadow-xl mb-8 overflow-hidden">
+    <div class="bg-blue-600 px-6 py-3">
+      <h2 class="text-xl font-bold text-white"><i class="fas fa-users mr-2"></i> Option 2: Send to Another Diaspora Member</h2>
+      <p class="text-blue-100 text-sm">Use your own Member Code or send to someone else's code</p>
+    </div>
+    <div class="p-6">
+      <div class="max-w-xl mx-auto">
+        
+        <!-- Sub-tabs for Send/Receive -->
+        <div class="flex border-b border-gray-200 mb-6">
+          <button id="sendToMemberTab" class="flex-1 py-2 text-center font-semibold tab-active">📤 Send to Someone</button>
+          <button id="receiveFromMemberTab" class="flex-1 py-2 text-center font-semibold tab-inactive">📥 Receive Money (Get Your Code)</button>
+        </div>
+
+        <!-- Send to Someone Panel -->
+        <div id="sendToMemberPanel">
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Recipient's Member Code *</label>
+              <input type="text" id="recipientCode" placeholder="Enter their Member Code (e.g., DK12345)" class="w-full border border-gray-300 rounded-xl px-4 py-3">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Your Phone Number *</label>
+              <input type="tel" id="senderPhone2" placeholder="+254712345678" class="w-full border border-gray-300 rounded-xl px-4 py-3">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Amount (KES) *</label>
+              <input type="number" id="amountToMember" placeholder="e.g., 5000" class="w-full border border-gray-300 rounded-xl px-4 py-3">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Your Name (optional)</label>
+              <input type="text" id="senderName2" placeholder="Your name" class="w-full border border-gray-300 rounded-xl px-4 py-3">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Payment Method</label>
+              <select id="memberPaymentMethod" class="w-full border border-gray-300 rounded-xl px-4 py-3">
+                <option value="card">💳 Credit / Debit Card</option>
+                <option value="mpesa">📱 M-Pesa (0% fee)</option>
+                <option value="airtel">💰 Airtel Money</option>
+                <option value="tigo">💰 Tigo Pesa</option>
+                <option value="mtn">💰 MTN Mobile Money</option>
+                <option value="paypal">💸 PayPal</option>
+              </select>
+            </div>
+            <button id="payMemberBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl text-lg shadow-md transition">💸 Send to Member</button>
+            <div id="memberMessage" class="text-center text-sm mt-2"></div>
+          </div>
+        </div>
+
+        <!-- Receive Panel - Get Your Own Code -->
+        <div id="receiveFromMemberPanel" class="hidden">
+          <div class="text-center py-4">
+            <i class="fas fa-qrcode text-6xl text-green-500 mb-4"></i>
+            <h3 class="text-xl font-bold text-gray-800 mb-2">Get Your Diaspora Member Code</h3>
+            <p class="text-gray-500 mb-6">Register once, receive money anytime from anyone worldwide</p>
+            
+            <div class="space-y-4 text-left max-w-md mx-auto">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
+                <input type="text" id="regName" placeholder="John Kamau" class="w-full border border-gray-300 rounded-xl px-4 py-3">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Phone Number (WhatsApp) *</label>
+                <input type="tel" id="regPhone" placeholder="+254712345678" class="w-full border border-gray-300 rounded-xl px-4 py-3">
+                <p class="text-xs text-gray-400 mt-1">We'll send your Member Code via WhatsApp</p>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Email (optional)</label>
+                <input type="email" id="regEmail" placeholder="you@example.com" class="w-full border border-gray-300 rounded-xl px-4 py-3">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Where are you sending from?</label>
+                <select id="regCountry" class="w-full border border-gray-300 rounded-xl px-4 py-3">
+                  <option value="UK">🇬🇧 United Kingdom</option>
+                  <option value="USA">🇺🇸 United States</option>
+                  <option value="UAE">🇦🇪 United Arab Emirates</option>
+                  <option value="Canada">🇨🇦 Canada</option>
+                  <option value="Australia">🇦🇺 Australia</option>
+                  <option value="Germany">🇩🇪 Germany</option>
+                  <option value="Other">🌍 Other</option>
+                </select>
+              </div>
+              <button id="registerMemberBtn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl text-lg shadow-md transition">🎉 Register & Get My Code</button>
+            </div>
+            
+            <div id="registrationResult" class="hidden mt-6 p-4 bg-green-50 rounded-xl">
+              <i class="fas fa-check-circle text-4xl text-green-600 mb-2"></i>
+              <p class="font-bold text-green-800">Registration Successful!</p>
+              <p class="text-2xl font-mono font-bold text-green-700 my-2" id="newMemberCode"></p>
+              <div id="newQRCanvas" class="flex justify-center my-3"></div>
+              <p class="text-sm text-gray-600">Your Member Code sent via WhatsApp. Share this code to receive money from anyone worldwide.</p>
+              <p class="text-xs text-gray-500 mt-2">📱 Offline: Give them Paybill <strong>0140933042</strong> Account = Your Code</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Payment Methods Showcase -->
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+    <div class="bg-white rounded-xl p-4 text-center shadow"><i class="fab fa-cc-visa text-3xl text-blue-700"></i><p class="text-xs mt-1">Visa</p></div>
+    <div class="bg-white rounded-xl p-4 text-center shadow"><i class="fab fa-cc-mastercard text-3xl text-orange-600"></i><p class="text-xs mt-1">Mastercard</p></div>
+    <div class="bg-white rounded-xl p-4 text-center shadow"><i class="fab fa-cc-amex text-3xl text-blue-600"></i><p class="text-xs mt-1">American Express</p></div>
+    <div class="bg-white rounded-xl p-4 text-center shadow"><i class="fab fa-paypal text-3xl text-blue-800"></i><p class="text-xs mt-1">PayPal</p></div>
+    <div class="bg-white rounded-xl p-4 text-center shadow"><i class="fas fa-mobile-alt text-3xl text-green-600"></i><p class="text-xs mt-1">M-Pesa</p></div>
+    <div class="bg-white rounded-xl p-4 text-center shadow"><i class="fas fa-wifi text-3xl text-purple-600"></i><p class="text-xs mt-1">Airtel Money</p></div>
+    <div class="bg-white rounded-xl p-4 text-center shadow"><i class="fas fa-globe text-3xl text-teal-600"></i><p class="text-xs mt-1">MTN Money</p></div>
+    <div class="bg-white rounded-xl p-4 text-center shadow"><i class="fas fa-mobile text-3xl text-red-500"></i><p class="text-xs mt-1">Tigo Pesa</p></div>
+  </div>
+
+  <!-- Exchange Rates Info -->
+  <div class="bg-blue-50 rounded-2xl p-5 text-center border border-blue-200">
+    <i class="fas fa-chart-line text-blue-600 text-2xl mb-2"></i>
+    <p class="text-sm text-gray-600">Competitive exchange rates from major currencies (USD, GBP, EUR, AED, CAD, AUD) to KES</p>
+    <p class="text-xs text-gray-400 mt-2">No hidden fees. Transparent rates updated daily.</p>
+  </div>
+
+</main>
+
+<!-- ==================== SIMPLE FOOTER ==================== -->
+<footer style="background:#080c18;padding:40px 24px;margin-top:48px;text-align:center;">
+  <p style="color:rgba(255,255,255,0.3);font-size:0.8rem;">© 2026 WhaPay. All rights reserved. | Nairobi, Kenya | Serving diaspora in 180+ countries</p>
+  <div style="margin-top:16px;">
+    <a href="tel:0140933042" style="color:rgba(255,255,255,0.4);margin:0 10px;text-decoration:none;">0140933042</a>
+    <a href="mailto:support@whapay.space" style="color:rgba(255,255,255,0.4);margin:0 10px;text-decoration:none;">support@whapay.space</a>
+    <a href="https://wa.me/0140933042" style="color:rgba(255,255,255,0.4);margin:0 10px;text-decoration:none;">WhatsApp</a>
+  </div>
+</footer>
+
+<!-- WhatsApp Float -->
+<a href="https://wa.me/0140933042?text=Hello%20WhaPay%20Diaspora" target="_blank" class="fixed bottom-5 right-5 bg-green-500 text-white p-3 rounded-full shadow-lg z-50"><i class="fab fa-whatsapp text-2xl"></i></a>
+
+<!-- ==================== JAVASCRIPT ==================== -->
+<script>
+  // Helper functions
+  function showToast(msg, isErr = false) {
+    let toast = document.getElementById('globalToast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'globalToast';
+      toast.className = 'fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-full text-sm z-50 transition-opacity opacity-0';
+      document.body.appendChild(toast);
+    }
+    toast.innerText = msg;
+    toast.style.backgroundColor = isErr ? '#dc2626' : '#16a34a';
+    toast.classList.remove('opacity-0');
+    toast.classList.add('opacity-100');
+    setTimeout(() => toast.classList.add('opacity-0'), 3000);
+  }
+
+  function validatePhone(phone) { 
+    const cleaned = phone.replace(/\D/g,''); 
+    return (cleaned.startsWith('0') && cleaned.length === 10) || (cleaned.startsWith('254') && cleaned.length === 12) || (cleaned.length >= 9 && cleaned.length <= 15); 
+  }
+
+  function normalizePhone(phone) { 
+    let cleaned = phone.replace(/\D/g,''); 
+    if (cleaned.startsWith('0') && cleaned.length === 10) cleaned = '254' + cleaned.substring(1); 
+    if (!cleaned.startsWith('254') && cleaned.length === 9) cleaned = '254' + cleaned;
+    return cleaned; 
+  }
+
+  // Tab switching for Send/Receive
+  const sendTab = document.getElementById('sendToMemberTab');
+  const receiveTab = document.getElementById('receiveFromMemberTab');
+  const sendPanel = document.getElementById('sendToMemberPanel');
+  const receivePanel = document.getElementById('receiveFromMemberPanel');
+
+  if (sendTab && receiveTab && sendPanel && receivePanel) {
+    sendTab.addEventListener('click', () => {
+      sendPanel.classList.remove('hidden');
+      receivePanel.classList.add('hidden');
+      sendTab.classList.add('tab-active');
+      sendTab.classList.remove('tab-inactive');
+      receiveTab.classList.add('tab-inactive');
+      receiveTab.classList.remove('tab-active');
+    });
+    receiveTab.addEventListener('click', () => {
+      sendPanel.classList.add('hidden');
+      receivePanel.classList.remove('hidden');
+      receiveTab.classList.add('tab-active');
+      receiveTab.classList.remove('tab-inactive');
+      sendTab.classList.add('tab-inactive');
+      sendTab.classList.remove('tab-active');
+    });
+  }
+
+  // PAY MERCHANT
+  const payMerchantBtn = document.getElementById('payMerchantBtn');
+  if (payMerchantBtn) {
+    payMerchantBtn.addEventListener('click', async () => {
+      const merchantCode = document.getElementById('merchantCode').value.trim();
+      const phone = document.getElementById('senderPhone').value.trim();
+      const amount = parseFloat(document.getElementById('amountToMerchant').value);
+      const name = document.getElementById('senderName').value.trim() || 'Guest';
+      const method = document.getElementById('merchantPaymentMethod').value;
+
+      if (!merchantCode) { showToast("Enter merchant code", true); return; }
+      if (!phone || !validatePhone(phone)) { showToast("Enter valid phone number", true); return; }
+      if (!amount || amount <= 0) { showToast("Enter valid amount", true); return; }
+
+      const normalizedPhone = normalizePhone(phone);
+      const messageDiv = document.getElementById('merchantMessage');
+      payMerchantBtn.disabled = true;
+      payMerchantBtn.innerHTML = '<span class="spinner"></span> Processing...';
+
+      try {
+        let response;
+        if (method === 'mpesa') {
+          response = await fetch('https://whapay-backend.onrender.com/api/mpesa/charge', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ merchantCode, customerPhone: normalizedPhone, customerName: name, amount })
+          });
+        } else if (method === 'airtel') {
+          response = await fetch('https://whapay-backend.onrender.com/api/mobile-money/charge', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ merchantCode, customerPhone: normalizedPhone, customerName: name, amount, network: 'AIRTEL', country: 'KE', currency: 'KES' })
+          });
+        } else if (method === 'tigo') {
+          response = await fetch('https://whapay-backend.onrender.com/api/mobile-money/charge', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ merchantCode, customerPhone: normalizedPhone, customerName: name, amount, network: 'TIGO', country: 'TZ', currency: 'TZS' })
+          });
+        } else if (method === 'mtn') {
+          response = await fetch('https://whapay-backend.onrender.com/api/mobile-money/charge', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ merchantCode, customerPhone: normalizedPhone, customerName: name, amount, network: 'MTN', country: 'UG', currency: 'UGX' })
+          });
+        } else {
+          showToast('Card/PayPal payments coming soon', false);
+          payMerchantBtn.disabled = false;
+          payMerchantBtn.innerHTML = '💸 Send Payment to Merchant';
+          return;
+        }
+
+        const data = await response.json();
+        if (data.success) {
+          messageDiv.innerHTML = '<div class="bg-green-50 p-2 rounded text-green-800">✅ Payment sent successfully! Confirmation sent via WhatsApp.</div>';
+          showToast('Payment successful');
+          document.getElementById('merchantCode').value = '';
+          document.getElementById('amountToMerchant').value = '';
+        } else {
+          throw new Error(data.error || 'Payment failed');
+        }
+      } catch (err) {
+        showToast(err.message, true);
+        messageDiv.innerHTML = `<div class="bg-red-50 p-2 rounded text-red-800">❌ ${err.message}</div>`;
+      } finally {
+        payMerchantBtn.disabled = false;
+        payMerchantBtn.innerHTML = '💸 Send Payment to Merchant';
+      }
+    });
+  }
+
+  // PAY MEMBER (Send to another diaspora member)
+  const payMemberBtn = document.getElementById('payMemberBtn');
+  if (payMemberBtn) {
+    payMemberBtn.addEventListener('click', async () => {
+      const recipientCode = document.getElementById('recipientCode').value.trim();
+      const phone = document.getElementById('senderPhone2').value.trim();
+      const amount = parseFloat(document.getElementById('amountToMember').value);
+      const name = document.getElementById('senderName2').value.trim() || 'Guest';
+      const method = document.getElementById('memberPaymentMethod').value;
+
+      if (!recipientCode) { showToast("Enter recipient's Member Code", true); return; }
+      if (!phone || !validatePhone(phone)) { showToast("Enter valid phone number", true); return; }
+      if (!amount || amount <= 0) { showToast("Enter valid amount", true); return; }
+
+      const normalizedPhone = normalizePhone(phone);
+      const messageDiv = document.getElementById('memberMessage');
+      payMemberBtn.disabled = true;
+      payMemberBtn.innerHTML = '<span class="spinner"></span> Processing...';
+
+      try {
+        let response;
+        if (method === 'mpesa') {
+          response = await fetch('https://whapay-backend.onrender.com/api/mpesa/charge', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ merchantCode: recipientCode, customerPhone: normalizedPhone, customerName: name, amount })
+          });
+        } else if (method === 'airtel') {
+          response = await fetch('https://whapay-backend.onrender.com/api/mobile-money/charge', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ merchantCode: recipientCode, customerPhone: normalizedPhone, customerName: name, amount, network: 'AIRTEL', country: 'KE', currency: 'KES' })
+          });
+        } else {
+          showToast('Card/PayPal payments coming soon', false);
+          payMemberBtn.disabled = false;
+          payMemberBtn.innerHTML = '💸 Send to Member';
+          return;
+        }
+
+        const data = await response.json();
+        if (data.success) {
+          messageDiv.innerHTML = '<div class="bg-green-50 p-2 rounded text-green-800">✅ Sent to member successfully!</div>';
+          showToast('Payment sent');
+          document.getElementById('recipientCode').value = '';
+          document.getElementById('amountToMember').value = '';
+        } else {
+          throw new Error(data.error || 'Payment failed');
+        }
+      } catch (err) {
+        showToast(err.message, true);
+        messageDiv.innerHTML = `<div class="bg-red-50 p-2 rounded text-red-800">❌ ${err.message}</div>`;
+      } finally {
+        payMemberBtn.disabled = false;
+        payMemberBtn.innerHTML = '💸 Send to Member';
+      }
+    });
+  }
+
+  // REGISTER NEW DIASPORA MEMBER
+  const registerBtn = document.getElementById('registerMemberBtn');
+  if (registerBtn) {
+    registerBtn.addEventListener('click', async () => {
+      const name = document.getElementById('regName').value.trim();
+      const phone = document.getElementById('regPhone').value.trim();
+      const email = document.getElementById('regEmail').value.trim();
+      const country = document.getElementById('regCountry').value;
+
+      if (!name) { showToast("Enter your full name", true); return; }
+      if (!phone || !validatePhone(phone)) { showToast("Enter valid phone number", true); return; }
+
+      const normalizedPhone = normalizePhone(phone);
+      const resultDiv = document.getElementById('registrationResult');
+      const memberCodeSpan = document.getElementById('newMemberCode');
+      const qrCanvas = document.getElementById('newQRCanvas');
+
+      registerBtn.disabled = true;
+      registerBtn.innerHTML = '<span class="spinner"></span> Registering...';
+
+      // Generate a simple member code (in production, this would come from backend)
+      const prefix = name.replace(/[^a-zA-Z]/g, '').substring(0, 3).toUpperCase() || 'DIA';
+      const random = Math.floor(10000 + Math.random() * 90000);
+      const memberCode = `${prefix}${random}`;
+
+      setTimeout(() => {
+        memberCodeSpan.innerText = memberCode;
+        QRCode.toCanvas(qrCanvas, `https://whapay.space/payment.html?merchant=${memberCode}`, { width: 150 }, (err) => { if (err) console.error(err); });
+        resultDiv.classList.remove('hidden');
+        showToast('Registration successful! Check WhatsApp for your code');
+        
+        // Open WhatsApp with the code
+        window.open(`https://wa.me/${normalizedPhone}?text=${encodeURIComponent(`🎉 Welcome to WhaPay Diaspora! Your Member Code: ${memberCode}\n\nShare this code with friends and family to receive money.\n\nSend to you: M-Pesa Paybill 0140933042 Account: ${memberCode}\n\nYour payment link: https://whapay.space/payment.html?merchant=${memberCode}`)}`, '_blank');
+        
+        registerBtn.disabled = false;
+        registerBtn.innerHTML = '🎉 Register & Get My Code';
+        document.getElementById('regName').value = '';
+        document.getElementById('regPhone').value = '';
+      }, 1000);
+    });
+  }
+</script>
+
+</body>
+</html>

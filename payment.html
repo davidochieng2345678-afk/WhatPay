@@ -537,6 +537,37 @@ function toggleMobileMenu() {
           <div><label class="block text-sm font-medium text-gray-700 mb-1">Your Phone Number (for M-Pesa) *</label><input type="tel" id="userNumber" placeholder="+254712345678" class="w-full border border-gray-300 rounded-xl px-4 py-2.5"><p class="text-xs text-gray-500 mt-1">Confirmation via WhatsApp <strong class="font-mono">0140933042</strong></p></div>
           <div><label class="block text-sm font-medium text-gray-700 mb-1">Amount (KES) *</label><input type="number" id="amount" placeholder="e.g., 500" class="w-full border border-gray-300 rounded-xl px-4 py-2.5"></div>
           <div><label class="block text-sm font-medium text-gray-700 mb-1">Payment Method</label><select id="method" class="w-full border border-gray-300 rounded-xl px-4 py-2.5 bg-white"><option value="mpesa">M-Pesa (STK Push)</option><option value="card">Credit / Debit Card (Stripe)</option></select></div>
+          <!-- Your Name (optional) -->
+<div>
+  <label class="block text-sm font-medium text-gray-700 mb-1">Your Name (optional)</label>
+  <input type="text" id="customerName" placeholder="e.g., John Kamau" class="w-full border border-gray-300 rounded-xl px-4 py-2.5">
+</div>
+
+<!-- Mobile Money Network Section (hidden until needed) -->
+<div id="mobileMoneySection" style="display:none;">
+  <label class="block text-sm font-medium text-gray-700 mb-1">Select Mobile Money Network *</label>
+  <select id="mobileNetwork" class="w-full border border-gray-300 rounded-xl px-4 py-2.5">
+    <option value="">-- Choose network --</option>
+  </select>
+  <p class="text-xs text-gray-500 mt-1">Choose your mobile money provider (Airtel, MTN, Tigo, etc.)</p>
+</div>
+
+<!-- Fee Display (hidden until amount entered) -->
+<div id="feeDisplay" class="hidden bg-yellow-50 rounded-lg p-3 border border-yellow-200">
+  <p class="text-sm font-semibold text-gray-700 mb-1">💰 Payment Breakdown</p>
+  <div class="flex justify-between text-sm">
+    <span>Merchant receives:</span>
+    <span id="merchantAmount" class="font-medium">KES 0</span>
+  </div>
+  <div class="flex justify-between text-sm">
+    <span>WhaPay fee:</span>
+    <span id="feeAmount" class="font-medium text-amber-600">KES 0</span>
+  </div>
+  <div class="flex justify-between text-sm font-bold border-t border-yellow-200 mt-1 pt-1">
+    <span>You pay:</span>
+    <span id="totalAmount" class="text-emerald-600">KES 0</span>
+  </div>
+</div>
           <button id="scanBtnQuick" class="w-full bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-medium py-2.5 rounded-xl flex items-center justify-center gap-2 transition"><i class="fas fa-qrcode"></i> Scan QR to Auto‑fill Amount</button>
           <div id="qr-reader-quick" class="hidden w-full h-56 bg-gray-100 rounded-xl overflow-hidden mt-2"></div>
           <button id="payBtn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl text-lg shadow-md transition transform active:scale-95">Pay Now</button>

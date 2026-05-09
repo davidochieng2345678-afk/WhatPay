@@ -1670,6 +1670,157 @@ async function processPayment() {
       } else {
         throw new Error(data.error || 'Payment failed');
       }
+
+  // Airtel Money
+else if (paymentMethod === 'airtel') {
+  response = await fetch('https://whapay-backend.onrender.com/api/mobile-money/charge', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      merchantCode: merchantCode,
+      customerPhone: phone,
+      customerName: customerName,
+      amount: amount,
+      network: 'AIRTEL',
+      country: 'KE',
+      currency: 'KES'
+    })
+  });
+  data = await response.json();
+  
+  if (data.success) {
+    document.getElementById('message').innerHTML = '<div class="bg-green-50 p-2 rounded text-green-800">✅ Airtel Money payment sent! Check your phone.</div>';
+    showToast('Check your phone for Airtel Money prompt');
+  } else {
+    throw new Error(data.error || 'Airtel payment failed');
+  }
+}
+
+// Tigo Pesa
+else if (paymentMethod === 'tigo') {
+  response = await fetch('https://whapay-backend.onrender.com/api/mobile-money/charge', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      merchantCode: merchantCode,
+      customerPhone: phone,
+      customerName: customerName,
+      amount: amount,
+      network: 'TIGO',
+      country: 'TZ',
+      currency: 'TZS'
+    })
+  });
+  data = await response.json();
+  
+  if (data.success) {
+    document.getElementById('message').innerHTML = '<div class="bg-green-50 p-2 rounded text-green-800">✅ Tigo Pesa payment sent! Check your phone.</div>';
+    showToast('Check your phone for Tigo Pesa prompt');
+  } else {
+    throw new Error(data.error || 'Tigo payment failed');
+  }
+}
+
+// MTN Mobile Money
+else if (paymentMethod === 'mtn') {
+  response = await fetch('https://whapay-backend.onrender.com/api/mobile-money/charge', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      merchantCode: merchantCode,
+      customerPhone: phone,
+      customerName: customerName,
+      amount: amount,
+      network: 'MTN',
+      country: 'UG',
+      currency: 'UGX'
+    })
+  });
+  data = await response.json();
+  
+  if (data.success) {
+    document.getElementById('message').innerHTML = '<div class="bg-green-50 p-2 rounded text-green-800">✅ MTN Mobile Money payment sent! Check your phone.</div>';
+    showToast('Check your phone for MTN prompt');
+  } else {
+    throw new Error(data.error || 'MTN payment failed');
+  }
+}
+
+// Vodafone Cash
+else if (paymentMethod === 'vodafone') {
+  response = await fetch('https://whapay-backend.onrender.com/api/mobile-money/charge', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      merchantCode: merchantCode,
+      customerPhone: phone,
+      customerName: customerName,
+      amount: amount,
+      network: 'VODAFONE',
+      country: 'TZ',
+      currency: 'TZS'
+    })
+  });
+  data = await response.json();
+  
+  if (data.success) {
+    document.getElementById('message').innerHTML = '<div class="bg-green-50 p-2 rounded text-green-800">✅ Vodafone Cash payment sent! Check your phone.</div>';
+    showToast('Check your phone for Vodafone prompt');
+  } else {
+    throw new Error(data.error || 'Vodafone payment failed');
+  }
+}
+
+// Orange Money
+else if (paymentMethod === 'orange') {
+  response = await fetch('https://whapay-backend.onrender.com/api/mobile-money/charge', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      merchantCode: merchantCode,
+      customerPhone: phone,
+      customerName: customerName,
+      amount: amount,
+      network: 'ORANGE',
+      country: 'CI',
+      currency: 'XOF'
+    })
+  });
+  data = await response.json();
+  
+  if (data.success) {
+    document.getElementById('message').innerHTML = '<div class="bg-green-50 p-2 rounded text-green-800">✅ Orange Money payment sent! Check your phone.</div>';
+    showToast('Check your phone for Orange Money prompt');
+  } else {
+    throw new Error(data.error || 'Orange payment failed');
+  }
+}
+
+// HaloPesa
+else if (paymentMethod === 'halopesa') {
+  response = await fetch('https://whapay-backend.onrender.com/api/mobile-money/charge', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      merchantCode: merchantCode,
+      customerPhone: phone,
+      customerName: customerName,
+      amount: amount,
+      network: 'HALOPESA',
+      country: 'TZ',
+      currency: 'TZS'
+    })
+  });
+  data = await response.json();
+  
+  if (data.success) {
+    document.getElementById('message').innerHTML = '<div class="bg-green-50 p-2 rounded text-green-800">✅ HaloPesa payment sent! Check your phone.</div>';
+    showToast('Check your phone for HaloPesa prompt');
+  } else {
+    throw new Error(data.error || 'HaloPesa payment failed');
+  }
+}
+
       
     } else if (paymentMethod === 'card') {
       // Card payment - redirect to card form or show coming soon

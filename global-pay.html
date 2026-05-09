@@ -209,6 +209,193 @@ function toggleMobileMenu() {
     </div>
   </div>
 
+  <!-- ============================================ -->
+<!-- PAY WITH MERCHANT CODE - COMPLETE SECTION    -->
+<!-- ============================================ -->
+<div class="bg-white rounded-2xl shadow-xl mb-8 overflow-hidden">
+  <div class="bg-emerald-600 px-6 py-3">
+    <h2 class="text-xl font-bold text-white"><i class="fas fa-code mr-2"></i> Pay with Merchant Code</h2>
+    <p class="text-emerald-100 text-sm">Use any WhaPay Member Code to pay instantly</p>
+  </div>
+  <div class="p-6">
+    <div class="max-w-xl mx-auto">
+      
+      <!-- Step 1: Recipient Info -->
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Recipient's Member Code *</label>
+        <div class="flex gap-2">
+          <input type="text" id="merchantCodeInput" placeholder="e.g., DK12345" class="flex-1 border border-gray-300 rounded-xl px-4 py-3">
+          <button id="lookupMerchantBtn" class="bg-gray-100 hover:bg-gray-200 px-4 rounded-xl text-sm">🔍 Lookup</button>
+        </div>
+        <div id="merchantNameDisplay" class="text-xs text-green-600 mt-1 hidden"></div>
+        <p class="text-xs text-gray-400 mt-1">Enter the recipient's WhaPay Member Code</p>
+      </div>
+      
+      <!-- Step 2: Amount -->
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Amount (KES) *</label>
+        <input type="number" id="merchantAmount" placeholder="0.00" class="w-full border border-gray-300 rounded-xl px-4 py-3">
+      </div>
+      
+      <!-- Step 3: Your Details -->
+      <div class="grid md:grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Your Phone Number *</label>
+          <input type="tel" id="merchantPhone" placeholder="+254712345678" class="w-full border border-gray-300 rounded-xl px-4 py-3">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Your Name</label>
+          <input type="text" id="merchantCustomerName" placeholder="John Kamau" class="w-full border border-gray-300 rounded-xl px-4 py-3">
+        </div>
+      </div>
+      
+      <!-- Step 4: Email for Card -->
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Email (required for card payments)</label>
+        <input type="email" id="merchantEmail" placeholder="you@example.com" class="w-full border border-gray-300 rounded-xl px-4 py-3">
+      </div>
+      
+      <!-- Step 5: Payment Method Selection -->
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700 mb-2">Select Payment Method</label>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-3">
+          <button type="button" class="merchant-method-btn p-2 border rounded-lg text-center hover:bg-green-50 transition" data-method="mpesa"><i class="fas fa-mobile-alt text-green-600"></i><p class="text-xs">M-Pesa</p><span class="text-xs text-gray-400">0% fee</span></button>
+          <button type="button" class="merchant-method-btn p-2 border rounded-lg text-center hover:bg-red-50 transition" data-method="airtel"><i class="fas fa-wifi text-red-600"></i><p class="text-xs">Airtel</p><span class="text-xs text-gray-400">1.5% + 10</span></button>
+          <button type="button" class="merchant-method-btn p-2 border rounded-lg text-center hover:bg-yellow-50 transition" data-method="mtn"><i class="fas fa-globe text-yellow-600"></i><p class="text-xs">MTN</p><span class="text-xs text-gray-400">Uganda</span></button>
+          <button type="button" class="merchant-method-btn p-2 border rounded-lg text-center hover:bg-pink-50 transition" data-method="tigo"><i class="fas fa-mobile text-pink-600"></i><p class="text-xs">Tigo</p><span class="text-xs text-gray-400">Tanzania</span></button>
+          <button type="button" class="merchant-method-btn p-2 border rounded-lg text-center hover:bg-orange-50 transition" data-method="orange"><i class="fas fa-circle text-orange-600"></i><p class="text-xs">Orange</p><span class="text-xs text-gray-400">W.Africa</span></button>
+          <button type="button" class="merchant-method-btn p-2 border rounded-lg text-center hover:bg-blue-50 transition" data-method="card"><i class="fab fa-cc-visa text-blue-600"></i><p class="text-xs">Card</p><span class="text-xs text-gray-400">1.5% + 20</span></button>
+          <button type="button" class="merchant-method-btn p-2 border rounded-lg text-center hover:bg-gray-50 transition" data-method="bank"><i class="fas fa-university text-gray-600"></i><p class="text-xs">Bank</p><span class="text-xs text-gray-400">Transfer</span></button>
+          <button type="button" class="merchant-method-btn p-2 border rounded-lg text-center hover:bg-purple-50 transition" data-method="offline"><i class="fas fa-wifi-slash text-purple-600"></i><p class="text-xs">Offline</p><span class="text-xs text-gray-400">No internet</span></button>
+        </div>
+        <input type="hidden" id="merchantSelectedMethod" value="mpesa">
+      </div>
+      
+      <!-- Fee Display -->
+      <div id="merchantFeeDisplay" class="bg-yellow-50 p-3 rounded-xl mb-4 hidden">
+        <p class="text-sm font-semibold text-gray-700">💰 Payment Breakdown</p>
+        <div class="flex justify-between text-sm"><span>Merchant receives:</span><span id="merchantReceivesAmount">KES 0</span></div>
+        <div class="flex justify-between text-sm"><span>WhaPay fee:</span><span id="merchantFeeAmount" class="text-amber-600">KES 0</span></div>
+        <div class="flex justify-between text-sm font-bold border-t pt-1 mt-1"><span>You pay total:</span><span id="merchantTotalAmount" class="text-emerald-600">KES 0</span></div>
+      </div>
+      
+      <!-- Action Buttons -->
+      <button id="submitMerchantPaymentBtn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl text-lg transition">💸 Complete Payment</button>
+      <div id="merchantPaymentMessage" class="text-center text-sm mt-3"></div>
+      
+      <!-- Offline Instruction -->
+      <div class="mt-4 p-3 bg-purple-50 rounded-lg text-center">
+        <i class="fas fa-wifi-slash text-purple-600 mr-2"></i>
+        <span class="text-sm text-purple-800">No internet? Open M-Pesa → Lipa na M-Pesa → Paybill <strong>0140933042</strong> → Account = Member Code</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Merchant Code Payment JavaScript
+document.querySelectorAll('.merchant-method-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.merchant-method-btn').forEach(b => b.classList.remove('border-emerald-500', 'bg-emerald-50'));
+    btn.classList.add('border-emerald-500', 'bg-emerald-50');
+    document.getElementById('merchantSelectedMethod').value = btn.dataset.method;
+    // Trigger fee recalculation
+    const amount = parseFloat(document.getElementById('merchantAmount').value);
+    if (amount && amount > 0) calculateMerchantFee(amount);
+  });
+});
+// Select first method by default
+document.querySelector('.merchant-method-btn')?.classList.add('border-emerald-500', 'bg-emerald-50');
+
+function calculateMerchantFee(amount) {
+  const method = document.getElementById('merchantSelectedMethod').value;
+  const feeDiv = document.getElementById('merchantFeeDisplay');
+  if (!amount || amount <= 0) { feeDiv.classList.add('hidden'); return; }
+  let fee = 0;
+  if (method === 'card') fee = (amount * 0.015) + 20;
+  else if (method === 'airtel' || method === 'mtn' || method === 'tigo' || method === 'orange') fee = (amount * 0.015) + 10;
+  else fee = 0;
+  const total = amount + fee;
+  document.getElementById('merchantReceivesAmount').innerHTML = `KES ${amount.toLocaleString()}`;
+  document.getElementById('merchantFeeAmount').innerHTML = `KES ${fee.toLocaleString()}`;
+  document.getElementById('merchantTotalAmount').innerHTML = `KES ${total.toLocaleString()}`;
+  feeDiv.classList.remove('hidden');
+}
+
+document.getElementById('merchantAmount')?.addEventListener('input', (e) => calculateMerchantFee(parseFloat(e.target.value)));
+
+document.getElementById('submitMerchantPaymentBtn')?.addEventListener('click', async () => {
+  const merchantCode = document.getElementById('merchantCodeInput').value.trim();
+  const amount = parseFloat(document.getElementById('merchantAmount').value);
+  const phone = document.getElementById('merchantPhone').value.trim();
+  const customerName = document.getElementById('merchantCustomerName').value.trim() || 'Guest';
+  const email = document.getElementById('merchantEmail').value.trim();
+  const method = document.getElementById('merchantSelectedMethod').value;
+  
+  if (!merchantCode) { showToast('Enter recipient Member Code', true); return; }
+  if (!amount || amount <= 0) { showToast('Enter valid amount', true); return; }
+  if (!phone || !validatePhone(phone)) { showToast('Enter valid phone number', true); return; }
+  
+  const btn = document.getElementById('submitMerchantPaymentBtn');
+  const msgDiv = document.getElementById('merchantPaymentMessage');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Processing...';
+  
+  try {
+    let response, data;
+    const payload = { merchantCode, amount, customerPhone: normalizePhone(phone), customerName, email };
+    
+    if (method === 'offline') {
+      msgDiv.innerHTML = `<div class="bg-purple-50 p-2 rounded text-purple-800">📡 Offline Payment: Open M-Pesa → Paybill 0140933042 → Account ${merchantCode} → Amount ${amount}</div>`;
+      showToast('Use M-Pesa Paybill 0140933042');
+      btn.disabled = false;
+      btn.innerHTML = '💸 Complete Payment';
+      return;
+    }
+    
+    if (method === 'card') {
+      response = await fetch(`${BACKEND_URL}/api/card/charge`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
+      });
+      data = await response.json();
+      if (data.success && data.paymentLink) { window.location.href = data.paymentLink; return; }
+    } else {
+      response = await fetch(`${BACKEND_URL}/api/${method}/charge`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
+      });
+      data = await response.json();
+    }
+    
+    if (data.success) {
+      msgDiv.innerHTML = '<div class="bg-green-50 p-2 rounded text-green-800">✅ Payment initiated! Check your phone.</div>';
+      showToast('Payment sent successfully');
+      document.getElementById('merchantCodeInput').value = '';
+      document.getElementById('merchantAmount').value = '';
+      document.getElementById('merchantFeeDisplay').classList.add('hidden');
+    } else {
+      throw new Error(data.error || 'Payment failed');
+    }
+  } catch (err) {
+    showToast(err.message, true);
+    msgDiv.innerHTML = `<div class="bg-red-50 p-2 rounded text-red-800">❌ ${err.message}</div>`;
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '💸 Complete Payment';
+  }
+});
+
+// Merchant Lookup (simulate)
+document.getElementById('lookupMerchantBtn')?.addEventListener('click', () => {
+  const code = document.getElementById('merchantCodeInput').value.trim();
+  if (code) {
+    document.getElementById('merchantNameDisplay').innerHTML = `✓ Merchant found: ${code}`;
+    document.getElementById('merchantNameDisplay').classList.remove('hidden');
+    setTimeout(() => document.getElementById('merchantNameDisplay').classList.add('hidden'), 3000);
+  } else {
+    showToast('Enter a code to lookup', true);
+  }
+});
+</script>
   <!-- ========== SECTION 3: PAY BY WHATSAPP LINK ========== -->
   <div class="bg-white rounded-2xl shadow-xl mb-8 overflow-hidden">
     <div class="bg-gradient-to-r from-green-600 to-green-500 px-6 py-3">

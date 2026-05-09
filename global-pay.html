@@ -505,6 +505,57 @@ function toggleMobileMenu() {
     showToast('WhatsApp link generated!');
   });
 </script>
+
+  <!-- OFFLINE MEMBER CODE PAYMENT SECTION -->
+<div class="bg-white rounded-2xl shadow-xl mb-8 overflow-hidden">
+  <div class="bg-indigo-600 px-6 py-3">
+    <h2 class="text-xl font-bold text-white"><i class="fas fa-wifi-slash mr-2"></i> Offline Payment – No Internet Needed</h2>
+    <p class="text-indigo-100 text-sm">Use Member Code directly in M-Pesa – works without data</p>
+  </div>
+  <div class="p-6">
+    <div class="max-w-xl mx-auto">
+      <div class="grid md:grid-cols-2 gap-6">
+        <div class="bg-gray-50 p-4 rounded-xl">
+          <p class="font-bold text-gray-800 mb-3">📱 Steps to Pay Offline:</p>
+          <ol class="space-y-3 text-sm">
+            <li class="flex gap-2">1️⃣ <span>Open M-Pesa on your phone</span></li>
+            <li class="flex gap-2">2️⃣ <span>Select <strong>"Lipa na M-Pesa"</strong></span></li>
+            <li class="flex gap-2">3️⃣ <span>Select <strong>"Paybill"</strong></span></li>
+            <li class="flex gap-2">4️⃣ <span>Enter Business Number: <strong class="font-mono text-indigo-600">0140933042</strong></span></li>
+            <li class="flex gap-2">5️⃣ <span>Enter Account Number: <strong class="font-mono text-indigo-600">[Merchant's Member Code]</strong></span></li>
+            <li class="flex gap-2">6️⃣ <span>Enter Amount and PIN</span></li>
+            <li class="flex gap-2">7️⃣ <span>Confirm – both receive SMS receipt</span></li>
+          </ol>
+        </div>
+        <div class="bg-indigo-50 p-4 rounded-xl">
+          <p class="font-bold text-gray-800 mb-3">🔑 Example:</p>
+          <div class="bg-white p-3 rounded-lg">
+            <p class="text-sm">📌 Paybill: <strong class="font-mono">0140933042</strong></p>
+            <p class="text-sm mt-2">📌 Account: <strong class="font-mono">DK12345</strong></p>
+            <p class="text-sm mt-2">💰 Amount: <strong>KES 500</strong></p>
+          </div>
+          <div class="mt-4 p-2 bg-yellow-100 rounded-lg">
+            <p class="text-xs text-yellow-800"><i class="fas fa-info-circle mr-1"></i> No internet needed – works on any phone, even basic phones!</p>
+          </div>
+        </div>
+      </div>
+      <div class="mt-4 text-center">
+        <button id="copyPaybillBtn" class="bg-indigo-100 hover:bg-indigo-200 text-indigo-700 px-4 py-2 rounded-lg text-sm">📋 Copy Paybill Number</button>
+        <span id="paybillCopiedMsg" class="text-xs text-green-600 ml-2 hidden">Copied!</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById('copyPaybillBtn')?.addEventListener('click', () => {
+    navigator.clipboard.writeText('0140933042');
+    const msg = document.getElementById('paybillCopiedMsg');
+    msg.classList.remove('hidden');
+    setTimeout(() => msg.classList.add('hidden'), 2000);
+    showToast('Paybill number copied!');
+  });
+</script>
 </main>
 
 <!-- ==================== FOOTER ==================== -->

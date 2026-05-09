@@ -64,12 +64,114 @@
       <span style="color:white;font-size:1.2rem;font-weight:900;">WhaPay</span>
     </a>
     <nav style="display:flex;align-items:center;gap:4px;" class="hidden md:flex">
-      <a href="index.html" class="gd-nav-link" style="padding:0 12px;">Home</a>
-      <a href="payment.html" class="gd-nav-link" style="padding:0 12px;">Payments</a>
-      <a href="merchant.html" class="gd-nav-link" style="padding:0 12px;">Merchants</a>
-      <a href="diaspora.html" class="gd-nav-link active" style="padding:0 12px;">Diaspora</a>
-      <a href="pricing.html" class="gd-nav-link" style="padding:0 12px;">Pricing</a>
-    </nav>
+
+  <!-- Payments dropdown -->
+  <div class="gd-dropdown" style="padding:0 12px;">
+    <div class="gd-dropdown-trigger">
+      <span class="gd-nav-link">Payments</span>
+      <i class="fas fa-chevron-down arrow"></i>
+    </div>
+    <div class="gd-dropdown-menu">
+      <a href="payment.html" class="gd-dropdown-item">
+        <div class="icon" style="background:rgba(22,163,74,0.15);"><i class="fas fa-credit-card" style="color:#22c55e;font-size:0.85rem;"></i></div>
+        <div><div class="label">How to Pay</div><div class="desc">WhatsApp, QR, Member Code</div></div>
+      </a>
+      <a href="pay-anyone.html" class="gd-dropdown-item">
+        <div class="icon" style="background:rgba(59,130,246,0.15);"><i class="fas fa-paper-plane" style="color:#60a5fa;font-size:0.85rem;"></i></div>
+        <div><div class="label">Pay Anyone</div><div class="desc">Member Code, Phone, Paybill</div></div>
+      </a>
+      <a href="first-time-pay.html" class="gd-dropdown-item">
+        <div class="icon" style="background:rgba(168,85,247,0.15);"><i class="fas fa-bolt" style="color:#c084fc;font-size:0.85rem;"></i></div>
+        <div><div class="label">Register & Pay</div><div class="desc">One-step payment & signup</div></div>
+      </a>
+      <div style="border-top:1px solid rgba(255,255,255,0.06);margin:6px 0;"></div>
+      <a href="index.html#offline-features" class="gd-dropdown-item">
+        <div class="icon" style="background:rgba(251,191,36,0.12);"><i class="fas fa-wifi-slash" style="color:#fbbf24;font-size:0.85rem;"></i></div>
+        <div><div class="label">Offline Payments</div><div class="desc">No internet needed</div></div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Merchants dropdown -->
+  <div class="gd-dropdown" style="padding:0 12px;">
+    <div class="gd-dropdown-trigger">
+      <span class="gd-nav-link">Merchants</span>
+      <i class="fas fa-chevron-down arrow"></i>
+    </div>
+    <div class="gd-dropdown-menu">
+      <a href="merchant.html" class="gd-dropdown-item">
+        <div class="icon" style="background:rgba(22,163,74,0.15);"><i class="fas fa-store" style="color:#22c55e;font-size:0.85rem;"></i></div>
+        <div><div class="label">Merchant Dashboard</div><div class="desc">QR, links, transactions</div></div>
+      </a>
+      <a href="registration.html" class="gd-dropdown-item">
+        <div class="icon" style="background:rgba(59,130,246,0.15);"><i class="fas fa-user-plus" style="color:#60a5fa;font-size:0.85rem;"></i></div>
+        <div><div class="label">Register Business</div><div class="desc">Free — online or offline</div></div>
+      </a>
+      <a href="reports.html" class="gd-dropdown-item">
+        <div class="icon" style="background:rgba(168,85,247,0.15);"><i class="fas fa-chart-line" style="color:#c084fc;font-size:0.85rem;"></i></div>
+        <div><div class="label">Analytics & Reports</div><div class="desc">Revenue, trends, CSV export</div></div>
+      </a>
+      <a href="pricing.html" class="gd-dropdown-item">
+        <div class="icon" style="background:rgba(251,191,36,0.12);"><i class="fas fa-tag" style="color:#fbbf24;font-size:0.85rem;"></i></div>
+        <div><div class="label">Pricing</div><div class="desc">1.5% + KES 20, KES 0/month</div></div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Features dropdown -->
+  <div class="gd-dropdown" style="padding:0 12px;">
+    <div class="gd-dropdown-trigger">
+      <span class="gd-nav-link">Features</span>
+      <i class="fas fa-chevron-down arrow"></i>
+    </div>
+    <div class="gd-dropdown-menu">
+      <a href="features.html" class="gd-dropdown-item">
+        <div class="icon" style="background:rgba(22,163,74,0.15);"><i class="fas fa-bolt" style="color:#22c55e;font-size:0.85rem;"></i></div>
+        <div><div class="label">All Features</div><div class="desc">Complete platform overview</div></div>
+      </a>
+      <a href="process.html" class="gd-dropdown-item">
+        <div class="icon" style="background:rgba(59,130,246,0.15);"><i class="fas fa-route" style="color:#60a5fa;font-size:0.85rem;"></i></div>
+        <div><div class="label">How It Works</div><div class="desc">3 simple steps</div></div>
+      </a>
+      <a href="index.html#currencies" class="gd-dropdown-item">
+        <div class="icon" style="background:rgba(168,85,247,0.15);"><i class="fas fa-globe" style="color:#c084fc;font-size:0.85rem;"></i></div>
+        <div><div class="label">Global Currencies</div><div class="desc">135+ currencies, 180+ countries</div></div>
+      </a>
+      <a href="index.html#diaspora" class="gd-dropdown-item">
+        <div class="icon" style="background:rgba(251,191,36,0.12);"><i class="fas fa-plane" style="color:#fbbf24;font-size:0.85rem;"></i></div>
+        <div><div class="label">Diaspora Payments</div><div class="desc">UK, USA, UAE → Kenya</div></div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Company dropdown -->
+  <div class="gd-dropdown" style="padding:0 12px;">
+    <div class="gd-dropdown-trigger">
+      <span class="gd-nav-link">Company</span>
+      <i class="fas fa-chevron-down arrow"></i>
+    </div>
+    <div class="gd-dropdown-menu">
+      <a href="about.html" class="gd-dropdown-item">
+        <div class="icon" style="background:rgba(22,163,74,0.15);"><i class="fas fa-heart" style="color:#22c55e;font-size:0.85rem;"></i></div>
+        <div><div class="label">About WhaPay</div><div class="desc">Our story and mission</div></div>
+      </a>
+      <a href="blog.html" class="gd-dropdown-item">
+        <div class="icon" style="background:rgba(59,130,246,0.15);"><i class="fas fa-pen-nib" style="color:#60a5fa;font-size:0.85rem;"></i></div>
+        <div><div class="label">Blog & Insights</div><div class="desc">Payments, fintech, Africa</div></div>
+      </a>
+      <a href="contact.html" class="gd-dropdown-item">
+        <div class="icon" style="background:rgba(168,85,247,0.15);"><i class="fas fa-headset" style="color:#c084fc;font-size:0.85rem;"></i></div>
+        <div><div class="label">Contact & Support</div><div class="desc">24/7 WhatsApp support</div></div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Direct links -->
+  <a href="pricing.html" class="gd-nav-link" style="padding:0 12px;">Pricing</a>
+  <a href="blog.html" class="gd-nav-link" style="padding:0 12px;">Blog</a>
+
+</nav>
+
     <div style="display:flex;align-items:center;gap:10px;">
       <a href="https://wa.me/0140933042?text=REGISTER" style="background:#16a34a;color:white;font-weight:700;font-size:0.85rem;padding:10px 20px;border-radius:6px;text-decoration:none;display:flex;align-items:center;gap:6px;"><i class="fab fa-whatsapp"></i> Register Free</a>
       <button id="mobileMenuBtn" onclick="toggleMobileMenu()" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:white;width:40px;height:40px;border-radius:6px;cursor:pointer;display:none;" class="md:hidden"><i class="fas fa-bars"></i></button>

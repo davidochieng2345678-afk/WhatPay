@@ -1291,10 +1291,109 @@ function toggleMobileMenu() {
 
   async function generateUniqueMemberCode(name) { const prefix = name.replace(/[^a-zA-Z0-9]/g, '').substring(0, 3).toUpperCase() || 'NEW'; let code, exists = true; while (exists) { const random = Math.floor(10000 + Math.random() * 90000); code = `${prefix}${random}`; const q = query(collection(db, "users"), where("memberCode", "==", code)); const snap = await getDocs(q); if (snap.empty) exists = false; } return code; }
 
-  // Quick Pay
+    // Quick Pay - Supports M-Pesa + Other Mobile Money (Airtel, MTN, Tigo, etc.)
 const payBtn = document.getElementById('payBtn');
-if(payBtn) payBtn.addEventListener('click', async () => { const merchantCode = document.getElementById('merchantCode').value.trim(); const rawPhone = document.getElementById('userNumber').value.trim(); const amount = parseFloat(document.getElementById('amount').value); const method = document.getElementById('method').value; if (!merchantCode) return showToast("Enter merchant code", true); if (!rawPhone || !validatePhone(rawPhone)) return showToast("Enter valid Kenyan phone", true); if (!amount || amount <= 0) return showToast("Enter valid amount", true); const phone = normalizePhone(rawPhone); payBtn.disabled = true; payBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...'; try { if (navigator.onLine) { const response = await fetch('https://whapay-backend.onrender.com/api/pay-offline', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ merchantCode, customerPhone: phone, customerName: 'Guest', amount, paymentMethod: method === 'mpesa' ? 'mpesa' : 'card', description: 'Quick payment' }) }); const data = await response.json(); if (data.success) { document.getElementById('message').innerHTML = '<div class="bg-green-50 p-2 rounded text-green-800">✅ Payment successful! Confirmation sent via WhatsApp.</div>'; window.open(`https://wa.me/${phone}?text=${encodeURIComponent(`✅ Payment of KES ${amount} to merchant ${merchantCode} completed via WhaPay.`)}`, '_blank'); } else { throw new Error(data.error); } } else { await savePendingPayment({ type:'quickpay', merchantCode, phone, amount, method, customerName:null }); document.getElementById('message').innerHTML = '<div class="bg-yellow-50 p-2 rounded text-yellow-800">📡 Offline mode. Payment saved.</div>'; showToast("Saved offline", false); } } catch(err) { showToast(err.message, true); } finally { payBtn.disabled = false; payBtn.innerHTML = 'Pay Now'; } });
-
+if(payBtn) payBtn.addEventListener('click', async () => { 
+  const merchantCode = document.getElementById('merchantCode').value.trim(); 
+  const rawPhone = document.getElementById('userNumber').value.trim(); 
+  const amount = parseFloat(document.getElementById('amount').value); 
+  const paymentMethod = document.getElementById('method').value;
+  const selectedNetwork = document.getElementById('mobileNetwork')?.value;
+  const customerName = document.getElementById('customerName')?.value.trim() || 'Guest';
+  
+  if (!merchantCode) return showToast("Enter merchant code", true); 
+  if (!rawPhone || !validatePhone(rawPhone)) return showToast("Enter valid Kenyan phone", true); 
+  if (!amount || amount <= 0) return showToast("Enter valid amount", true); 
+  if (!paymentMethod) return showToast("Select payment method", true);
+  
+  const phone = normalizePhone(rawPhone); 
+  payBtn.disabled = true; 
+  payBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...'; 
+  document.getElementById('message').innerHTML = '';
+  
+  try { 
+    if (navigator.onLine) {
+      let response;
+      let data;
+      
+      if (paymentMethod === 'mpesa') {
+        // M-Pesa payment (no fee)
+        response = await fetch('https://whapay-backend.onrender.com/api/mpesa/charge', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            merchantCode: merchantCode,
+            customerPhone: phone,
+            customerName: customerName,
+            amount: amount
+          })
+        });
+        data = await response.json();
+        
+        if (data.success) {
+          document.getElementById('message').innerHTML = '<div class="bg-green-50 p-2 rounded text-green-800">✅ STK Push sent! Check your phone for M-Pesa prompt.</div>';
+          showToast('Check your phone for M-Pesa prompt');
+        } else {
+          throw new Error(data.error || 'Payment failed');
+        }
+        
+      } else if (paymentMethod === 'mobile_money') {
+        // Other mobile money (Airtel, MTN, Tigo, Orange, etc.) with fee
+        if (!selectedNetwork) {
+          throw new Error('Select your mobile money network');
+        }
+        
+        // Detect country from phone number
+        const countryInfo = detectCustomerCountry(phone);
+        
+        response = await fetch('https://whapay-backend.onrender.com/api/mobile-money/charge', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            merchantCode: merchantCode,
+            customerPhone: phone,
+            customerName: customerName,
+            amount: amount,
+            network: selectedNetwork,
+            country: countryInfo.country,
+            currency: countryInfo.currency
+          })
+        });
+        data = await response.json();
+        
+        if (data.success) {
+          document.getElementById('message').innerHTML = `<div class="bg-green-50 p-2 rounded text-green-800">✅ ${data.message || 'Payment request sent! Check your phone.'}</div>`;
+          showToast(`Check your phone for ${selectedNetwork} prompt`);
+        } else {
+          throw new Error(data.error || 'Payment failed');
+        }
+        
+      } else if (paymentMethod === 'card') {
+        showToast('Card payments coming soon. Use M-Pesa or Mobile Money for now.', false);
+        payBtn.disabled = false;
+        payBtn.innerHTML = 'Pay Now';
+        return;
+      }
+      
+      // Clear form on success
+      document.getElementById('merchantCode').value = '';
+      document.getElementById('amount').value = '';
+      document.getElementById('customerName').value = '';
+      
+    } else { 
+      await savePendingPayment({ type:'quickpay', merchantCode, phone: phone, amount, method: paymentMethod, customerName: null }); 
+      document.getElementById('message').innerHTML = '<div class="bg-yellow-50 p-2 rounded text-yellow-800">📡 Offline mode. Payment saved.</div>'; 
+      showToast("Saved offline", false); 
+    } 
+  } catch(err) { 
+    showToast(err.message, true);
+    document.getElementById('message').innerHTML = `<div class="bg-red-50 p-2 rounded text-red-800">❌ ${err.message}</div>`;
+  } finally { 
+    payBtn.disabled = false; 
+    payBtn.innerHTML = 'Pay Now'; 
+  } 
+});
+  
 
   // Register & Pay
 const regForm = document.getElementById('oneStepForm'); const regCheck = document.getElementById('osRegister'); const guestNoteSpan = document.getElementById('osGuestNote'); if(regCheck) regCheck.addEventListener('change', () => { if(guestNoteSpan) guestNoteSpan.classList.toggle('hidden', regCheck.checked); });

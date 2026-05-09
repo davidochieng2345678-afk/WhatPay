@@ -303,6 +303,159 @@ function toggleMobileMenu() {
     </div>
   </div>
 
+  <!-- QR CODE PAYMENT SECTION -->
+<div class="bg-white rounded-2xl shadow-xl mb-8 overflow-hidden">
+  <div class="bg-purple-600 px-6 py-3">
+    <h2 class="text-xl font-bold text-white"><i class="fas fa-qrcode mr-2"></i> Pay by Scanning QR Code</h2>
+    <p class="text-purple-100 text-sm">Scan any WhaPay merchant QR code to pay instantly</p>
+  </div>
+  <div class="p-6">
+    <div class="max-w-xl mx-auto">
+      <div class="grid md:grid-cols-2 gap-6">
+        <!-- QR Scanner -->
+        <div class="border-2 border-dashed border-gray-300 rounded-xl p-4 text-center">
+          <div id="qr-reader" style="width:100%; height:250px;"></div>
+          <button id="startScannerBtn" class="mt-3 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm w-full">📷 Start Camera to Scan QR</button>
+          <p class="text-xs text-gray-400 mt-2">Position QR code in frame to auto-fill amount</p>
+        </div>
+        
+        <!-- Manual Entry -->
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Merchant Member Code</label>
+            <input type="text" id="qrMerchantCode" placeholder="e.g., DK12345" class="w-full border border-gray-300 rounded-xl px-4 py-3">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Amount (KES)</label>
+            <input type="number" id="qrAmount" placeholder="e.g., 500" class="w-full border border-gray-300 rounded-xl px-4 py-3">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Your Phone Number</label>
+            <input type="tel" id="qrPhone" placeholder="+254712345678" class="w-full border border-gray-300 rounded-xl px-4 py-3">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Payment Method</label>
+            <select id="qrMethod" class="w-full border border-gray-300 rounded-xl px-4 py-3">
+              <option value="mpesa">📱 M-Pesa (0% fee)</option>
+              <option value="card">💳 Credit / Debit Card</option>
+            </select>
+          </div>
+          <button id="qrPayBtn" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 rounded-xl text-lg transition">📷 Pay Now</button>
+          <div id="qrMessage" class="text-center text-sm mt-2"></div>
+        </div>
+      </div>
+      <div class="text-xs text-gray-400 text-center mt-4"><i class="fas fa-info-circle"></i> Printed QR codes available at merchant shops – scan to pay instantly</div>
+    </div>
+  </div>
+</div>
+
+<!-- QR Scanner Script -->
+<script src="https://unpkg.com/html5-qrcode@2.3.8/minified/html5-qrcode.min.js"></script>
+<script>
+  let qrScanner = null;
+  const startBtn = document.getElementById('startScannerBtn');
+  const readerDiv = document.getElementById('qr-reader');
+  
+  if (startBtn) {
+    startBtn.addEventListener('click', async () => {
+      if (qrScanner) {
+        await qrScanner.stop();
+        qrScanner = null;
+        startBtn.textContent = '📷 Start Camera to Scan QR';
+        startBtn.classList.remove('bg-red-600');
+        startBtn.classList.add('bg-purple-600');
+        return;
+      }
+      
+      try {
+        qrScanner = new Html5Qrcode("qr-reader");
+        await qrScanner.start(
+          { facingMode: "environment" },
+          { fps: 10, qrbox: 250 },
+          (decodedText) => {
+            // Extract merchant code and amount from QR
+            const match = decodedText.match(/([A-Z0-9]{5,10})[,|:]([\d]+)/i);
+            if (match) {
+              document.getElementById('qrMerchantCode').value = match[1];
+              document.getElementById('qrAmount').value = match[2];
+              showToast('QR scanned! Amount and merchant code filled');
+            } else if (decodedText.match(/[A-Z0-9]{5,10}/i)) {
+              document.getElementById('qrMerchantCode').value = decodedText;
+              showToast('Merchant code scanned! Enter amount manually');
+            } else {
+              showToast('Invalid QR code', true);
+            }
+            qrScanner.stop();
+            qrScanner = null;
+            startBtn.textContent = '📷 Start Camera to Scan QR';
+            startBtn.classList.remove('bg-red-600');
+            startBtn.classList.add('bg-purple-600');
+          },
+          (err) => { console.log(err); }
+        );
+        startBtn.textContent = '🛑 Stop Scanner';
+        startBtn.classList.remove('bg-purple-600');
+        startBtn.classList.add('bg-red-600');
+      } catch (err) {
+        showToast('Camera error: ' + err.message, true);
+      }
+    });
+  }
+  
+  // QR Pay Button
+  document.getElementById('qrPayBtn')?.addEventListener('click', async () => {
+    const merchantCode = document.getElementById('qrMerchantCode').value.trim();
+    const amount = parseFloat(document.getElementById('qrAmount').value);
+    const phone = document.getElementById('qrPhone').value.trim();
+    const method = document.getElementById('qrMethod').value;
+    const messageDiv = document.getElementById('qrMessage');
+    
+    if (!merchantCode) { showToast("Enter or scan merchant code", true); return; }
+    if (!amount || amount <= 0) { showToast("Enter valid amount", true); return; }
+    if (!phone || !validatePhone(phone)) { showToast("Enter valid phone number", true); return; }
+    
+    const btn = document.getElementById('qrPayBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Processing...';
+    
+    try {
+      let response;
+      if (method === 'mpesa') {
+        response = await fetch('https://whapay-backend.onrender.com/api/mpesa/charge', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            merchantCode: merchantCode,
+            customerPhone: normalizePhone(phone),
+            customerName: 'QR Scanner User',
+            amount: amount
+          })
+        });
+      } else {
+        showToast('Card payment coming soon', false);
+        btn.disabled = false;
+        btn.innerHTML = '📷 Pay Now';
+        return;
+      }
+      
+      const data = await response.json();
+      if (data.success) {
+        messageDiv.innerHTML = '<div class="bg-green-50 p-2 rounded text-green-800">✅ Payment sent! Check your phone.</div>';
+        showToast('Payment successful');
+        document.getElementById('qrMerchantCode').value = '';
+        document.getElementById('qrAmount').value = '';
+      } else {
+        throw new Error(data.error || 'Payment failed');
+      }
+    } catch (err) {
+      showToast(err.message, true);
+      messageDiv.innerHTML = `<div class="bg-red-50 p-2 rounded text-red-800">❌ ${err.message}</div>`;
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '📷 Pay Now';
+    }
+  });
+</script>
 </main>
 
 <!-- ==================== FOOTER ==================== -->

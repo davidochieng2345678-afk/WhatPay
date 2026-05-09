@@ -398,6 +398,115 @@ document.getElementById('lookupMerchantBtn')?.addEventListener('click', () => {
 </script>
 
   <!-- ============================================ -->
+<!-- PAY WITH PAYBILL / TILL NUMBER               -->
+<!-- ============================================ -->
+<div class="bg-white rounded-2xl shadow-xl mb-8 overflow-hidden">
+  <div class="bg-teal-600 px-6 py-3">
+    <h2 class="text-xl font-bold text-white"><i class="fas fa-building mr-2"></i> Pay by Paybill / Till Number</h2>
+    <p class="text-teal-100 text-sm">Direct payment to any business Paybill or Till</p>
+  </div>
+  <div class="p-6">
+    <div class="max-w-xl mx-auto">
+      
+      <div class="grid md:grid-cols-2 gap-6">
+        <!-- Left: Form -->
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Business Number (Paybill/Till) *</label>
+            <input type="text" id="paybillNumber" placeholder="e.g., 0140933042" class="w-full border border-gray-300 rounded-xl px-4 py-3">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Account Number (Optional)</label>
+            <input type="text" id="paybillAccount" placeholder="e.g., Invoice #123 or Member Code" class="w-full border border-gray-300 rounded-xl px-4 py-3">
+            <p class="text-xs text-gray-400 mt-1">Some businesses require an account number</p>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Amount (KES) *</label>
+            <input type="number" id="paybillAmount" placeholder="0.00" class="w-full border border-gray-300 rounded-xl px-4 py-3">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Your Phone Number *</label>
+            <input type="tel" id="paybillPhone" placeholder="+254712345678" class="w-full border border-gray-300 rounded-xl px-4 py-3">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Your Name</label>
+            <input type="text" id="paybillName" placeholder="John Kamau" class="w-full border border-gray-300 rounded-xl px-4 py-3">
+          </div>
+          <button id="submitPaybillBtn" class="w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 rounded-xl transition">🏦 Pay via Paybill</button>
+          <div id="paybillMessage" class="text-center text-sm mt-2"></div>
+        </div>
+        
+        <!-- Right: Instructions -->
+        <div class="bg-gray-50 p-4 rounded-xl">
+          <p class="font-bold text-gray-800 mb-3">📱 How to pay via M-Pesa:</p>
+          <ol class="space-y-2 text-sm">
+            <li>1. Open M-Pesa app</li>
+            <li>2. Select <strong>"Lipa na M-Pesa"</strong></li>
+            <li>3. Select <strong>"Paybill"</strong> or <strong>"Till Number"</strong></li>
+            <li>4. Enter Business Number: <strong class="font-mono text-teal-600" id="displayPaybill">_________</strong></li>
+            <li>5. Enter Account Number (if required)</li>
+            <li>6. Enter Amount and PIN</li>
+            <li>7. Confirm payment</li>
+          </ol>
+          <button id="copyPaybillExampleBtn" class="mt-4 bg-teal-100 text-teal-700 px-3 py-1 rounded-lg text-sm w-full">📋 Copy Paybill Number</button>
+        </div>
+      </div>
+      
+      <div class="mt-4 text-xs text-gray-400 text-center"><i class="fas fa-info-circle"></i> After payment, both parties receive SMS confirmation. Use the Account Number field to reference your invoice or Member Code.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.getElementById('copyPaybillExampleBtn')?.addEventListener('click', () => {
+  const paybill = document.getElementById('paybillNumber').value.trim() || '0140933042';
+  navigator.clipboard.writeText(paybill);
+  showToast('Paybill number copied!');
+});
+
+document.getElementById('submitPaybillBtn')?.addEventListener('click', async () => {
+  const paybill = document.getElementById('paybillNumber').value.trim();
+  const account = document.getElementById('paybillAccount').value.trim();
+  const amount = parseFloat(document.getElementById('paybillAmount').value);
+  const phone = document.getElementById('paybillPhone').value.trim();
+  const name = document.getElementById('paybillName').value.trim() || 'Guest';
+  const msgDiv = document.getElementById('paybillMessage');
+  
+  if (!paybill) { showToast('Enter Paybill/Till number', true); return; }
+  if (!amount || amount <= 0) { showToast('Enter valid amount', true); return; }
+  if (!phone || !validatePhone(phone)) { showToast('Enter valid phone number', true); return; }
+  
+  const btn = document.getElementById('submitPaybillBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Processing...';
+  
+  try {
+    // For Paybill, we simulate by showing M-Pesa instructions
+    msgDiv.innerHTML = `<div class="bg-green-50 p-2 rounded text-green-800">✅ Payment initiated! Open M-Pesa → Lipa na M-Pesa → Paybill ${paybill} → Account ${account || 'N/A'} → Amount ${amount}</div>`;
+    showToast('Complete payment in M-Pesa');
+    
+    // Save transaction record
+    const txHistory = JSON.parse(localStorage.getItem('whapay_transactions') || '[]');
+    txHistory.unshift({ paybill, account, amount, method: 'paybill', status: 'pending', timestamp: new Date().toISOString() });
+    localStorage.setItem('whapay_transactions', JSON.stringify(txHistory.slice(0, 20)));
+    
+    document.getElementById('paybillNumber').value = '';
+    document.getElementById('paybillAccount').value = '';
+    document.getElementById('paybillAmount').value = '';
+  } catch (err) {
+    showToast(err.message, true);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '🏦 Pay via Paybill';
+  }
+});
+
+// Live update display paybill
+document.getElementById('paybillNumber')?.addEventListener('input', (e) => {
+  document.getElementById('displayPaybill').innerText = e.target.value || '_________';
+});
+</script>
+  <!-- ============================================ -->
 <!-- PAY WITH CUSTOMER CODE - SEND TO ANYONE      -->
 <!-- ============================================ -->
 <div class="bg-white rounded-2xl shadow-xl mb-8 overflow-hidden">

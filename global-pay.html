@@ -556,6 +556,81 @@ function toggleMobileMenu() {
     showToast('Paybill number copied!');
   });
 </script>
+<!-- QR CODE GENERATOR SECTION -->
+<div class="bg-white rounded-2xl shadow-xl mb-8 overflow-hidden">
+  <div class="bg-orange-600 px-6 py-3">
+    <h2 class="text-xl font-bold text-white"><i class="fas fa-download mr-2"></i> Generate Your QR Code</h2>
+    <p class="text-orange-100 text-sm">Merchants: Create your payment QR code to display at your shop</p>
+  </div>
+  <div class="p-6">
+    <div class="max-w-xl mx-auto">
+      <div class="grid md:grid-cols-2 gap-6">
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Your Member Code *</label>
+            <input type="text" id="qrGeneratorCode" placeholder="e.g., DK12345" class="w-full border border-gray-300 rounded-xl px-4 py-3">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Default Amount (optional)</label>
+            <input type="number" id="qrDefaultAmount" placeholder="Leave empty for customer to enter" class="w-full border border-gray-300 rounded-xl px-4 py-3">
+            <p class="text-xs text-gray-400 mt-1">If set, customer won't need to enter amount</p>
+          </div>
+          <button id="generateQRBtn" class="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 rounded-xl text-lg transition">🔄 Generate QR Code</button>
+        </div>
+        <div class="border-2 border-dashed border-gray-300 rounded-xl p-4 text-center">
+          <div id="generatedQR" class="flex justify-center items-center min-h-[150px]"></div>
+          <p class="text-xs text-gray-400 mt-2">Your payment QR code will appear here</p>
+          <button id="downloadQRBtn" class="mt-3 bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg text-sm w-full hidden">💾 Download QR Code</button>
+        </div>
+      </div>
+      <div class="mt-4 p-3 bg-blue-50 rounded-lg text-center">
+        <p class="text-sm text-blue-700"><i class="fas fa-print mr-2"></i> Print this QR code and display at your shop – customers scan and pay!</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+<script>
+  document.getElementById('generateQRBtn')?.addEventListener('click', () => {
+    const memberCode = document.getElementById('qrGeneratorCode').value.trim();
+    const defaultAmount = document.getElementById('qrDefaultAmount').value.trim();
+    
+    if (!memberCode) { showToast("Enter your Member Code", true); return; }
+    
+    let qrData = memberCode;
+    if (defaultAmount && defaultAmount > 0) {
+      qrData = `${memberCode},${defaultAmount}`;
+    }
+    
+    const qrContainer = document.getElementById('generatedQR');
+    qrContainer.innerHTML = '';
+    
+    QRCode.toCanvas(qrContainer, qrData, { width: 180 }, (err) => {
+      if (err) {
+        showToast('Error generating QR code', true);
+      } else {
+        showToast('QR code generated!');
+        document.getElementById('downloadQRBtn').classList.remove('hidden');
+      }
+    });
+    
+    // Store for download
+    window.currentQRData = qrData;
+  });
+  
+  document.getElementById('downloadQRBtn')?.addEventListener('click', () => {
+    const canvas = document.querySelector('#generatedQR canvas');
+    if (canvas) {
+      const link = document.createElement('a');
+      link.download = 'whapay-qr.png';
+      link.href = canvas.toDataURL();
+      link.click();
+      showToast('QR code downloaded!');
+    }
+  });
+</script>
+  
 </main>
 
 <!-- ==================== FOOTER ==================== -->

@@ -1,136 +1,155 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  
-  <!-- HOMEPAGE - Use ONLY the root URL, NOT index.html -->
+
+  <!-- ===== HOMEPAGE ===== -->
   <url>
     <loc>https://whapay.space/</loc>
-    <lastmod>2026-04-27</lastmod>
+    <lastmod>2026-05-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
-  
-  <!-- CORE PAGES (High Priority) -->
+
+  <!-- ===== CORE PAGES ===== -->
+  <url>
+    <loc>https://whapay.space/about.html</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://whapay.space/contact.html</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://whapay.space/blog.html</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://whapay.space/blog-post.html</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- ===== PRICING & FEATURES ===== -->
   <url>
     <loc>https://whapay.space/pricing.html</loc>
-    <lastmod>2026-04-27</lastmod>
+    <lastmod>2026-05-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://whapay.space/features.html</loc>
-    <lastmod>2026-04-27</lastmod>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- ===== PAYMENT PAGES ===== -->
+  <url>
+    <loc>https://whapay.space/payment.html</loc>
+    <lastmod>2026-05-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://whapay.space/merchant.html</loc>
-    <lastmod>2026-04-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://whapay.space/payment.html</loc>
-    <lastmod>2026-04-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://whapay.space/pay-anyone.html</loc>
-    <lastmod>2026-04-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://whapay.space/registration.html</loc>
-    <lastmod>2026-04-27</lastmod>
+    <lastmod>2026-05-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://whapay.space/first-time-pay.html</loc>
-    <lastmod>2026-04-27</lastmod>
+    <lastmod>2026-05-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://whapay.space/blog.html</loc>
-    <lastmod>2026-04-27</lastmod>
-    <changefreq>daily</changefreq>
+    <loc>https://whapay.space/global-pay.html</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-  
-  <!-- SECONDARY PAGES (Medium Priority) -->
+
+  <!-- ===== MERCHANT PAGES ===== -->
   <url>
-    <loc>https://whapay.space/about.html</loc>
-    <lastmod>2026-04-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://whapay.space/merchant.html</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://whapay.space/contact.html</loc>
-    <lastmod>2026-04-27</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://whapay.space/registration.html</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://whapay.space/reports.html</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://whapay.space/users.html</loc>
-    <lastmod>2026-04-27</lastmod>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- ===== OFFLINE & PROCESS ===== -->
+  <url>
+    <loc>https://whapay.space/offline.html</loc>
+    <lastmod>2026-05-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://whapay.space/reports.html</loc>
-    <lastmod>2026-04-27</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  
-  <!-- UTILITY PAGES (Lower Priority) -->
-  <url>
     <loc>https://whapay.space/process.html</loc>
-    <lastmod>2026-04-27</lastmod>
+    <lastmod>2026-05-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
-  <url>
-    <loc>https://whapay.space/admin.html</loc>
-    <lastmod>2026-04-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
+
+  <!-- ===== UTILITY PAGES ===== -->
   <url>
     <loc>https://whapay.space/privacy.html</loc>
-    <lastmod>2026-04-27</lastmod>
+    <lastmod>2026-05-11</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
     <loc>https://whapay.space/terms.html</loc>
-    <lastmod>2026-04-27</lastmod>
+    <lastmod>2026-05-11</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
-  
-  <!-- LOW PRIORITY / EXPERIMENTAL -->
+
+  <!-- ===== LOW PRIORITY / EXPERIMENTAL ===== -->
   <url>
     <loc>https://whapay.space/sketch.html</loc>
-    <lastmod>2026-04-27</lastmod>
+    <lastmod>2026-05-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://whapay.space/test.html</loc>
-    <lastmod>2026-04-27</lastmod>
+    <lastmod>2026-05-11</lastmod>
     <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://whapay.space/admin.html</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
-  
+
 </urlset>
-
-
-
-
-
 
 
     

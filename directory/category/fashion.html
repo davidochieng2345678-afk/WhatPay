@@ -19,6 +19,26 @@
         <button class="bank-btn" onclick="requestBank()">📢 Request My Bank to Join</button>
     </div>
 </div>
+<div style="background:#f0fdf4; padding:15px; border-radius:10px; margin:20px 0; text-align:center;">
+    <p>🏦 <strong>Your bank not on WhaPay yet?</strong></p>
+    <p style="font-size:14px; margin:10px 0;">Click below to request your bank to join WhaPay</p>
+    <button onclick="requestBank()" style="background:#16a34a; color:white; border:none; padding:10px 20px; border-radius:8px; cursor:pointer;">
+        📢 Request My Bank
+    </button>
+</div>
+
+<script>
+function requestBank() {
+    let bank = prompt("Enter your bank name (e.g., KCB, Equity, Co-op):");
+    let phone = prompt("Enter your phone number for updates:");
+    if(bank && phone) {
+        let message = `Bank Request: ${bank} from ${phone}`;
+        window.open(`https://wa.me/254140933042?text=${encodeURIComponent(message)}`);
+        alert(`✅ Request sent! We'll notify ${bank} about customer demand.`);
+    }
+}
+</script>
+    
 <div class="footer"><p>📞 0140933042 | 📧 support@whapay.space</p></div>
 <script>
 const merchants = [

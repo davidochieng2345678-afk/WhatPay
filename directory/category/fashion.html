@@ -1,1 +1,44 @@
-fashion.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fashion & Clothing Stores in Kenya Accepting Cards & M-Pesa | WhaPay</title>
+<meta name="description" content="Shop clothing, shoes, and accessories from fashion stores in Nairobi, Kisumu, Mombasa that accept M-Pesa, Visa, and Mastercard.">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:Arial,sans-serif;background:#f5f5f5}.header{background:linear-gradient(135deg,#0a0f1e,#0f1629);color:white;padding:40px 20px;text-align:center}.header h1 span{color:#22c55e}.container{max-width:1200px;margin:0 auto;padding:30px 20px}.back-link{color:#16a34a;text-decoration:none;display:inline-block;margin-bottom:20px}.merchant-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}.merchant-card{background:white;border-radius:16px;padding:20px;border:1px solid #e5e7eb}.merchant-card h3{margin-bottom:5px}.merchant-card .location{color:#6b7280;font-size:0.8rem}.merchant-card .rating{color:#fbbf24;margin:10px 0}.merchant-card .code{background:#f3f4f6;padding:8px;border-radius:8px;text-align:center;margin:10px 0}.btn-pay{background:#16a34a;color:white;border:none;padding:10px;border-radius:10px;width:100%;cursor:pointer;font-weight:600}.btn-copy{background:#e5e7eb;padding:6px 12px;border-radius:8px;cursor:pointer;margin-top:8px;width:100%}.bank-request{background:#f0fdf4;padding:15px;border-radius:10px;margin:20px 0;text-align:center;border:1px solid #bbf7d0}.bank-btn{background:#16a34a;color:white;border:none;padding:10px 20px;border-radius:8px;cursor:pointer}.footer{background:#1f2937;color:#9ca3af;text-align:center;padding:40px;margin-top:50px}
+</style>
+</head>
+<body>
+<div class="header"><h1>👗 <span>Fashion</span></h1><p>Shop clothing, shoes, accessories with M-Pesa, Visa, or Mastercard</p></div>
+<div class="container">
+    <a href="/directory/" class="back-link">← Back to Directory</a>
+    <div id="merchantsList" class="merchant-grid"></div>
+    <div class="bank-request">
+        <p>🏦 <strong>Your bank not on WhaPay yet?</strong></p>
+        <button class="bank-btn" onclick="requestBank()">📢 Request My Bank to Join</button>
+    </div>
+</div>
+<div class="footer"><p>📞 0140933042 | 📧 support@whapay.space</p></div>
+<script>
+const merchants = [
+    {name:"Amina Fashion Boutique",location:"Mombasa - Nyali",code:"DK22222",rating:4.7,reviews:45,phone:"0745678901",description:"Latest fashion, dresses, and accessories. Cards accepted."},
+    {name:"Nairobi Trendz",location:"Nairobi - CBD",code:"DK77777",rating:4.6,reviews:98,phone:"0790123456",description:"Designer clothes, shoes, and handbags."},
+    {name:"Kisumu Ethnic Wear",location:"Kisumu - CBD",code:"DK88888",rating:4.5,reviews:67,phone:"0801234567",description:"Traditional African attire and modern fusion."},
+    {name:"Eldoret Shoe Zone",location:"Eldoret - CBD",code:"DK99999",rating:4.4,reviews:54,phone:"0812345678",description:"Men's and women's footwear at wholesale prices."}
+];
+function renderCard(m){
+    const stars='⭐'.repeat(Math.floor(m.rating));
+    return `<div class="merchant-card"><h3>${m.name}</h3><div class="location">📍 ${m.location}</div><div class="rating">${stars} ${m.rating} (${m.reviews} reviews)</div><p>${m.description}</p><div class="code"><strong>Code:</strong> ${m.code}<button class="btn-copy" onclick="copyCode('${m.code}')">📋 Copy</button></div><button class="btn-pay" onclick="pay('${m.name}','${m.code}')">💳 Pay Now</button><a href="https://wa.me/${m.phone}?text=Hello%20${encodeURIComponent(m.name)}%2C%20I%20want%20to%20pay%20via%20WhaPay" target="_blank" style="display:block;text-align:center;margin-top:8px;color:#25D366;">💬 Chat on WhatsApp</a></div>`;
+}
+function copyCode(code){navigator.clipboard.writeText(code);alert(`Copied: ${code}`);}
+function pay(name,code){window.location.href=`/payment.html?merchant=${encodeURIComponent(name)}&code=${code}`;}
+function requestBank(){
+    let bank=prompt("Enter your bank name (e.g., KCB, Equity, Co-op):");
+    let phone=prompt("Enter your phone number for updates:");
+    if(bank&&phone) window.open(`https://wa.me/254140933042?text=Bank%20Request:%20${bank}%20from%20${phone}`);
+}
+document.getElementById('merchantsList').innerHTML=merchants.map(renderCard).join('');
+</script>
+</body>
+</html>

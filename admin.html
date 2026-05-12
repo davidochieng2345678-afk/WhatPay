@@ -1013,6 +1013,7 @@ document.getElementById('addBlogBtn')?.addEventListener('click', () => {
       adminContent.classList.remove('hidden');
       document.getElementById('adminHero').classList.remove('hidden');
       loadData();
+      loadDirectoryMerchants();
     } else {
       if (user && user.email !== ADMIN_EMAIL) {
         await signOut(auth);

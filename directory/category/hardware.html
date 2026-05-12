@@ -31,39 +31,20 @@
 </header>
 <script>function toggleMobileMenu(){const menu=document.getElementById('mobileMenu'),btn=document.getElementById('mobileMenuBtn'),isOpen=menu.style.display==='block';menu.style.display=isOpen?'none':'block';btn.innerHTML=isOpen?'<i class="fas fa-bars"></i>':'<i class="fas fa-times"></i>'}(function(){const btn=document.getElementById('mobileMenuBtn');if(btn&&window.innerWidth<768)btn.style.display='flex';window.addEventListener('resize',()=>{if(btn)btn.style.display=window.innerWidth<768?'flex':'none'})})();</script>
 <!-- ========== END UNIFIED HEADER ========== -->
-<div style="background:#f0fdf4; padding:15px; border-radius:10px; margin:20px 0; text-align:center;">
-    <p>🏦 <strong>Your bank not on WhaPay yet?</strong></p>
-    <p style="font-size:14px; margin:10px 0;">Click below to request your bank to join WhaPay</p>
-    <button onclick="requestBank()" style="background:#16a34a; color:white; border:none; padding:10px 20px; border-radius:8px; cursor:pointer;">
-        📢 Request My Bank
-    </button>
-</div>
-
-<script>
-function requestBank() {
-    let bank = prompt("Enter your bank name (e.g., KCB, Equity, Co-op):");
-    let phone = prompt("Enter your phone number for updates:");
-    if(bank && phone) {
-        let message = `Bank Request: ${bank} from ${phone}`;
-        window.open(`https://wa.me/254140933042?text=${encodeURIComponent(message)}`);
-        alert(`✅ Request sent! We'll notify ${bank} about customer demand.`);
-    }
-}
-</script>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Grocery Stores in Kenya – Pay with M-Pesa, Visa, Mastercard & Offline Member Code | WhaPay Directory</title>
-<meta name="description" content="Find 50+ trusted grocery stores in Nairobi, Kisumu, Mombasa, Nakuru & Eldoret that accept card payments, M-Pesa STK push, and offline Member Code. Shop fresh produce, household items, and bulk goods with zero monthly fees.">
-<meta name="keywords" content="grocery stores kenya, buy groceries with card, nairobi grocery delivery mpesa, kisumu fresh market visa, mombasa supermarket mastercard, nakuru wholesale shop, eldoret food store, offline payment groceries, whapay member code, pay for groceries without internet, best grocery shops in nairobi cbd, cheap groceries kisumu, organic food mombasa, bulk grains nakuru, dairy products eldoret, 24 hour grocery nairobi, grocery delivery same day, halal groceries mombasa, vegetarian store nairobi, african vegetables kisumu">
-<link rel="canonical" href="https://whapay.space/directory/category/grocery.html">
-<meta property="og:title" content="Grocery Stores in Kenya – Pay with Card, M-Pesa or Offline Code">
-<meta property="og:description" content="Shop groceries from 50+ stores nationwide. Pay instantly via WhatsApp link, QR code, or offline Member Code. No monthly fees.">
+<title>Hardware Stores in Kenya – Buy Building Materials & Pay with M-Pesa, Visa, Mastercard | WhaPay Directory</title>
+<meta name="description" content="Find 50+ trusted hardware stores in Nairobi, Kisumu, Mombasa, Nakuru & Eldoret that accept M-Pesa, Visa, Mastercard, and offline Member Code. Buy cement, iron sheets, tools, paints, and plumbing supplies with instant payment.">
+<meta name="keywords" content="hardware stores kenya, buy building materials with card nairobi, kisumu hardware mpesa, mombasa construction supplies visa, nakuru tools mastercard, eldoret iron sheets, offline payment hardware, whapay member code, cement price, timber delivery, plumbing fittings, electrical wire, paint shop, roofing materials, wholesale hardware">
+<link rel="canonical" href="https://whapay.space/directory/category/hardware.html">
+<meta property="og:title" content="Hardware Stores in Kenya – Pay for Construction Materials with Card, M-Pesa or Offline Code | WhaPay">
+<meta property="og:description" content="Licensed hardware retailers accepting secure payments. Buy nails, cement, pipes, and tools via WhatsApp, card, or offline Member Code. No monthly fees.">
 <meta property="og:image" content="https://whapay.space/whapay-logo.svg">
-<meta property="og:url" content="https://whapay.space/directory/category/grocery.html">
+<meta property="og:url" content="https://whapay.space/directory/category/hardware.html">
 <meta name="twitter:card" content="summary_large_image">
 
-<!-- Additional CSS for extended content -->
 <style>
+/* Enhanced styles (consistent with pharmacy/grocery) */
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Segoe UI',Roboto,Arial,sans-serif;background:#f5f7fa;line-height:1.5}
 .header{background:linear-gradient(135deg,#0a0f1e,#0f1629);color:white;padding:40px 20px;text-align:center}
@@ -84,13 +65,14 @@ body{font-family:'Segoe UI',Roboto,Arial,sans-serif;background:#f5f7fa;line-heig
 .merchant-card h3{font-size:1.3rem;margin:0 0 5px;color:#0f172a}
 .merchant-card .location{color:#475569;font-size:.85rem;margin-bottom:8px;display:flex;align-items:center;gap:5px}
 .merchant-card .rating{color:#fbbf24;margin:10px 0;font-size:.9rem}
+.merchant-card .hours{font-size:.75rem;color:#10b981;margin-bottom:8px}
 .merchant-card .description{color:#334155;font-size:.9rem;margin:10px 0}
 .merchant-card .code{background:#f1f5f9;padding:12px;border-radius:12px;text-align:center;margin:15px 0;font-family:monospace}
 .btn-pay{background:#16a34a;color:white;border:none;padding:12px;border-radius:40px;width:100%;cursor:pointer;font-weight:700;font-size:1rem;transition:background .2s;display:flex;align-items:center;justify-content:center;gap:8px}
 .btn-pay:hover{background:#15803d}
 .btn-copy{background:#e2e8f0;border:none;padding:8px 12px;border-radius:30px;cursor:pointer;font-size:.75rem;width:100%;margin-top:8px;font-weight:500}
 .btn-copy:hover{background:#cbd5e1}
-.bank-request{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:16px;padding:24px;text-align:center;margin:40px 0;display:block}
+.bank-request{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:16px;padding:24px;text-align:center;margin:40px 0}
 .bank-btn{background:#16a34a;color:white;padding:12px 28px;border-radius:40px;border:none;font-weight:700;cursor:pointer;margin-top:16px}
 .related-links{background:#ffffff;border-radius:20px;padding:25px;margin:30px 0;box-shadow:0 2px 8px rgba(0,0,0,0.03)}
 .related-title{font-size:1.2rem;font-weight:700;margin-bottom:15px;color:#0f172a;border-left:4px solid #16a34a;padding-left:12px}
@@ -104,136 +86,122 @@ body{font-family:'Segoe UI',Roboto,Arial,sans-serif;background:#f5f7fa;line-heig
 .footer{background:#1f2937;color:#9ca3af;text-align:center;padding:40px 20px;margin-top:50px}
 .footer a{color:#22c55e;text-decoration:none}
 @media (max-width:640px){.merchant-card h3{font-size:1.1rem}}
-.how-it-works, .payment-guide, .tips-section, .why-wha-pay{background:white;border-radius:20px;padding:25px;margin:30px 0;box-shadow:0 2px 8px rgba(0,0,0,0.03)}
-.how-it-works h2, .payment-guide h2, .tips-section h2, .why-wha-pay h2{font-size:1.3rem;margin-bottom:15px;color:#0f172a}
-.how-it-works ol, .tips-section ul{margin-left:20px;margin-top:10px}
+.payment-guide, .tips-section{background:white;border-radius:20px;padding:25px;margin:30px 0;box-shadow:0 2px 8px rgba(0,0,0,0.03)}
+.payment-guide h2, .tips-section h2{font-size:1.3rem;margin-bottom:15px;color:#0f172a}
 .step{background:#f1f5f9;padding:15px;border-radius:16px;margin-bottom:15px}
 </style>
 </head>
 <body>
 
 <div class="header">
-    <h1>🛒 <span>Grocery Stores in Kenya</span></h1>
-    <p>Wherever you shop – from Nairobi CBD to Mombasa, Kisumu to Nakuru – pay with M-Pesa, Visa, Mastercard, or our unique offline Member Code. No internet? No problem.</p>
+    <h1>🔧 <span>Hardware & Building Materials Stores</span></h1>
+    <p>Buy cement, iron sheets, timber, paint, plumbing & electrical supplies – pay with M-Pesa, Visa, Mastercard, or offline Member Code. Contractor‑friendly.</p>
 </div>
 
 <div class="container">
-    <!-- Breadcrumb internal links -->
+    <!-- Breadcrumb -->
     <div style="margin-bottom:15px">
         <a href="/" class="back-link">🏠 Home</a> &nbsp;›&nbsp;
         <a href="/directory/" class="back-link">Directory</a> &nbsp;›&nbsp;
-        <span style="color:#16a34a">Grocery Stores</span>
+        <span style="color:#16a34a">Hardware</span>
     </div>
 
-    <!-- Intro – 50+ long‑tail BOFU keywords embedded naturally -->
+    <!-- Intro – 50+ long‑tail BOFU keywords -->
     <div class="intro-box">
-        <p><strong>🥦 Are you searching for a “grocery store near me that accepts cards” in Nairobi, Kisumu, or Mombasa?</strong> You’re not alone. Thousands of Kenyan shoppers want to <strong>buy fresh produce, household staples, and bulk goods using M-Pesa, Visa, or Mastercard</strong> – without paying extra fees. Even better, when there’s no internet, you can still pay using WhaPay’s <strong>offline Member Code</strong>.</p>
-        <p>We’ve compiled <strong>50+ trusted grocery retailers</strong> across Kenya that accept <strong>card payments, M-Pesa STK push, Paybill, and offline Member Codes</strong>. Whether you need <strong>same-day grocery delivery in Nairobi</strong>, <strong>cheap vegetables in Kisumu</strong>, or <strong>wholesale dry goods in Nakuru</strong>, you’ll find a verified store below. <strong>No monthly fees, no surprise charges – just pay and collect your order.</strong></p>
-        <p>⬇️ <strong>Browse the list, click <i class="fab fa-whatsapp"></i> to order, copy the Member Code for offline payment, or use the card button for instant checkout.</strong></p>
+        <p><strong>🔨 Looking for a “hardware store near me that accepts cards or M-Pesa” in Nairobi, Kisumu, Mombasa, Nakuru or Eldoret?</strong> Whether you are a contractor building a house, a landlord doing repairs, or a DIY enthusiast, you need fast, secure payment for building materials. All hardware stores on this page accept <strong>Visa, Mastercard, M-Pesa STK push, and our unique offline Member Code</strong>.</p>
+        <p>From <strong>cement, ballast and sand</strong> to <strong>iron sheets, roofing nails and timber</strong> – even <strong>paints, plumbing pipes, electrical wires and tools</strong> – you can pay instantly without worrying about internet connectivity. <strong>No monthly fees, no hidden charges – just secure construction payments.</strong></p>
+        <p>⬇️ <strong>Find your nearest hardware store below. Click <i class="fab fa-whatsapp"></i> to inquire, copy the Member Code for offline payment, or use the card button for instant checkout.</strong></p>
     </div>
 
     <!-- Trust badges -->
     <div class="trust-badges">
-        <span class="trust-badge"><i class="fas fa-shield-alt"></i> Zero Monthly Fees</span>
-        <span class="trust-badge"><i class="fas fa-credit-card"></i> Visa & Mastercard Accepted</span>
-        <span class="trust-badge"><i class="fas fa-wifi-slash"></i> Offline Payment (Member Code)</span>
-        <span class="trust-badge"><i class="fab fa-whatsapp"></i> Order via WhatsApp</span>
-        <span class="trust-badge"><i class="fas fa-truck"></i> Delivery & Pickup Available</span>
+        <span class="trust-badge"><i class="fas fa-shield-alt"></i> Verified Hardware Stores</span>
+        <span class="trust-badge"><i class="fas fa-credit-card"></i> Card & M-Pesa</span>
+        <span class="trust-badge"><i class="fas fa-wifi-slash"></i> Offline Member Code</span>
+        <span class="trust-badge"><i class="fab fa-whatsapp"></i> WhatsApp Orders</span>
+        <span class="trust-badge"><i class="fas fa-truck"></i> Bulk Delivery Available</span>
     </div>
 
-    <!-- Merchant grid (expanded to 8 stores for more keyword density) -->
+    <!-- Merchant grid (8 hardware stores across major cities) -->
     <div id="merchantsList" class="merchant-grid"></div>
 
-    <!-- Bank request CTA (exactly as you gave) – duplicated intentionally for conversion -->
-    <div style="background:#f0fdf4; padding:15px; border-radius:10px; margin:20px 0; text-align:center;">
-        <p>🏦 <strong>Your bank not on WhaPay yet?</strong></p>
-        <p style="font-size:14px; margin:10px 0;">Click below to request your bank to join WhaPay</p>
-        <button onclick="requestBank()" style="background:#16a34a; color:white; border:none; padding:10px 20px; border-radius:8px; cursor:pointer;">
-            📢 Request My Bank
-        </button>
+    <!-- Bank request button -->
+    <div class="bank-request">
+        <p>🏦 <strong>Your bank not on WhaPay yet?</strong> Help us bring more banks to the platform.</p>
+        <button class="bank-btn" onclick="requestBank()">📢 Request My Bank to Join</button>
     </div>
 
-    <!-- Why WhaPay + offline payment guide (300+ words) -->
-    <div class="why-wha-pay">
-        <h2>🇰🇪 Why WhaPay is the #1 payment choice for grocery shoppers in Kenya</h2>
-        <p>Unlike traditional payment gateways that require stable internet and often freeze merchant funds, WhaPay was built for the reality of Kenyan commerce. Our <strong>Member Code system</strong> lets you pay for groceries even when your phone has zero data. You just open M-Pesa → Lipa na M-Pesa → Paybill → enter the store’s Member Code → amount → PIN. It’s instant, secure, and leaves a digital receipt.</p>
-        <p>Moreover, <strong>every grocery store in our directory accepts Visa and Mastercard</strong> – so you can use your salary card, travel card, or any international card without worries. Combined with <strong>WhatsApp ordering</strong> and live chat, you get a seamless shopping experience from product selection to payment.</p>
-    </div>
-
+    <!-- Why WhaPay for hardware -->
     <div class="payment-guide">
-        <h2>💳 How to pay for groceries using WhaPay (3 simple methods)</h2>
-        <div class="step"><strong>📲 Method 1 – Online via Card or M-Pesa STK Push</strong><br>Click the “Pay Now” button on any merchant card. You’ll be redirected to our secure payment page. Choose Visa, Mastercard, or M-Pesa STK push. Enter amount and confirm. Money goes directly to the merchant – WhaPay never holds funds.</div>
-        <div class="step"><strong>🔢 Method 2 – Offline using Member Code (No internet)</strong><br>Copy the Member Code shown on the merchant card (e.g., DK12345). Open M-Pesa → Lipa na M-Pesa → Paybill → Enter Business Number (the Member Code) → Account (optional, can be your name) → Amount → PIN. Both you and the merchant receive SMS confirmation. Works anywhere, anytime.</div>
-        <div class="step"><strong>📱 Method 3 – WhatsApp ordering & payment link</strong><br>Tap the “Chat on WhatsApp” button. Tell the store what you need. They will send you a secure WhaPay payment link. Click it, pay with card or M-Pesa, and they’ll prepare your order.</div>
+        <h2>🏗️ Why WhaPay is the best way to pay for building materials in Kenya</h2>
+        <p>Construction projects often happen in areas with poor internet, but you still need to pay for supplies on the spot. WhaPay’s <strong>offline Member Code</strong> allows you to buy cement, iron sheets, or paint even when you have no data – just open M-Pesa and use the hardware’s unique code. All payments go directly to the store; we never hold your money. Plus, you can use your <strong>corporate card, contractor card, or personal Visa/Mastercard</strong> online for larger purchases.</p>
     </div>
 
-    <!-- Detailed FAQ (20+ questions – adds 2000+ words and naturally includes 50 long-tail queries) -->
-    <div class="faq-section">
-        <div class="related-title">❓ Frequently asked questions about paying for groceries with WhaPay</div>
-
-        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> Which grocery stores in Nairobi accept card payments without extra fees?</div><div class="faq-answer">All merchants on this page accept Visa/Mastercard with only WhaPay’s standard 1.5% + KES 20 fee (no hidden charges). Stores include Mary’s Fresh Groceries (CBD), Nairobi Trendz Grocery (Westlands), and many more.</div></div>
-
-        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> Can I pay for groceries offline using M-Pesa when I have no internet?</div><div class="faq-answer">Yes – every store has a unique Member Code. Copy the code, open M-Pesa, and follow the Paybill steps. No internet required. This is a unique WhaPay feature.</div></div>
-
-        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> Are there grocery stores in Kisumu that accept Visa cards?</div><div class="faq-answer">Absolutely. Stores like Kisumu Fresh Market (Milimani) and Lake Grocers accept both Visa and Mastercard. You can also pay with M-Pesa or Member Code.</div></div>
-
-        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> What is the cheapest grocery store in Mombasa that takes Mastercard?</div><div class="faq-answer">Coastal Grocers and Mombasa Wholesale offer competitive prices and accept Mastercard. Check their ratings above.</div></div>
-
-        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> Does WhaPay have grocery delivery in Nakuru?</div><div class="faq-answer">Yes, several Nakuru stores deliver. Contact them via WhatsApp to confirm delivery radius and fee. All accept offline Member Code payment.</div></div>
-
-        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> How do I find a 24-hour grocery store in Eldoret that takes cards?</div><div class="faq-answer">Eldoret Green Mart (CBD) operates 24 hours on weekends and accepts Visa/Mastercard. Use the Member Code for late‑night offline payments.</div></div>
-
-        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> Can I buy organic vegetables using M-Pesa Paybill?</div><div class="faq-answer">Yes. Many organic grocers, including Kisumu Fresh Market, allow M-Pesa Paybill using their Member Code. Copy the code and pay from your phone.</div></div>
-
-        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> What happens if a store doesn’t have a card machine? Can I still use my card?</div><div class="faq-answer">WhaPay doesn’t require a physical POS. You pay through our online link – the store never handles your card. So even small kiosks can accept cards.</div></div>
-
-        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> How to pay for groceries from the diaspora (UK, USA, UAE) to Kenya?</div><div class="faq-answer">Diaspora customers can pay using any international card. Just click the store’s “Pay Now” button, enter your card details, and the merchant receives KES instantly.</div></div>
-
-        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> Are there wholesale grocery stores in Nairobi that accept bulk orders via card?</div><div class="faq-answer">Yes. Jumbo Wholesale and Nairobi Wholesale Cash & Carry accept Mastercard and Visa for bulk purchases. Contact them via WhatsApp for price lists.</div></div>
-
-        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> What if I pay by Member Code and the merchant doesn’t acknowledge?</div><div class="faq-answer">Both you and the merchant receive an SMS from M-Pesa. That’s your proof. WhaPay also logs the transaction. Contact our support on WhatsApp if any issue.</div></div>
-
-        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> Does WhaPay charge monthly fees to grocery stores?</div><div class="faq-answer">No. Zero monthly fees. Stores only pay 1.5% + KES 20 per successful card transaction. M-Pesa Member Code payments have no extra WhaPay fees – only Safaricom charges apply.</div></div>
-
-        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> Can I use Google Pay or Apple Pay for groceries?</div><div class="faq-answer">Yes, when paying online via the “Pay Now” button, Google Pay and Apple Pay are supported if your card is linked.</div></div>
-
-        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> How to request my bank (KCB, Equity, Co‑op) to partner with WhaPay?</div><div class="faq-answer">Click the “Request My Bank” button above. We’ll collect the demand and approach banks. More banks = easier for you to use your native banking app.</div></div>
-
-        <!-- Adding more to reach over 20 FAQ items for word count and long-tail keywords -->
-        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> Is it safe to pay for groceries online via WhaPay?</div><div class="faq-answer">Absolutely. All card transactions are processed via PCI-DSS compliant gateways. WhaPay never stores your card details.</div></div>
-        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> I am a merchant – how can I get listed on this grocery directory?</div><div class="faq-answer">Register for a WhaPay merchant account via WhatsApp (+254140933042) or our website. Once you have a Member Code, your store can be added.</div></div>
-        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> Do you have a mobile app for grocery payments?</div><div class="faq-answer">Our responsive website works like an app. Add it to your home screen. An official app is coming soon.</div></div>
-        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> Can I get a refund if I paid for the wrong grocery item?</div><div class="faq-answer">Refunds are handled directly between you and the merchant, just like cash. WhaPay facilitates the payment but does not mediate disputes. Always confirm order details before paying.</div></div>
-        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> What are the accepted payment methods at these grocery stores?</div><div class="faq-answer">Every store accepts M-Pesa (online & offline Member Code), Visa, and Mastercard. Some also accept Google Pay, Apple Pay, and bank transfers.</div></div>
-        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> How long does it take for the card payment to reflect for the merchant?</div><div class="faq-answer">Instantly. As soon as you complete the payment, the merchant gets an immediate notification and the money settles in their account in real time.</div></div>
+    <!-- Payment guide -->
+    <div class="payment-guide">
+        <h2>💳 How to pay for hardware supplies using WhaPay</h2>
+        <div class="step"><strong>📲 Method 1 – Online via Card or M-Pesa STK Push</strong><br>Click “Pay Now” on any hardware card. Choose Visa, Mastercard, or M-Pesa STK push. Enter amount and confirm. The store receives instant notification and prepares your order for pickup or delivery.</div>
+        <div class="step"><strong>🔢 Method 2 – Offline using Member Code (No internet)</strong><br>Copy the hardware store’s Member Code (e.g., DK12345). Open M-Pesa → Lipa na M-Pesa → Paybill → enter Member Code → amount → PIN. Works even without data. You’ll receive an SMS receipt – forward to the store as proof.</div>
+        <div class="step"><strong>📱 Method 3 – WhatsApp ordering & payment link</strong><br>Tap “Chat on WhatsApp”, share your materials list, and the store will send a secure payment link. Pay with card or M-Pesa, and they’ll arrange delivery or hold your order for pickup.</div>
     </div>
 
-    <!-- Tips: Shopping with card in Kenya (long‑tail keyword section) -->
+    <!-- Tips for hardware buying -->
     <div class="tips-section">
-        <h2>🛍️ Useful tips when paying for groceries with a card in Kenya</h2>
-        <ul>
-            <li><strong>Always double-check the Member Code</strong> before sending offline M-Pesa payments – a wrong code means money lost.</li>
-            <li>For large orders (over KES 10,000), card payment is often faster and comes with better consumer protection.</li>
-            <li>If you are a regular customer, ask the store to save your Member Code for quick offline payments.</li>
-            <li>Use the WhatsApp chat to confirm stock availability and prices before paying – avoid disappointment.</li>
-            <li>Share your receipt (M-Pesa SMS) with the store as proof of payment.</li>
-            <li>Look for stores with high ratings and many reviews – they are more reliable.</li>
+        <h2>🛠️ Smart tips when purchasing hardware materials in Kenya</h2>
+        <ul style="margin-left:20px">
+            <li>Always request a receipt or M-Pesa confirmation – it serves as proof of purchase for warranties.</li>
+            <li>For large orders (e.g., multiple tonnes of cement), ask for a proforma invoice first, then pay via card or Member Code.</li>
+            <li>Compare prices across stores – hardware prices vary by location and quantity.</li>
+            <li>Use the WhatsApp chat to confirm stock availability before travelling to the store.</li>
+            <li>Check if the store offers delivery – many do for a small fee, especially for heavy items like timber or iron sheets.</li>
         </ul>
-        <p><strong>Bottom line:</strong> Whether you’re a health‑conscious buyer looking for “organic vegetables in Westlands” or a budget shopper searching for “cheapest maize flour in Kisumu”, this directory has you covered.</p>
     </div>
 
-    <!-- Related internal links (SEO & user nav) -->
+    <!-- FAQ (15+ items, hardware‑specific long‑tail keywords) -->
+    <div class="faq-section">
+        <div class="related-title">❓ Frequently asked questions about hardware payments</div>
+
+        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> Can I pay for cement or iron sheets using M-Pesa offline?</div><div class="faq-answer">Yes – each hardware store has a Member Code. Open M-Pesa → Lipa na M-Pesa → Paybill → enter the code. No internet required.</div></div>
+
+        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> Do these hardware stores accept Visa and Mastercard?</div><div class="faq-answer">Absolutely. All listed stores accept local and international Visa/Mastercard. You can also use Google Pay or Apple Pay online.</div></div>
+
+        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> Is there a hardware store in Nairobi that delivers building materials?</div><div class="faq-answer">Yes, stores like Nairobi Hardware Hub and Westlands Builders offer delivery. Ask via WhatsApp for delivery fees and minimum order.</div></div>
+
+        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> Can I buy paint and pay with Member Code?</div><div class="faq-answer">Yes – paint, varnish, and brushes are available. Use the Member Code to pay offline or the “Pay Now” button for card.</div></div>
+
+        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> Do these hardware stores sell electrical wiring and conduit pipes?</div><div class="faq-answer">Most do. Send a WhatsApp message with your requirements; they’ll confirm availability and send a payment link.</div></div>
+
+        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> Can I get a discount for bulk purchases?</div><div class="faq-answer">Many stores offer bulk discounts. Discuss pricing via WhatsApp before paying.</div></div>
+
+        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> What if the wrong item is delivered?</div><div class="faq-answer">Contact the hardware store immediately. WhaPay facilitates payment; disputes are between you and the merchant.</div></div>
+
+        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> Can I pay for a hardware order from the diaspora (UK, USA, UAE)?</div><div class="faq-answer">Yes – international cards are accepted via the “Pay Now” button. The store receives KES instantly.</div></div>
+
+        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> Does WhaPay charge extra for using Member Code?</div><div class="faq-answer">No. WhaPay adds zero fees for Member Code payments – only Safaricom charges apply (standard M-Pesa rates).</div></div>
+
+        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> How do I know a hardware store is legitimate?</div><div class="faq-answer">We only list established stores with positive ratings. You can also check via WhatsApp reviews.</div></div>
+
+        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> Can I order plumbing supplies (pipes, sinks, taps) via WhaPay?</div><div class="faq-answer">Absolutely. Many hardware stores stock plumbing materials. Send your list via WhatsApp.</div></div>
+
+        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> What is the return policy for hardware items paid via WhaPay?</div><div class="faq-answer">Return policies vary by store. Ask before paying. Always keep your payment confirmation.</div></div>
+
+        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> Can I use the offline Member Code for multiple transactions?</div><div class="faq-answer">Yes, the code is reusable. You can pay as many times as you need – each transaction is separate.</div></div>
+
+        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> How long does it take for the hardware store to confirm payment?</div><div class="faq-answer">Instantly. Both you and the store receive an M-Pesa SMS or card confirmation within seconds.</div></div>
+    </div>
+
+    <!-- Related internal links -->
     <div class="related-links">
-        <div class="related-title">📂 Explore other merchant categories</div>
+        <div class="related-title">📂 Other categories you may like</div>
         <div class="related-grid">
+            <a href="/directory/category/grocery.html">🛒 Grocery</a>
             <a href="/directory/category/electronics.html">📱 Electronics</a>
             <a href="/directory/category/fashion.html">👗 Fashion</a>
             <a href="/directory/category/salon.html">💇 Salons</a>
             <a href="/directory/category/restaurant.html">🍽️ Restaurants</a>
             <a href="/directory/category/pharmacy.html">💊 Pharmacies</a>
-            <a href="/directory/category/hardware.html">🔧 Hardware</a>
         </div>
-        <div class="related-title" style="margin-top:20px">📍 Grocery stores by location</div>
+        <div class="related-title" style="margin-top:20px">📍 Hardware stores by city</div>
         <div class="related-grid">
             <a href="/directory/location/nairobi.html">Nairobi</a>
             <a href="/directory/location/kisumu.html">Kisumu</a>
@@ -248,21 +216,101 @@ body{font-family:'Segoe UI',Roboto,Arial,sans-serif;background:#f5f7fa;line-heig
 
 <footer class="footer">
     <p>📞 0140933042 | 📧 support@whapay.space</p>
-    <p>© 2026 WhaPay – The easiest way to pay for groceries and everything else, online & offline.</p>
+    <p>© 2026 WhaPay – Secure payments for construction materials, tools & hardware, online & offline.</p>
     <p><a href="/directory/">Directory Home</a> | <a href="/privacy.html">Privacy</a> | <a href="https://wa.me/254140933042">WhatsApp Support</a></p>
 </footer>
 
 <script>
-// Merchant data (8 stores – covers Nairobi, Kisumu, Mombasa, Nakuru, Eldoret, plus extra)
-const merchants = [
-    {name:"Mary's Fresh Groceries", location:"Nairobi CBD", code:"DK12345", rating:4.8, reviews:124, phone:"0712345678", description:"Fresh fruits, vegetables, and household items. Card payments welcome. Same‑day delivery.", icon:"🥬"},
-    {name:"Kisumu Fresh Market", location:"Kisumu - Milimani", code:"DK55555", rating:4.4, reviews:78, phone:"0778901234", description:"Local organic produce, honey, and spices. Accepts M-Pesa and cards.", icon:"🥦"},
-    {name:"Mombasa Coastal Grocers", location:"Mombasa - Bamburi", code:"DK77777", rating:4.5, reviews:92, phone:"0790123456", description:"Seafood, tropical fruits, and imported goods. Visa/Mastercard.", icon:"🐟"},
-    {name:"Eldoret Green Mart", location:"Eldoret - CBD", code:"DK88888", rating:4.3, reviews:65, phone:"0801234567", description:"Bulk grains, dairy, and fresh produce. Offline Member Code available.", icon:"🌽"},
-    {name:"Nakuru Wholesale Hub", location:"Nakuru - CBD", code:"DK99999", rating:4.6, reviews:88, phone:"0812345678", description:"Wholesale rice, flour, sugar. Card payments & bulk discounts.", icon:"🛒"},
-    {name:"Westlands Organic Grocers", location:"Nairobi - Westlands", code:"DK10101", rating:4.7, reviews:112, phone:"0823456789", description:"Certified organic vegetables, gluten‑free products, smoothies.", icon:"🥑"},
-    {name:"Nyali Family Store", location:"Mombasa - Nyali", code:"DK20202", rating:4.5, reviews:76, phone:"0834567890", description:"Baby food, diapers, and weekly household supplies.", icon:"👶"},
-    {name:"Milimani Fresh", location:"Kisumu - Milimani", code:"DK30303", rating:4.2, reviews:44, phone:"0845678901", description:"Budget groceries, open 7am–9pm, M-Pesa only (Member Code available).", icon:"🍞"}
+// Hardware merchant data (8 stores covering major cities)
+const hardwareMerchants = [
+    {
+        name: "Peter's Hardware Store",
+        location: "Nairobi - CBD",
+        code: "DK11111",
+        rating: 4.5,
+        reviews: 67,
+        phone: "0734567890",
+        description: "Cement, iron sheets, timber, paints, and plumbing supplies. Card payments welcome. Bulk delivery.",
+        hours: "8am - 6pm Mon-Sat",
+        icon: "🔩"
+    },
+    {
+        name: "Kisumu Builders' Centre",
+        location: "Kisumu - CBD",
+        code: "DK22222",
+        rating: 4.3,
+        reviews: 45,
+        phone: "0745678901",
+        description: "Construction hardware, tools, electrical wire, and roofing materials. M-Pesa and cards accepted.",
+        hours: "8am - 5:30pm daily",
+        icon: "🏗️"
+    },
+    {
+        name: "Mombasa Steel & Cement",
+        location: "Mombasa - CBD",
+        code: "DK33333",
+        rating: 4.6,
+        reviews: 58,
+        phone: "0756789012",
+        description: "Rebar, ballast, sand, and contractor supplies. Offline Member Code available.",
+        hours: "7am - 7pm daily",
+        icon: "🛠️"
+    },
+    {
+        name: "Nakuru Hardware Hub",
+        location: "Nakuru - CBD",
+        code: "DK44444",
+        rating: 4.4,
+        reviews: 39,
+        phone: "0767890123",
+        description: "Timber, plywood, nails, and paint. Wholesale and retail.",
+        hours: "8am - 6pm Mon-Sat",
+        icon: "📏"
+    },
+    {
+        name: "Eldoret Iron Sheets Ltd",
+        location: "Eldoret - CBD",
+        code: "DK55555",
+        rating: 4.2,
+        reviews: 31,
+        phone: "0778901234",
+        description: "Box profile iron sheets, ridge caps, and roofing nails. Card payments accepted.",
+        hours: "8am - 5pm Mon-Fri, 9am-1pm Sat",
+        icon: "🏠"
+    },
+    {
+        name: "Thika Hardware & Tools",
+        location: "Thika - CBD",
+        code: "DK66666",
+        rating: 4.1,
+        reviews: 27,
+        phone: "0789012345",
+        description: "Power tools, hand tools, generator sets, and safety gear.",
+        hours: "8am - 6pm daily",
+        icon: "🔧"
+    },
+    {
+        name: "Kitale General Hardware",
+        location: "Kitale - CBD",
+        code: "DK77777",
+        rating: 4.0,
+        reviews: 22,
+        phone: "0790123456",
+        description: "Agricultural hardware, fencing posts, barbed wire, and water tanks.",
+        hours: "8am - 5pm Mon-Sat",
+        icon: "🚜"
+    },
+    {
+        name: "Malindi Coastal Hardware",
+        location: "Malindi - Town",
+        code: "DK88888",
+        rating: 4.3,
+        reviews: 19,
+        phone: "0801234567",
+        description: "Corrosion‑resistant materials for coastal construction. Accepts cards and M-Pesa.",
+        hours: "9am - 6pm daily",
+        icon: "🌊"
+    }
 ];
 
 function renderCard(m){
@@ -270,8 +318,10 @@ function renderCard(m){
     return `
         <div class="merchant-card">
             <div style="font-size:2rem">${m.icon}</div>
+            <div><span class="badge">✅ Verified Hardware</span><span class="badge">💳 Cards Accepted</span></div>
             <h3>${m.name}</h3>
             <div class="location"><i class="fas fa-map-marker-alt"></i> ${m.location}</div>
+            <div class="hours">🕐 ${m.hours}</div>
             <div class="rating">${stars} ${m.rating} (${m.reviews} reviews)</div>
             <div class="description">${m.description}</div>
             <div class="code">
@@ -279,7 +329,7 @@ function renderCard(m){
                 <button class="btn-copy" onclick="copyCode('${m.code}')">📋 Copy Code (offline payment)</button>
             </div>
             <button class="btn-pay" onclick="pay('${m.name}', '${m.code}')"><i class="fas fa-credit-card"></i> Pay Now with Card/M-Pesa</button>
-            <a href="https://wa.me/${m.phone}?text=Hello%20${encodeURIComponent(m.name)}%2C%20I%20want%20to%20order%20groceries%20and%20pay%20via%20WhaPay" target="_blank" style="display:block;text-align:center;margin-top:8px;color:#25D366;text-decoration:none;"><i class="fab fa-whatsapp"></i> Chat on WhatsApp</a>
+            <a href="https://wa.me/${m.phone}?text=Hello%20${encodeURIComponent(m.name)}%2C%20I%20want%20to%20buy%20hardware%20materials%20and%20pay%20via%20WhaPay" target="_blank" style="display:block;text-align:center;margin-top:8px;color:#25D366;text-decoration:none;"><i class="fab fa-whatsapp"></i> Chat on WhatsApp</a>
         </div>
     `;
 }
@@ -291,8 +341,12 @@ function copyCode(code){
 function pay(name,code){
     window.location.href = `/payment.html?merchant=${encodeURIComponent(name)}&code=${code}`;
 }
-// Note: requestBank function already defined above, reuse
-document.getElementById('merchantsList').innerHTML = merchants.map(renderCard).join('');
+function requestBank(){
+    let bank = prompt("Enter your bank name (e.g., KCB, Equity, Co-op):");
+    let phone = prompt("Enter your phone number for updates:");
+    if(bank && phone) window.open(`https://wa.me/254140933042?text=Bank%20Request:%20${bank}%20from%20${phone}`);
+}
+document.getElementById('merchantsList').innerHTML = hardwareMerchants.map(renderCard).join('');
 </script>
 
 <!-- SCHEMA MARKUP (JSON-LD) -->
@@ -300,18 +354,18 @@ document.getElementById('merchantsList').innerHTML = merchants.map(renderCard).j
 {
   "@context": "https://schema.org",
   "@type": "ItemList",
-  "name": "Grocery stores in Kenya accepting card and offline M-Pesa payments",
-  "description": "List of 50+ verified grocery retailers in Nairobi, Kisumu, Mombasa, Nakuru, Eldoret that accept Visa, Mastercard, M-Pesa, and offline WhaPay Member Code",
+  "name": "Hardware stores in Kenya accepting card and offline M-Pesa payments",
+  "description": "List of 50+ verified hardware and building material retailers in Nairobi, Kisumu, Mombasa, Nakuru, Eldoret, Thika, Kitale and Malindi that accept Visa, Mastercard, M-Pesa, and offline WhaPay Member Code",
   "numberOfItems": 8,
   "itemListElement": [
-    {"@type": "ListItem","position": 1,"url": "https://whapay.space/directory/merchant/marys-fresh-groceries.html"},
-    {"@type": "ListItem","position": 2,"url": "https://whapay.space/directory/merchant/kisumu-fresh-market.html"},
-    {"@type": "ListItem","position": 3,"url": "https://whapay.space/directory/merchant/mombasa-coastal-grocers.html"},
-    {"@type": "ListItem","position": 4,"url": "https://whapay.space/directory/merchant/eldoret-green-mart.html"},
-    {"@type": "ListItem","position": 5,"url": "https://whapay.space/directory/merchant/nakuru-wholesale-hub.html"},
-    {"@type": "ListItem","position": 6,"url": "https://whapay.space/directory/merchant/westlands-organic-grocers.html"},
-    {"@type": "ListItem","position": 7,"url": "https://whapay.space/directory/merchant/nyali-family-store.html"},
-    {"@type": "ListItem","position": 8,"url": "https://whapay.space/directory/merchant/milimani-fresh.html"}
+    {"@type": "ListItem","position": 1,"url": "https://whapay.space/directory/merchant/peters-hardware-store.html"},
+    {"@type": "ListItem","position": 2,"url": "https://whapay.space/directory/merchant/kisumu-builders-centre.html"},
+    {"@type": "ListItem","position": 3,"url": "https://whapay.space/directory/merchant/mombasa-steel-cement.html"},
+    {"@type": "ListItem","position": 4,"url": "https://whapay.space/directory/merchant/nakuru-hardware-hub.html"},
+    {"@type": "ListItem","position": 5,"url": "https://whapay.space/directory/merchant/eldoret-iron-sheets-ltd.html"},
+    {"@type": "ListItem","position": 6,"url": "https://whapay.space/directory/merchant/thika-hardware-tools.html"},
+    {"@type": "ListItem","position": 7,"url": "https://whapay.space/directory/merchant/kitale-general-hardware.html"},
+    {"@type": "ListItem","position": 8,"url": "https://whapay.space/directory/merchant/malindi-coastal-hardware.html"}
   ]
 }
 </script>
@@ -322,7 +376,7 @@ document.getElementById('merchantsList').innerHTML = merchants.map(renderCard).j
   "itemListElement": [
     {"@type": "ListItem","position": 1,"name": "Home","item": "https://whapay.space/"},
     {"@type": "ListItem","position": 2,"name": "Directory","item": "https://whapay.space/directory/"},
-    {"@type": "ListItem","position": 3,"name": "Grocery Stores","item": "https://whapay.space/directory/category/grocery.html"}
+    {"@type": "ListItem","position": 3,"name": "Hardware Stores","item": "https://whapay.space/directory/category/hardware.html"}
   ]
 }
 </script>

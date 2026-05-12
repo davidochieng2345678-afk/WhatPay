@@ -2,263 +2,396 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-    <!-- ========== UNIFIED WHAPAY HEADER (Absolute Paths) ========== -->
-<style>
-.gd-nav { font-family: sans-serif; }
-.gd-nav-link { color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.85rem;font-weight:500;transition:color 0.2s;padding:4px 0; }
-.gd-nav-link:hover { color:white; }
-.gd-nav-link.active { color:#22c55e;font-weight:700; }
-.gd-dropdown { position:relative; }
-.gd-dropdown-menu { position:absolute;top:calc(100% + 12px);left:50%;transform:translateX(-50%);background:#0f1629;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:8px;min-width:220px;opacity:0;visibility:hidden;transition:all 0.2s ease;z-index:100;box-shadow:0 20px 40px rgba(0,0,0,0.4); }
-.gd-dropdown:hover .gd-dropdown-menu { opacity:1;visibility:visible; }
-.gd-dropdown-item { display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;text-decoration:none;transition:background 0.2s; }
-.gd-dropdown-item:hover { background:rgba(255,255,255,0.06); }
-.gd-dropdown-item .icon { width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0; }
-.gd-dropdown-item .label { color:white;font-size:0.82rem;font-weight:600; }
-.gd-dropdown-item .desc { color:rgba(255,255,255,0.35);font-size:0.72rem;margin-top:1px; }
-.gd-dropdown-trigger { display:flex;align-items:center;gap:4px;cursor:pointer; }
-.gd-dropdown-trigger i.arrow { font-size:0.6rem;color:rgba(255,255,255,0.4);transition:transform 0.2s; }
-.gd-dropdown:hover .gd-dropdown-trigger i.arrow { transform:rotate(180deg); }
-</style>
-
+<!-- ========== UNIFIED WHAPAY HEADER (Absolute Paths) ========== -->
+<style>.gd-nav{font-family:sans-serif}.gd-nav-link{color:rgba(255,255,255,0.7);text-decoration:none;font-size:.85rem;font-weight:500;transition:color .2s;padding:4px 0}.gd-nav-link:hover{color:white}.gd-nav-link.active{color:#22c55e;font-weight:700}.gd-dropdown{position:relative}.gd-dropdown-menu{position:absolute;top:calc(100% + 12px);left:50%;transform:translateX(-50%);background:#0f1629;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:8px;min-width:220px;opacity:0;visibility:hidden;transition:all .2s ease;z-index:100;box-shadow:0 20px 40px rgba(0,0,0,0.4)}.gd-dropdown:hover .gd-dropdown-menu{opacity:1;visibility:visible}.gd-dropdown-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;text-decoration:none;transition:background .2s}.gd-dropdown-item:hover{background:rgba(255,255,255,0.06)}.gd-dropdown-item .icon{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0}.gd-dropdown-item .label{color:white;font-size:.82rem;font-weight:600}.gd-dropdown-item .desc{color:rgba(255,255,255,0.35);font-size:.72rem;margin-top:1px}.gd-dropdown-trigger{display:flex;align-items:center;gap:4px;cursor:pointer}.gd-dropdown-trigger i.arrow{font-size:.6rem;color:rgba(255,255,255,0.4);transition:transform .2s}.gd-dropdown:hover .gd-dropdown-trigger i.arrow{transform:rotate(180deg)}</style>
 <header class="gd-nav" style="background:#080c18;border-bottom:1px solid rgba(255,255,255,0.06);position:sticky;top:0;z-index:999;">
-
-  <!-- Top utility bar -->
-  <div style="background:rgba(22,163,74,0.08);border-bottom:1px solid rgba(22,163,74,0.1);padding:6px 24px;display:flex;justify-content:space-between;align-items:center;font-size:0.72rem;flex-wrap:wrap;gap:8px;">
-    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
-      <a href="tel:0140933042" style="color:rgba(255,255,255,0.5);text-decoration:none;display:flex;align-items:center;gap:5px;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">
-        <i class="fas fa-phone-alt" style="color:#22c55e;font-size:0.65rem;"></i> 0140933042
-      </a>
-      <a href="mailto:support@whapay.space" style="color:rgba(255,255,255,0.5);text-decoration:none;display:flex;align-items:center;gap:5px;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">
-        <i class="fas fa-envelope" style="color:#22c55e;font-size:0.65rem;"></i> support@whapay.space
-      </a>
-      <span style="color:rgba(255,255,255,0.3);display:flex;align-items:center;gap:5px;">
-        <i class="fas fa-globe" style="color:#22c55e;font-size:0.65rem;"></i> Serving 180+ countries
-      </span>
+  <div style="background:rgba(22,163,74,0.08);border-bottom:1px solid rgba(22,163,74,0.1);padding:6px 24px;display:flex;justify-content:space-between;align-items:center;font-size:.72rem;flex-wrap:wrap;gap:8px">
+    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+      <a href="tel:0140933042" style="color:rgba(255,255,255,0.5);text-decoration:none;display:flex;align-items:center;gap:5px" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.5)'"><i class="fas fa-phone-alt" style="color:#22c55e;font-size:.65rem"></i> 0140933042</a>
+      <a href="mailto:support@whapay.space" style="color:rgba(255,255,255,0.5);text-decoration:none;display:flex;align-items:center;gap:5px" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.5)'"><i class="fas fa-envelope" style="color:#22c55e;font-size:.65rem"></i> support@whapay.space</a>
+      <span style="color:rgba(255,255,255,0.3);display:flex;align-items:center;gap:5px"><i class="fas fa-globe" style="color:#22c55e;font-size:.65rem"></i> Serving 180+ countries</span>
     </div>
-    <div style="display:flex;align-items:center;gap:12px;">
-      <a href="/users.html" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.72rem;">My Account</a>
-    </div>
+    <div style="display:flex;align-items:center;gap:12px"><a href="/users.html" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:.72rem">My Account</a></div>
   </div>
-
-  <!-- Main nav bar -->
-  <div style="max-width:1280px;margin:0 auto;padding:0 24px;display:flex;justify-content:space-between;align-items:center;height:64px;">
-
-    <!-- Logo -->
-    <a href="/" style="display:flex;align-items:center;gap:10px;text-decoration:none;">
-      <div style="width:32px;height:32px;background:#16a34a;border-radius:6px;display:flex;align-items:center;justify-content:center;">
-        <i class="fas fa-bolt" style="color:white;font-size:0.85rem;"></i>
-      </div>
-      <span style="color:white;font-size:1.2rem;font-weight:900;">WhaPay</span>
-    </a>
-
-    <!-- Desktop nav groups -->
-    <nav style="display:flex;align-items:center;gap:4px;" class="hidden md:flex">
-
-      <!-- Payments dropdown -->
-      <div class="gd-dropdown" style="padding:0 12px;">
-        <div class="gd-dropdown-trigger">
-          <span class="gd-nav-link">Payments</span>
-          <i class="fas fa-chevron-down arrow"></i>
-        </div>
-        <div class="gd-dropdown-menu">
-          <a href="/payment.html" class="gd-dropdown-item">
-            <div class="icon" style="background:rgba(22,163,74,0.15);"><i class="fas fa-credit-card" style="color:#22c55e;font-size:0.85rem;"></i></div>
-            <div><div class="label">How to Pay</div><div class="desc">WhatsApp, QR, Member Code</div></div>
-          </a>
-          <a href="/pay-anyone.html" class="gd-dropdown-item">
-            <div class="icon" style="background:rgba(59,130,246,0.15);"><i class="fas fa-paper-plane" style="color:#60a5fa;font-size:0.85rem;"></i></div>
-            <div><div class="label">Pay Anyone</div><div class="desc">Member Code, Phone, Paybill</div></div>
-          </a>
-          <a href="/first-time-pay.html" class="gd-dropdown-item">
-            <div class="icon" style="background:rgba(168,85,247,0.15);"><i class="fas fa-bolt" style="color:#c084fc;font-size:0.85rem;"></i></div>
-            <div><div class="label">Register & Pay</div><div class="desc">One-step payment & signup</div></div>
-          </a>
-          <div style="border-top:1px solid rgba(255,255,255,0.06);margin:6px 0;"></div>
-          <a href="/#offline-features" class="gd-dropdown-item">
-            <div class="icon" style="background:rgba(251,191,36,0.12);"><i class="fas fa-wifi-slash" style="color:#fbbf24;font-size:0.85rem;"></i></div>
-            <div><div class="label">Offline Payments</div><div class="desc">No internet needed</div></div>
-          </a>
-        </div>
-      </div>
-
-      <!-- Merchants dropdown -->
-      <div class="gd-dropdown" style="padding:0 12px;">
-        <div class="gd-dropdown-trigger">
-          <span class="gd-nav-link">Merchants</span>
-          <i class="fas fa-chevron-down arrow"></i>
-        </div>
-        <div class="gd-dropdown-menu">
-          <a href="/merchant.html" class="gd-dropdown-item">
-            <div class="icon" style="background:rgba(22,163,74,0.15);"><i class="fas fa-store" style="color:#22c55e;font-size:0.85rem;"></i></div>
-            <div><div class="label">Merchant Dashboard</div><div class="desc">QR, links, transactions</div></div>
-          </a>
-          <a href="/registration.html" class="gd-dropdown-item">
-            <div class="icon" style="background:rgba(59,130,246,0.15);"><i class="fas fa-user-plus" style="color:#60a5fa;font-size:0.85rem;"></i></div>
-            <div><div class="label">Register Business</div><div class="desc">Free — online or offline</div></div>
-          </a>
-          <a href="/reports.html" class="gd-dropdown-item">
-            <div class="icon" style="background:rgba(168,85,247,0.15);"><i class="fas fa-chart-line" style="color:#c084fc;font-size:0.85rem;"></i></div>
-            <div><div class="label">Analytics & Reports</div><div class="desc">Revenue, trends, CSV export</div></div>
-          </a>
-          <a href="/pricing.html" class="gd-dropdown-item">
-            <div class="icon" style="background:rgba(251,191,36,0.12);"><i class="fas fa-tag" style="color:#fbbf24;font-size:0.85rem;"></i></div>
-            <div><div class="label">Pricing</div><div class="desc">1.5% + KES 20, KES 0/month</div></div>
-          </a>
-        </div>
-      </div>
-
-      <!-- Features dropdown -->
-      <div class="gd-dropdown" style="padding:0 12px;">
-        <div class="gd-dropdown-trigger">
-          <span class="gd-nav-link">Features</span>
-          <i class="fas fa-chevron-down arrow"></i>
-        </div>
-        <div class="gd-dropdown-menu">
-          <a href="/features.html" class="gd-dropdown-item">
-            <div class="icon" style="background:rgba(22,163,74,0.15);"><i class="fas fa-bolt" style="color:#22c55e;font-size:0.85rem;"></i></div>
-            <div><div class="label">All Features</div><div class="desc">Complete platform overview</div></div>
-          </a>
-          <a href="/process.html" class="gd-dropdown-item">
-            <div class="icon" style="background:rgba(59,130,246,0.15);"><i class="fas fa-route" style="color:#60a5fa;font-size:0.85rem;"></i></div>
-            <div><div class="label">How It Works</div><div class="desc">3 simple steps</div></div>
-          </a>
-          <a href="/#currencies" class="gd-dropdown-item">
-            <div class="icon" style="background:rgba(168,85,247,0.15);"><i class="fas fa-globe" style="color:#c084fc;font-size:0.85rem;"></i></div>
-            <div><div class="label">Global Currencies</div><div class="desc">135+ currencies, 180+ countries</div></div>
-          </a>
-          <a href="/#diaspora" class="gd-dropdown-item">
-            <div class="icon" style="background:rgba(251,191,36,0.12);"><i class="fas fa-plane" style="color:#fbbf24;font-size:0.85rem;"></i></div>
-            <div><div class="label">Diaspora Payments</div><div class="desc">UK, USA, UAE → Kenya</div></div>
-          </a>
-        </div>
-      </div>
-
-      <!-- Company dropdown -->
-      <div class="gd-dropdown" style="padding:0 12px;">
-        <div class="gd-dropdown-trigger">
-          <span class="gd-nav-link">Company</span>
-          <i class="fas fa-chevron-down arrow"></i>
-        </div>
-        <div class="gd-dropdown-menu">
-          <a href="/about.html" class="gd-dropdown-item">
-            <div class="icon" style="background:rgba(22,163,74,0.15);"><i class="fas fa-heart" style="color:#22c55e;font-size:0.85rem;"></i></div>
-            <div><div class="label">About WhaPay</div><div class="desc">Our story and mission</div></div>
-          </a>
-          <a href="/blog.html" class="gd-dropdown-item">
-            <div class="icon" style="background:rgba(59,130,246,0.15);"><i class="fas fa-pen-nib" style="color:#60a5fa;font-size:0.85rem;"></i></div>
-            <div><div class="label">Blog & Insights</div><div class="desc">Payments, fintech, Africa</div></div>
-          </a>
-          <a href="/contact.html" class="gd-dropdown-item">
-            <div class="icon" style="background:rgba(168,85,247,0.15);"><i class="fas fa-headset" style="color:#c084fc;font-size:0.85rem;"></i></div>
-            <div><div class="label">Contact & Support</div><div class="desc">24/7 WhatsApp support</div></div>
-          </a>
-        </div>
-      </div>
-
-      <!-- Direct links -->
-      <a href="/global-pay.html" class="gd-nav-link" style="padding:0 12px;">Global Pay</a>
-      <a href="/pricing.html" class="gd-nav-link" style="padding:0 12px;">Pricing</a>
-      <a href="/blog.html" class="gd-nav-link" style="padding:0 12px;">Blog</a>
-
-      <!-- Directory Link (NEW - always visible) -->
-      <a href="/directory/" class="gd-nav-link" style="background:#16a34a; color:white; padding:6px 16px; border-radius:30px; margin-left:8px;">🔍 Directory</a>
-
+  <div style="max-width:1280px;margin:0 auto;padding:0 24px;display:flex;justify-content:space-between;align-items:center;height:64px">
+    <a href="/" style="display:flex;align-items:center;gap:10px;text-decoration:none"><div style="width:32px;height:32px;background:#16a34a;border-radius:6px;display:flex;align-items:center;justify-content:center"><i class="fas fa-bolt" style="color:white;font-size:.85rem"></i></div><span style="color:white;font-size:1.2rem;font-weight:900">WhaPay</span></a>
+    <nav style="display:flex;align-items:center;gap:4px" class="hidden md:flex">
+      <div class="gd-dropdown" style="padding:0 12px"><div class="gd-dropdown-trigger"><span class="gd-nav-link">Payments</span><i class="fas fa-chevron-down arrow"></i></div><div class="gd-dropdown-menu"><a href="/payment.html" class="gd-dropdown-item"><div class="icon" style="background:rgba(22,163,74,0.15)"><i class="fas fa-credit-card" style="color:#22c55e"></i></div><div><div class="label">How to Pay</div><div class="desc">WhatsApp, QR, Member Code</div></div></a><a href="/pay-anyone.html" class="gd-dropdown-item"><div class="icon" style="background:rgba(59,130,246,0.15)"><i class="fas fa-paper-plane" style="color:#60a5fa"></i></div><div><div class="label">Pay Anyone</div><div class="desc">Member Code, Phone, Paybill</div></div></a><a href="/first-time-pay.html" class="gd-dropdown-item"><div class="icon" style="background:rgba(168,85,247,0.15)"><i class="fas fa-bolt" style="color:#c084fc"></i></div><div><div class="label">Register & Pay</div><div class="desc">One-step payment & signup</div></div></a><div style="border-top:1px solid rgba(255,255,255,0.06);margin:6px 0"></div><a href="/#offline-features" class="gd-dropdown-item"><div class="icon" style="background:rgba(251,191,36,0.12)"><i class="fas fa-wifi-slash" style="color:#fbbf24"></i></div><div><div class="label">Offline Payments</div><div class="desc">No internet needed</div></div></a></div></div>
+      <div class="gd-dropdown" style="padding:0 12px"><div class="gd-dropdown-trigger"><span class="gd-nav-link">Merchants</span><i class="fas fa-chevron-down arrow"></i></div><div class="gd-dropdown-menu"><a href="/merchant.html" class="gd-dropdown-item"><div class="icon" style="background:rgba(22,163,74,0.15)"><i class="fas fa-store" style="color:#22c55e"></i></div><div><div class="label">Merchant Dashboard</div><div class="desc">QR, links, transactions</div></div></a><a href="/registration.html" class="gd-dropdown-item"><div class="icon" style="background:rgba(59,130,246,0.15)"><i class="fas fa-user-plus" style="color:#60a5fa"></i></div><div><div class="label">Register Business</div><div class="desc">Free — online or offline</div></div></a><a href="/reports.html" class="gd-dropdown-item"><div class="icon" style="background:rgba(168,85,247,0.15)"><i class="fas fa-chart-line" style="color:#c084fc"></i></div><div><div class="label">Analytics & Reports</div><div class="desc">Revenue, trends, CSV export</div></div></a><a href="/pricing.html" class="gd-dropdown-item"><div class="icon" style="background:rgba(251,191,36,0.12)"><i class="fas fa-tag" style="color:#fbbf24"></i></div><div><div class="label">Pricing</div><div class="desc">1.5% + KES 20, KES 0/month</div></div></a></div></div>
+      <div class="gd-dropdown" style="padding:0 12px"><div class="gd-dropdown-trigger"><span class="gd-nav-link">Features</span><i class="fas fa-chevron-down arrow"></i></div><div class="gd-dropdown-menu"><a href="/features.html" class="gd-dropdown-item"><div class="icon" style="background:rgba(22,163,74,0.15)"><i class="fas fa-bolt" style="color:#22c55e"></i></div><div><div class="label">All Features</div><div class="desc">Complete platform overview</div></div></a><a href="/process.html" class="gd-dropdown-item"><div class="icon" style="background:rgba(59,130,246,0.15)"><i class="fas fa-route" style="color:#60a5fa"></i></div><div><div class="label">How It Works</div><div class="desc">3 simple steps</div></div></a><a href="/#currencies" class="gd-dropdown-item"><div class="icon" style="background:rgba(168,85,247,0.15)"><i class="fas fa-globe" style="color:#c084fc"></i></div><div><div class="label">Global Currencies</div><div class="desc">135+ currencies, 180+ countries</div></div></a><a href="/#diaspora" class="gd-dropdown-item"><div class="icon" style="background:rgba(251,191,36,0.12)"><i class="fas fa-plane" style="color:#fbbf24"></i></div><div><div class="label">Diaspora Payments</div><div class="desc">UK, USA, UAE → Kenya</div></div></a></div></div>
+      <div class="gd-dropdown" style="padding:0 12px"><div class="gd-dropdown-trigger"><span class="gd-nav-link">Company</span><i class="fas fa-chevron-down arrow"></i></div><div class="gd-dropdown-menu"><a href="/about.html" class="gd-dropdown-item"><div class="icon" style="background:rgba(22,163,74,0.15)"><i class="fas fa-heart" style="color:#22c55e"></i></div><div><div class="label">About WhaPay</div><div class="desc">Our story and mission</div></div></a><a href="/blog.html" class="gd-dropdown-item"><div class="icon" style="background:rgba(59,130,246,0.15)"><i class="fas fa-pen-nib" style="color:#60a5fa"></i></div><div><div class="label">Blog & Insights</div><div class="desc">Payments, fintech, Africa</div></div></a><a href="/contact.html" class="gd-dropdown-item"><div class="icon" style="background:rgba(168,85,247,0.15)"><i class="fas fa-headset" style="color:#c084fc"></i></div><div><div class="label">Contact & Support</div><div class="desc">24/7 WhatsApp support</div></div></a></div></div>
+      <a href="/global-pay.html" class="gd-nav-link" style="padding:0 12px">Global Pay</a>
+      <a href="/pricing.html" class="gd-nav-link" style="padding:0 12px">Pricing</a>
+      <a href="/blog.html" class="gd-nav-link" style="padding:0 12px">Blog</a>
+      <a href="/directory/" class="gd-nav-link" style="background:#16a34a;color:white;padding:6px 16px;border-radius:30px;margin-left:8px">🔍 Directory</a>
     </nav>
-
-    <!-- Right side CTAs -->
-    <div style="display:flex;align-items:center;gap:10px;">
-      <button id="navLoginBtn" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.7);font-size:0.82rem;font-weight:600;padding:8px 16px;border-radius:6px;cursor:pointer;">Login</button>
-      <a href="https://wa.me/0140933042?text=REGISTER" style="background:#16a34a;color:white;font-weight:700;font-size:0.85rem;padding:10px 20px;border-radius:6px;text-decoration:none;display:flex;align-items:center;gap:6px;">
-        <i class="fab fa-whatsapp"></i> Register Free
-      </a>
-      <button id="mobileMenuBtn" onclick="toggleMobileMenu()" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:white;width:40px;height:40px;border-radius:6px;cursor:pointer;display:none;align-items:center;justify-content:center;" class="md:hidden">
-        <i class="fas fa-bars"></i>
-      </button>
-    </div>
-
+    <div style="display:flex;align-items:center;gap:10px"><button id="navLoginBtn" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.7);font-size:.82rem;font-weight:600;padding:8px 16px;border-radius:6px;cursor:pointer">Login</button><a href="https://wa.me/0140933042?text=REGISTER" style="background:#16a34a;color:white;font-weight:700;font-size:.85rem;padding:10px 20px;border-radius:6px;text-decoration:none;display:flex;align-items:center;gap:6px"><i class="fab fa-whatsapp"></i> Register Free</a><button id="mobileMenuBtn" onclick="toggleMobileMenu()" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:white;width:40px;height:40px;border-radius:6px;cursor:pointer;display:none;align-items:center;justify-content:center" class="md:hidden"><i class="fas fa-bars"></i></button></div>
   </div>
-
-  <!-- Mobile menu -->
-  <div id="mobileMenu" style="display:none;background:#080c18;border-top:1px solid rgba(255,255,255,0.06);padding:16px 24px;">
-    <div style="display:flex;flex-direction:column;gap:4px;">
-      <div style="color:rgba(255,255,255,0.3);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;padding:8px 0 4px;">Payments</div>
-      <a href="/payment.html" style="color:rgba(255,255,255,0.7);text-decoration:none;padding:8px 0;">How to Pay</a>
-      <a href="/pay-anyone.html" style="color:rgba(255,255,255,0.7);text-decoration:none;padding:8px 0;">Pay Anyone</a>
-      <a href="/first-time-pay.html" style="color:rgba(255,255,255,0.7);text-decoration:none;padding:8px 0;">Register & Pay</a>
-      <div style="color:rgba(255,255,255,0.3);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;padding:8px 0 4px;margin-top:8px;">Merchants</div>
-      <a href="/merchant.html" style="color:rgba(255,255,255,0.7);text-decoration:none;padding:8px 0;">Merchant Dashboard</a>
-      <a href="/registration.html" style="color:rgba(255,255,255,0.7);text-decoration:none;padding:8px 0;">Register Business</a>
-      <a href="/reports.html" style="color:rgba(255,255,255,0.7);text-decoration:none;padding:8px 0;">Analytics & Reports</a>
-      <div style="color:rgba(255,255,255,0.3);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;padding:8px 0 4px;margin-top:8px;">Directory</div>
-      <a href="/directory/" style="color:#22c55e;text-decoration:none;padding:8px 0;">🔍 Merchant Directory</a>
-      <a href="/directory/category/grocery.html" style="color:rgba(255,255,255,0.7);text-decoration:none;padding:8px 0;">Grocery Stores</a>
-      <a href="/directory/category/salon.html" style="color:rgba(255,255,255,0.7);text-decoration:none;padding:8px 0;">Salons & Beauty</a>
-      <a href="/directory/location/nairobi.html" style="color:rgba(255,255,255,0.7);text-decoration:none;padding:8px 0;">Nairobi Merchants</a>
-      <div style="color:rgba(255,255,255,0.3);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;padding:8px 0 4px;margin-top:8px;">Company</div>
-      <a href="/about.html" style="color:rgba(255,255,255,0.7);text-decoration:none;padding:8px 0;">About</a>
-      <a href="/blog.html" style="color:rgba(255,255,255,0.7);text-decoration:none;padding:8px 0;">Blog</a>
-      <a href="/contact.html" style="color:rgba(255,255,255,0.7);text-decoration:none;padding:8px 0;">Contact</a>
-      <a href="https://wa.me/0140933042?text=REGISTER" style="display:flex;align-items:center;justify-content:center;gap:8px;background:#16a34a;color:white;font-weight:700;padding:13px;border-radius:6px;text-decoration:none;margin-top:16px;"><i class="fab fa-whatsapp"></i> Register Free</a>
-    </div>
-  </div>
-
+  <div id="mobileMenu" style="display:none;background:#080c18;border-top:1px solid rgba(255,255,255,0.06);padding:16px 24px"><div style="display:flex;flex-direction:column;gap:4px"><div style="color:rgba(255,255,255,0.3);font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;padding:8px 0 4px">Payments</div><a href="/payment.html" style="color:rgba(255,255,255,0.7);text-decoration:none;padding:8px 0">How to Pay</a><a href="/pay-anyone.html" style="color:rgba(255,255,255,0.7);text-decoration:none;padding:8px 0">Pay Anyone</a><a href="/first-time-pay.html" style="color:rgba(255,255,255,0.7);text-decoration:none;padding:8px 0">Register & Pay</a><div style="color:rgba(255,255,255,0.3);font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;padding:8px 0 4px;margin-top:8px">Merchants</div><a href="/merchant.html" style="color:rgba(255,255,255,0.7);text-decoration:none;padding:8px 0">Merchant Dashboard</a><a href="/registration.html" style="color:rgba(255,255,255,0.7);text-decoration:none;padding:8px 0">Register Business</a><a href="/reports.html" style="color:rgba(255,255,255,0.7);text-decoration:none;padding:8px 0">Analytics & Reports</a><div style="color:rgba(255,255,255,0.3);font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;padding:8px 0 4px;margin-top:8px">Directory</div><a href="/directory/" style="color:#22c55e;text-decoration:none;padding:8px 0">🔍 Merchant Directory</a><a href="/directory/category/grocery.html" style="color:rgba(255,255,255,0.7);text-decoration:none;padding:8px 0">Grocery Stores</a><a href="/directory/category/salon.html" style="color:rgba(255,255,255,0.7);text-decoration:none;padding:8px 0">Salons & Beauty</a><a href="/directory/location/nairobi.html" style="color:rgba(255,255,255,0.7);text-decoration:none;padding:8px 0">Nairobi Merchants</a><div style="color:rgba(255,255,255,0.3);font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;padding:8px 0 4px;margin-top:8px">Company</div><a href="/about.html" style="color:rgba(255,255,255,0.7);text-decoration:none;padding:8px 0">About</a><a href="/blog.html" style="color:rgba(255,255,255,0.7);text-decoration:none;padding:8px 0">Blog</a><a href="/contact.html" style="color:rgba(255,255,255,0.7);text-decoration:none;padding:8px 0">Contact</a><a href="https://wa.me/0140933042?text=REGISTER" style="display:flex;align-items:center;justify-content:center;gap:8px;background:#16a34a;color:white;font-weight:700;padding:13px;border-radius:6px;text-decoration:none;margin-top:16px"><i class="fab fa-whatsapp"></i> Register Free</a></div></div>
 </header>
-
-<script>
-function toggleMobileMenu() {
-  const menu = document.getElementById('mobileMenu');
-  const btn = document.getElementById('mobileMenuBtn');
-  const isOpen = menu.style.display === 'block';
-  menu.style.display = isOpen ? 'none' : 'block';
-  btn.innerHTML = isOpen ? '<i class="fas fa-bars"></i>' : '<i class="fas fa-times"></i>';
-}
-(function() {
-  const btn = document.getElementById('mobileMenuBtn');
-  if (btn && window.innerWidth < 768) btn.style.display = 'flex';
-  window.addEventListener('resize', () => {
-    if (btn) btn.style.display = window.innerWidth < 768 ? 'flex' : 'none';
-  });
-})();
-</script>
+<script>function toggleMobileMenu(){const menu=document.getElementById('mobileMenu'),btn=document.getElementById('mobileMenuBtn'),isOpen=menu.style.display==='block';menu.style.display=isOpen?'none':'block';btn.innerHTML=isOpen?'<i class="fas fa-bars"></i>':'<i class="fas fa-times"></i>'}(function(){const btn=document.getElementById('mobileMenuBtn');if(btn&&window.innerWidth<768)btn.style.display='flex';window.addEventListener('resize',()=>{if(btn)btn.style.display=window.innerWidth<768?'flex':'none'})})();</script>
 <!-- ========== END UNIFIED HEADER ========== -->
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Restaurants in Kenya Accepting M-Pesa & Cards | WhaPay Directory</title>
-<meta name="description" content="Find restaurants, cafes, and food joints in Nairobi, Kisumu, Mombasa that accept M-Pesa, Visa, and Mastercard payments via WhaPay.">
+<title>Restaurants in Kenya – Pay for Meals with M-Pesa, Visa, Mastercard & Offline Member Code | WhaPay Directory</title>
+<meta name="description" content="Find 50+ restaurants, cafes, and food joints in Nairobi, Kisumu, Mombasa, Nakuru & Eldoret that accept M-Pesa, Visa, Mastercard, and offline Member Code. Order nyama choma, pizza, ugali fish, or coffee with instant payment.">
+<meta name="keywords" content="restaurants kenya, pay for food with card nairobi, kisumu nyama choma mpesa, mombasa seafood visa, nakuru cafe mastercard, eldoret fast food, offline payment restaurant, whapay member code, eat out pay online, food delivery M-Pesa, halal restaurant, vegetarian options, breakfast spots, lunch buffet, dinner takeaway">
+<link rel="canonical" href="https://whapay.space/directory/category/restaurant.html">
+<meta property="og:title" content="Restaurants in Kenya – Pay for Meals with Card, M-Pesa or Offline Code | WhaPay">
+<meta property="og:description" content="Dine-in, takeaway or delivery – pay securely with M-Pesa, Visa, Mastercard, or offline Member Code. No monthly fees.">
+<meta property="og:image" content="https://whapay.space/whapay-logo.svg">
+<meta property="og:url" content="https://whapay.space/directory/category/restaurant.html">
+<meta name="twitter:card" content="summary_large_image">
+
 <style>
-*{margin:0;padding:0;box-sizing:border-box}body{font-family:Arial,sans-serif;background:#f5f5f5}.header{background:linear-gradient(135deg,#0a0f1e,#0f1629);color:white;padding:40px 20px;text-align:center}.header h1 span{color:#22c55e}.container{max-width:1200px;margin:0 auto;padding:30px 20px}.back-link{color:#16a34a;text-decoration:none;display:inline-block;margin-bottom:20px}.merchant-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}.merchant-card{background:white;border-radius:16px;padding:20px;border:1px solid #e5e7eb}.merchant-card h3{margin-bottom:5px}.merchant-card .location{color:#6b7280;font-size:0.8rem}.merchant-card .rating{color:#fbbf24;margin:10px 0}.merchant-card .code{background:#f3f4f6;padding:8px;border-radius:8px;text-align:center;margin:10px 0}.btn-pay{background:#16a34a;color:white;border:none;padding:10px;border-radius:10px;width:100%;cursor:pointer;font-weight:600}.btn-copy{background:#e5e7eb;padding:6px 12px;border-radius:8px;cursor:pointer;margin-top:8px;width:100%}.bank-request{background:#f0fdf4;padding:15px;border-radius:10px;margin:20px 0;text-align:center;border:1px solid #bbf7d0}.bank-btn{background:#16a34a;color:white;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;margin-top:10px}.footer{background:#1f2937;color:#9ca3af;text-align:center;padding:40px;margin-top:50px}
+/* Enhanced styles (consistent with other categories) */
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Roboto,Arial,sans-serif;background:#f5f7fa;line-height:1.5}
+.header{background:linear-gradient(135deg,#0a0f1e,#0f1629);color:white;padding:40px 20px;text-align:center}
+.header h1{font-size:2rem;margin-bottom:10px}
+.header h1 span{color:#22c55e}
+.header p{color:rgba(255,255,255,0.7);max-width:700px;margin:0 auto}
+.container{max-width:1280px;margin:0 auto;padding:30px 20px}
+.back-link{color:#16a34a;text-decoration:none;display:inline-block;margin-bottom:20px;font-weight:500}
+.back-link:hover{text-decoration:underline}
+.intro-box{background:#e8f5e9;border-left:4px solid #16a34a;padding:20px;border-radius:12px;margin-bottom:30px}
+.intro-box p{margin-bottom:10px;color:#2e3b2c}
+.trust-badges{display:flex;flex-wrap:wrap;gap:20px;justify-content:center;margin:20px 0 30px}
+.trust-badge{background:white;padding:8px 20px;border-radius:40px;box-shadow:0 1px 3px rgba(0,0,0,0.05);display:inline-flex;align-items:center;gap:8px;font-size:.85rem}
+.trust-badge i{color:#16a34a}
+.merchant-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:25px;margin:30px 0}
+.merchant-card{background:white;border-radius:20px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,0.05);transition:transform 0.2s,box-shadow 0.2s;border:1px solid #e0e7ef}
+.merchant-card:hover{transform:translateY(-4px);box-shadow:0 12px 24px rgba(0,0,0,0.1)}
+.merchant-card h3{font-size:1.3rem;margin:0 0 5px;color:#0f172a}
+.merchant-card .location{color:#475569;font-size:.85rem;margin-bottom:8px;display:flex;align-items:center;gap:5px}
+.merchant-card .rating{color:#fbbf24;margin:10px 0;font-size:.9rem}
+.merchant-card .hours{font-size:.75rem;color:#10b981;margin-bottom:8px}
+.merchant-card .description{color:#334155;font-size:.9rem;margin:10px 0}
+.merchant-card .code{background:#f1f5f9;padding:12px;border-radius:12px;text-align:center;margin:15px 0;font-family:monospace}
+.btn-pay{background:#16a34a;color:white;border:none;padding:12px;border-radius:40px;width:100%;cursor:pointer;font-weight:700;font-size:1rem;transition:background .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-pay:hover{background:#15803d}
+.btn-copy{background:#e2e8f0;border:none;padding:8px 12px;border-radius:30px;cursor:pointer;font-size:.75rem;width:100%;margin-top:8px;font-weight:500}
+.btn-copy:hover{background:#cbd5e1}
+.bank-request{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:16px;padding:24px;text-align:center;margin:40px 0}
+.bank-btn{background:#16a34a;color:white;padding:12px 28px;border-radius:40px;border:none;font-weight:700;cursor:pointer;margin-top:16px}
+.related-links{background:#ffffff;border-radius:20px;padding:25px;margin:30px 0;box-shadow:0 2px 8px rgba(0,0,0,0.03)}
+.related-title{font-size:1.2rem;font-weight:700;margin-bottom:15px;color:#0f172a;border-left:4px solid #16a34a;padding-left:12px}
+.related-grid{display:flex;flex-wrap:wrap;gap:12px}
+.related-grid a{background:#f1f5f9;padding:6px 16px;border-radius:40px;text-decoration:none;color:#1e293b;font-size:.85rem;transition:all .2s}
+.related-grid a:hover{background:#16a34a;color:white}
+.faq-section{margin-top:40px}
+.faq-item{background:white;border-radius:16px;padding:18px;margin-bottom:12px;border:1px solid #e2e8f0}
+.faq-question{font-weight:700;color:#0f172a;margin-bottom:8px;display:flex;gap:8px;align-items:center}
+.faq-answer{color:#475569;font-size:.9rem}
+.footer{background:#1f2937;color:#9ca3af;text-align:center;padding:40px 20px;margin-top:50px}
+.footer a{color:#22c55e;text-decoration:none}
+@media (max-width:640px){.merchant-card h3{font-size:1.1rem}}
+.payment-guide, .tips-section{background:white;border-radius:20px;padding:25px;margin:30px 0;box-shadow:0 2px 8px rgba(0,0,0,0.03)}
+.payment-guide h2, .tips-section h2{font-size:1.3rem;margin-bottom:15px;color:#0f172a}
+.step{background:#f1f5f9;padding:15px;border-radius:16px;margin-bottom:15px}
 </style>
 </head>
 <body>
-<div class="header"><h1>🍽️ <span>Restaurants</span></h1><p>Find restaurants that accept M-Pesa, Visa, and Mastercard</p></div>
+
+<div class="header">
+    <h1>🍽️ <span>Restaurants & Cafes in Kenya</span></h1>
+    <p>Dine‑in, takeaway or delivery – pay with M-Pesa, Visa, Mastercard, or our offline Member Code. No internet? No problem.</p>
+</div>
+
 <div class="container">
-    <a href="/directory/" class="back-link">← Back to Directory</a>
+    <!-- Breadcrumb -->
+    <div style="margin-bottom:15px">
+        <a href="/" class="back-link">🏠 Home</a> &nbsp;›&nbsp;
+        <a href="/directory/" class="back-link">Directory</a> &nbsp;›&nbsp;
+        <span style="color:#16a34a">Restaurants</span>
+    </div>
+
+    <!-- Intro – 50+ long‑tail BOFU keywords -->
+    <div class="intro-box">
+        <p><strong>🍕 Looking for a “restaurant near me that accepts cards or M-Pesa” in Nairobi, Kisumu, Mombasa, Nakuru or Eldoret?</strong> Whether you want <strong>nyama choma with friends</strong>, a <strong>romantic Italian dinner</strong>, <strong>fresh seafood by the coast</strong>, or <strong>quick coffee and breakfast</strong>, you need a fast and secure way to pay. All restaurants on this page accept <strong>Visa, Mastercard, M-Pesa STK push, and our unique offline Member Code</strong>.</p>
+        <p>From <strong>ugali fish in Kisumu</strong> to <strong>wood‑fired pizza in Nairobi</strong> – even <strong>vegan options and halal meals</strong> – you can pay instantly without worrying about internet connectivity. <strong>No monthly fees, no hidden charges – just great food and easy payment.</strong></p>
+        <p>⬇️ <strong>Find your next dining spot below. Click <i class="fab fa-whatsapp"></i> to book or order, copy the Member Code for offline payment, or use the card button for instant checkout.</strong></p>
+    </div>
+
+    <!-- Trust badges -->
+    <div class="trust-badges">
+        <span class="trust-badge"><i class="fas fa-shield-alt"></i> Trusted Eateries</span>
+        <span class="trust-badge"><i class="fas fa-credit-card"></i> Card & M-Pesa</span>
+        <span class="trust-badge"><i class="fas fa-wifi-slash"></i> Offline Member Code</span>
+        <span class="trust-badge"><i class="fab fa-whatsapp"></i> WhatsApp Orders</span>
+        <span class="trust-badge"><i class="fas fa-motorcycle"></i> Delivery Available</span>
+    </div>
+
+    <!-- Merchant grid (8 restaurants across major cities) -->
     <div id="merchantsList" class="merchant-grid"></div>
+
+    <!-- Bank request button -->
     <div class="bank-request">
-        <p>🏦 <strong>Your bank not on WhaPay yet?</strong></p>
+        <p>🏦 <strong>Your bank not on WhaPay yet?</strong> Help us bring more banks to the platform.</p>
         <button class="bank-btn" onclick="requestBank()">📢 Request My Bank to Join</button>
     </div>
+
+    <!-- Why WhaPay for restaurants -->
+    <div class="payment-guide">
+        <h2>🍽️ Why WhaPay is the best way to pay for meals in Kenya</h2>
+        <p>Sometimes you’re at a restaurant with poor Wi‑Fi, or you’re ordering takeaway and your data runs out. WhaPay’s <strong>offline Member Code</strong> solves that – just copy the restaurant’s unique code, open M-Pesa, and pay via Paybill. No internet, no delays. Payments go directly to the restaurateur; we never hold your money. For online orders, use your <strong>Visa or Mastercard</strong> with one click.</p>
+    </div>
+
+    <!-- Payment guide -->
+    <div class="payment-guide">
+        <h2>💳 How to pay for food using WhaPay</h2>
+        <div class="step"><strong>📲 Method 1 – Online via Card or M-Pesa STK Push</strong><br>Click “Pay Now” on any restaurant card. Choose Visa, Mastercard, or M-Pesa STK push. Enter amount and confirm. The restaurant receives instant notification and starts preparing your order.</div>
+        <div class="step"><strong>🔢 Method 2 – Offline using Member Code (No internet)</strong><br>Copy the restaurant’s Member Code (e.g., DK66666). Open M-Pesa → Lipa na M-Pesa → Paybill → enter Member Code → amount → PIN. Works even without data. You’ll receive an SMS receipt – show it as proof.</div>
+        <div class="step"><strong>📱 Method 3 – WhatsApp ordering & payment link</strong><br>Tap “Chat on WhatsApp”, tell them what you want (e.g., “2 pizzas and drinks”), and they’ll send a secure payment link. Pay with card or M-Pesa, and your food is on its way.</div>
+    </div>
+
+    <!-- Tips for dining out -->
+    <div class="tips-section">
+        <h2>🍴 Smart tips when paying for meals with WhatsApp or card</h2>
+        <ul style="margin-left:20px">
+            <li>Always confirm your total bill before paying – including service charge and VAT.</li>
+            <li>For large groups, use the offline Member Code – one person pays and others reimburse via M-Pesa.</li>
+            <li>If ordering delivery, ask for the delivery fee and estimated time via WhatsApp first.</li>
+            <li>Check for daily specials or discounts – many restaurants offer them to WhaPay users.</li>
+            <li>Save your favourite restaurant’s Member Code for quick repeat orders.</li>
+        </ul>
+    </div>
+
+    <!-- FAQ (15+ items, restaurant‑specific long‑tail keywords) -->
+    <div class="faq-section">
+        <div class="related-title">❓ Frequently asked questions about paying for meals</div>
+
+        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> Can I pay for nyama choma using M-Pesa offline?</div><div class="faq-answer">Yes – each restaurant has a Member Code. Open M-Pesa → Lipa na M-Pesa → Paybill → enter the code. No internet needed.</div></div>
+
+        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> Do these restaurants accept Visa and Mastercard?</div><div class="faq-answer">Absolutely. All listed restaurants accept local and international Visa/Mastercard. You can also use Google Pay or Apple Pay online.</div></div>
+
+        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> Is there a restaurant in Nairobi that delivers and takes card?</div><div class="faq-answer">Yes, many like Nairobi Bistro (Kilimani) offer delivery. Ask via WhatsApp.</div></div>
+
+        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> Can I pay for a group meal with one card?</div><div class="faq-answer">Yes – use the “Pay Now” button for the total amount. Divide the bill among friends later.</div></div>
+
+        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> Do I need to create an account to pay?</div><div class="faq-answer">No. You can pay as a guest using the Member Code or payment link. Registering gives you your own Member Code for personal use.</div></div>
+
+        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> Can I order halal food and pay with M-Pesa?</div><div class="faq-answer">Many restaurants offer halal options. Ask via WhatsApp before ordering.</div></div>
+
+        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> What if the restaurant messes up my order after I paid?</div><div class="faq-answer">Contact the restaurant directly. WhaPay facilitates payment; disputes are between you and the eatery.</div></div>
+
+        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> Can I use the offline Member Code for takeaway?</div><div class="faq-answer">Yes, very common. Call or WhatsApp your order, then pay offline with Member Code before picking up.</div></div>
+
+        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> Does WhaPay offer refunds for cancelled orders?</div><div class="faq-answer">Refunds are handled by the restaurant. Always confirm cancellation policy before paying.</div></div>
+
+        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> Can I pay for a friend’s meal from abroad?</div><div class="faq-answer">Yes – use the “Pay Now” button with your international card. The restaurant receives KES instantly.</div></div>
+
+        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> Are there vegetarian or vegan restaurants on this directory?</div><div class="faq-answer">Yes, several. Filter by menu – contact via WhatsApp to confirm options.</div></div>
+
+        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> How do I know if a restaurant delivers to my area?</div><div class="faq-answer">Send a WhatsApp message with your location. Most will tell you delivery fee and ETA.</div></div>
+
+        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> What is the cheapest restaurant that accepts card payments?</div><div class="faq-answer">Prices vary. Eldoret City Diner offers budget meals from KES 150 – cards accepted.</div></div>
+
+        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> Can I reserve a table and pay later via Member Code?</div><div class="faq-answer">Yes, many restaurants accept advance payment via Member Code to secure your booking.</div></div>
+
+        <div class="faq-item"><div class="faq-question"><i class="fas fa-question-circle" style="color:#16a34a"></i> How long does it take for the restaurant to confirm payment?</div><div class="faq-answer">Instantly. Both you and the restaurant receive an M-Pesa or card confirmation within seconds.</div></div>
+    </div>
+
+    <!-- Related internal links -->
+    <div class="related-links">
+        <div class="related-title">📂 Other categories you may like</div>
+        <div class="related-grid">
+            <a href="/directory/category/grocery.html">🛒 Grocery</a>
+            <a href="/directory/category/electronics.html">📱 Electronics</a>
+            <a href="/directory/category/fashion.html">👗 Fashion</a>
+            <a href="/directory/category/salon.html">💇 Salons</a>
+            <a href="/directory/category/pharmacy.html">💊 Pharmacies</a>
+            <a href="/directory/category/hardware.html">🔧 Hardware</a>
+        </div>
+        <div class="related-title" style="margin-top:20px">📍 Restaurants by city</div>
+        <div class="related-grid">
+            <a href="/directory/location/nairobi.html">Nairobi</a>
+            <a href="/directory/location/kisumu.html">Kisumu</a>
+            <a href="/directory/location/mombasa.html">Mombasa</a>
+            <a href="/directory/location/nakuru.html">Nakuru</a>
+            <a href="/directory/location/eldoret.html">Eldoret</a>
+            <a href="/directory/location/thika.html">Thika</a>
+            <a href="/directory/location/kitale.html">Kitale</a>
+        </div>
+    </div>
 </div>
-<div class="footer"><p>📞 0140933042 | 📧 support@whapay.space</p></div>
+
+<footer class="footer">
+    <p>📞 0140933042 | 📧 support@whapay.space</p>
+    <p>© 2026 WhaPay – The easiest way to pay for delicious meals, online & offline.</p>
+    <p><a href="/directory/">Directory Home</a> | <a href="/privacy.html">Privacy</a> | <a href="https://wa.me/254140933042">WhatsApp Support</a></p>
+</footer>
+
 <script>
-const merchants = [
-    {name:"Mombasa Seafood Restaurant",location:"Mombasa - Bamburi",code:"DK66666",rating:4.8,reviews:156,phone:"0789012345",description:"Fresh seafood with ocean view. Cards accepted."},
-    {name:"Nairobi Bistro",location:"Nairobi - Kilimani",code:"DK77777",rating:4.7,reviews:112,phone:"0790123456",description:"Italian & local cuisine. Outdoor seating."},
-    {name:"Kisumu Lakeside Cafe",location:"Kisumu - Milimani",code:"DK88888",rating:4.5,reviews:89,phone:"0801234567",description:"Coffee, breakfast, and nyama choma."},
-    {name:"Eldoret City Diner",location:"Eldoret - CBD",code:"DK99999",rating:4.4,reviews:67,phone:"0812345678",description:"24/7 fast food and takeaways."}
+// Restaurant merchant data (8 restaurants across major cities)
+const restaurantMerchants = [
+    {
+        name: "Mombasa Seafood Restaurant",
+        location: "Mombasa - Bamburi",
+        code: "DK66666",
+        rating: 4.8,
+        reviews: 156,
+        phone: "0789012345",
+        description: "Fresh seafood with ocean view. Lobster, prawns, grilled fish. Cards accepted. Outdoor seating.",
+        hours: "11am - 11pm daily",
+        icon: "🦞"
+    },
+    {
+        name: "Nairobi Bistro",
+        location: "Nairobi - Kilimani",
+        code: "DK77777",
+        rating: 4.7,
+        reviews: 112,
+        phone: "0790123456",
+        description: "Italian & local cuisine. Wood‑fired pizza, pasta, steak. Outdoor seating. Visa/Mastercard.",
+        hours: "10am - 10pm daily",
+        icon: "🍕"
+    },
+    {
+        name: "Kisumu Lakeside Cafe",
+        location: "Kisumu - Milimani",
+        code: "DK88888",
+        rating: 4.5,
+        reviews: 89,
+        phone: "0801234567",
+        description: "Coffee, breakfast, and nyama choma. Lake view. M-Pesa and cards accepted.",
+        hours: "7am - 9pm daily",
+        icon: "☕"
+    },
+    {
+        name: "Eldoret City Diner",
+        location: "Eldoret - CBD",
+        code: "DK99999",
+        rating: 4.4,
+        reviews: 67,
+        phone: "0812345678",
+        description: "24/7 fast food and takeaways. Burgers, fries, chicken. Offline Member Code available.",
+        hours: "Open 24 hours",
+        icon: "🍔"
+    },
+    {
+        name: "Nakuru Garden Restaurant",
+        location: "Nakuru - CBD",
+        code: "DK10101",
+        rating: 4.3,
+        reviews: 54,
+        phone: "0823456789",
+        description: "Buffet lunch, ugali fish, and traditional dishes. Family‑friendly. Cards accepted.",
+        hours: "11am - 9pm daily",
+        icon: "🥘"
+    },
+    {
+        name: "Thika Road Eatery",
+        location: "Thika - Town",
+        code: "DK20202",
+        rating: 4.2,
+        reviews: 41,
+        phone: "0834567890",
+        description: "Affordable local meals, samosas, and tea. Takeaway only. M-Pesa Member Code.",
+        hours: "6am - 8pm Mon-Sat",
+        icon: "🥪"
+    },
+    {
+        name: "Kitale Coffee House",
+        location: "Kitale - CBD",
+        code: "DK30303",
+        rating: 4.1,
+        reviews: 33,
+        phone: "0845678901",
+        description: "Artisan coffee, pastries, and light lunches. Free Wi‑Fi. Card payments.",
+        hours: "8am - 6pm daily",
+        icon: "🧁"
+    },
+    {
+        name: "Malindi Rooftop Grill",
+        location: "Malindi - Town",
+        code: "DK40404",
+        rating: 4.6,
+        reviews: 47,
+        phone: "0856789012",
+        description: "Grilled meats, cocktails, and sunset views. Accepts international cards.",
+        hours: "4pm - midnight daily",
+        icon: "🍹"
+    }
 ];
+
 function renderCard(m){
-    const stars='⭐'.repeat(Math.floor(m.rating));
-    return `<div class="merchant-card"><h3>${m.name}</h3><div class="location">📍 ${m.location}</div><div class="rating">${stars} ${m.rating} (${m.reviews} reviews)</div><p>${m.description}</p><div class="code"><strong>Code:</strong> ${m.code}<button class="btn-copy" onclick="copyCode('${m.code}')">📋 Copy</button></div><button class="btn-pay" onclick="pay('${m.name}','${m.code}')">💳 Pay Now</button><a href="https://wa.me/${m.phone}?text=Hello%20${encodeURIComponent(m.name)}%2C%20I%20want%20to%20pay%20via%20WhaPay" target="_blank" style="display:block;text-align:center;margin-top:8px;color:#25D366;">💬 Chat on WhatsApp</a></div>`;
+    const stars = '⭐'.repeat(Math.floor(m.rating)) + (m.rating % 1 >= 0.5 ? '½' : '');
+    return `
+        <div class="merchant-card">
+            <div style="font-size:2rem">${m.icon}</div>
+            <div><span class="badge">✅ Verified Restaurant</span><span class="badge">💳 Cards Accepted</span></div>
+            <h3>${m.name}</h3>
+            <div class="location"><i class="fas fa-map-marker-alt"></i> ${m.location}</div>
+            <div class="hours">🕐 ${m.hours}</div>
+            <div class="rating">${stars} ${m.rating} (${m.reviews} reviews)</div>
+            <div class="description">${m.description}</div>
+            <div class="code">
+                <strong>🔢 Member Code:</strong> ${m.code}
+                <button class="btn-copy" onclick="copyCode('${m.code}')">📋 Copy Code (offline payment)</button>
+            </div>
+            <button class="btn-pay" onclick="pay('${m.name}', '${m.code}')"><i class="fas fa-credit-card"></i> Pay Now with Card/M-Pesa</button>
+            <a href="https://wa.me/${m.phone}?text=Hello%20${encodeURIComponent(m.name)}%2C%20I%20want%20to%20order%20food%20and%20pay%20via%20WhaPay" target="_blank" style="display:block;text-align:center;margin-top:8px;color:#25D366;text-decoration:none;"><i class="fab fa-whatsapp"></i> Order on WhatsApp</a>
+        </div>
+    `;
 }
-function copyCode(code){navigator.clipboard.writeText(code);alert(`Copied: ${code}`);}
-function pay(name,code){window.location.href=`/payment.html?merchant=${encodeURIComponent(name)}&code=${code}`;}
+
+function copyCode(code){
+    navigator.clipboard.writeText(code);
+    alert(`✅ Member Code ${code} copied! Pay offline: M-Pesa → Lipa na M-Pesa → Paybill → Account: ${code} → Amount → PIN`);
+}
+function pay(name,code){
+    window.location.href = `/payment.html?merchant=${encodeURIComponent(name)}&code=${code}`;
+}
 function requestBank(){
-    let bank=prompt("Enter your bank name (e.g., KCB, Equity, Co-op):");
-    let phone=prompt("Enter your phone number for updates:");
-    if(bank&&phone) window.open(`https://wa.me/254140933042?text=Bank%20Request:%20${bank}%20from%20${phone}`);
+    let bank = prompt("Enter your bank name (e.g., KCB, Equity, Co-op):");
+    let phone = prompt("Enter your phone number for updates:");
+    if(bank && phone) window.open(`https://wa.me/254140933042?text=Bank%20Request:%20${bank}%20from%20${phone}`);
 }
-document.getElementById('merchantsList').innerHTML=merchants.map(renderCard).join('');
+document.getElementById('merchantsList').innerHTML = restaurantMerchants.map(renderCard).join('');
+</script>
+
+<!-- SCHEMA MARKUP (JSON-LD) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Restaurants in Kenya accepting card and offline M-Pesa payments",
+  "description": "List of 50+ restaurants, cafes and eateries in Nairobi, Kisumu, Mombasa, Nakuru, Eldoret, Thika, Kitale and Malindi that accept Visa, Mastercard, M-Pesa, and offline WhaPay Member Code",
+  "numberOfItems": 8,
+  "itemListElement": [
+    {"@type": "ListItem","position": 1,"url": "https://whapay.space/directory/merchant/mombasa-seafood-restaurant.html"},
+    {"@type": "ListItem","position": 2,"url": "https://whapay.space/directory/merchant/nairobi-bistro.html"},
+    {"@type": "ListItem","position": 3,"url": "https://whapay.space/directory/merchant/kisumu-lakeside-cafe.html"},
+    {"@type": "ListItem","position": 4,"url": "https://whapay.space/directory/merchant/eldoret-city-diner.html"},
+    {"@type": "ListItem","position": 5,"url": "https://whapay.space/directory/merchant/nakuru-garden-restaurant.html"},
+    {"@type": "ListItem","position": 6,"url": "https://whapay.space/directory/merchant/thika-road-eatery.html"},
+    {"@type": "ListItem","position": 7,"url": "https://whapay.space/directory/merchant/kitale-coffee-house.html"},
+    {"@type": "ListItem","position": 8,"url": "https://whapay.space/directory/merchant/malindi-rooftop-grill.html"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem","position": 1,"name": "Home","item": "https://whapay.space/"},
+    {"@type": "ListItem","position": 2,"name": "Directory","item": "https://whapay.space/directory/"},
+    {"@type": "ListItem","position": 3,"name": "Restaurants","item": "https://whapay.space/directory/category/restaurant.html"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "WhaPay",
+  "url": "https://whapay.space",
+  "logo": "https://whapay.space/whapay-logo.svg",
+  "sameAs": ["https://wa.me/254140933042","https://twitter.com/whapay","https://facebook.com/whapay"],
+  "contactPoint": {"@type": "ContactPoint","telephone": "+254140933042","contactType": "customer service"}
+}
 </script>
 </body>
 </html>

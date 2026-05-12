@@ -677,6 +677,123 @@
     });
   }
 
+// ========== DIRECTORY MERCHANTS MANAGEMENT (New separate tab) ==========
+let allDirectoryMerchants = [];
+
+function loadDirectoryMerchants() {
+  const q = query(collection(db, "merchants"));
+  onSnapshot(q, (snap) => {
+    allDirectoryMerchants = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderDirectoryMerchantsTable();
+  });
+}
+
+function renderDirectoryMerchantsTable() {
+  const tbody = document.getElementById('dirMerchantTableBody');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+  allDirectoryMerchants.forEach(m => {
+    const premiumStar = m.premium ? '⭐' : '';
+    const ratingDisplay = m.rating ? `${m.rating}⭐` : '—';
+    tbody.innerHTML += `<tr class="border-b">
+      <td class="p-2 border">${escapeHtml(m.businessName || '-')} ${premiumStar}</td>
+      <td class="p-2 border font-mono">${m.code || '-'}</td>
+      <td class="p-2 border capitalize">${m.category || '-'}</td>
+      <td class="p-2 border">${escapeHtml(m.location || '')} ${m.area ? `(${m.area})` : ''}</td>
+      <td class="p-2 border">${ratingDisplay}</td>
+      <td class="p-2 border">${m.premium ? 'Yes' : 'No'}</td>
+      <td class="p-2 border"><span class="px-2 py-1 rounded text-xs ${m.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">${m.status || 'active'}</span></td>
+      <td class="p-2 border">
+        <button class="editDirMerchant bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs mr-1" data-id="${m.id}">Edit</button>
+        <button class="deleteDirMerchant bg-red-100 text-red-700 px-2 py-1 rounded text-xs" data-id="${m.id}">Delete</button>
+      </td>
+    </tr>`;
+  });
+  attachDirectoryMerchantActions();
+}
+
+function attachDirectoryMerchantActions() {
+  document.querySelectorAll('.editDirMerchant').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.getAttribute('data-id');
+      const merchant = allDirectoryMerchants.find(m => m.id === id);
+      if (!merchant) return;
+      showModal('Edit Directory Merchant', [
+        { id: 'businessName', label: 'Business Name', value: merchant.businessName || '' },
+        { id: 'phone', label: 'Phone', value: merchant.phone || '' },
+        { id: 'code', label: 'Member Code', value: merchant.code || '' },
+        { id: 'category', label: 'Category (grocery/salon/hardware/restaurant/electronics/fashion/pharmacy)', value: merchant.category || '' },
+        { id: 'location', label: 'City (nairobi/kisumu/mombasa/nakuru/eldoret/thika/kitale/malindi)', value: merchant.location || '' },
+        { id: 'area', label: 'Area (e.g., CBD, Westlands)', value: merchant.area || '' },
+        { id: 'hours', label: 'Opening Hours', value: merchant.hours || '' },
+        { id: 'description', label: 'Description', value: merchant.description || '' },
+        { id: 'imageIcon', label: 'Emoji Icon (e.g., 🛒)', value: merchant.imageIcon || '🛒' },
+        { id: 'rating', label: 'Rating (1-5)', value: merchant.rating || '' },
+        { id: 'premium', label: 'Premium (true/false)', value: merchant.premium ? 'true' : 'false' },
+        { id: 'status', label: 'Status (active/inactive)', value: merchant.status || 'active' }
+      ], async (vals) => {
+        await updateDoc(doc(db, 'merchants', id), {
+          businessName: vals.businessName,
+          phone: vals.phone,
+          code: vals.code,
+          category: vals.category,
+          location: vals.location,
+          area: vals.area,
+          hours: vals.hours,
+          description: vals.description,
+          imageIcon: vals.imageIcon,
+          rating: parseFloat(vals.rating) || 0,
+          premium: vals.premium === 'true',
+          status: vals.status
+        });
+        showToast('Directory merchant updated');
+      });
+    });
+  });
+
+  document.querySelectorAll('.deleteDirMerchant').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      if (confirm('Delete this merchant from the directory?')) {
+        await deleteDoc(doc(db, 'merchants', btn.getAttribute('data-id')));
+        showToast('Merchant deleted');
+      }
+    });
+  });
+}
+
+// Add new merchant for directory
+document.getElementById('addDirMerchantBtn')?.addEventListener('click', () => {
+  showModal('Add Directory Merchant', [
+    { id: 'businessName', label: 'Business Name' },
+    { id: 'phone', label: 'Phone Number' },
+    { id: 'category', label: 'Category (grocery/salon/hardware/restaurant/electronics/fashion/pharmacy)' },
+    { id: 'location', label: 'City (nairobi/kisumu/mombasa/nakuru/eldoret/thika/kitale/malindi)' },
+    { id: 'area', label: 'Area (e.g., CBD, Westlands)' },
+    { id: 'hours', label: 'Opening Hours' },
+    { id: 'description', label: 'Short Description' },
+    { id: 'imageIcon', label: 'Emoji Icon', value: '🛒' },
+    { id: 'premium', label: 'Premium (true/false)', value: 'false' }
+  ], async (vals) => {
+    const code = await generateUniqueMemberCode(vals.businessName);
+    await addDoc(collection(db, 'merchants'), {
+      businessName: vals.businessName,
+      phone: vals.phone,
+      code: code,
+      category: vals.category,
+      location: vals.location,
+      area: vals.area,
+      hours: vals.hours,
+      description: vals.description,
+      imageIcon: vals.imageIcon,
+      rating: 0,
+      premium: vals.premium === 'true',
+      status: 'active',
+      createdAt: serverTimestamp()
+    });
+    showToast(`Merchant added with code: ${code}`);
+  });
+});
+  
   function renderBlogs() {
     const tbody = document.getElementById('blogTableBody');
     if (!tbody) return;

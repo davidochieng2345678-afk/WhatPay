@@ -7,7 +7,7 @@
 <meta name="description" content="Find merchants in Kenya accepting M-Pesa, Visa, and Mastercard payments. Search grocery stores, salons, hardware shops in Nairobi, Kisumu, Mombasa.">
 <link rel="canonical" href="https://whapay.space/directory/">
 <style>
-*{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;background:#f5f5f5}.header{background:linear-gradient(135deg,#0a0f1e 0%,#0f1629 100%);color:white;padding:50px 20px;text-align:center}.header h1{font-size:2rem;margin-bottom:10px}.header h1 span{color:#22c55e}.header p{color:rgba(255,255,255,0.6);margin-bottom:25px}.logo-link{display:inline-block;margin-bottom:20px;color:#22c55e;text-decoration:none}.search-container{max-width:600px;margin:0 auto}.search-box{width:100%;padding:16px 20px;font-size:16px;border:none;border-radius:50px;outline:none;box-shadow:0 4px 15px rgba(0,0,0,0.2)}.container{max-width:1200px;margin:0 auto;padding:30px 20px}.section-title{font-size:1.5rem;color:#1f2937;margin-bottom:20px;padding-bottom:10px;border-bottom:3px solid #22c55e;display:inline-block}.grid-4{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:20px;margin:30px 0 50px}.category-card,.location-card{background:white;padding:25px 20px;border-radius:16px;text-align:center;text-decoration:none;display:block;border:1px solid #e5e7eb;transition:transform 0.2s}.category-card:hover,.location-card:hover{transform:translateY(-5px);box-shadow:0 10px 30px rgba(0,0,0,0.1)}.category-card .icon{font-size:48px;margin-bottom:10px}.category-card h3{color:#1f2937;font-size:1.1rem}.category-card .count,.location-card .count{color:#6b7280;font-size:0.8rem}.merchant-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;margin-top:20px}.merchant-card{background:white;border-radius:16px;padding:20px;border:1px solid #e5e7eb;transition:transform 0.2s}.merchant-card:hover{transform:translateY(-3px);box-shadow:0 5px 20px rgba(0,0,0,0.08)}.merchant-card h3{color:#1f2937;margin-bottom:5px}.merchant-card .location{color:#6b7280;font-size:0.8rem;margin-bottom:10px}.merchant-card .category{display:inline-block;background:#dcfce7;color:#166534;padding:3px 10px;border-radius:20px;font-size:0.7rem;margin-bottom:10px}.merchant-card .rating{color:#fbbf24;margin-bottom:10px}.merchant-card .code{background:#f3f4f6;padding:8px;border-radius:8px;font-family:monospace;font-size:0.8rem;margin:10px 0;text-align:center}.btn-pay{background:#16a34a;color:white;border:none;padding:10px 15px;border-radius:10px;width:100%;cursor:pointer;font-weight:600;margin-top:10px}.btn-pay:hover{background:#15803d}.btn-copy{background:#e5e7eb;color:#374151;border:none;padding:8px 12px;border-radius:8px;cursor:pointer;font-size:0.75rem;width:100%;margin-top:8px}.stats-bar{background:#16a34a;color:white;padding:20px;text-align:center;border-radius:16px;margin:30px 0}.stats-bar .stats{display:flex;justify-content:space-around;flex-wrap:wrap;gap:20px}.footer{background:#1f2937;color:#9ca3af;text-align:center;padding:40px 20px;margin-top:50px}.footer a{color:#22c55e;text-decoration:none}.search-results{margin-top:30px}.hidden{display:none}@media(max-width:768px){.header h1{font-size:1.5rem}.grid-4{grid-template-columns:repeat(2,1fr)}}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;background:#f5f5f5}.header{background:linear-gradient(135deg,#0a0f1e 0%,#0f1629 100%);color:white;padding:50px 20px;text-align:center}.header h1{font-size:2rem;margin-bottom:10px}.header h1 span{color:#22c55e}.header p{color:rgba(255,255,255,0.6);margin-bottom:25px}.logo-link{display:inline-block;margin-bottom:20px;color:#22c55e;text-decoration:none}.search-container{max-width:600px;margin:0 auto}.search-box{width:100%;padding:16px 20px;font-size:16px;border:none;border-radius:50px;outline:none;box-shadow:0 4px 15px rgba(0,0,0,0.2)}.container{max-width:1200px;margin:0 auto;padding:30px 20px}.section-title{font-size:1.5rem;color:#1f2937;margin-bottom:20px;padding-bottom:10px;border-bottom:3px solid #22c55e;display:inline-block}.grid-4{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:20px;margin:30px 0 50px}.category-card,.location-card{background:white;padding:25px 20px;border-radius:16px;text-align:center;text-decoration:none;display:block;border:1px solid #e5e7eb;transition:transform 0.2s}.category-card:hover,.location-card:hover{transform:translateY(-5px);box-shadow:0 10px 30px rgba(0,0,0,0.1)}.category-card .icon{font-size:48px;margin-bottom:10px}.category-card h3{color:#1f2937;font-size:1.1rem}.category-card .count,.location-card .count{color:#6b7280;font-size:0.8rem}.merchant-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px;margin-top:20px}.merchant-card{background:white;border-radius:16px;padding:20px;border:1px solid #e5e7eb;transition:transform 0.2s;position:relative}.merchant-card:hover{transform:translateY(-3px);box-shadow:0 5px 20px rgba(0,0,0,0.08)}.merchant-card h3{color:#1f2937;margin-bottom:5px}.merchant-card .location{color:#6b7280;font-size:0.8rem;margin-bottom:10px}.merchant-card .category{display:inline-block;background:#dcfce7;color:#166534;padding:3px 10px;border-radius:20px;font-size:0.7rem;margin-bottom:10px}.merchant-card .rating{color:#fbbf24;margin-bottom:10px}.merchant-card .code{background:#f3f4f6;padding:8px;border-radius:8px;font-family:monospace;font-size:0.8rem;margin:10px 0;text-align:center}.btn-pay{background:#16a34a;color:white;border:none;padding:10px 15px;border-radius:10px;width:100%;cursor:pointer;font-weight:600;margin-top:10px}.btn-pay:hover{background:#15803d}.btn-copy{background:#e5e7eb;color:#374151;border:none;padding:8px 12px;border-radius:8px;cursor:pointer;font-size:0.75rem;width:100%;margin-top:8px}.premium-badge{position:absolute;top:12px;right:12px;background:gold;color:#333;padding:2px 8px;border-radius:20px;font-size:0.7rem;font-weight:bold}.stats-bar{background:#16a34a;color:white;padding:20px;text-align:center;border-radius:16px;margin:30px 0}.stats-bar .stats{display:flex;justify-content:space-around;flex-wrap:wrap;gap:20px}.footer{background:#1f2937;color:#9ca3af;text-align:center;padding:40px 20px;margin-top:50px}.footer a{color:#22c55e;text-decoration:none}.search-results{margin-top:30px}.hidden{display:none}.loader{text-align:center;padding:50px}.loader:after{content:" ";display:inline-block;width:40px;height:40px;border-radius:50%;border:4px solid #16a34a;border-color:#16a34a transparent #16a34a transparent;animation:spin 1s linear infinite}@keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}@media(max-width:768px){.header h1{font-size:1.5rem}.grid-4{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body>
@@ -25,11 +25,11 @@
     <div id="searchResults" class="search-results hidden"></div>
     <div id="categoriesSection">
         <h2 class="section-title">📂 Browse by Category</h2>
-        <div class="grid-4" id="categoriesGrid"></div>
+        <div class="grid-4" id="categoriesGrid"><div class="loader"></div></div>
     </div>
     <div id="locationsSection">
         <h2 class="section-title">📍 Browse by Location</h2>
-        <div class="grid-4" id="locationsGrid"></div>
+        <div class="grid-4" id="locationsGrid"><div class="loader"></div></div>
     </div>
     <div class="stats-bar">
         <div class="stats">
@@ -40,7 +40,7 @@
     </div>
     <div id="featuredSection">
         <h2 class="section-title">⭐ Featured Merchants</h2>
-        <div class="merchant-grid" id="featuredGrid"></div>
+        <div class="merchant-grid" id="featuredGrid"><div class="loader"></div></div>
     </div>
 </div>
 
@@ -51,97 +51,180 @@
 </div>
 
 <script>
-const merchants = [
-    {name:"Mary's Fresh Groceries",category:"grocery",categoryName:"Grocery",location:"nairobi",locationName:"Nairobi",area:"CBD",code:"DK12345",description:"Fresh fruits, vegetables, and household items",phone:"0712345678",rating:4.8,reviews:124,image:"🛒",premium:true},
-    {name:"James Beauty Salon",category:"salon",categoryName:"Salon",location:"nairobi",locationName:"Nairobi",area:"Westlands",code:"DK67890",description:"Hair styling, nails, and makeup",phone:"0723456789",rating:4.9,reviews:89,image:"💇",premium:true},
-    {name:"Peter's Hardware Store",category:"hardware",categoryName:"Hardware",location:"kisumu",locationName:"Kisumu",area:"CBD",code:"DK11111",description:"Building materials, tools, and paints",phone:"0734567890",rating:4.5,reviews:67,image:"🔧",premium:false},
-    {name:"Amina Fashion Boutique",category:"fashion",categoryName:"Fashion",location:"mombasa",locationName:"Mombasa",area:"Nyali",code:"DK22222",description:"Latest fashion, dresses, and accessories",phone:"0745678901",rating:4.7,reviews:45,image:"👗",premium:false},
-    {name:"Nakuru Electronics",category:"electronics",categoryName:"Electronics",location:"nakuru",locationName:"Nakuru",area:"CBD",code:"DK33333",description:"Phones, laptops, and accessories",phone:"0756789012",rating:4.6,reviews:112,image:"📱",premium:true},
-    {name:"Eldoret Pharmacy",category:"pharmacy",categoryName:"Pharmacy",location:"eldoret",locationName:"Eldoret",area:"CBD",code:"DK44444",description:"Medicines and health products",phone:"0767890123",rating:4.9,reviews:203,image:"💊",premium:false},
-    {name:"Kisumu Fresh Market",category:"grocery",categoryName:"Grocery",location:"kisumu",locationName:"Kisumu",area:"Milimani",code:"DK55555",description:"Local produce and organic foods",phone:"0778901234",rating:4.4,reviews:78,image:"🥬",premium:false},
-    {name:"Mombasa Seafood Restaurant",category:"restaurant",categoryName:"Restaurant",location:"mombasa",locationName:"Mombasa",area:"Bamburi",code:"DK66666",description:"Fresh seafood with ocean view",phone:"0789012345",rating:4.8,reviews:156,image:"🍽️",premium:true}
-];
+// ================================
+// 1. FETCH ALL MERCHANTS FROM BACKEND
+// ================================
+let allMerchants = [];
 
-const categories = [
-    {name:"Grocery Stores",slug:"grocery",icon:"🛒",count:merchants.filter(m=>m.category==="grocery").length},
-    {name:"Salons & Beauty",slug:"salon",icon:"💇",count:merchants.filter(m=>m.category==="salon").length},
-    {name:"Hardware Stores",slug:"hardware",icon:"🔧",count:merchants.filter(m=>m.category==="hardware").length},
-    {name:"Restaurants",slug:"restaurant",icon:"🍽️",count:merchants.filter(m=>m.category==="restaurant").length},
-    {name:"Electronics",slug:"electronics",icon:"📱",count:merchants.filter(m=>m.category==="electronics").length},
-    {name:"Fashion",slug:"fashion",icon:"👗",count:merchants.filter(m=>m.category==="fashion").length},
-    {name:"Pharmacy",slug:"pharmacy",icon:"💊",count:merchants.filter(m=>m.category==="pharmacy").length}
-];
+async function loadMerchants() {
+    try {
+        const res = await fetch('/api/directory/merchants');
+        const data = await res.json();
+        if (data.success) {
+            allMerchants = data.merchants;
+            renderAll();
+        } else {
+            console.error('Failed to load merchants', data.error);
+            showError();
+        }
+    } catch (err) {
+        console.error(err);
+        showError();
+    }
+}
 
-const locations = [
-    {name:"Nairobi",slug:"nairobi",count:merchants.filter(m=>m.location==="nairobi").length},
-    {name:"Kisumu",slug:"kisumu",count:merchants.filter(m=>m.location==="kisumu").length},
-    {name:"Mombasa",slug:"mombasa",count:merchants.filter(m=>m.location==="mombasa").length},
-    {name:"Nakuru",slug:"nakuru",count:merchants.filter(m=>m.location==="nakuru").length},
-    {name:"Eldoret",slug:"eldoret",count:merchants.filter(m=>m.location==="eldoret").length}
-];
+function showError() {
+    document.getElementById('categoriesGrid').innerHTML = '<div style="color:red">Failed to load merchants. Please refresh.</div>';
+    document.getElementById('locationsGrid').innerHTML = '';
+    document.getElementById('featuredGrid').innerHTML = '<div style="color:red">Failed to load merchants. Please refresh.</div>';
+}
 
-function displayCategories(){
-    document.getElementById('categoriesGrid').innerHTML = categories.map(c=>`<a href="#" onclick="filterByCategory('${c.slug}');return false;" class="category-card"><div class="icon">${c.icon}</div><h3>${c.name}</h3><div class="count">${c.count} merchants</div></a>`).join('');
+function renderAll() {
+    displayCategories();
+    displayLocations();
+    displayFeaturedMerchants();
+    document.getElementById('totalMerchants').innerText = allMerchants.length;
 }
-function displayLocations(){
-    document.getElementById('locationsGrid').innerHTML = locations.map(l=>`<a href="#" onclick="filterByLocation('${l.slug}');return false;" class="location-card"><h3>📍 ${l.name}</h3><div class="count">${l.count} merchants</div></a>`).join('');
+
+// ================================
+// 2. CATEGORIES & LOCATIONS (dynamic counts)
+// ================================
+const categoryMap = {
+    grocery: { name:"Grocery Stores", icon:"🛒" },
+    salon: { name:"Salons & Beauty", icon:"💇" },
+    hardware: { name:"Hardware Stores", icon:"🔧" },
+    restaurant: { name:"Restaurants", icon:"🍽️" },
+    electronics: { name:"Electronics", icon:"📱" },
+    fashion: { name:"Fashion", icon:"👗" },
+    pharmacy: { name:"Pharmacy", icon:"💊" }
+};
+
+function displayCategories() {
+    const cats = {};
+    allMerchants.forEach(m => { if(m.category) cats[m.category] = (cats[m.category]||0)+1; });
+    const html = Object.entries(cats).map(([slug, count]) => {
+        const info = categoryMap[slug] || { name:slug, icon:"🏪" };
+        return `<a href="#" onclick="filterByCategory('${slug}');return false;" class="category-card">
+                    <div class="icon">${info.icon}</div>
+                    <h3>${info.name}</h3>
+                    <div class="count">${count} merchants</div>
+                </a>`;
+    }).join('');
+    document.getElementById('categoriesGrid').innerHTML = html || '<div>No categories found</div>';
 }
-function displayFeaturedMerchants(){
-    const featured = merchants.filter(m=>m.premium===true).slice(0,6);
-    document.getElementById('featuredGrid').innerHTML = featured.map(renderMerchantCard).join('');
-    document.getElementById('totalMerchants').innerText = merchants.length;
+
+function displayLocations() {
+    const locs = {};
+    allMerchants.forEach(m => { if(m.location) locs[m.location] = (locs[m.location]||0)+1; });
+    const locationNames = { nairobi:"Nairobi", kisumu:"Kisumu", mombasa:"Mombasa", nakuru:"Nakuru", eldoret:"Eldoret" };
+    const html = Object.entries(locs).map(([slug, count]) => {
+        const name = locationNames[slug] || slug;
+        return `<a href="#" onclick="filterByLocation('${slug}');return false;" class="location-card">
+                    <h3>📍 ${name}</h3>
+                    <div class="count">${count} merchants</div>
+                </a>`;
+    }).join('');
+    document.getElementById('locationsGrid').innerHTML = html || '<div>No locations found</div>';
 }
-function renderMerchantCard(m){
-    const stars = '⭐'.repeat(Math.floor(m.rating));
-    return `<div class="merchant-card"><div style="font-size:40px;">${m.image}</div><h3>${m.name}</h3><div class="location">📍 ${m.locationName} - ${m.area}</div><span class="category">${m.categoryName}</span><div class="rating">${stars} ${m.rating} (${m.reviews} reviews)</div><p style="font-size:0.8rem;color:#6b7280;margin:10px 0;">${m.description}</p><div class="code"><strong>Member Code:</strong> ${m.code}<button class="btn-copy" onclick="copyCode('${m.code}')">📋 Copy Code</button></div><button class="btn-pay" onclick="payMerchant('${m.name}','${m.code}')">💳 Pay Now via WhaPay</button><a href="https://wa.me/${m.phone}?text=Hello%20${encodeURIComponent(m.name)}%2C%20I%20want%20to%20pay%20via%20WhaPay" target="_blank" style="display:block;text-align:center;margin-top:8px;color:#25D366;text-decoration:none;font-size:0.75rem;">💬 Chat on WhatsApp</a></div>`;
+
+// ================================
+// 3. RENDER MERCHANT CARD (with link to individual page)
+// ================================
+function renderMerchantCard(m) {
+    const stars = '⭐'.repeat(Math.floor(m.rating || 0));
+    const premiumBadge = m.premium ? '<div class="premium-badge">⭐ Featured</div>' : '';
+    return `<div class="merchant-card">
+                ${premiumBadge}
+                <div style="font-size:40px;">${m.image || '🏪'}</div>
+                <h3><a href="/directory/merchant/${m.merchantCode}" style="text-decoration:none;color:#1f2937;">${m.businessName}</a></h3>
+                <div class="location">📍 ${m.locationName || m.location} - ${m.area || ''}</div>
+                <span class="category">${m.categoryName || m.category}</span>
+                <div class="rating">${stars} ${m.rating || 0} (${m.reviews || 0} reviews)</div>
+                <p style="font-size:0.8rem;color:#6b7280;margin:10px 0;">${m.description || ''}</p>
+                <div class="code">
+                    <strong>Member Code:</strong> ${m.merchantCode}
+                    <button class="btn-copy" onclick="copyCode('${m.merchantCode}')">📋 Copy Code</button>
+                </div>
+                <button class="btn-pay" onclick="payMerchant('${m.businessName}','${m.merchantCode}')">💳 Pay Now via WhaPay</button>
+                ${m.phone ? `<a href="https://wa.me/${m.phone}?text=Hello%20${encodeURIComponent(m.businessName)}%2C%20I%20want%20to%20pay%20via%20WhaPay" target="_blank" style="display:block;text-align:center;margin-top:8px;color:#25D366;text-decoration:none;font-size:0.75rem;">💬 Chat on WhatsApp</a>` : ''}
+            </div>`;
 }
-function renderSearchResults(merchantsToShow){
+
+function displayFeaturedMerchants() {
+    const featured = allMerchants.filter(m => m.premium === true).slice(0, 6);
+    const grid = document.getElementById('featuredGrid');
+    grid.innerHTML = featured.length ? featured.map(renderMerchantCard).join('') : '<div>No featured merchants yet</div>';
+}
+
+// ================================
+// 4. SEARCH & FILTER
+// ================================
+function renderSearchResults(merchantsToShow) {
     const resultsDiv = document.getElementById('searchResults');
     const categoriesSec = document.getElementById('categoriesSection');
     const locationsSec = document.getElementById('locationsSection');
     const featuredSec = document.getElementById('featuredSection');
-    if(merchantsToShow.length>0){
+    if(merchantsToShow.length > 0) {
         resultsDiv.classList.remove('hidden');
         categoriesSec.classList.add('hidden');
         locationsSec.classList.add('hidden');
         featuredSec.classList.add('hidden');
-        resultsDiv.innerHTML = `<h2 class="section-title">🔍 Search Results (${merchantsToShow.length} found)</h2><div class="merchant-grid">${merchantsToShow.map(renderMerchantCard).join('')}</div><button onclick="clearSearch()" style="margin-top:20px;padding:10px 20px;background:#6b7280;color:white;border:none;border-radius:8px;cursor:pointer;">← Back to All Merchants</button>`;
-    } else if(merchantsToShow.length===0 && document.getElementById('searchInput').value.length>1){
+        resultsDiv.innerHTML = `<h2 class="section-title">🔍 Search Results (${merchantsToShow.length} found)</h2>
+                                <div class="merchant-grid">${merchantsToShow.map(renderMerchantCard).join('')}</div>
+                                <button onclick="clearSearch()" style="margin-top:20px;padding:10px 20px;background:#6b7280;color:white;border:none;border-radius:8px;cursor:pointer;">← Back to All Merchants</button>`;
+    } else if (merchantsToShow.length === 0 && document.getElementById('searchInput').value.length > 1) {
         resultsDiv.classList.remove('hidden');
         categoriesSec.classList.add('hidden');
         locationsSec.classList.add('hidden');
         featuredSec.classList.add('hidden');
-        resultsDiv.innerHTML = `<div style="text-align:center;padding:50px;"><div style="font-size:48px;">🔍</div><h3>No merchants found</h3><p>Try searching for "grocery", "nairobi", or a different term</p><button onclick="clearSearch()" style="margin-top:20px;padding:10px 20px;background:#16a34a;color:white;border:none;border-radius:8px;cursor:pointer;">View All Merchants</button></div>`;
+        resultsDiv.innerHTML = `<div style="text-align:center;padding:50px;">
+                                    <div style="font-size:48px;">🔍</div>
+                                    <h3>No merchants found</h3>
+                                    <p>Try searching for "grocery", "nairobi", or a different term</p>
+                                    <button onclick="clearSearch()" style="margin-top:20px;padding:10px 20px;background:#16a34a;color:white;border:none;border-radius:8px;cursor:pointer;">View All Merchants</button>
+                                </div>`;
     }
 }
-function clearSearch(){
-    document.getElementById('searchInput').value='';
+
+function clearSearch() {
+    document.getElementById('searchInput').value = '';
     document.getElementById('searchResults').classList.add('hidden');
     document.getElementById('categoriesSection').classList.remove('hidden');
     document.getElementById('locationsSection').classList.remove('hidden');
     document.getElementById('featuredSection').classList.remove('hidden');
 }
-function filterByCategory(category){
-    renderSearchResults(merchants.filter(m=>m.category===category));
+
+function filterByCategory(category) {
+    const filtered = allMerchants.filter(m => m.category === category);
+    renderSearchResults(filtered);
 }
-function filterByLocation(location){
-    renderSearchResults(merchants.filter(m=>m.location===location));
+function filterByLocation(location) {
+    const filtered = allMerchants.filter(m => m.location === location);
+    renderSearchResults(filtered);
 }
-document.getElementById('searchInput').addEventListener('input',function(e){
+
+document.getElementById('searchInput').addEventListener('input', function(e) {
     const query = e.target.value.toLowerCase();
-    if(query.length<2){clearSearch();return;}
-    renderSearchResults(merchants.filter(m=>m.name.toLowerCase().includes(query)||m.categoryName.toLowerCase().includes(query)||m.locationName.toLowerCase().includes(query)||m.description.toLowerCase().includes(query)));
+    if(query.length < 2) { clearSearch(); return; }
+    const filtered = allMerchants.filter(m => 
+        m.businessName.toLowerCase().includes(query) ||
+        (m.categoryName && m.categoryName.toLowerCase().includes(query)) ||
+        (m.locationName && m.locationName.toLowerCase().includes(query)) ||
+        (m.description && m.description.toLowerCase().includes(query))
+    );
+    renderSearchResults(filtered);
 });
-function copyCode(code){
+
+function copyCode(code) {
     navigator.clipboard.writeText(code);
     alert(`✅ Member Code ${code} copied!\n\nOpen M-Pesa → Lipa na M-Pesa → Paybill → Account: ${code} → Amount → PIN`);
 }
-function payMerchant(name,code){
+function payMerchant(name, code) {
     window.location.href = `/payment.html?merchant=${encodeURIComponent(name)}&code=${code}`;
 }
-displayCategories();
-displayLocations();
-displayFeaturedMerchants();
+
+// Load data on page load
+loadMerchants();
 </script>
 </body>
 </html>

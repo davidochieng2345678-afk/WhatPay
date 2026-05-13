@@ -1,230 +1,397 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WhaPay Directory - Find Kenyan Merchants Accepting Cards & M-Pesa</title>
-<meta name="description" content="Find merchants in Kenya accepting M-Pesa, Visa, and Mastercard payments. Search grocery stores, salons, hardware shops in Nairobi, Kisumu, Mombasa.">
-<link rel="canonical" href="https://whapay.space/directory/">
-<style>
-*{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;background:#f5f5f5}.header{background:linear-gradient(135deg,#0a0f1e 0%,#0f1629 100%);color:white;padding:50px 20px;text-align:center}.header h1{font-size:2rem;margin-bottom:10px}.header h1 span{color:#22c55e}.header p{color:rgba(255,255,255,0.6);margin-bottom:25px}.logo-link{display:inline-block;margin-bottom:20px;color:#22c55e;text-decoration:none}.search-container{max-width:600px;margin:0 auto}.search-box{width:100%;padding:16px 20px;font-size:16px;border:none;border-radius:50px;outline:none;box-shadow:0 4px 15px rgba(0,0,0,0.2)}.container{max-width:1200px;margin:0 auto;padding:30px 20px}.section-title{font-size:1.5rem;color:#1f2937;margin-bottom:20px;padding-bottom:10px;border-bottom:3px solid #22c55e;display:inline-block}.grid-4{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:20px;margin:30px 0 50px}.category-card,.location-card{background:white;padding:25px 20px;border-radius:16px;text-align:center;text-decoration:none;display:block;border:1px solid #e5e7eb;transition:transform 0.2s}.category-card:hover,.location-card:hover{transform:translateY(-5px);box-shadow:0 10px 30px rgba(0,0,0,0.1)}.category-card .icon{font-size:48px;margin-bottom:10px}.category-card h3{color:#1f2937;font-size:1.1rem}.category-card .count,.location-card .count{color:#6b7280;font-size:0.8rem}.merchant-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px;margin-top:20px}.merchant-card{background:white;border-radius:16px;padding:20px;border:1px solid #e5e7eb;transition:transform 0.2s;position:relative}.merchant-card:hover{transform:translateY(-3px);box-shadow:0 5px 20px rgba(0,0,0,0.08)}.merchant-card h3{color:#1f2937;margin-bottom:5px}.merchant-card .location{color:#6b7280;font-size:0.8rem;margin-bottom:10px}.merchant-card .category{display:inline-block;background:#dcfce7;color:#166534;padding:3px 10px;border-radius:20px;font-size:0.7rem;margin-bottom:10px}.merchant-card .rating{color:#fbbf24;margin-bottom:10px}.merchant-card .code{background:#f3f4f6;padding:8px;border-radius:8px;font-family:monospace;font-size:0.8rem;margin:10px 0;text-align:center}.btn-pay{background:#16a34a;color:white;border:none;padding:10px 15px;border-radius:10px;width:100%;cursor:pointer;font-weight:600;margin-top:10px}.btn-pay:hover{background:#15803d}.btn-copy{background:#e5e7eb;color:#374151;border:none;padding:8px 12px;border-radius:8px;cursor:pointer;font-size:0.75rem;width:100%;margin-top:8px}.premium-badge{position:absolute;top:12px;right:12px;background:gold;color:#333;padding:2px 8px;border-radius:20px;font-size:0.7rem;font-weight:bold}.stats-bar{background:#16a34a;color:white;padding:20px;text-align:center;border-radius:16px;margin:30px 0}.stats-bar .stats{display:flex;justify-content:space-around;flex-wrap:wrap;gap:20px}.footer{background:#1f2937;color:#9ca3af;text-align:center;padding:40px 20px;margin-top:50px}.footer a{color:#22c55e;text-decoration:none}.search-results{margin-top:30px}.hidden{display:none}.loader{text-align:center;padding:50px}.loader:after{content:" ";display:inline-block;width:40px;height:40px;border-radius:50%;border:4px solid #16a34a;border-color:#16a34a transparent #16a34a transparent;animation:spin 1s linear infinite}@keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}@media(max-width:768px){.header h1{font-size:1.5rem}.grid-4{grid-template-columns:repeat(2,1fr)}}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Claim Your WhaPay Directory Listing – Free Visibility on Google</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        .step {
+            text-align: center;
+            flex: 1;
+            position: relative;
+        }
+        .step .circle {
+            width: 40px;
+            height: 40px;
+            background: #e5e7eb;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #6b7280;
+            margin-bottom: 8px;
+            transition: all 0.3s;
+        }
+        .step.active .circle {
+            background: #16a34a;
+            color: white;
+            box-shadow: 0 4px 10px rgba(22,163,74,0.3);
+        }
+        .step.completed .circle {
+            background: #22c55e;
+            color: white;
+        }
+        .step .label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #6b7280;
+        }
+        .step.active .label {
+            color: #16a34a;
+            font-weight: 600;
+        }
+        .step:not(:last-child):after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            right: -50%;
+            width: 100%;
+            height: 2px;
+            background: #e5e7eb;
+            z-index: -1;
+        }
+        .step.active:not(:last-child):after,
+        .step.completed:not(:last-child):after {
+            background: #16a34a;
+        }
+        .preview-card {
+            background: #f9fafb;
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid #e5e7eb;
+            transition: all 0.2s;
+        }
+        @media (max-width: 640px) {
+            .step .label { font-size: 0.65rem; }
+            .step .circle { width: 32px; height: 32px; font-size: 0.8rem; }
+        }
+    </style>
 </head>
-<body>
+<body class="bg-gray-50">
+<div class="max-w-5xl mx-auto p-4 md:p-6">
+    <!-- Header -->
+    <div class="text-center mb-6">
+        <div class="inline-flex items-center gap-2 bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-medium mb-3">
+            <i class="fas fa-star"></i> <span>Free Google Visibility</span>
+        </div>
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2">📌 Claim Your <span class="text-green-600">WhaPay Directory</span> Listing</h1>
+        <p class="text-gray-500 max-w-xl mx-auto">Get found by thousands of customers searching for businesses like yours – and appear on Google with rich results (⭐ ratings,📍 location, 📞 phone).</p>
+    </div>
 
-<div class="header">
-    <a href="/" class="logo-link">← Back to WhaPay</a>
-    <h1>🔍 <span>WhaPay Directory</span></h1>
-    <p>Find Kenyan merchants that accept M-Pesa, Visa, and Mastercard payments</p>
-    <div class="search-container">
-        <input type="text" id="searchInput" class="search-box" placeholder="Search for grocery, salon, hardware, or merchant name...">
-    </div>
-</div>
-
-<div class="container">
-    <div id="searchResults" class="search-results hidden"></div>
-    <div id="categoriesSection">
-        <h2 class="section-title">📂 Browse by Category</h2>
-        <div class="grid-4" id="categoriesGrid"><div class="loader"></div></div>
-    </div>
-    <div id="locationsSection">
-        <h2 class="section-title">📍 Browse by Location</h2>
-        <div class="grid-4" id="locationsGrid"><div class="loader"></div></div>
-    </div>
-    <div class="stats-bar">
-        <div class="stats">
-            <div><strong id="totalMerchants">0</strong><br>Merchants</div>
-            <div><strong>180+</strong><br>Cities</div>
-            <div><strong>24/7</strong><br>WhatsApp Support</div>
+    <!-- Progress Steps -->
+    <div class="step-indicator max-w-md mx-auto mb-8">
+        <div class="step active" id="step1Indicator">
+            <div class="circle">1</div>
+            <div class="label">Verify Code</div>
+        </div>
+        <div class="step" id="step2Indicator">
+            <div class="circle">2</div>
+            <div class="label">Fill Details</div>
+        </div>
+        <div class="step" id="step3Indicator">
+            <div class="circle">3</div>
+            <div class="label">Confirm & Save</div>
         </div>
     </div>
-    <div id="featuredSection">
-        <h2 class="section-title">⭐ Featured Merchants</h2>
-        <div class="merchant-grid" id="featuredGrid"><div class="loader"></div></div>
-    </div>
-</div>
 
-<div class="footer">
-    <p>📞 0140933042 | 📧 support@whapay.space</p>
-    <p>© 2026 WhaPay Directory - Helping Kenyans find merchants that accept card payments</p>
-    <p><a href="/directory/sitemap.xml">Sitemap</a> | <a href="/privacy.html">Privacy</a> | <a href="https://wa.me/254140933042">WhatsApp Support</a></p>
+    <!-- Step 1: Verify Member Code -->
+    <div id="step1Panel" class="max-w-xl mx-auto">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8">
+            <div class="text-center mb-6">
+                <i class="fas fa-fingerprint text-4xl text-green-500 mb-2"></i>
+                <h2 class="text-xl font-bold text-gray-800">Verify Your WhaPay Merchant Code</h2>
+                <p class="text-gray-500 text-sm mt-1">Enter the Member Code you received when you joined WhaPay.</p>
+            </div>
+            <div class="space-y-5">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Your Member Code *</label>
+                    <input type="text" id="merchantCode" placeholder="e.g., DK12345" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                    <p class="text-xs text-gray-400 mt-1">Example: DK12345 (found in your WhatsApp or email)</p>
+                </div>
+                <div class="bg-blue-50 p-4 rounded-xl text-sm text-blue-700">
+                    <i class="fas fa-info-circle mr-2"></i> 
+                    <strong>Requirements to claim:</strong> You need at least one <strong>successful paid transaction</strong> (card, Airtel, MTN, Tigo, Orange, or Bank Transfer) <strong>within the last 30 days</strong>. M-Pesa payments do not count.
+                </div>
+                <button id="verifyBtn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl transition flex items-center justify-center gap-2">
+                    <i class="fas fa-shield-alt"></i> Verify & Continue
+                </button>
+                <div id="verifyMessage" class="text-sm text-center"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 2: Fill Details (hidden initially) -->
+    <div id="step2Panel" class="hidden">
+        <div class="grid md:grid-cols-3 gap-6">
+            <!-- Form Column -->
+            <div class="md:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2"><i class="fas fa-edit text-green-500"></i> Your Business Information</h2>
+                <form id="listingForm" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Business Name * <span class="text-red-500">(appears in Google)</span></label>
+                        <input type="text" id="businessName" required placeholder="e.g., Mary's Fresh Groceries" class="w-full border border-gray-300 rounded-xl px-4 py-2">
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                            <select id="category" class="w-full border rounded-xl px-4 py-2">
+                                <option value="grocery">🛒 Grocery</option>
+                                <option value="salon">💇 Salon / Beauty</option>
+                                <option value="hardware">🔧 Hardware</option>
+                                <option value="restaurant">🍽️ Restaurant</option>
+                                <option value="electronics">📱 Electronics</option>
+                                <option value="fashion">👗 Fashion</option>
+                                <option value="pharmacy">💊 Pharmacy</option>
+                                <option value="other">🏪 Other</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Category Name</label>
+                            <input type="text" id="categoryName" placeholder="e.g., Grocery Store" class="w-full border rounded-xl px-4 py-2">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">City</label>
+                            <select id="location" class="w-full border rounded-xl px-4 py-2">
+                                <option value="nairobi">Nairobi</option>
+                                <option value="kisumu">Kisumu</option>
+                                <option value="mombasa">Mombasa</option>
+                                <option value="nakuru">Nakuru</option>
+                                <option value="eldoret">Eldoret</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">City Name</label>
+                            <input type="text" id="locationName" placeholder="e.g., Nairobi" class="w-full border rounded-xl px-4 py-2">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Area / Estate <span class="text-gray-400 text-xs">(optional but recommended for local SEO)</span></label>
+                        <input type="text" id="area" placeholder="e.g., CBD, Westlands, Kilimani" class="w-full border rounded-xl px-4 py-2">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Business Description</label>
+                        <textarea id="description" rows="3" placeholder="Describe what you sell or the services you offer. This helps customers find you on Google." class="w-full border rounded-xl px-4 py-2"></textarea>
+                        <p class="text-xs text-gray-400 mt-1">Max 300 characters. Use keywords like “fresh groceries”, “hair styling”, “hardware supplies”.</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Phone Number (for WhatsApp & click-to-call)</label>
+                        <input type="tel" id="phone" placeholder="0712345678" class="w-full border rounded-xl px-4 py-2">
+                        <p class="text-xs text-gray-400 mt-1">Customers can directly message you on WhatsApp.</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Business Website (optional)</label>
+                        <input type="url" id="website" placeholder="https://yourwebsite.com" class="w-full border rounded-xl px-4 py-2">
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Opening Hours (optional)</label>
+                            <input type="text" id="hours" placeholder="e.g., Mon-Fri 8am-6pm" class="w-full border rounded-xl px-4 py-2">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Price Range</label>
+                            <select id="priceRange" class="w-full border rounded-xl px-4 py-2">
+                                <option value="KES 100 - 5000">KES 100 - 5,000</option>
+                                <option value="KES 500 - 10,000">KES 500 - 10,000</option>
+                                <option value="KES 1,000 - 20,000">KES 1,000 - 20,000</option>
+                                <option value="KES 5,000 - 50,000">KES 5,000 - 50,000</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <input type="checkbox" id="premium" class="w-5 h-5 text-green-600 rounded">
+                        <label class="text-sm font-medium">⭐ Feature as Premium – highlighted in directory (free for now, paid later)</label>
+                    </div>
+                    <div class="pt-4">
+                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition flex items-center justify-center gap-2">
+                            <i class="fas fa-save"></i> Save Listing & Preview
+                        </button>
+                    </div>
+                    <div id="saveMessage" class="text-sm text-center"></div>
+                </form>
+            </div>
+
+            <!-- Live Preview Column -->
+            <div class="md:col-span-1">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 sticky top-6">
+                    <h3 class="font-bold text-gray-800 mb-3 flex items-center gap-1"><i class="fas fa-eye"></i> Live Preview</h3>
+                    <div class="preview-card" id="previewCard">
+                        <div style="font-size: 40px;">🏪</div>
+                        <h4 class="font-bold text-gray-900 text-lg" id="previewName">Your Business Name</h4>
+                        <div class="text-sm text-gray-500 flex items-center gap-1 mt-1">
+                            <i class="fas fa-map-marker-alt"></i> <span id="previewLocation">Nairobi - CBD</span>
+                        </div>
+                        <div class="inline-block bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full mt-2" id="previewCategory">Grocery</div>
+                        <div class="flex items-center gap-1 text-yellow-400 mt-2">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                            <span class="text-xs text-gray-500">(4.8)</span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-2" id="previewDesc">Your business description will appear here.</p>
+                        <div class="mt-3 pt-2 border-t border-gray-100 text-xs text-gray-400">
+                            <i class="fab fa-whatsapp text-green-500"></i> WhatsApp available
+                        </div>
+                        <div class="mt-2 text-xs font-mono bg-gray-100 p-2 rounded text-center">
+                            Member Code: <span id="previewCode">DK12345</span>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-3 text-center">This is how your listing will appear to customers.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 3: Confirmation (shown after save) -->
+    <div id="step3Panel" class="hidden max-w-xl mx-auto text-center bg-white rounded-2xl shadow-sm p-8">
+        <i class="fas fa-check-circle text-6xl text-green-500 mb-4"></i>
+        <h2 class="text-2xl font-bold text-gray-800">Listing Saved Successfully! 🎉</h2>
+        <p class="text-gray-500 mt-2">Your directory page is now live. It may take a few minutes to appear on the directory and up to 24 hours for Google to index it.</p>
+        <div class="mt-6 flex flex-col gap-3">
+            <a href="/directory/" class="bg-green-600 text-white px-6 py-3 rounded-xl font-bold inline-flex items-center justify-center gap-2 hover:bg-green-700 transition">
+                <i class="fas fa-search"></i> View Directory
+            </a>
+            <a href="https://wa.me/254140933042?text=I%20just%20claimed%20my%20WhaPay%20directory%20listing%21" target="_blank" class="bg-gray-200 text-gray-700 px-6 py-2 rounded-xl font-medium inline-flex items-center justify-center gap-2 hover:bg-gray-300 transition">
+                <i class="fab fa-whatsapp"></i> Share on WhatsApp
+            </a>
+        </div>
+    </div>
 </div>
 
 <script>
-// ================================
-// 1. FETCH ALL MERCHANTS FROM BACKEND
-// ================================
-let allMerchants = [];
+    let verifiedMerchantCode = null;
 
-async function loadMerchants() {
-    try {
-        const res = await fetch('/api/directory/merchants');
-        const data = await res.json();
-        if (data.success) {
-            allMerchants = data.merchants;
-            renderAll();
-        } else {
-            console.error('Failed to load merchants', data.error);
-            showError();
+    // Live preview updater
+    const fields = ['businessName', 'categoryName', 'locationName', 'area', 'description', 'phone', 'website', 'hours'];
+    fields.forEach(field => {
+        const input = document.getElementById(field);
+        if (input) input.addEventListener('input', updatePreview);
+    });
+    document.getElementById('category')?.addEventListener('change', updatePreview);
+    document.getElementById('location')?.addEventListener('change', updatePreview);
+    document.getElementById('priceRange')?.addEventListener('change', updatePreview);
+
+    function updatePreview() {
+        const name = document.getElementById('businessName')?.value || 'Your Business Name';
+        const categorySelect = document.getElementById('category');
+        const categoryText = categorySelect?.options[categorySelect.selectedIndex]?.text.split(' ')[0] || 'Business';
+        const locationName = document.getElementById('locationName')?.value || document.getElementById('location')?.options[document.getElementById('location')?.selectedIndex]?.text || 'Nairobi';
+        const area = document.getElementById('area')?.value || '';
+        const fullLocation = area ? `${locationName} - ${area}` : locationName;
+        const desc = document.getElementById('description')?.value || 'Your business description will appear here.';
+        
+        document.getElementById('previewName').innerText = name;
+        document.getElementById('previewLocation').innerHTML = `<i class="fas fa-map-marker-alt"></i> ${fullLocation}`;
+        document.getElementById('previewCategory').innerText = categoryText;
+        document.getElementById('previewDesc').innerText = desc;
+        if (verifiedMerchantCode) document.getElementById('previewCode').innerText = verifiedMerchantCode;
+        // Emoji (basic mapping for preview)
+        const emojiMap = { grocery:'🛒', salon:'💇', hardware:'🔧', restaurant:'🍽️', electronics:'📱', fashion:'👗', pharmacy:'💊' };
+        const cat = document.getElementById('category')?.value;
+        if (cat && emojiMap[cat]) document.querySelector('#previewCard > div:first-child').innerHTML = emojiMap[cat];
+    }
+
+    // Verification
+    document.getElementById('verifyBtn').onclick = async () => {
+        const code = document.getElementById('merchantCode').value.trim();
+        if (!code) return alert('Enter your Member Code');
+        const msgDiv = document.getElementById('verifyMessage');
+        msgDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying...';
+        try {
+            const res = await fetch('/api/directory/verify', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ merchantCode: code })
+            });
+            const data = await res.json();
+            if (!data.success) {
+                msgDiv.innerHTML = `<div class="bg-red-100 text-red-700 p-2 rounded">❌ ${data.error}</div>`;
+                return;
+            }
+            const merchant = data.merchant;
+            const existing = data.existingListing;
+            // Prefill form
+            document.getElementById('businessName').value = existing?.businessName || merchant.businessName || '';
+            document.getElementById('category').value = existing?.category || 'grocery';
+            document.getElementById('categoryName').value = existing?.categoryName || '';
+            document.getElementById('location').value = existing?.location || 'nairobi';
+            document.getElementById('locationName').value = existing?.locationName || '';
+            document.getElementById('area').value = existing?.area || '';
+            document.getElementById('description').value = existing?.description || '';
+            document.getElementById('phone').value = existing?.phone || merchant.phone || '';
+            document.getElementById('premium').checked = existing?.premium || false;
+            if (existing?.priceRange) document.getElementById('priceRange').value = existing.priceRange;
+            verifiedMerchantCode = code;
+            document.getElementById('previewCode').innerText = code;
+            // Update step UI
+            document.getElementById('step1Panel').classList.add('hidden');
+            document.getElementById('step2Panel').classList.remove('hidden');
+            document.getElementById('step1Indicator').classList.remove('active');
+            document.getElementById('step1Indicator').classList.add('completed');
+            document.getElementById('step2Indicator').classList.add('active');
+            msgDiv.innerHTML = '<div class="bg-green-100 text-green-700 p-2 rounded">✅ Verified! You can now edit your listing.</div>';
+            updatePreview();
+        } catch(err) {
+            msgDiv.innerHTML = `<div class="bg-red-100 text-red-700 p-2 rounded">⚠️ Network error. Try again.</div>`;
         }
-    } catch (err) {
-        console.error(err);
-        showError();
-    }
-}
+    };
 
-function showError() {
-    document.getElementById('categoriesGrid').innerHTML = '<div style="color:red">Failed to load merchants. Please refresh.</div>';
-    document.getElementById('locationsGrid').innerHTML = '';
-    document.getElementById('featuredGrid').innerHTML = '<div style="color:red">Failed to load merchants. Please refresh.</div>';
-}
-
-function renderAll() {
-    displayCategories();
-    displayLocations();
-    displayFeaturedMerchants();
-    document.getElementById('totalMerchants').innerText = allMerchants.length;
-}
-
-// ================================
-// 2. CATEGORIES & LOCATIONS (dynamic counts)
-// ================================
-const categoryMap = {
-    grocery: { name:"Grocery Stores", icon:"🛒" },
-    salon: { name:"Salons & Beauty", icon:"💇" },
-    hardware: { name:"Hardware Stores", icon:"🔧" },
-    restaurant: { name:"Restaurants", icon:"🍽️" },
-    electronics: { name:"Electronics", icon:"📱" },
-    fashion: { name:"Fashion", icon:"👗" },
-    pharmacy: { name:"Pharmacy", icon:"💊" }
-};
-
-function displayCategories() {
-    const cats = {};
-    allMerchants.forEach(m => { if(m.category) cats[m.category] = (cats[m.category]||0)+1; });
-    const html = Object.entries(cats).map(([slug, count]) => {
-        const info = categoryMap[slug] || { name:slug, icon:"🏪" };
-        return `<a href="#" onclick="filterByCategory('${slug}');return false;" class="category-card">
-                    <div class="icon">${info.icon}</div>
-                    <h3>${info.name}</h3>
-                    <div class="count">${count} merchants</div>
-                </a>`;
-    }).join('');
-    document.getElementById('categoriesGrid').innerHTML = html || '<div>No categories found</div>';
-}
-
-function displayLocations() {
-    const locs = {};
-    allMerchants.forEach(m => { if(m.location) locs[m.location] = (locs[m.location]||0)+1; });
-    const locationNames = { nairobi:"Nairobi", kisumu:"Kisumu", mombasa:"Mombasa", nakuru:"Nakuru", eldoret:"Eldoret" };
-    const html = Object.entries(locs).map(([slug, count]) => {
-        const name = locationNames[slug] || slug;
-        return `<a href="#" onclick="filterByLocation('${slug}');return false;" class="location-card">
-                    <h3>📍 ${name}</h3>
-                    <div class="count">${count} merchants</div>
-                </a>`;
-    }).join('');
-    document.getElementById('locationsGrid').innerHTML = html || '<div>No locations found</div>';
-}
-
-// ================================
-// 3. RENDER MERCHANT CARD (with link to individual page)
-// ================================
-function renderMerchantCard(m) {
-    const stars = '⭐'.repeat(Math.floor(m.rating || 0));
-    const premiumBadge = m.premium ? '<div class="premium-badge">⭐ Featured</div>' : '';
-    return `<div class="merchant-card">
-                ${premiumBadge}
-                <div style="font-size:40px;">${m.image || '🏪'}</div>
-                <h3><a href="/directory/merchant/${m.merchantCode}" style="text-decoration:none;color:#1f2937;">${m.businessName}</a></h3>
-                <div class="location">📍 ${m.locationName || m.location} - ${m.area || ''}</div>
-                <span class="category">${m.categoryName || m.category}</span>
-                <div class="rating">${stars} ${m.rating || 0} (${m.reviews || 0} reviews)</div>
-                <p style="font-size:0.8rem;color:#6b7280;margin:10px 0;">${m.description || ''}</p>
-                <div class="code">
-                    <strong>Member Code:</strong> ${m.merchantCode}
-                    <button class="btn-copy" onclick="copyCode('${m.merchantCode}')">📋 Copy Code</button>
-                </div>
-                <button class="btn-pay" onclick="payMerchant('${m.businessName}','${m.merchantCode}')">💳 Pay Now via WhaPay</button>
-                ${m.phone ? `<a href="https://wa.me/${m.phone}?text=Hello%20${encodeURIComponent(m.businessName)}%2C%20I%20want%20to%20pay%20via%20WhaPay" target="_blank" style="display:block;text-align:center;margin-top:8px;color:#25D366;text-decoration:none;font-size:0.75rem;">💬 Chat on WhatsApp</a>` : ''}
-            </div>`;
-}
-
-function displayFeaturedMerchants() {
-    const featured = allMerchants.filter(m => m.premium === true).slice(0, 6);
-    const grid = document.getElementById('featuredGrid');
-    grid.innerHTML = featured.length ? featured.map(renderMerchantCard).join('') : '<div>No featured merchants yet</div>';
-}
-
-// ================================
-// 4. SEARCH & FILTER
-// ================================
-function renderSearchResults(merchantsToShow) {
-    const resultsDiv = document.getElementById('searchResults');
-    const categoriesSec = document.getElementById('categoriesSection');
-    const locationsSec = document.getElementById('locationsSection');
-    const featuredSec = document.getElementById('featuredSection');
-    if(merchantsToShow.length > 0) {
-        resultsDiv.classList.remove('hidden');
-        categoriesSec.classList.add('hidden');
-        locationsSec.classList.add('hidden');
-        featuredSec.classList.add('hidden');
-        resultsDiv.innerHTML = `<h2 class="section-title">🔍 Search Results (${merchantsToShow.length} found)</h2>
-                                <div class="merchant-grid">${merchantsToShow.map(renderMerchantCard).join('')}</div>
-                                <button onclick="clearSearch()" style="margin-top:20px;padding:10px 20px;background:#6b7280;color:white;border:none;border-radius:8px;cursor:pointer;">← Back to All Merchants</button>`;
-    } else if (merchantsToShow.length === 0 && document.getElementById('searchInput').value.length > 1) {
-        resultsDiv.classList.remove('hidden');
-        categoriesSec.classList.add('hidden');
-        locationsSec.classList.add('hidden');
-        featuredSec.classList.add('hidden');
-        resultsDiv.innerHTML = `<div style="text-align:center;padding:50px;">
-                                    <div style="font-size:48px;">🔍</div>
-                                    <h3>No merchants found</h3>
-                                    <p>Try searching for "grocery", "nairobi", or a different term</p>
-                                    <button onclick="clearSearch()" style="margin-top:20px;padding:10px 20px;background:#16a34a;color:white;border:none;border-radius:8px;cursor:pointer;">View All Merchants</button>
-                                </div>`;
-    }
-}
-
-function clearSearch() {
-    document.getElementById('searchInput').value = '';
-    document.getElementById('searchResults').classList.add('hidden');
-    document.getElementById('categoriesSection').classList.remove('hidden');
-    document.getElementById('locationsSection').classList.remove('hidden');
-    document.getElementById('featuredSection').classList.remove('hidden');
-}
-
-function filterByCategory(category) {
-    const filtered = allMerchants.filter(m => m.category === category);
-    renderSearchResults(filtered);
-}
-function filterByLocation(location) {
-    const filtered = allMerchants.filter(m => m.location === location);
-    renderSearchResults(filtered);
-}
-
-document.getElementById('searchInput').addEventListener('input', function(e) {
-    const query = e.target.value.toLowerCase();
-    if(query.length < 2) { clearSearch(); return; }
-    const filtered = allMerchants.filter(m => 
-        m.businessName.toLowerCase().includes(query) ||
-        (m.categoryName && m.categoryName.toLowerCase().includes(query)) ||
-        (m.locationName && m.locationName.toLowerCase().includes(query)) ||
-        (m.description && m.description.toLowerCase().includes(query))
-    );
-    renderSearchResults(filtered);
-});
-
-function copyCode(code) {
-    navigator.clipboard.writeText(code);
-    alert(`✅ Member Code ${code} copied!\n\nOpen M-Pesa → Lipa na M-Pesa → Paybill → Account: ${code} → Amount → PIN`);
-}
-function payMerchant(name, code) {
-    window.location.href = `/payment.html?merchant=${encodeURIComponent(name)}&code=${code}`;
-}
-
-// Load data on page load
-loadMerchants();
+    // Submit form
+    document.getElementById('listingForm').onsubmit = async (e) => {
+        e.preventDefault();
+        if (!verifiedMerchantCode) return alert('Please verify first');
+        const payload = {
+            merchantCode: verifiedMerchantCode,
+            businessName: document.getElementById('businessName').value.trim(),
+            category: document.getElementById('category').value,
+            categoryName: document.getElementById('categoryName').value.trim(),
+            location: document.getElementById('location').value,
+            locationName: document.getElementById('locationName').value.trim(),
+            area: document.getElementById('area').value.trim(),
+            description: document.getElementById('description').value.trim(),
+            phone: document.getElementById('phone').value.trim(),
+            premium: document.getElementById('premium').checked,
+            priceRange: document.getElementById('priceRange').value,
+            website: document.getElementById('website').value.trim(),
+            hours: document.getElementById('hours').value.trim()
+        };
+        const saveMsg = document.getElementById('saveMessage');
+        saveMsg.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+        try {
+            const res = await fetch('/api/directory/save', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+            if (data.success) {
+                // Move to step 3
+                document.getElementById('step2Panel').classList.add('hidden');
+                document.getElementById('step3Panel').classList.remove('hidden');
+                document.getElementById('step2Indicator').classList.remove('active');
+                document.getElementById('step2Indicator').classList.add('completed');
+                document.getElementById('step3Indicator').classList.add('active');
+            } else {
+                saveMsg.innerHTML = `<div class="bg-red-100 text-red-700 p-2 rounded">❌ ${data.error}</div>`;
+            }
+        } catch(err) {
+            saveMsg.innerHTML = '<div class="bg-red-100 text-red-700 p-2 rounded">❌ Network error. Try again.</div>';
+        }
+    };
 </script>
 </body>
 </html>
+
+
+
+
+

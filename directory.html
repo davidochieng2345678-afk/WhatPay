@@ -52,7 +52,7 @@
 
     async function loadMerchants() {
         try {
-            const res = await fetch('/api/directory/merchants');
+            const res = await fetch('https://whapay-backend.onrender.com/api/directory/merchants');
             const data = await res.json();
             if (data.success) {
                 allMerchants = data.merchants;

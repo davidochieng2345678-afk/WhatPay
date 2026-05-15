@@ -583,23 +583,47 @@ function toggleMobileMenu() {
 <button id="tabQuickBtn" class="px-4 py-2 font-semibold border-b-2 border-green-600 text-green-700">Quick Pay (I have a Member Code)</button>
 <button id="tabRegisterBtn" class="px-4 py-2 font-semibold border-b-2 border-transparent text-gray-600">Register & Pay (New user)</button>
 </div>
-
-
-<!-- Quick Pay Section -->
 <div id="quickPaySection" class="bg-white rounded-2xl shadow-xl p-6">
   <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">Pay Using Member Code</h2>
   <div class="space-y-4">
     <div><label class="block text-sm font-medium mb-1">Merchant Member Code *</label><input type="text" id="merchantCode" placeholder="e.g., DK12345" class="w-full border rounded-lg px-4 py-2"></div>
-    <div><label class="block text-sm font-medium mb-1">Your Phone Number (for M-Pesa) *</label><input type="tel" id="userNumber" placeholder="+254712345678" class="w-full border rounded-lg px-4 py-2"><p class="text-xs text-gray-500 mt-1">We'll send confirmation via WhatsApp to <strong class="font-mono">0140933042</strong>.</p></div>
+    <div><label class="block text-sm font-medium mb-1">Your Phone Number *</label><input type="tel" id="userNumber" placeholder="+254712345678" class="w-full border rounded-lg px-4 py-2"><p class="text-xs text-gray-500 mt-1">We'll send confirmation via WhatsApp to <strong>0140933042</strong>.</p></div>
+    <div><label class="block text-sm font-medium mb-1">Your Name (optional)</label><input type="text" id="customerName" placeholder="John Doe" class="w-full border rounded-lg px-4 py-2"></div>
     <div><label class="block text-sm font-medium mb-1">Amount (KES) *</label><input type="number" id="amount" placeholder="e.g., 500" class="w-full border rounded-lg px-4 py-2"></div>
-    <div><label class="block text-sm font-medium mb-1">Payment Method</label><select id="method" class="w-full border rounded-lg px-4 py-2"><option value="mpesa">M-Pesa (STK Push)</option><option value="card">Credit / Debit Card (Stripe)</option></select></div>
+    <div><label class="block text-sm font-medium mb-1">Payment Method</label>
+      <select id="method" class="w-full border rounded-lg px-4 py-2">
+        <option value="mpesa">M-Pesa (STK Push) - No fee</option>
+        <option value="airtel">Airtel Money (fee applies)</option>
+        <option value="tigo">Tigo Pesa (fee applies)</option>
+        <option value="mtn">MTN Mobile Money (fee applies)</option>
+        <option value="vodafone">Vodafone Cash (fee applies)</option>
+        <option value="orange">Orange Money (fee applies)</option>
+        <option value="card">Credit / Debit Card</option>
+      </select>
+    </div>
+    <div id="mobileMoneySection" style="display:none;">
+      <label class="block text-sm font-medium mb-1">Select Mobile Money Network</label>
+      <select id="mobileNetwork" class="w-full border rounded-lg px-4 py-2">
+        <option value="AIRTEL">Airtel</option>
+        <option value="MTN">MTN</option>
+        <option value="TIGO">Tigo</option>
+        <option value="ORANGE">Orange</option>
+        <option value="VODAFONE">Vodafone</option>
+      </select>
+      <div id="feeDisplay" class="hidden mt-2 p-2 bg-yellow-50 rounded-lg text-sm">
+        <p>💡 Additional fee: <span id="feeAmount">KES 0</span><br>
+        Merchant receives: <span id="merchantAmount">KES 0</span><br>
+        <strong>You pay: <span id="totalAmount">KES 0</span></strong></p>
+      </div>
+    </div>
     <button id="scanBtnQuick" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg flex items-center justify-center gap-2"><i class="fas fa-qrcode"></i> Scan QR to Auto‑fill Amount</button>
     <div id="qr-reader-quick" class="hidden w-full h-64 bg-gray-100 rounded-lg overflow-hidden"></div>
     <button id="payBtn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg text-lg shadow">Pay Now</button>
     <div id="message" class="text-center text-sm mt-3"></div>
-    <div class="text-xs text-gray-500 text-center mt-2"><i class="fas fa-info-circle"></i> No internet? Use Member Code directly in M-Pesa: Paybill <strong class="font-mono">0140933042</strong> → Account = Merchant Code</div>
+    <div class="text-xs text-gray-500 text-center mt-2"><i class="fas fa-info-circle"></i> No internet? Use Member Code directly in M-Pesa: Paybill <strong>0140933042</strong> → Account = Merchant Code</div>
   </div>
 </div>
+
 
 <!-- Register & Pay Section -->
 <div id="registerPaySection" class="hidden bg-white rounded-2xl shadow-xl p-6">

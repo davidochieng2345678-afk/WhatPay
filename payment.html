@@ -1271,6 +1271,21 @@ function toggleMobileMenu() {
   initScanner('scanBtnQuick', 'qr-reader-quick', 'amount');
   initScanner('scanBtnRegister', 'qr-reader-register', 'osAmount');
 
+// Show/hide mobile network section based on payment method selection
+const methodSelect = document.getElementById('method');
+const mobileSection = document.getElementById('mobileMoneySection');
+if (methodSelect && mobileSection) {
+  methodSelect.addEventListener('change', () => {
+    const val = methodSelect.value;
+    if (val !== 'mpesa' && val !== 'card') {
+      mobileSection.style.display = 'block';
+      updateFeeDisplay();  // defined later
+    } else {
+      mobileSection.style.display = 'none';
+    }
+  });
+}
+  
   async function generateUniqueMemberCode(name) { const prefix = name.replace(/[^a-zA-Z0-9]/g, '').substring(0, 3).toUpperCase() || 'NEW'; let code, exists = true; while (exists) { const random = Math.floor(10000 + Math.random() * 90000); code = `${prefix}${random}`; const q = query(collection(db, "users"), where("memberCode", "==", code)); const snap = await getDocs(q); if (snap.empty) exists = false; } return code; }
 
     // Quick Pay - Supports M-Pesa + Other Mobile Money (Airtel, MTN, Tigo, etc.)

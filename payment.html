@@ -1379,12 +1379,104 @@ if(payBtn) payBtn.addEventListener('click', async () => {
     payBtn.innerHTML = 'Pay Now'; 
   } 
 });
-  
+
 
   // Register & Pay
-const regForm = document.getElementById('oneStepForm'); const regCheck = document.getElementById('osRegister'); const guestNoteSpan = document.getElementById('osGuestNote'); if(regCheck) regCheck.addEventListener('change', () => { if(guestNoteSpan) guestNoteSpan.classList.toggle('hidden', regCheck.checked); });
-if(regForm) regForm.addEventListener('submit', async (e) => { e.preventDefault(); const name = document.getElementById('osName').value.trim(); const rawPhone = document.getElementById('osPhone').value.trim(); const amount = parseInt(document.getElementById('osAmount').value); const method = document.getElementById('osMethod').value; const shouldRegister = document.getElementById('osRegister').checked; if(!name || !rawPhone || !amount) { document.getElementById('osErrorMsg').innerText = 'All fields required'; return; } if(!validatePhone(rawPhone)) { document.getElementById('osErrorMsg').innerText = 'Valid Kenyan phone required'; return; } const phone = normalizePhone(rawPhone); const submitBtnEl = document.getElementById('osSubmitBtn'); submitBtnEl.disabled = true; submitBtnEl.innerHTML = '<span class="spinner"></span> Processing...'; document.getElementById('osErrorMsg').innerText = ''; try { let memberCode = null; if (navigator.onLine) { const response = await fetch('https://whapay-backend.onrender.com/api/register-pay', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ fullname: name, phoneNumber: phone, amount, paymentMethod: method === 'mpesa' ? 'mpesa' : 'card', registerUser: shouldRegister }) }); const data = await response.json(); if (!data.success) throw new Error(data.error); if (shouldRegister && data.user && data.user.dkCode) { memberCode = data.user.dkCode; } } else { if (shouldRegister) memberCode = await generateUniqueMemberCode(name); await savePendingPayment({ type:'registerpay', customerName: name, phone, amount, method, shouldRegister, memberCode }); showToast("Offline: registration saved. Will sync later.", false); } if (shouldRegister && memberCode) { const qrCanvasDiv = document.getElementById('osQRCanvas'); QRCode.toCanvas(qrCanvasDiv, `https://whapay.space/payment.html?merchant=${memberCode}`, { width: 150 }, (err) => { if(err) console.error(err); }); document.getElementById('osMemberCode').innerText = memberCode; document.getElementById('osRegResult').classList.remove('hidden'); document.getElementById('osGuestResult').classList.add('hidden'); window.open(`https://wa.me/${phone}?text=${encodeURIComponent(`🎉 Welcome! Member Code: ${memberCode} | Payment link: https://whapay.space/payment.html?merchant=${memberCode} | Offline Paybill 0140933042 Account: ${memberCode}`)}`, '_blank'); } else { document.getElementById('osRegResult').classList.add('hidden'); document.getElementById('osGuestResult').classList.remove('hidden'); window.open(`https://wa.me/${phone}?text=${encodeURIComponent(`✅ Payment of KES ${amount} completed successfully. Thank you!`)}`, '_blank'); } regForm.classList.add('hidden'); document.getElementById('osResult').classList.remove('hidden'); } catch(err) { document.getElementById('osErrorMsg').innerText = err.message; showToast(err.message, true); submitBtnEl.disabled = false; submitBtnEl.innerHTML = 'Pay Now'; } });
- 
+const regForm = document.getElementById('oneStepForm');
+const regCheck = document.getElementById('osRegister');
+const guestNoteSpan = document.getElementById('osGuestNote');
+if(regCheck) regCheck.addEventListener('change', () => {
+  if(guestNoteSpan) guestNoteSpan.classList.toggle('hidden', regCheck.checked);
+});
+
+if(regForm) {
+  regForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = document.getElementById('osName').value.trim();
+    const rawPhone = document.getElementById('osPhone').value.trim();
+    let amount = parseInt(document.getElementById('osAmount').value);
+    const method = document.getElementById('osMethod').value;
+    const shouldRegister = document.getElementById('osRegister').checked;
+
+    if(!name || !rawPhone || !amount) {
+      document.getElementById('osErrorMsg').innerText = 'All fields required';
+      return;
+    }
+    if(!validatePhone(rawPhone)) {
+      document.getElementById('osErrorMsg').innerText = 'Valid Kenyan phone required';
+      return;
+    }
+
+    // ✅ FEE CALCULATION ADDED HERE
+    let amountToSend = amount;
+    if (method !== 'mpesa' && method !== 'card') {
+      const fee = calculateMobileMoneyFee(amount);
+      amountToSend = amount + fee;
+    }
+
+    const phone = normalizePhone(rawPhone);
+    const submitBtnEl = document.getElementById('osSubmitBtn');
+    submitBtnEl.disabled = true;
+    submitBtnEl.innerHTML = '<span class="spinner"></span> Processing...';
+    document.getElementById('osErrorMsg').innerText = '';
+
+    try {
+      let memberCode = null;
+      if (navigator.onLine) {
+        const response = await fetch('https://whapay-backend.onrender.com/api/register-pay', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            fullname: name,
+            phoneNumber: phone,
+            amount: amountToSend,  // ✅ CHANGED FROM 'amount' TO 'amountToSend'
+            paymentMethod: method === 'mpesa' ? 'mpesa' : (method === 'card' ? 'card' : 'mobile_money'),
+            registerUser: shouldRegister
+          })
+        });
+        const data = await response.json();
+        if (!data.success) throw new Error(data.error);
+        if (shouldRegister && data.user && data.user.dkCode) {
+          memberCode = data.user.dkCode;
+        }
+      } else {
+        if (shouldRegister) memberCode = await generateUniqueMemberCode(name);
+        await savePendingPayment({
+          type: 'registerpay',
+          customerName: name,
+          phone,
+          amount: amountToSend,
+          method,
+          shouldRegister,
+          memberCode
+        });
+        showToast("Offline: registration saved. Will sync later.", false);
+      }
+
+      if (shouldRegister && memberCode) {
+        const qrCanvasDiv = document.getElementById('osQRCanvas');
+        QRCode.toCanvas(qrCanvasDiv, `https://whapay.space/payment.html?merchant=${memberCode}`, { width: 150 }, (err) => {
+          if(err) console.error(err);
+        });
+        document.getElementById('osMemberCode').innerText = memberCode;
+        document.getElementById('osRegResult').classList.remove('hidden');
+        document.getElementById('osGuestResult').classList.add('hidden');
+        window.open(`https://wa.me/${phone}?text=${encodeURIComponent(`🎉 Welcome! Member Code: ${memberCode} | Payment link: https://whapay.space/payment.html?merchant=${memberCode} | Offline Paybill 0140933042 Account: ${memberCode}`)}`, '_blank');
+      } else {
+        document.getElementById('osRegResult').classList.add('hidden');
+        document.getElementById('osGuestResult').classList.remove('hidden');
+        window.open(`https://wa.me/${phone}?text=${encodeURIComponent(`✅ Payment of KES ${amountToSend} completed successfully. Thank you!`)}`, '_blank');
+      }
+      regForm.classList.add('hidden');
+      document.getElementById('osResult').classList.remove('hidden');
+    } catch(err) {
+      document.getElementById('osErrorMsg').innerText = err.message;
+      showToast(err.message, true);
+      submitBtnEl.disabled = false;
+      submitBtnEl.innerHTML = 'Pay Now';
+    }
+  });
+}
   
   // Auth UI
   onAuthStateChanged(auth, (user) => { const userSpan = document.getElementById('userEmailDisplay'); const logout = document.getElementById('logoutBtn'); if(user) { if(userSpan) { userSpan.innerText = user.email; userSpan.classList.remove('hidden'); } if(logout) logout.classList.remove('hidden'); } else { if(userSpan) userSpan.classList.add('hidden'); if(logout) logout.classList.add('hidden'); } });

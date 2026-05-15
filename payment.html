@@ -1318,37 +1318,41 @@ if(payBtn) payBtn.addEventListener('click', async () => {
         } else {
           throw new Error(data.error || 'Payment failed');
         }
-        
-      } else if (paymentMethod === 'mobile_money') {
-        // Other mobile money (Airtel, MTN, Tigo, Orange, etc.) with fee
-        if (!selectedNetwork) {
-          throw new Error('Select your mobile money network');
-        }
-        
-        // Detect country from phone number
-        const countryInfo = detectCustomerCountry(phone);
-        
-        response = await fetch('https://whapay-backend.onrender.com/api/mobile-money/charge', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            merchantCode: merchantCode,
-            customerPhone: phone,
-            customerName: customerName,
-            amount: amount,
-            network: selectedNetwork,
-            country: countryInfo.country,
-            currency: countryInfo.currency
-          })
-        });
-        data = await response.json();
-        
-        if (data.success) {
-          document.getElementById('message').innerHTML = `<div class="bg-green-50 p-2 rounded text-green-800">✅ ${data.message || 'Payment request sent! Check your phone.'}</div>`;
-          showToast(`Check your phone for ${selectedNetwork} prompt`);
-        } else {
-          throw new Error(data.error || 'Payment failed');
-        }
+
+        } else if (['airtel', 'tigo', 'mtn', 'vodafone', 'orange'].includes(paymentMethod)) {
+  // Mobile money with fee calculation
+  if (!selectedNetwork) {
+    throw new Error('Select your mobile money network');
+  }
+  // Calculate fee and total
+  const fee = calculateMobileMoneyFee(amount);
+  const totalAmount = amount + fee;
+  
+  const networkMap = { airtel: 'AIRTEL', tigo: 'TIGO', mtn: 'MTN', vodafone: 'VODAFONE', orange: 'ORANGE' };
+  const countryMap = { airtel: 'KE', tigo: 'TZ', mtn: 'UG', vodafone: 'TZ', orange: 'CI' };
+  const currencyMap = { airtel: 'KES', tigo: 'TZS', mtn: 'UGX', vodafone: 'TZS', orange: 'XOF' };
+  
+  response = await fetch('https://whapay-backend.onrender.com/api/mobile-money/charge', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      merchantCode: merchantCode,
+      customerPhone: phone,
+      customerName: customerName,
+      amount: totalAmount,  // send amount + fee
+      network: networkMap[paymentMethod],
+      country: countryMap[paymentMethod],
+      currency: currencyMap[paymentMethod]
+    })
+  });
+  data = await response.json();
+  if (data.success) {
+    document.getElementById('message').innerHTML = `<div class="bg-green-50 p-2 rounded text-green-800">✅ ${paymentMethod.toUpperCase()} request sent! Check your phone.</div>`;
+    showToast(`${paymentMethod.toUpperCase()} payment initiated`);
+  } else {
+    throw new Error(data.error);
+  }
+      
         
       } else if (paymentMethod === 'card') {
         showToast('Card payments coming soon. Use M-Pesa or Mobile Money for now.', false);

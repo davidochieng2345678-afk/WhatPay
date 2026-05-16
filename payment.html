@@ -1454,9 +1454,7 @@ if(regForm) {
         if (shouldRegister && data.user && data.user.dkCode) {
   memberCode = data.user.dkCode;
 } else if (shouldRegister && data.memberCode) {
-  memberCode = data.memberCode;
-}
-      
+  memberCode = data.memberCode;  
         }
       } else {
         if (shouldRegister) memberCode = await generateUniqueMemberCode(name);

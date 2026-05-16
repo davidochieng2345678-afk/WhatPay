@@ -1368,13 +1368,55 @@ if(payBtn) payBtn.addEventListener('click', async () => {
     throw new Error(data.error);
   }
       
-        
-      } else if (paymentMethod === 'card') {
-        showToast('Card payments coming soon. Use M-Pesa or Mobile Money for now.', false);
-        payBtn.disabled = false;
-        payBtn.innerHTML = 'Pay Now';
-        return;
-      }
+
+        } else if (paymentMethod === 'card') {
+  // For testing – you can replace these prompts with real input fields later
+  const cardNumber = prompt("Enter card number (e.g., 4242424242424242)").replace(/\s/g, '');
+  const cvv = prompt("Enter CVV (e.g., 123)");
+  const expiryMonth = prompt("Expiry month (MM)");
+  const expiryYear = prompt("Expiry year (YYYY)");
+  const customerEmail = prompt("Your email address");
+
+  if (!cardNumber || !cvv || !expiryMonth || !expiryYear || !customerEmail) {
+    showToast("All card details are required", true);
+    payBtn.disabled = false;
+    payBtn.innerHTML = 'Pay Now';
+    return;
+  }
+
+  response = await fetch('https://whapay-backend.onrender.com/api/card/charge', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      merchantCode: merchantCode,
+      customerEmail: customerEmail,
+      customerName: customerName,
+      amount: amount,
+      currency: 'KES',
+      cardNumber: cardNumber,
+      cvv: cvv,
+      expiryMonth: expiryMonth,
+      expiryYear: expiryYear
+    })
+  });
+
+  data = await response.json();
+  if (data.success) {
+    if (data.requiresAction && data.redirectUrl) {
+      window.location.href = data.redirectUrl; // redirect for 3D Secure
+    } else {
+      document.getElementById('message').innerHTML = '<div class="bg-green-50 p-2 rounded text-green-800">✅ Card payment successful!</div>';
+      showToast('Payment completed');
+      // Clear the form
+      document.getElementById('merchantCode').value = '';
+      document.getElementById('amount').value = '';
+      document.getElementById('customerName').value = '';
+    }
+  } else {
+    throw new Error(data.error || 'Card payment failed');
+  }
+}
+
       
       // Clear form on success
       document.getElementById('merchantCode').value = '';

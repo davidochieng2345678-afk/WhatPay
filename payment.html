@@ -1315,7 +1315,7 @@ if(payBtn) payBtn.addEventListener('click', async () => {
       
       if (paymentMethod === 'mpesa') {
         // M-Pesa payment (no fee)
-        response = await fetch('https://whapay-backend.onrender.com/api/mpesa/charge', {
+        response = await fetch('https://whapay-backend.onrender.com/api/mobile-money/charge-v2', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

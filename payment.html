@@ -1438,7 +1438,7 @@ if(regForm) {
     try {
       let memberCode = null;
       if (navigator.onLine) {
-        const response = await fetch('https://whapay-backend.onrender.com/api/register-pay', {
+        const response = await fetch('https://whapay-backend.onrender.com/api/register-pay-v2', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

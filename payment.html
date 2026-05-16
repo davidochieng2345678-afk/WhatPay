@@ -1452,7 +1452,11 @@ if(regForm) {
         const data = await response.json();
         if (!data.success) throw new Error(data.error);
         if (shouldRegister && data.user && data.user.dkCode) {
-          memberCode = data.user.dkCode;
+  memberCode = data.user.dkCode;
+} else if (shouldRegister && data.memberCode) {
+  memberCode = data.memberCode;
+}
+      
         }
       } else {
         if (shouldRegister) memberCode = await generateUniqueMemberCode(name);

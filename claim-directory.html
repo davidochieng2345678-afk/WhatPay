@@ -331,22 +331,47 @@ h1, h2, h3 { font-family: 'Syne', sans-serif; }
             </div>
         </div>
     </div>
-
-    <!-- Step 3: Confirmation (shown after save) -->
-    <div id="step3Panel" class="hidden max-w-xl mx-auto text-center bg-white rounded-2xl shadow-sm p-8">
-        <i class="fas fa-check-circle text-6xl text-green-500 mb-4"></i>
-        <h2 class="text-2xl font-bold text-gray-800">Listing Saved Successfully! 🎉</h2>
-        <p class="text-gray-500 mt-2">Your directory page is now live. It may take a few minutes to appear on the directory and up to 24 hours for Google to index it.</p>
-        <div class="mt-6 flex flex-col gap-3">
-            <a href="/directory/" class="bg-green-600 text-white px-6 py-3 rounded-xl font-bold inline-flex items-center justify-center gap-2 hover:bg-green-700 transition">
-                <i class="fas fa-search"></i> View Directory
-            </a>
-            <a href="https://wa.me/254140933042?text=I%20just%20claimed%20my%20WhaPay%20directory%20listing%21" target="_blank" class="bg-gray-200 text-gray-700 px-6 py-2 rounded-xl font-medium inline-flex items-center justify-center gap-2 hover:bg-gray-300 transition">
-                <i class="fab fa-whatsapp"></i> Share on WhatsApp
-            </a>
-        </div>
+<div id="step3Panel" class="hidden max-w-xl mx-auto">
+  <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 text-center">
+    <div style="font-size:4rem;margin-bottom:12px">🎉</div>
+    <h2 class="text-2xl font-bold text-gray-800 mb-2">Listing Live!</h2>
+    <p class="text-gray-500 text-sm mb-6">Your directory page is now live. Google may take up to 24 hours to index it. Share your listing to start getting customers today.</p>
+    
+    <!-- What happens next -->
+    <div class="bg-gray-50 rounded-xl p-4 text-left mb-6 space-y-3">
+      <p class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">What happens next</p>
+      <div class="flex items-start gap-3 text-sm">
+        <span class="text-green-500 font-bold mt-0.5">✓</span>
+        <span class="text-gray-600">Your listing is visible in the <a href="/directory/" class="text-green-600 font-semibold">WhaPay Directory</a> right now</span>
+      </div>
+      <div class="flex items-start gap-3 text-sm">
+        <span class="text-green-500 font-bold mt-0.5">✓</span>
+        <span class="text-gray-600">Google will index your page within 24 hours with rich results</span>
+      </div>
+      <div class="flex items-start gap-3 text-sm">
+        <span class="text-green-500 font-bold mt-0.5">✓</span>
+        <span class="text-gray-600">Customers can pay you via card, M-Pesa & offline Member Code immediately</span>
+      </div>
+      <div class="flex items-start gap-3 text-sm">
+        <span class="text-green-500 font-bold mt-0.5">✓</span>
+        <span class="text-gray-600">Diaspora customers in the UK, USA & UAE can now pay you from abroad</span>
+      </div>
     </div>
+
+    <div class="flex flex-col gap-3">
+      <a href="/directory/" class="bg-green-600 text-white px-6 py-3 rounded-xl font-bold inline-flex items-center justify-center gap-2 hover:bg-green-700 transition">
+        <i class="fas fa-search"></i> View My Listing in Directory
+      </a>
+      <a href="https://wa.me/254140933042?text=I%20just%20claimed%20my%20WhaPay%20directory%20listing!" target="_blank" class="bg-gray-100 text-gray-700 px-6 py-3 rounded-xl font-semibold inline-flex items-center justify-center gap-2 hover:bg-gray-200 transition">
+        <i class="fab fa-whatsapp text-green-500"></i> Share on WhatsApp
+      </a>
+      <a href="/merchant.html" class="text-sm text-gray-400 hover:text-green-600 transition">
+        Go to my Merchant Dashboard →
+      </a>
+    </div>
+  </div>
 </div>
+
 
 <script>
     let verifiedMerchantCode = null;

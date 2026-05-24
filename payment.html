@@ -1464,6 +1464,17 @@ if(regForm) {
       return;
     }
 
+    // After payment success, call this
+fetch('/api/confirm-registration', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    tempId: tempId,           // from the URL parameter
+    transactionId: 'TXN_' + Date.now(),
+    amount: 50
+  })
+});
+
     // ✅ FEE CALCULATION ADDED HERE
     let amountToSend = amount;
     if (method !== 'mpesa' && method !== 'card') {

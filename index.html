@@ -163,6 +163,46 @@
   0% { transform: translateX(-100%) rotate(25deg); }
   100% { transform: translateX(100%) rotate(25deg); }
 }
+
+  /* Fix for centering - Add this to your existing CSS */
+.hero, .hero-content, .container, .kenya-section {
+    text-align: center;
+}
+
+.hero-content, .container {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.chapter-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    justify-content: center;
+}
+
+.stats {
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    flex-wrap: wrap;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+h1, .tagline, .hero-desc, .section-title, .section-subtitle {
+    text-align: center;
+}
+
+.badge {
+    display: inline-block;
+}
 </style>
   <script type="application/ld+json">
 {

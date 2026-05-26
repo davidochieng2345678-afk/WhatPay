@@ -974,18 +974,55 @@ function showToast(msg) {
       </div>
     </div>
 
-    <!-- Feature 2 — Text left, image right -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items
-      
-      <!-- Feature badges -->
-      <div class="flex flex-wrap justify-center gap-6 text-sm text-white/80">
-        <div class="flex items-center gap-2"><i class="fas fa-check-circle text-green-300"></i> No monthly fees</div>
-        <div class="flex items-center gap-2"><i class="fas fa-check-circle text-green-300"></i> 1.5% + KES 20 per card</div>
-        <div class="flex items-center gap-2"><i class="fas fa-check-circle text-green-300"></i> Free offline registration</div>
-        <div class="flex items-center gap-2"><i class="fas fa-check-circle text-green-300"></i> 24/7 WhatsApp support</div>
-      </div>
+    <!-- Feature 2 — Text left, image right (FIXED) -->
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;margin-bottom:80px;" class="flex-col md:grid">
+  <div>
+    <div style="font-size:0.7rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#16a34a;margin-bottom:16px;">Global Payments</div>
+    <h2 style="font-size:clamp(2rem,4vw,3rem);font-weight:900;color:#0a0f1e;letter-spacing:-0.02em;font-family:'Outfit',sans-serif;line-height:1.1;margin-bottom:20px;">
+      Accept Payments<br>From Anywhere.
+    </h2>
+    <p style="color:#64748b;font-size:1rem;line-height:1.8;margin-bottom:28px;">Get paid by customers in the UK, USA, UAE, Canada, and 180+ countries. WhaPay automatically converts USD, GBP, EUR, and 135+ currencies to KES instantly.</p>
+    <ul style="list-style:none;padding:0;margin-bottom:32px;display:flex;flex-direction:column;gap:12px;">
+      <li style="display:flex;align-items:center;gap:12px;color:#374151;font-size:0.9rem;">
+        <span style="width:24px;height:24px;background:#f0fdf4;border:1px solid #dcfce7;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <i class="fas fa-check" style="color:#16a34a;font-size:0.65rem;"></i>
+        </span>
+        Accept international credit cards (Visa, Mastercard)
+      </li>
+      <li style="display:flex;align-items:center;gap:12px;color:#374151;font-size:0.9rem;">
+        <span style="width:24px;height:24px;background:#f0fdf4;border:1px solid #dcfce7;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <i class="fas fa-check" style="color:#16a34a;font-size:0.65rem;"></i>
+        </span>
+        Google Pay and Apple Pay from international customers
+      </li>
+      <li style="display:flex;align-items:center;gap:12px;color:#374151;font-size:0.9rem;">
+        <span style="width:24px;height:24px;background:#f0fdf4;border:1px solid #dcfce7;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <i class="fas fa-check" style="color:#16a34a;font-size:0.65rem;"></i>
+        </span>
+        No SWIFT fees, no hidden charges
+      </li>
+    </ul>
+    <a href="global-pay.html" style="display:inline-flex;align-items:center;gap:8px;background:#16a34a;color:white;font-weight:700;padding:14px 24px;border-radius:6px;text-decoration:none;font-family:'Outfit',sans-serif;">
+      Learn About Global Payments <i class="fas fa-arrow-right"></i>
+    </a>
+  </div>
+  <div style="border-radius:16px;overflow:hidden;height:400px;position:relative;">
+    <img src="https://images.unsplash.com/photo-1523800503107-5bc3ba2a6f81?w=700&q=80" alt="Global payments diaspora sending money to Kenya" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.background='#e2e8f0';">
+    <div style="position:absolute;bottom:20px;left:20px;background:rgba(10,15,30,0.85);backdrop-filter:blur(16px);border:1px solid rgba(22,163,74,0.3);border-radius:10px;padding:14px 18px;">
+      <div style="color:rgba(255,255,255,0.5);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;">Live Currency Rates</div>
+      <div style="color:#22c55e;font-weight:700;font-size:0.9rem;">1 USD = 129 KES • 1 GBP = 165 KES</div>
     </div>
   </div>
+</div>
+
+<!-- Feature badges -->
+<div class="flex flex-wrap justify-center gap-6 text-sm text-white/80">
+  <div class="flex items-center gap-2"><i class="fas fa-check-circle text-green-300"></i> No monthly fees</div>
+  <div class="flex items-center gap-2"><i class="fas fa-check-circle text-green-300"></i> 1.5% + KES 20 per card</div>
+  <div class="flex items-center gap-2"><i class="fas fa-check-circle text-green-300"></i> Free offline registration</div>
+  <div class="flex items-center gap-2"><i class="fas fa-check-circle text-green-300"></i> 24/7 WhatsApp support</div>
+</div>
+
   
   <!-- Bottom wave decoration -->
   <div class="absolute bottom-0 left-0 right-0">

@@ -1,13 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="canonical" href="https://whapay.space/" />
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="google-site-verification" content="-5AhxfqMROwXYuTEiRu1Sp4bW2SA4PFf3Oc45VoN7xY" />
+<meta name="description" content="WhaPay: register online via WhatsApp, or offline by voice call (0140933042) or SMS. Pay using WhatsApp links, QR codes, or Member Code with M-Pesa Paybill. Works without internet. Trusted by 500+ Kenyan merchants.">
+<meta name="theme-color" content="#16a34a">
+  <!-- Open Graph / Social Media -->
+<meta property="og:title" content="WhaPay – Lipa Na M-Pesa Offline & Online | No Internet Needed">
+<meta property="og:description" content="Register via WhatsApp, voice call or SMS. Accept M-Pesa, cards, offline payments. Trusted by 500+ Kenyan merchants.">
+<meta property="og:image" content="https://whapay.space/whapay-logo.svg">
+<meta property="og:url" content="https://whapay.space/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="/whapay-logo.svg">
+<link rel="apple-touch-icon" href="/whapay-logo.svg">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "WhaPay",
+  "url": "https://whapay.space",
+  "logo": "https://whapay.space/whapay-logo.svg",
+  "sameAs": [
+    "https://facebook.com/whapay",
+    "https://twitter.com/whapay"
+  ]
+}
+</script>
+<link rel="manifest" href="/manifest.json">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="global.css">
+<style>
+  .step-card { transition: 0.2s; }
+  .step-card:hover { transform: translateY(-3px); }
+  .payment-card { cursor: pointer; transition: 0.2s; }
+  .payment-card:hover { transform: scale(1.02); background-color: #f0fdf4; }
+  .spinner { border: 2px solid #f3f3f3; border-top: 2px solid #16a34a; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; display: inline-block; }
+  @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+  .toast { transition: opacity 0.3s; }
+  .skeleton { background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 0.25rem; }
+  @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+  /* Professional Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
 
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
 
-  <!-- Bottom wave decoration -->
-  <div class="absolute bottom-0 left-0 right-0">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" class="w-full h-auto text-gray-100 dark:text-gray-900" fill="currentColor">
-      <path d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
-    </svg>
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.animate-fade-in-left {
+  animation: fadeInLeft 0.6s ease-out forwards;
+}
+
+.animate-fade-in-right {
+  animation: fadeInRight 0.6s ease-out forwards;
+}
+
+.animate-pulse-slow {
+  animation: pulse 3s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
+.delay-500 { animation-delay: 0.5s; }
+.delay-1000 { animation-delay: 1s; }
+
+/* Glass morphism effect */
+.glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, #16a34a, #22c55e, #15803d);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradientShift 3s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Shimmer effect for buttons */
+.shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(115deg, rgba(255,255,255,0) 10%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 90%);
+  transform: rotate(25deg);
+  animation: shimmerAnimation 3s infinite;
+}
+
+@keyframes shimmerAnimation {
+  0% { transform: translateX(-100%) rotate(25deg); }
+  100% { transform: translateX(100%) rotate(25deg); }
+}
+
+  /* Force fix for centering */
+header, main, footer {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+.gd-dropdown-menu {
+    left: auto !important;
+    right: 0 !important;
+    transform: none !important;
+}
+</style>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "WhaPay",
+  "alternateName": "WhaPay Payments",
+  "description": "Online and offline payment solution for Kenyan merchants. Register via WhatsApp, SMS, or voice call. No monthly fees.",
+  "url": "https://whapay.space/",
+  "logo": "https://whapay.space/images/logo.png",
+  "image": "https://whapay.space/images/whapay-cover.jpg",
+  "telephone": "+254140933042",
+  "email": "support@whapay.space",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Moi Avenue",
+    "addressLocality": "Nairobi",
+    "addressRegion": "Nairobi",
+    "addressCountry": "KE"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": -1.286389,
+    "longitude": 36.817223
+  },
+  "areaServed": {
+    "@type": "Country",
+    "name": "Kenya"
+  },
+  "priceRange": "Free registration, 1.5% + KES 20 per transaction",
+  "openingHours": "Mo-Su 00:00-23:59",
+  "paymentAccepted": ["M-PESA", "Visa", "Mastercard", "American Express"],
+  "sameAs": [
+    "https://wa.me/254140933042",
+    "https://twitter.com/whapay",
+    "https://www.facebook.com/whapay"
+  ],
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.8",
+    "reviewCount": "127"
+  }
+}
+
+</script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Review",
+  "itemReviewed": {
+    "@type": "Organization",
+    "name": "WhaPay"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "Mary"
+  },
+  "reviewBody": "WhaPay helped me accept payments even when my shop had no internet. My sales increased 30%.",
+  "reviewRating": {
+    "@type": "Rating",
+    "ratingValue": "5",
+    "bestRating": "5"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Review",
+  "itemReviewed": {
+    "@type": "Organization",
+    "name": "WhaPay"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "James"
+  },
+  "reviewBody": "The WhatsApp link is so easy. My customers love it. And offline registration via SMS saved me when my data ran out.",
+  "reviewRating": {
+    "@type": "Rating",
+    "ratingValue": "5",
+    "bestRating": "5"
+  }
+}
+</script>
+
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://whapay.space/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Register",
+      "item": "https://whapay.space/register"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Merchant Dashboard",
+      "item": "https://whapay.space/dashboard"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "WhaPay Payment Service for Kenyan Merchants",
+  "description": "Online and offline payment acceptance via WhatsApp, QR, or Member Code. No monthly fees.",
+  "brand": {
+    "@type": "Brand",
+    "name": "WhaPay"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "KES",
+    "description": "Free registration, 1.5% + KES 20 per transaction"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.8",
+    "reviewCount": "127"
+  }
+}
+</script>
+  
+</head>
+<body class="bg-gray-100">
+<!-- G+D Style Grouped Navigation — Replace existing header on ALL pages -->
+<style>
+.gd-nav { font-family: sans-serif; }
+.gd-nav-link { color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.85rem;font-weight:500;transition:color 0.2s;padding:4px 0; }
+.gd-nav-link:hover { color:white; }
+.gd-nav-link.active { color:#22c55e;font-weight:700; }
+.gd-dropdown { position:relative; }
+.gd-dropdown-menu { position:absolute;top:calc(100% + 12px);left:50%;transform:translateX(-50%);background:#0f1629;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:8px;min-width:220px;opacity:0;visibility:hidden;transition:all 0.2s ease;z-index:100;box-shadow:0 20px 40px rgba(0,0,0,0.4); }
+.gd-dropdown:hover .gd-dropdown-menu { opacity:1;visibility:visible; }
+.gd-dropdown-item { display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;text-decoration:none;transition:background 0.2s; }
+.gd-dropdown-item:hover { background:rgba(255,255,255,0.06); }
+.gd-dropdown-item .icon { width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+.gd-dropdown-item .label { color:white;font-size:0.82rem;font-weight:600; }
+.gd-dropdown-item .desc { color:rgba(255,255,255,0.35);font-size:0.72rem;margin-top:1px; }
+.gd-dropdown-trigger { display:flex;align-items:center;gap:4px;cursor:pointer; }
+.gd-dropdown-trigger i.arrow { font-size:0.6rem;color:rgba(255,255,255,0.4);transition:transform 0.2s; }
+.gd-dropdown:hover .gd-dropdown-trigger i.arrow { transform:rotate(180deg); }
+</style>
+
+<header class="gd-nav" style="background:#080c18;border-bottom:1px solid rgba(255,255,255,0.06);position:sticky;top:0;z-index:999;">
+
+  <!-- Top utility bar -->
+  <div style="background:rgba(22,163,74,0.08);border-bottom:1px solid rgba(22,163,74,0.1);padding:6px 24px;display:flex;justify-between;align-items:center;font-size:0.72rem;flex-wrap:wrap;gap:8px;">
+    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+      <a href="tel:0140933042" style="color:rgba(255,255,255,0.5);text-decoration:none;display:flex;align-items:center;gap:5px;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">
+        <i class="fas fa-phone-alt" style="color:#22c55e;font-size:0.65rem;"></i> 0140933042
+      </a>
+      <a href="mailto:support@whapay.space" style="color:rgba(255,255,255,0.5);text-decoration:none;display:flex;align-items:center;gap:5px;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">
+        <i class="fas fa-envelope" style="color:#22c55e;font-size:0.65rem;"></i> support@whapay.space
+      </a>
+      <span style="color:rgba(255,255,255,0.3);display:flex;align-items:center;gap:5px;">
+        <i class="fas fa-globe" style="color:#22c55e;font-size:0.65rem;"></i> Serving 180+ countries
+      </span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span id="navUserTopDisplay" style="color:rgba(255,255,255,0.4);font-size:0.72rem;"></span>
+      <a href="users.html" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.72rem;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">My Account</a>
+    </div>
+  </div>
+
+  <!-- Main nav bar -->
+  <div style="max-width:1280px;margin:0 auto;padding:0 24px;display:flex;justify-content:space-between;align-items:center;height:64px;">
+
+    <!-- Logo -->
+    <a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;">
+      <div style="width:32px;height:32px;background:#16a34a;border-radius:6px;display:flex;align-items:center;justify-content:center;">
+        <i class="fas fa-bolt" style="color:white;font-size:0.85rem;"></i>
+      </div>
+      <span style="color:white;font-size:1.2rem;font-weight:900;letter-spacing:-0.02em;">WhaPay</span>
+    </a>
+
+    <!-- Desktop nav groups -->
+    <nav style="display:flex;align-items:center;gap:4px;" class="hidden md:flex">
+
+      <!-- Payments dropdown -->
+      <div class="gd-dropdown" style="padding:0 12px;">
+        <div class="gd-dropdown-trigger">
+          <span class="gd-nav-link">Payments</span>
+          <i class="fas fa-chevron-down arrow"></i>
+        </div>
+        <div class="gd-dropdown-menu">
+          <a href="payment.html" class="gd-dropdown-item">
+            <div class="icon" style="background:rgba(22,163,74,0.15);"><i class="fas fa-credit-card" style="color:#22c55e;font-size:0.85rem;"></i></div>
+            <div><div class="label">How to Pay</div><div class="desc">WhatsApp, QR, Member Code</div></div>
+          </a>
+          <a href="pay-anyone.html" class="gd-dropdown-item">
+            <div class="icon" style="background:rgba(59,130,246,0.15);"><i class="fas fa-paper-plane" style="color:#60a5fa;font-size:0.85rem;"></i></div>
+            <div><div class="label">Pay Anyone</div><div class="desc">Member Code, Phone, Paybill</div></div>
+          </a>
+          <a href="first-time-pay.html" class="gd-dropdown-item">
+            <div class="icon" style="background:rgba(168,85,247,0.15);"><i class="fas fa-bolt" style="color:#c084fc;font-size:0.85rem;"></i></div>
+            <div><div class="label">Register & Pay</div><div class="desc">One-step payment & signup</div></div>
+          </a>
+          <div style="border-top:1px solid rgba(255,255,255,0.06);margin:6px 0;"></div>
+          <a href="index.html#offline-features" class="gd-dropdown-item">
+            <div class="icon" style="background:rgba(251,191,36,0.12);"><i class="fas fa-wifi-slash" style="color:#fbbf24;font-size:0.85rem;"></i></div>
+            <div><div class="label">Offline Payments</div><div class="desc">No internet needed</div></div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Merchants dropdown -->
+      <div class="gd-dropdown" style="padding:0 12px;">
+        <div class="gd-dropdown-trigger">
+          <span class="gd-nav-link">Merchants</span>
+          <i class="fas fa-chevron-down arrow"></i>
+        </div>
+        <div class="gd-dropdown-menu">
+          <a href="merchant.html" class="gd-dropdown-item">
+            <div class="icon" style="background:rgba(22,163,74,0.15);"><i class="fas fa-store" style="color:#22c55e;font-size:0.85rem;"></i></div>
+            <div><div class="label">Merchant Dashboard</div><div class="desc">QR, links, transactions</div></div>
+          </a>
+          <a href="registration.html" class="gd-dropdown-item">
+            <div class="icon" style="background:rgba(59,130,246,0.15);"><i class="fas fa-user-plus" style="color:#60a5fa;font-size:0.85rem;"></i></div>
+            <div><div class="label">Register Business</div><div class="desc">Free — online or offline</div></div>
+          </a>
+          <a href="reports.html" class="gd-dropdown-item">
+            <div class="icon" style="background:rgba(168,85,247,0.15);"><i class="fas fa-chart-line" style="color:#c084fc;font-size:0.85rem;"></i></div>
+            <div><div class="label">Analytics & Reports</div><div class="desc">Revenue, trends, CSV export</div></div>
+          </a>
+          <a href="pricing.html" class="gd-dropdown-item">
+            <div class="icon" style="background:rgba(251,191,36,0.12);"><i class="fas fa-tag" style="color:#fbbf24;font-size:0.85rem;"></i></div>
+            <div><div class="label">Pricing</div><div class="desc">1.5% + KES 20, KES 0/month</div></div>
+          </a>
+          <a href="/directory/" style="background:#16a34a; color:white; padding:8px 16px; border-radius:30px; font-weight:bold; text-decoration:none;">🔍 Merchant Directory</a>
+        </div>
+      </div>
+
+      <!-- Features dropdown -->
+      <div class="gd-dropdown" style="padding:0 12px;">
+        <div class="gd-dropdown-trigger">
+          <span class="gd-nav-link">Features</span>
+          <i class="fas fa-chevron-down arrow"></i>
+        </div>
+        <div class="gd-dropdown-menu">
+          <a href="features.html" class="gd-dropdown-item">
+            <div class="icon" style="background:rgba(22,163,74,0.15);"><i class="fas fa-bolt" style="color:#22c55e;font-size:0.85rem;"></i></div>
+            <div><div class="label">All Features</div><div class="desc">Complete platform overview</div></div>
+          </a>
+          <a href="process.html" class="gd-dropdown-item">
+            <div class="icon" style="background:rgba(59,130,246,0.15);"><i class="fas fa-route" style="color:#60a5fa;font-size:0.85rem;"></i></div>
+            <div><div class="label">How It Works</div><div class="desc">3 simple steps</div></div>
+          </a>
+          <a href="index.html#currencies" class="gd-dropdown-item">
+            <div class="icon" style="background:rgba(168,85,247,0.15);"><i class="fas fa-globe" style="color:#c084fc;font-size:0.85rem;"></i></div>
+            <div><div class="label">Global Currencies</div><div class="desc">135+ currencies, 180+ countries</div></div>
+          </a>
+          <a href="index.html#diaspora" class="gd-dropdown-item">
+            <div class="icon" style="background:rgba(251,191,36,0.12);"><i class="fas fa-plane" style="color:#fbbf24;font-size:0.85rem;"></i></div>
+            <div><div class="label">Diaspora Payments</div><div class="desc">UK, USA, UAE → Kenya</div></div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Company dropdown -->
+      <div class="gd-dropdown" style="padding:0 12px;">
+        <div class="gd-dropdown-trigger">
+          <span class="gd-nav-link">Company</span>
+          <i class="fas fa-chevron-down arrow"></i>
+        </div>
+        <div class="gd-dropdown-menu">
+          <a href="about.html" class="gd-dropdown-item">
+            <div class="icon" style="background:rgba(22,163,74,0.15);"><i class="fas fa-heart" style="color:#22c55e;font-size:0.85rem;"></i></div>
+            <div><div class="label">About WhaPay</div><div class="desc">Our story and mission</div></div>
+          </a>
+          <a href="blog.html" class="gd-dropdown-item">
+            <div class="icon" style="background:rgba(59,130,246,0.15);"><i class="fas fa-pen-nib" style="color:#60a5fa;font-size:0.85rem;"></i></div>
+            <div><div class="label">Blog & Insights</div><div class="desc">Payments, fintech, Africa</div></div>
+          </a>
+          <a href="contact.html" class="gd-dropdown-item">
+            <div class="icon" style="background:rgba(168,85,247,0.15);"><i class="fas fa-headset" style="color:#c084fc;font-size:0.85rem;"></i></div>
+            <div><div class="label">Contact & Support</div><div class="desc">24/7 WhatsApp support</div></div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Direct links -->
+      <a href="/directory.html" class="gd-nav-link" style="padding:0 12px;">📂 Directory</a>
+      <a href="/claim-directory.html" class="gd-nav-link" style="padding:0 12px;">📌 Claim Directory</a>
+      <a href="global-pay.html" class="gd-nav-link" style="padding:0 12px;">Global Pay</a>
+      <a href="pricing.html" class="gd-nav-link" style="padding:0 12px;">Pricing</a>
+<a href="blog.html" class="gd-nav-link" style="padding:0 12px;">Blog</a>
+    </nav>
+
+    <!-- Right side CTAs -->
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span id="navUserDisplay" style="color:rgba(255,255,255,0.5);font-size:0.78rem;"></span>
+      <button id="navLoginBtn" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.7);font-size:0.82rem;font-weight:600;padding:8px 16px;border-radius:6px;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.06)'">
+        Login
+      </button>
+      <button id="logoutBtn" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:#f87171;font-size:0.82rem;font-weight:600;padding:8px 16px;border-radius:6px;cursor:pointer;display:none;">
+        Logout
+      </button>
+      <a href="https://wa.me/0140933042?text=REGISTER"
+        style="background:#16a34a;color:white;font-weight:700;font-size:0.85rem;padding:10px 20px;border-radius:6px;text-decoration:none;display:flex;align-items:center;gap:6px;transition:background 0.2s;"
+        onmouseover="this.style.background='#15803d'" onmouseout="this.style.background='#16a34a'">
+        <i class="fab fa-whatsapp"></i> Register Free
+      </a>
+
+      <!-- Mobile menu button -->
+      <button id="mobileMenuBtn" onclick="toggleMobileMenu()"
+        style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:white;width:40px;height:40px;border-radius:6px;cursor:pointer;display:none;align-items:center;justify-content:center;"
+        class="md:hidden">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+
+  </div>
+
+  <!-- Mobile menu -->
+  <div id="mobileMenu" style="display:none;background:#080c18;border-top:1px solid rgba(255,255,255,0.06);padding:16px 24px;">
+    <div style="display:flex;flex-direction:column;gap:4px;">
+      <div style="color:rgba(255,255,255,0.3);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;padding:8px 0 4px;">Payments</div>
+      <a href="payment.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">How to Pay</a>
+      <a href="pay-anyone.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">Pay Anyone</a>
+      <a href="first-time-pay.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">Register & Pay</a>
+      <div style="color:rgba(255,255,255,0.3);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;padding:8px 0 4px;margin-top:8px;">Merchants</div>
+      <a href="merchant.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">Merchant Dashboard</a>
+      <a href="registration.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">Register Business</a>
+      <a href="reports.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">Analytics & Reports</a>
+      <a href="pricing.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">Pricing</a>
+      <div style="color:rgba(255,255,255,0.3);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;padding:8px 0 4px;margin-top:8px;">Features</div>
+      <a href="features.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">All Features</a>
+      <a href="process.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">How It Works</a>
+      <div style="color:rgba(255,255,255,0.3);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;padding:8px 0 4px;margin-top:8px;">Company</div>
+      <a href="about.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">About</a>
+      <a href="/claim-directory.html" style="display:block;color:white;padding:8px 0;">📌 Claim Directory</a>
+      <a href="/directory.html" style="display:block;color:white;padding:8px 0;">📂 Directory</a>
+      <a href="blog.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">Blog</a>
+      <a href="contact.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;">Contact</a>
+      <a href="https://wa.me/0140933042?text=REGISTER" style="display:flex;align-items:center;justify-content:center;gap:8px;background:#16a34a;color:white;font-weight:700;padding:13px;border-radius:6px;text-decoration:none;margin-top:16px;"><i class="fab fa-whatsapp"></i> Register Free</a>
+    </div>
+  </div>
+
+</header>
+
+<script>
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobileMenu');
+  const btn = document.getElementById('mobileMenuBtn');
+  const isOpen = menu.style.display === 'block';
+  menu.style.display = isOpen ? 'none' : 'block';
+  btn.innerHTML = isOpen ? '<i class="fas fa-bars"></i>' : '<i class="fas fa-times"></i>';
+}
+// Show mobile button on small screens
+(function() {
+  const btn = document.getElementById('mobileMenuBtn');
+  if (btn && window.innerWidth < 768) btn.style.display = 'flex';
+  window.addEventListener('resize', () => {
+    if (btn) btn.style.display = window.innerWidth < 768 ? 'flex' : 'none';
+  });
+})();
+</script>
+
+  <script>
+// ========== STANDALONE OFFLINE SYNC (Just paste, works automatically) ==========
+
+// Save user phone when they use the site
+function setUserPhone(phone) {
+  localStorage.setItem('whapay_user_phone', phone);
+}
+
+// Get user phone
+function getUserPhone() {
+  return localStorage.getItem('whapay_user_phone');
+}
+
+// Store offline payment
+async function storeOfflinePayment(amount, merchantName) {
+  const phone = getUserPhone();
+  if (!phone) return false;
+  
+  await fetch('/api/offline/store', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      customerPhone: phone,
+      customerName: "Customer",
+      merchantName: merchantName,
+      merchantPhone: "0140933042",
+      amount: amount,
+      paymentMethod: "card"
+    })
+  });
+  
+  return true;
+}
+
+// Sync all pending transactions
+async function syncOfflinePayments() {
+  const phone = getUserPhone();
+  if (!phone) return;
+  
+  const response = await fetch(`/api/offline/pending/${phone}`);
+  const data = await response.json();
+  
+  if (data.pending > 0) {
+    console.log(`📱 Syncing ${data.pending} offline transactions...`);
+    
+    const syncRes = await fetch('/api/offline/sync', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ customerPhone: phone })
+    });
+    
+    const syncData = await syncRes.json();
+    
+    if (syncData.synced > 0) {
+      showToast(`✅ Synced ${syncData.synced} offline payments!`);
+      if (window.location.pathname.includes('reports.html')) {
+        location.reload();
+      }
+    }
+  }
+}
+
+// Auto-sync when internet comes back
+window.addEventListener('online', () => {
+  console.log("🌐 Online - syncing...");
+  showToast("Connection restored. Syncing payments...");
+  syncOfflinePayments();
+});
+
+// Check on page load
+if (navigator.onLine) {
+  setTimeout(syncOfflinePayments, 3000);
+}
+
+function showToast(msg) {
+  let toast = document.getElementById('offlineToast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'offlineToast';
+    toast.style.cssText = 'fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-full text-sm z-50 transition-opacity opacity-0';
+    document.body.appendChild(toast);
+  }
+  toast.innerText = msg;
+  toast.style.backgroundColor = '#16a34a';
+  toast.classList.remove('opacity-0');
+  toast.classList.add('opacity-100');
+  setTimeout(() => toast.classList.add('opacity-0'), 3000);
+}
+</script>
+
+<main class="max-w-7xl mx-auto px-4 py-6">
+  <div style="position:relative;border-radius:24px;overflow:hidden;margin-bottom:48px;height:480px;">
+  <img src="https://images.unsplash.com/photo-1607863680198-23d4b2565df0?w=1600&q=85" alt="Kenyan merchants accepting mobile payments online and offline" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;" onerror="this.src='https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1600&q=85'">
+  <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(10,15,30,0.95) 0%,rgba(10,15,30,0.75) 50%,rgba(10,15,30,0.4) 100%);"></div>
+  <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(22,163,74,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(22,163,74,0.04) 1px,transparent 1px);background-size:40px 40px;"></div>
+  <div style="position:absolute;inset:0;display:flex;align-items:center;padding:48px;">
+    <div style="max-width:1280px;margin:0 auto;width:100%;display:flex;justify-content:space-between;align-items:center;gap:40px;flex-wrap:wrap;">
+      <div style="max-width:520px;">
+        <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(22,163,74,0.12);border:1px solid rgba(22,163,74,0.25);color:#86efac;padding:6px 16px;border-radius:999px;font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:20px;"><span style="width:6px;height:6px;background:#22c55e;border-radius:50%;"></span> Kenya's #1 Offline Payment Platform</div>
+        <h2 style="font-size:clamp(2rem,4vw,3.2rem);font-weight:900;color:white;line-height:1.1;letter-spacing:-0.02em;margin-bottom:16px;font-family:sans-serif;">Accept Payments<br><span style="background:linear-gradient(135deg,#22c55e,#86efac);-webkit-background-clip:text;background-clip:text;color:transparent;">Without Internet.</span><br><span style="font-weight:300;color:rgba(255,255,255,0.5);">Register in 2 Minutes.</span></h2>
+        <p style="color:rgba(255,255,255,0.5);font-size:1rem;line-height:1.8;margin-bottom:28px;">Register via WhatsApp, SMS or voice call. Accept M-Pesa, Visa, Mastercard, Google Pay and 135+ global currencies — online or completely offline. Trusted by 500+ merchants across Kenya and 180+ countries.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;">
+          <a href="https://wa.me/0140933042?text=REGISTER" style="display:inline-flex;align-items:center;gap:8px;background:#16a34a;color:white;font-weight:700;padding:13px 24px;border-radius:6px;text-decoration:none;font-size:0.9rem;"><i class="fab fa-whatsapp"></i> Register Free</a>
+          <a href="pricing.html" style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.8);font-weight:600;padding:13px 24px;border-radius:6px;text-decoration:none;font-size:0.9rem;">View Pricing</a>
+          <a href="tel:0140933042" style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.8);font-weight:600;padding:13px 24px;border-radius:6px;text-decoration:none;font-size:0.9rem;"><i class="fas fa-phone-alt"></i> 0140933042</a>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;min-width:280px;max-width:320px;">
+        <div style="background:rgba(255,255,255,0.06);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:20px;text-align:center;">
+          <div style="font-size:1.8rem;font-weight:900;background:linear-gradient(135deg,#fff,#22c55e);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1;">500+</div>
+          <div style="color:rgba(255,255,255,0.35);font-size:0.65rem;letter-spacing:0.08em;text-transform:uppercase;margin-top:6px;">Merchants</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.06);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:20px;text-align:center;">
+          <div style="font-size:1.8rem;font-weight:900;background:linear-gradient(135deg,#fff,#22c55e);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1;">180+</div>
+          <div style="color:rgba(255,255,255,0.35);font-size:0.65rem;letter-spacing:0.08em;text-transform:uppercase;margin-top:6px;">Countries</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.06);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:20px;text-align:center;">
+          <div style="font-size:1.8rem;font-weight:900;background:linear-gradient(135deg,#fff,#22c55e);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1;">135+</div>
+          <div style="color:rgba(255,255,255,0.35);font-size:0.65rem;letter-spacing:0.08em;text-transform:uppercase;margin-top:6px;">Currencies</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.06);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:20px;text-align:center;">
+          <div style="font-size:1.8rem;font-weight:900;background:linear-gradient(135deg,#fff,#22c55e);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1;">KES 0</div>
+          <div style="color:rgba(255,255,255,0.35);font-size:0.65rem;letter-spacing:0.08em;text-transform:uppercase;margin-top:6px;">Monthly Fee</div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
+ <div class="text-center py-12 px-4 bg-gradient-to-br from-emerald-900 to-emerald-700 rounded-b-3xl">
+  <h1 class="text-4xl md:text-5xl font-bold mb-4">
+    <span class="bg-gradient-to-r from-yellow-300 via-amber-200 to-yellow-300 bg-clip-text text-transparent">Lipa Na M-Pesa</span>
+    <br>
+    <span class="text-white">Offline & Online – No Internet Needed</span>
+  </h1>
+  <p class="text-lg md:text-xl mb-8 text-white/90 max-w-2xl mx-auto leading-relaxed">
+    Accept <strong>M-Pesa, Airtel Money, Visa & Mastercard</strong> via WhatsApp link, QR code, or Member Code.<br>
+    Register online via WhatsApp <i class="fab fa-whatsapp"></i> or <strong>offline by voice call / SMS to <span class="font-mono bg-white/20 px-3 py-1.5 rounded-lg">0140933042</span></strong>.
+  </p>
+</div>
+<div style="display:inline-flex; align-items:center; gap:8px; background:rgba(22,163,74,0.12); border:1px solid rgba(22,163,74,0.25); color:#86efac; padding:4px 12px; border-radius:999px; font-size:0.65rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:10px;">
+  <i class="fas fa-shield-alt" style="font-size:0.6rem;"></i>
+  No CBK License Needed • Pure Technology Platform
+</div>
+  
+
+<!-- G+D Style Image Hero - Paste to replace your current hero -->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap');
+.img-hero * { font-family: 'Outfit', sans-serif; }
+
+.img-hero {
+  position: relative;
+  background: #0a0f1e;
+  overflow: hidden;
+  min-height: 100vh;
+}
+
+/* Full bleed background image with overlay */
+.img-hero-bg {
+  position: absolute;
+  inset: 0;
+  background-image: url('https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1800&q=80');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.25;
+}
+
+/* Dark gradient overlay */
+.img-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(10,15,30,0.97) 0%,
+    rgba(10,15,30,0.85) 40%,
+    rgba(10,15,30,0.5) 100%
+  );
+}
+
+.img-headline {
+  font-size: clamp(3rem, 6vw, 5.5rem);
+  font-weight: 900;
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+  color: white;
+}
+
+.img-accent {
+  background: linear-gradient(135deg, #22c55e, #86efac);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Image cards that float on right */
+.img-card {
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.img-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+}
+
+.photo-strip img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2px solid rgba(255,255,255,0.1);
+  transition: all 0.3s ease;
+}
+
+.photo-strip img:hover {
+  border-color: #22c55e;
+  transform: scale(1.05);
+}
+
+  
+</style>
+
+<div class="img-hero" style="min-height:100vh;display:flex;align-items:center;">
+  <!-- Background image with overlay -->
+  <div class="img-hero-bg"></div>
+  <div class="img-hero-overlay"></div>
+
+  <!-- Green grid pattern -->
+  <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(22,163,74,0.04) 1px, transparent 1px),linear-gradient(90deg, rgba(22,163,74,0.04) 1px, transparent 1px);background-size:60px 60px;"></div>
+
+  <div style="position:relative;z-index:10;width:100%;max-width:1280px;margin:0 auto;padding:80px 24px;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;" class="flex-col md:grid">
+
+      <!-- LEFT — Text content -->
+      <div>
+        <!-- Live badge -->
+        <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(22,163,74,0.12);border:1px solid rgba(22,163,74,0.25);color:#86efac;padding:6px 16px;border-radius:999px;font-size:0.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:28px;">
+          <span style="width:6px;height:6px;background:#22c55e;border-radius:50%;box-shadow:0 0 0 3px rgba(34,197,94,0.3);animation:livePing 2s ease infinite;"></span>
+          Live — 500+ Active Merchants
+        </div>
+
+        <h1 class="img-headline" style="margin-bottom:24px;">
+          Accept Payments<br>
+          <span class="img-accent">Anywhere.</span><br>
+          <span style="font-weight:300;color:rgba(255,255,255,0.6);">Even Offline.</span>
+        </h1>
+
+        <p style="color:rgba(255,255,255,0.5);font-size:1.1rem;line-height:1.8;max-width:460px;margin-bottom:40px;">
+          M-Pesa, Visa, Mastercard, Google Pay — online or offline. 
+          Kenya's only payment platform that works without internet. 
+          Trusted by merchants from Nairobi to New York.
+        </p>
+
+        <!-- CTAs -->
+        <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:48px;">
+          <a href="https://wa.me/0140933042?text=REGISTER"
+            style="display:inline-flex;align-items:center;gap:10px;background:#16a34a;color:white;font-weight:700;font-size:1rem;padding:16px 28px;border-radius:6px;text-decoration:none;transition:all 0.3s;">
+            <i class="fab fa-whatsapp" style="font-size:1.1rem;"></i>
+            Register Free
+          </a>
+          <a href="pricing.html"
+            style="display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);color:white;font-weight:600;font-size:1rem;padding:16px 28px;border-radius:6px;text-decoration:none;transition:all 0.3s;">
+            See Pricing
+            <i class="fas fa-arrow-right" style="font-size:0.85rem;"></i>
+          </a>
+        </div>
+
+        <!-- Trust logos row -->
+        <div style="margin-bottom:40px;">
+          <p style="color:rgba(255,255,255,0.25);font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:12px;">Accepted Payments</p>
+          <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:center;">
+            <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 16px;">
+              <i class="fas fa-mobile-alt" style="color:#22c55e;margin-right:6px;"></i>
+              <span style="color:rgba(255,255,255,0.6);font-size:0.8rem;">M-Pesa</span>
+            </div>
+            <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 16px;">
+              <i class="fab fa-cc-visa" style="color:#3b82f6;margin-right:6px;"></i>
+              <span style="color:rgba(255,255,255,0.6);font-size:0.8rem;">Visa</span>
+            </div>
+            <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 16px;">
+              <i class="fab fa-cc-mastercard" style="color:#f97316;margin-right:6px;"></i>
+              <span style="color:rgba(255,255,255,0.6);font-size:0.8rem;">Mastercard</span>
+            </div>
+            <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 16px;">
+              <i class="fab fa-google" style="color:#ea4335;margin-right:6px;"></i>
+              <span style="color:rgba(255,255,255,0.6);font-size:0.8rem;">Google Pay</span>
+            </div>
+            <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 16px;">
+              <i class="fab fa-paypal" style="color:#0070ba;margin-right:6px;"></i>
+              <span style="color:rgba(255,255,255,0.6);font-size:0.8rem;">PayPal</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stats -->
+        <div style="display:flex;gap:32px;flex-wrap:wrap;">
+          <div style="border-left:2px solid rgba(22,163,74,0.4);padding-left:16px;">
+            <div style="font-size:2.2rem;font-weight:900;background:linear-gradient(135deg,#fff,#22c55e);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1;">500+</div>
+            <div style="color:rgba(255,255,255,0.35);font-size:0.7rem;letter-spacing:0.08em;text-transform:uppercase;margin-top:4px;">Merchants</div>
+          </div>
+          <div style="border-left:2px solid rgba(22,163,74,0.4);padding-left:16px;">
+            <div style="font-size:2.2rem;font-weight:900;background:linear-gradient(135deg,#fff,#22c55e);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1;">180+</div>
+            <div style="color:rgba(255,255,255,0.35);font-size:0.7rem;letter-spacing:0.08em;text-transform:uppercase;margin-top:4px;">Countries</div>
+          </div>
+          <div style="border-left:2px solid rgba(22,163,74,0.4);padding-left:16px;">
+            <div style="font-size:2.2rem;font-weight:900;background:linear-gradient(135deg,#fff,#22c55e);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1;">KES 0</div>
+            <div style="color:rgba(255,255,255,0.35);font-size:0.7rem;letter-spacing:0.08em;text-transform:uppercase;margin-top:4px;">Monthly Fee</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT — Real photo collage -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto auto;gap:12px;position:relative;" class="hidden md:grid">
+
+        <!-- Large hero image -->
+        <div style="grid-column:1/3;border-radius:12px;overflow:hidden;height:240px;position:relative;">
+          <img
+            src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&q=80"
+            alt="African merchant accepting mobile payment"
+            style="width:100%;height:100%;object-fit:cover;"
+            onerror="this.style.background='#1e293b';this.style.display='flex';"
+          >
+          <div style="position:absolute;inset:0;background:linear-gradient(to top, rgba(10,15,30,0.7) 0%, transparent 60%);"></div>
+          <div style="position:absolute;bottom:16px;left:16px;display:flex;align-items:center;gap:8px;">
+            <div style="background:rgba(22,163,74,0.9);border-radius:999px;padding:4px 12px;font-size:0.72rem;color:white;font-weight:700;">✓ Payment Confirmed</div>
+          </div>
+        </div>
+
+        <!-- Bottom left image -->
+        <div style="border-radius:12px;overflow:hidden;height:180px;position:relative;">
+          <img
+            src="https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=400&q=80"
+            alt="Mobile payment QR code scan"
+            style="width:100%;height:100%;object-fit:cover;"
+            onerror="this.style.background='#1e293b';"
+          >
+          <div style="position:absolute;inset:0;background:linear-gradient(to top, rgba(10,15,30,0.6) 0%, transparent 60%);"></div>
+          <div style="position:absolute;bottom:10px;left:10px;">
+            <div style="color:white;font-size:0.7rem;font-weight:700;">QR Payments</div>
+          </div>
+        </div>
+
+        <!-- Bottom right — stat card over image -->
+        <div style="border-radius:12px;overflow:hidden;height:180px;position:relative;">
+          <img
+            src="https://images.unsplash.com/photo-1607863680198-23d4b2565df0?w=400&q=80"
+            alt="African woman using smartphone for payment"
+            style="width:100%;height:100%;object-fit:cover;"
+            onerror="this.style.background='#1e293b';"
+          >
+          <div style="position:absolute;inset:0;background:linear-gradient(to top, rgba(10,15,30,0.7) 0%, transparent 50%);"></div>
+          <div style="position:absolute;bottom:10px;left:10px;">
+            <div style="color:white;font-size:0.7rem;font-weight:700;">Works Offline</div>
+            <div style="color:rgba(255,255,255,0.5);font-size:0.65rem;">No internet needed</div>
+          </div>
+        </div>
+
+        <!-- Floating stat overlay on the grid -->
+        <div style="position:absolute;top:-20px;right:-20px;background:rgba(22,163,74,0.1);backdrop-filter:blur(20px);border:1px solid rgba(22,163,74,0.2);border-radius:10px;padding:16px 20px;z-index:10;">
+          <div style="color:rgba(255,255,255,0.4);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;">Lowest Fee</div>
+          <div style="font-size:1.6rem;font-weight:900;color:#22c55e;font-family:'JetBrains Mono',monospace;">1.5%</div>
+          <div style="color:rgba(255,255,255,0.35);font-size:0.7rem;">+ KES 20 per card</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Angled section cut -->
+  <div style="position:absolute;bottom:0;left:0;right:0;height:80px;background:#f8fafc;clip-path:polygon(0 100%, 100% 100%, 100% 0);"></div>
+</div>
+
+<!-- IMAGE FEATURE SECTION - G+D style split layout -->
+<div style="background:#f8fafc;padding:80px 0;">
+  <div style="max-width:1280px;margin:0 auto;padding:0 24px;">
+
+    <!-- Feature 1 — Image left, text right -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;margin-bottom:80px;" class="flex-col md:grid">
+      <div style="border-radius:16px;overflow:hidden;height:400px;position:relative;">
+        <img
+          src="https://images.unsplash.com/photo-1551650975-87deedd944c3?w=700&q=80"
+          alt="Kenyan merchant accepting offline M-Pesa payment"
+          style="width:100%;height:100%;object-fit:cover;"
+          onerror="this.style.background='#e2e8f0';"
+        >
+        <!-- Overlay badge -->
+        <div style="position:absolute;bottom:20px;left:20px;background:rgba(10,15,30,0.85);backdrop-filter:blur(16px);border:1px solid rgba(22,163,74,0.3);border-radius:10px;padding:14px 18px;">
+          <div style="color:rgba(255,255,255,0.5);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;">Offline Mode Active</div>
+          <div style="color:#22c55e;font-weight:700;font-size:0.9rem;display:flex;align-items:center;gap:6px;">
+            <span style="width:6px;height:6px;background:#22c55e;border-radius:50%;"></span>
+            Member Code: DK12345
+          </div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:0.7rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#16a34a;margin-bottom:16px;">Offline First</div>
+        <h2 style="font-size:clamp(2rem,4vw,3rem);font-weight:900;color:#0a0f1e;letter-spacing:-0.02em;font-family:'Outfit',sans-serif;line-height:1.1;margin-bottom:20px;">
+          No Internet?<br>No Problem.
+        </h2>
+        <p style="color:#64748b;font-size:1rem;line-height:1.8;margin-bottom:28px;">WhaPay is the only payment platform in the world that lets you register and accept payments with zero internet. Call or SMS 0140933042, get your Member Code, and start accepting M-Pesa Paybill payments immediately.</p>
+        <ul style="list-style:none;padding:0;margin-bottom:32px;display:flex;flex-direction:column;gap:12px;">
+          <li style="display:flex;align-items:center;gap:12px;color:#374151;font-size:0.9rem;">
+            <span style="width:24px;height:24px;background:#f0fdf4;border:1px solid #dcfce7;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <i class="fas fa-check" style="color:#16a34a;font-size:0.65rem;"></i>
+            </span>
+            Register via voice call to 0140933042
+          </li>
+          <li style="display:flex;align-items:center;gap:12px;color:#374151;font-size:0.9rem;">
+            <span style="width:24px;height:24px;background:#f0fdf4;border:1px solid #dcfce7;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <i class="fas fa-check" style="color:#16a34a;font-size:0.65rem;"></i>
+            </span>
+            Register via SMS — send REG YourName to 0140933042
+          </li>
+          <li style="display:flex;align-items:center;gap:12px;color:#374151;font-size:0.9rem;">
+            <span style="width:24px;height:24px;background:#f0fdf4;border:1px solid #dcfce7;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <i class="fas fa-check" style="color:#16a34a;font-size:0.65rem;"></i>
+            </span>
+            Accept payments via M-Pesa Paybill with your Member Code
+          </li>
+          <li style="display:flex;align-items:center;gap:12px;color:#374151;font-size:0.9rem;">
+            <span style="width:24px;height:24px;background:#f0fdf4;border:1px solid #dcfce7;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <i class="fas fa-check" style="color:#16a34a;font-size:0.65rem;"></i>
+            </span>
+            Auto-sync when internet restores
+          </li>
+        </ul>
+        <a href="https://wa.me/0140933042?text=REGISTER" style="display:inline-flex;align-items:center;gap:8px;background:#16a34a;color:white;font-weight:700;padding:14px 24px;border-radius:6px;text-decoration:none;font-family:'Outfit',sans-serif;">
+          <i class="fab fa-whatsapp"></i> Register Offline Now
+        </a>
+      </div>
+    </div>
+
+    <!-- Feature 2 — Text left, image right -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;margin-bottom:80px;" class="flex-col md:grid">
+      <div>
+        <div style="font-size:0.7rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#16a34a;margin-bottom:16px;">Global Payments</div>
+        <h2 style="font-size:clamp(2rem,4vw,3rem);font-weight:900;color:#0a0f1e;letter-spacing:-0.02em;font-family:'Outfit',sans-serif;line-height:1.1;margin-bottom:20px;">
+          Accept Payments<br>From Anywhere.
+        </h2>
+        <p style="color:#64748b;font-size:1rem;line-height:1.8;margin-bottom:28px;">Get paid by customers in the UK, USA, UAE, Canada, and 180+ countries. WhaPay automatically converts USD, GBP, EUR, and 135+ currencies to KES instantly.</p>
+        <ul style="list-style:none;padding:0;margin-bottom:32px;display:flex;flex-direction:column;gap:12px;">
+          <li style="display:flex;align-items:center;gap:12px;color:#374151;font-size:0.9rem;">
+            <span style="width:24px;height:24px;background:#f0fdf4;border:1px solid #dcfce7;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <i class="fas fa-check" style="color:#16a34a;font-size:0.65rem;"></i>
+            </span>
+            Accept international credit cards (Visa, Mastercard)
+          </li>
+          <li style="display:flex;align-items:center;gap:12px;color:#374151;font-size:0.9rem;">
+            <span style="width:24px;height:24px;background:#f0fdf4;border:1px solid #dcfce7;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <i class="fas fa-check" style="color:#16a34a;font-size:0.65rem;"></i>
+            </span>
+            Google Pay and Apple Pay from international customers
+          </li>
+          <li style="display:flex;align-items:center;gap:12px;color:#374151;font-size:0.9rem;">
+            <span style="width:24px;height:24px;background:#f0fdf4;border:1px solid #dcfce7;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <i class="fas fa-check" style="color:#16a34a;font-size:0.65rem;"></i>
+            </span>
+            No SWIFT fees, no hidden charges
+          </li>
+        </ul>
+        <a href="global-pay.html" style="display:inline-flex;align-items:center;gap:8px;background:#16a34a;color:white;font-weight:700;padding:14px 24px;border-radius:6px;text-decoration:none;font-family:'Outfit',sans-serif;">
+          Learn About Global Payments <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+      <div style="border-radius:16px;overflow:hidden;height:400px;position:relative;">
+        <img src="https://images.unsplash.com/photo-1523800503107-5bc3ba2a6f81?w=700&q=80" alt="Global payments diaspora sending money to Kenya" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.background='#e2e8f0';">
+        <div style="position:absolute;bottom:20px;left:20px;background:rgba(10,15,30,0.85);backdrop-filter:blur(16px);border:1px solid rgba(22,163,74,0.3);border-radius:10px;padding:14px 18px;">
+          <div style="color:rgba(255,255,255,0.5);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;">Live Currency Rates</div>
+          <div style="color:#22c55e;font-weight:700;font-size:0.9rem;">1 USD = 129 KES • 1 GBP = 165 KES</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature badges -->
+    <div class="flex flex-wrap justify-center gap-6 text-sm text-white/80">
+      <div class="flex items-center gap-2"><i class="fas fa-check-circle text-green-300"></i> No monthly fees</div>
+      <div class="flex items-center gap-2"><i class="fas fa-check-circle text-green-300"></i> 1.5% + KES 20 per card</div>
+      <div class="flex items-center gap-2"><i class="fas fa-check-circle text-green-300"></i> Free offline registration</div>
+      <div class="flex items-center gap-2"><i class="fas fa-check-circle text-green-300"></i> 24/7 WhatsApp support</div>
+    </div>
+  </div>
+</div>
+
+<!-- Bottom wave decoration -->
+<div class="absolute bottom-0 left-0 right-0">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" class="w-full h-auto text-gray-100 dark:text-gray-900" fill="currentColor">
+    <path d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
+  </svg>
+</div>
+
+
+
   <!-- Live Stats (from Firestore) -->
   <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
     <div class="bg-white rounded-xl shadow p-4 text-center"><p class="text-gray-500">Total Merchants</p><h2 id="totalMerchants" class="text-2xl font-bold">—</h2></div>

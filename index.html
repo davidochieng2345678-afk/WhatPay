@@ -1,5 +1,5 @@
 <!-- ============================================================ -->
-<!-- SECTION 1: HEAD & HEADER (COMPLETE, FULLY DETAILED)          -->
+<!-- SECTION 1: HEAD & HEADER (COMPLETE, ERROR‑FREE)              -->
 <!-- ============================================================ -->
 
 <!DOCTYPE html>
@@ -8,46 +8,22 @@
   <!-- ========================================================== -->
   <!-- 1.1 BASIC META TAGS                                        -->
   <!-- ========================================================== -->
-  
-  <!-- Character encoding and rendering modes -->
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  
-  <!-- This ensures that the page is displayed correctly on all devices,
-       including older browsers and modern high-DPI screens.          -->
 
   <!-- ========================================================== -->
   <!-- 1.2 CANONICAL & SEO ESSENTIALS                             -->
   <!-- ========================================================== -->
-  
-  <!-- Canonical URL – prevents duplicate content issues and tells
-       search engines which URL is the authoritative version.      -->
   <link rel="canonical" href="https://whapay.space/" />
-  
-  <!-- Primary description – appears in search results and social shares.
-       Contains high-value keywords: "register", "WhatsApp", "offline",
-       "M-Pesa", "Kenya" – all important for discoverability.       -->
   <meta name="description" content="WhaPay: register online via WhatsApp, or offline by voice call / SMS. Accept M-Pesa, Visa, Mastercard – even without internet. Trusted by 500+ Kenyan merchants.">
-  
-  <!-- Theme color – controls the browser's address bar and tab colour
-       on mobile devices. We use the brand green (#16a34a) for consistency. -->
   <meta name="theme-color" content="#16a34a">
-  
-  <!-- Google Search Console verification – proves ownership of the site
-       and enables performance monitoring in Search Console.          -->
   <meta name="google-site-verification" content="-5AhxfqMROwXYuTEiRu1Sp4bW2SA4PFf3Oc45VoN7xY" />
-  
-  <!-- Robots meta – we allow indexing and following (default), but we
-       explicitly set it here for clarity.                          -->
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
 
   <!-- ========================================================== -->
   <!-- 1.3 OPEN GRAPH & SOCIAL SHARING                            -->
   <!-- ========================================================== -->
-  
-  <!-- Open Graph tags control how the page appears when shared on
-       Facebook, LinkedIn, and other social platforms.             -->
   <meta property="og:title" content="WhaPay – Lipa Na M-Pesa Offline & Online | No Internet Needed">
   <meta property="og:description" content="Register via WhatsApp, voice call or SMS. Accept M-Pesa, cards, offline payments. Trusted by 500+ Kenyan merchants.">
   <meta property="og:image" content="https://whapay.space/whapay-logo.svg">
@@ -55,9 +31,6 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="WhaPay">
   <meta property="og:locale" content="en_KE">
-  
-  <!-- Twitter Cards – similar to Open Graph but specific to Twitter.
-       We use "summary_large_image" to show a larger preview.       -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="WhaPay – Accept Payments Offline & Online">
   <meta name="twitter:description" content="Register via WhatsApp, voice or SMS. Accept M-Pesa, cards, offline payments. Trusted by 500+ Kenyan merchants.">
@@ -66,56 +39,31 @@
   <!-- ========================================================== -->
   <!-- 1.4 FAVICON & WEB APP MANIFEST                             -->
   <!-- ========================================================== -->
-  
-  <!-- Favicon – the small icon displayed in browser tabs and bookmarks.
-       We use an SVG for scalability and crispness on all devices.  -->
   <link rel="icon" type="image/svg+xml" href="/whapay-logo.svg">
-  
-  <!-- Apple Touch Icon – for iOS devices when users add the site to
-       their home screen.                                           -->
   <link rel="apple-touch-icon" href="/whapay-logo.svg">
-  
-  <!-- Web App Manifest – enables Progressive Web App (PWA) features
-       like offline support, splash screen, and home screen icon.   -->
   <link rel="manifest" href="/manifest.json">
 
   <!-- ========================================================== -->
   <!-- 1.5 PERFORMANCE OPTIMISATIONS (Preconnect & Preload)       -->
   <!-- ========================================================== -->
-  
-  <!-- Preconnect – establishes early connections to third‑party origins
-       to reduce latency when fetching resources.                  -->
   <link rel="preconnect" href="https://cdn.tailwindcss.com">
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  
-  <!-- Google Fonts – we load the Inter font with multiple weights and
-       swap display to prevent layout shift during font loading.    -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
 
   <!-- ========================================================== -->
   <!-- 1.6 CSS FRAMEWORKS & STYLES                                -->
   <!-- ========================================================== -->
-  
-  <!-- Tailwind CSS – a utility‑first CSS framework that we use for
-       rapid styling. Loaded from CDN for speed.                   -->
   <script src="https://cdn.tailwindcss.com"></script>
-  
-  <!-- Font Awesome 6 – provides the icon set we use throughout the site
-       (e.g., WhatsApp, phone, envelope, etc.).                    -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  
+
   <!-- ========================================================== -->
-  <!-- 1.7 CUSTOM STYLES (Global)                                 -->
+  <!-- 1.7 CUSTOM STYLES (Global + Dropdowns)                     -->
   <!-- ========================================================== -->
-  
   <style>
     /* ===== RESET & BASE ===== */
-    /* We use a minimal reset to ensure consistency across browsers.
-       The `box-sizing: border-box` makes sizing predictable.       */
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       background-color: #f8fafc;
@@ -123,13 +71,9 @@
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
-    
-    /* Enable smooth scrolling for anchor links (e.g., #features). */
     html { scroll-behavior: smooth; }
-    
-    /* ===== TOAST NOTIFICATIONS ===== */
-    /* The toast is a floating message that appears at the bottom.
-       We use a transition for showing/hiding.                      */
+
+    /* ===== TOAST ===== */
     .toast {
       transition: opacity 0.3s ease, transform 0.3s ease;
       max-width: 90%;
@@ -139,9 +83,8 @@
       transform: translateY(20px) scale(0.95);
       pointer-events: none;
     }
-    
-    /* ===== LIVE PULSE ANIMATION ===== */
-    /* Used for the status indicator (e.g., "Live" badge).          */
+
+    /* ===== LIVE PULSE ===== */
     .live-pulse {
       animation: livePulse 2s ease-in-out infinite;
     }
@@ -149,9 +92,8 @@
       0%, 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0.4); }
       50% { box-shadow: 0 0 0 6px rgba(34,197,94,0); }
     }
-    
+
     /* ===== GRADIENT TEXT ===== */
-    /* Applies a green gradient to text – used for headings.       */
     .gradient-text {
       background: linear-gradient(135deg, #16a34a, #22c55e);
       -webkit-background-clip: text;
@@ -159,15 +101,12 @@
       color: transparent;
       display: inline-block;
     }
-    
+
     /* ===== SCROLLBAR UTILITY ===== */
-    /* Hides scrollbars on containers (e.g., mobile menu).          */
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    
+
     /* ===== SKIP LINK (Accessibility) ===== */
-    /* A hidden link that becomes visible on focus, allowing keyboard
-       users to skip the navigation and jump directly to content.   */
     .skip-link {
       position: absolute;
       top: -1000px;
@@ -181,19 +120,83 @@
       font-weight: 700;
       text-decoration: none;
     }
-    .skip-link:focus {
-      top: 0;
+    .skip-link:focus { top: 0; }
+
+    /* ===== G+D STYLE DROPDOWN NAVIGATION ===== */
+    .gd-nav { font-family: 'Inter', sans-serif; }
+    .gd-nav-link {
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: color 0.2s;
+      padding: 4px 0;
+    }
+    .gd-nav-link:hover { color: white; }
+    .gd-nav-link.active { color: #22c55e; font-weight: 700; }
+
+    .gd-dropdown { position: relative; }
+    .gd-dropdown-menu {
+      position: absolute;
+      top: calc(100% + 12px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #0f1629;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 8px;
+      min-width: 220px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.2s ease;
+      z-index: 100;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+    .gd-dropdown:hover .gd-dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+    }
+    .gd-dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background 0.2s;
+      color: white;
+    }
+    .gd-dropdown-item:hover { background: rgba(255,255,255,0.06); }
+    .gd-dropdown-item .icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .gd-dropdown-item .label { color: white; font-size: 0.82rem; font-weight: 600; }
+    .gd-dropdown-item .desc { color: rgba(255,255,255,0.35); font-size: 0.72rem; margin-top: 1px; }
+    .gd-dropdown-trigger {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+    }
+    .gd-dropdown-trigger i.arrow {
+      font-size: 0.6rem;
+      color: rgba(255,255,255,0.4);
+      transition: transform 0.2s;
+    }
+    .gd-dropdown:hover .gd-dropdown-trigger i.arrow {
+      transform: rotate(180deg);
     }
   </style>
 
   <!-- ========================================================== -->
   <!-- 1.8 STRUCTURED DATA (JSON‑LD)                              -->
   <!-- ========================================================== -->
-  
-  <!-- We include multiple JSON‑LD schemas to help search engines
-       understand the content and purpose of the site.              -->
-  
-  <!-- Schema 1: Organization – describes the company as a whole.   -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -220,8 +223,7 @@
     "foundingDate": "2024"
   }
   </script>
-  
-  <!-- Schema 2: LocalBusiness – more specific for merchants.        -->
+
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -246,18 +248,14 @@
     "paymentAccepted": ["M-PESA", "Visa", "Mastercard", "American Express"]
   }
   </script>
-  
-  <!-- Schema 3: Product – describes the payment service.           -->
+
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Product",
     "name": "WhaPay Payment Service for Kenyan Merchants",
     "description": "Online and offline payment acceptance via WhatsApp, QR, or Member Code. No monthly fees.",
-    "brand": {
-      "@type": "Brand",
-      "name": "WhaPay"
-    },
+    "brand": { "@type": "Brand", "name": "WhaPay" },
     "offers": {
       "@type": "Offer",
       "price": "0",
@@ -272,36 +270,19 @@
     }
   }
   </script>
-  
-  <!-- Schema 4: BreadcrumbList – improves navigation understanding. -->
+
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": "https://whapay.space/"
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "Features",
-        "item": "https://whapay.space/#features"
-      },
-      {
-        "@type": "ListItem",
-        "position": 3,
-        "name": "Pricing",
-        "item": "https://whapay.space/#pricing"
-      }
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://whapay.space/" },
+      { "@type": "ListItem", "position": 2, "name": "Features", "item": "https://whapay.space/#features" },
+      { "@type": "ListItem", "position": 3, "name": "Pricing", "item": "https://whapay.space/#pricing" }
     ]
   }
   </script>
-  
-  <!-- Schema 5: FAQPage – answers common questions.                -->
+
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -340,8 +321,6 @@
   <!-- ========================================================== -->
   <noscript>
     <style>
-      /* If JavaScript is disabled, we show a message and ensure critical
-         content is still visible.                                  */
       .no-js{ display: block !important; }
       #app { display: none; }
     </style>
@@ -349,405 +328,362 @@
       <p><strong>⚠️ JavaScript is disabled.</strong> Please enable it for the full WhaPay experience.</p>
     </div>
   </noscript>
-
 </head>
+
 <body>
+  <!-- ========================================================== -->
+  <!-- 1.10 SKIP LINK (Accessibility)                             -->
+  <!-- ========================================================== -->
+  <a class="skip-link" href="#main-content">Skip to main content</a>
 
-  
-<header class="gd-nav" style="background:#080c18;border-bottom:1px solid rgba(255,255,255,0.06);position:sticky;top:0;z-index:999;">
+  <!-- ========================================================== -->
+  <!-- 1.11 HEADER (PERSISTENT NAVIGATION)                        -->
+  <!-- ========================================================== -->
+  <header class="gd-nav" style="background:#080c18;border-bottom:1px solid rgba(255,255,255,0.06);position:sticky;top:0;z-index:999;">
 
-  <!-- Top utility bar -->
-  <div style="background:rgba(22,163,74,0.08);border-bottom:1px solid rgba(22,163,74,0.1);padding:6px 24px;display:flex;justify-content:space-between;align-items:center;font-size:0.72rem;flex-wrap:wrap;gap:8px;">
-    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
-      <a href="tel:+19899434406" style="color:rgba(255,255,255,0.5);text-decoration:none;display:flex;align-items:center;gap:5px;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">
-        <i class="fas fa-phone-alt" style="color:#22c55e;font-size:0.65rem;"></i> 0140933042
-      </a>
-      <a href="mailto:support@whapay.space" style="color:rgba(255,255,255,0.5);text-decoration:none;display:flex;align-items:center;gap:5px;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">
-        <i class="fas fa-envelope" style="color:#22c55e;font-size:0.65rem;"></i> support@whapay.space
-      </a>
-      <span style="color:rgba(255,255,255,0.3);display:flex;align-items:center;gap:5px;">
-        <i class="fas fa-globe" style="color:#22c55e;font-size:0.65rem;"></i> Serving 180+ countries
-      </span>
+    <!-- Top utility bar -->
+    <div style="background:rgba(22,163,74,0.08);border-bottom:1px solid rgba(22,163,74,0.1);padding:6px 24px;display:flex;justify-content:space-between;align-items:center;font-size:0.72rem;flex-wrap:wrap;gap:8px;">
+      <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+        <!-- ✅ Twilio number for voice -->
+        <a href="tel:+19899434406" style="color:rgba(255,255,255,0.5);text-decoration:none;display:flex;align-items:center;gap:5px;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">
+          <i class="fas fa-phone-alt" style="color:#22c55e;font-size:0.65rem;"></i> 0140933042
+        </a>
+        <a href="mailto:support@whapay.space" style="color:rgba(255,255,255,0.5);text-decoration:none;display:flex;align-items:center;gap:5px;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">
+          <i class="fas fa-envelope" style="color:#22c55e;font-size:0.65rem;"></i> support@whapay.space
+        </a>
+        <span style="color:rgba(255,255,255,0.3);display:flex;align-items:center;gap:5px;">
+          <i class="fas fa-globe" style="color:#22c55e;font-size:0.65rem;"></i> Serving 180+ countries
+        </span>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span id="navUserTopDisplay" style="color:rgba(255,255,255,0.4);font-size:0.72rem;"></span>
+        <a href="users.html" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.72rem;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">My Account</a>
+      </div>
     </div>
-    <div style="display:flex;align-items:center;gap:12px;">
-      <span id="navUserTopDisplay" style="color:rgba(255,255,255,0.4);font-size:0.72rem;"></span>
-      <a href="users.html" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.72rem;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">My Account</a>
-    </div>
-  </div>
 
-  <!-- Main nav bar -->
-  <div style="max-width:1280px;margin:0 auto;padding:0 24px;display:flex;justify-content:space-between;align-items:center;height:64px;">
+    <!-- Main nav bar -->
+    <div style="max-width:1280px;margin:0 auto;padding:0 24px;display:flex;justify-content:space-between;align-items:center;height:64px;">
 
-    <!-- Logo -->
-    <a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;">
-      <div style="width:32px;height:32px;background:#16a34a;border-radius:6px;display:flex;align-items:center;justify-content:center;">
-        <i class="fas fa-bolt" style="color:white;font-size:0.85rem;"></i>
-      </div>
-      <span style="color:white;font-size:1.2rem;font-weight:900;letter-spacing:-0.02em;">WhaPay</span>
-    </a>
-
-    <!-- Desktop nav groups with dropdowns -->
-    <nav style="display:flex;align-items:center;gap:4px;" class="hidden md:flex">
-
-      <!-- Payments dropdown -->
-      <div class="gd-dropdown" style="padding:0 12px;">
-        <div class="gd-dropdown-trigger">
-          <span class="gd-nav-link">Payments</span>
-          <i class="fas fa-chevron-down arrow"></i>
+      <!-- Logo -->
+      <a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;">
+        <div style="width:32px;height:32px;background:#16a34a;border-radius:6px;display:flex;align-items:center;justify-content:center;">
+          <i class="fas fa-bolt" style="color:white;font-size:0.85rem;"></i>
         </div>
-        <div class="gd-dropdown-menu">
-          <a href="payment.html" class="gd-dropdown-item">
-            <div class="icon" style="background:rgba(22,163,74,0.15);"><i class="fas fa-credit-card" style="color:#22c55e;font-size:0.85rem;"></i></div>
-            <div><div class="label">How to Pay</div><div class="desc">WhatsApp, QR, Member Code</div></div>
-          </a>
-          <a href="pay-anyone.html" class="gd-dropdown-item">
-            <div class="icon" style="background:rgba(59,130,246,0.15);"><i class="fas fa-paper-plane" style="color:#60a5fa;font-size:0.85rem;"></i></div>
-            <div><div class="label">Pay Anyone</div><div class="desc">Member Code, Phone, Paybill</div></div>
-          </a>
-          <a href="first-time-pay.html" class="gd-dropdown-item">
-            <div class="icon" style="background:rgba(168,85,247,0.15);"><i class="fas fa-bolt" style="color:#c084fc;font-size:0.85rem;"></i></div>
-            <div><div class="label">Register & Pay</div><div class="desc">One-step payment & signup</div></div>
-          </a>
-          <div style="border-top:1px solid rgba(255,255,255,0.06);margin:6px 0;"></div>
-          <a href="index.html#offline-features" class="gd-dropdown-item">
-            <div class="icon" style="background:rgba(251,191,36,0.12);"><i class="fas fa-wifi-slash" style="color:#fbbf24;font-size:0.85rem;"></i></div>
-            <div><div class="label">Offline Payments</div><div class="desc">No internet needed</div></div>
-          </a>
-        </div>
-      </div>
-
-      <!-- Merchants dropdown -->
-      <div class="gd-dropdown" style="padding:0 12px;">
-        <div class="gd-dropdown-trigger">
-          <span class="gd-nav-link">Merchants</span>
-          <i class="fas fa-chevron-down arrow"></i>
-        </div>
-        <div class="gd-dropdown-menu">
-          <a href="merchant.html" class="gd-dropdown-item">
-            <div class="icon" style="background:rgba(22,163,74,0.15);"><i class="fas fa-store" style="color:#22c55e;font-size:0.85rem;"></i></div>
-            <div><div class="label">Merchant Dashboard</div><div class="desc">QR, links, transactions</div></div>
-          </a>
-          <a href="registration.html" class="gd-dropdown-item">
-            <div class="icon" style="background:rgba(59,130,246,0.15);"><i class="fas fa-user-plus" style="color:#60a5fa;font-size:0.85rem;"></i></div>
-            <div><div class="label">Register Business</div><div class="desc">Free — online or offline</div></div>
-          </a>
-          <a href="reports.html" class="gd-dropdown-item">
-            <div class="icon" style="background:rgba(168,85,247,0.15);"><i class="fas fa-chart-line" style="color:#c084fc;font-size:0.85rem;"></i></div>
-            <div><div class="label">Analytics & Reports</div><div class="desc">Revenue, trends, CSV export</div></div>
-          </a>
-          <a href="pricing.html" class="gd-dropdown-item">
-            <div class="icon" style="background:rgba(251,191,36,0.12);"><i class="fas fa-tag" style="color:#fbbf24;font-size:0.85rem;"></i></div>
-            <div><div class="label">Pricing</div><div class="desc">1.5% + KES 20, KES 0/month</div></div>
-          </a>
-          <a href="/directory/" style="background:#16a34a; color:white; padding:8px 16px; border-radius:30px; font-weight:bold; text-decoration:none;">🔍 Merchant Directory</a>
-        </div>
-      </div>
-
-      <!-- Features dropdown -->
-      <div class="gd-dropdown" style="padding:0 12px;">
-        <div class="gd-dropdown-trigger">
-          <span class="gd-nav-link">Features</span>
-          <i class="fas fa-chevron-down arrow"></i>
-        </div>
-        <div class="gd-dropdown-menu">
-          <a href="features.html" class="gd-dropdown-item">
-            <div class="icon" style="background:rgba(22,163,74,0.15);"><i class="fas fa-bolt" style="color:#22c55e;font-size:0.85rem;"></i></div>
-            <div><div class="label">All Features</div><div class="desc">Complete platform overview</div></div>
-          </a>
-          <a href="process.html" class="gd-dropdown-item">
-            <div class="icon" style="background:rgba(59,130,246,0.15);"><i class="fas fa-route" style="color:#60a5fa;font-size:0.85rem;"></i></div>
-            <div><div class="label">How It Works</div><div class="desc">3 simple steps</div></div>
-          </a>
-          <a href="index.html#currencies" class="gd-dropdown-item">
-            <div class="icon" style="background:rgba(168,85,247,0.15);"><i class="fas fa-globe" style="color:#c084fc;font-size:0.85rem;"></i></div>
-            <div><div class="label">Global Currencies</div><div class="desc">135+ currencies, 180+ countries</div></div>
-          </a>
-          <a href="index.html#diaspora" class="gd-dropdown-item">
-            <div class="icon" style="background:rgba(251,191,36,0.12);"><i class="fas fa-plane" style="color:#fbbf24;font-size:0.85rem;"></i></div>
-            <div><div class="label">Diaspora Payments</div><div class="desc">UK, USA, UAE → Kenya</div></div>
-          </a>
-        </div>
-      </div>
-
-      <!-- Company dropdown -->
-      <div class="gd-dropdown" style="padding:0 12px;">
-        <div class="gd-dropdown-trigger">
-          <span class="gd-nav-link">Company</span>
-          <i class="fas fa-chevron-down arrow"></i>
-        </div>
-        <div class="gd-dropdown-menu">
-          <a href="about.html" class="gd-dropdown-item">
-            <div class="icon" style="background:rgba(22,163,74,0.15);"><i class="fas fa-heart" style="color:#22c55e;font-size:0.85rem;"></i></div>
-            <div><div class="label">About WhaPay</div><div class="desc">Our story and mission</div></div>
-          </a>
-          <a href="blog.html" class="gd-dropdown-item">
-            <div class="icon" style="background:rgba(59,130,246,0.15);"><i class="fas fa-pen-nib" style="color:#60a5fa;font-size:0.85rem;"></i></div>
-            <div><div class="label">Blog & Insights</div><div class="desc">Payments, fintech, Africa</div></div>
-          </a>
-          <a href="contact.html" class="gd-dropdown-item">
-            <div class="icon" style="background:rgba(168,85,247,0.15);"><i class="fas fa-headset" style="color:#c084fc;font-size:0.85rem;"></i></div>
-            <div><div class="label">Contact & Support</div><div class="desc">24/7 WhatsApp support</div></div>
-          </a>
-        </div>
-      </div>
-
-      <!-- Direct links -->
-      <a href="/directory.html" class="gd-nav-link" style="padding:0 12px;">📂 Directory</a>
-      <a href="/claim-directory.html" class="gd-nav-link" style="padding:0 12px;">📌 Claim Directory</a>
-      <a href="blog.html" class="gd-nav-link" style="padding:0 12px;">Blog</a>
-    </nav>
-
-    <!-- Right side CTAs -->
-    <div style="display:flex;align-items:center;gap:10px;">
-      <span id="navUserDisplay" style="color:rgba(255,255,255,0.5);font-size:0.78rem;"></span>
-      <button id="navLoginBtn" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.7);font-size:0.82rem;font-weight:600;padding:8px 16px;border-radius:6px;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.06)'">
-        Login
-      </button>
-      <button id="logoutBtn" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:#f87171;font-size:0.82rem;font-weight:600;padding:8px 16px;border-radius:6px;cursor:pointer;display:none;">
-        Logout
-      </button>
-      <a href="https://wa.me/+15556539447?text=REGISTER"
-        style="background:#16a34a;color:white;font-weight:700;font-size:0.85rem;padding:10px 20px;border-radius:6px;text-decoration:none;display:flex;align-items:center;gap:6px;transition:background 0.2s;"
-        onmouseover="this.style.background='#15803d'" onmouseout="this.style.background='#16a34a'">
-        <i class="fab fa-whatsapp"></i> Register Free
+        <span style="color:white;font-size:1.2rem;font-weight:900;letter-spacing:-0.02em;">WhaPay</span>
       </a>
 
-      <!-- Mobile menu button -->
-      <button id="mobileMenuBtn" onclick="toggleMobileMenu()"
-        style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:white;width:40px;height:40px;border-radius:6px;cursor:pointer;display:none;align-items:center;justify-content:center;"
-        class="md:hidden">
-        <i class="fas fa-bars"></i>
-      </button>
+      <!-- Desktop nav groups with dropdowns -->
+      <nav style="display:flex;align-items:center;gap:4px;" class="hidden md:flex">
+
+        <!-- Payments dropdown -->
+        <div class="gd-dropdown" style="padding:0 12px;">
+          <div class="gd-dropdown-trigger">
+            <span class="gd-nav-link">Payments</span>
+            <i class="fas fa-chevron-down arrow"></i>
+          </div>
+          <div class="gd-dropdown-menu">
+            <a href="payment.html" class="gd-dropdown-item">
+              <div class="icon" style="background:rgba(22,163,74,0.15);"><i class="fas fa-credit-card" style="color:#22c55e;font-size:0.85rem;"></i></div>
+              <div><div class="label">How to Pay</div><div class="desc">WhatsApp, QR, Member Code</div></div>
+            </a>
+            <a href="pay-anyone.html" class="gd-dropdown-item">
+              <div class="icon" style="background:rgba(59,130,246,0.15);"><i class="fas fa-paper-plane" style="color:#60a5fa;font-size:0.85rem;"></i></div>
+              <div><div class="label">Pay Anyone</div><div class="desc">Member Code, Phone, Paybill</div></div>
+            </a>
+            <a href="first-time-pay.html" class="gd-dropdown-item">
+              <div class="icon" style="background:rgba(168,85,247,0.15);"><i class="fas fa-bolt" style="color:#c084fc;font-size:0.85rem;"></i></div>
+              <div><div class="label">Register & Pay</div><div class="desc">One-step payment & signup</div></div>
+            </a>
+            <div style="border-top:1px solid rgba(255,255,255,0.06);margin:6px 0;"></div>
+            <a href="index.html#offline-features" class="gd-dropdown-item">
+              <div class="icon" style="background:rgba(251,191,36,0.12);"><i class="fas fa-wifi-slash" style="color:#fbbf24;font-size:0.85rem;"></i></div>
+              <div><div class="label">Offline Payments</div><div class="desc">No internet needed</div></div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Merchants dropdown -->
+        <div class="gd-dropdown" style="padding:0 12px;">
+          <div class="gd-dropdown-trigger">
+            <span class="gd-nav-link">Merchants</span>
+            <i class="fas fa-chevron-down arrow"></i>
+          </div>
+          <div class="gd-dropdown-menu">
+            <a href="merchant.html" class="gd-dropdown-item">
+              <div class="icon" style="background:rgba(22,163,74,0.15);"><i class="fas fa-store" style="color:#22c55e;font-size:0.85rem;"></i></div>
+              <div><div class="label">Merchant Dashboard</div><div class="desc">QR, links, transactions</div></div>
+            </a>
+            <a href="registration.html" class="gd-dropdown-item">
+              <div class="icon" style="background:rgba(59,130,246,0.15);"><i class="fas fa-user-plus" style="color:#60a5fa;font-size:0.85rem;"></i></div>
+              <div><div class="label">Register Business</div><div class="desc">Free — online or offline</div></div>
+            </a>
+            <a href="reports.html" class="gd-dropdown-item">
+              <div class="icon" style="background:rgba(168,85,247,0.15);"><i class="fas fa-chart-line" style="color:#c084fc;font-size:0.85rem;"></i></div>
+              <div><div class="label">Analytics & Reports</div><div class="desc">Revenue, trends, CSV export</div></div>
+            </a>
+            <a href="pricing.html" class="gd-dropdown-item">
+              <div class="icon" style="background:rgba(251,191,36,0.12);"><i class="fas fa-tag" style="color:#fbbf24;font-size:0.85rem;"></i></div>
+              <div><div class="label">Pricing</div><div class="desc">1.5% + KES 20, KES 0/month</div></div>
+            </a>
+            <a href="/directory/" style="background:#16a34a; color:white; padding:8px 16px; border-radius:30px; font-weight:bold; text-decoration:none;">🔍 Merchant Directory</a>
+          </div>
+        </div>
+
+        <!-- Features dropdown -->
+        <div class="gd-dropdown" style="padding:0 12px;">
+          <div class="gd-dropdown-trigger">
+            <span class="gd-nav-link">Features</span>
+            <i class="fas fa-chevron-down arrow"></i>
+          </div>
+          <div class="gd-dropdown-menu">
+            <a href="features.html" class="gd-dropdown-item">
+              <div class="icon" style="background:rgba(22,163,74,0.15);"><i class="fas fa-bolt" style="color:#22c55e;font-size:0.85rem;"></i></div>
+              <div><div class="label">All Features</div><div class="desc">Complete platform overview</div></div>
+            </a>
+            <a href="process.html" class="gd-dropdown-item">
+              <div class="icon" style="background:rgba(59,130,246,0.15);"><i class="fas fa-route" style="color:#60a5fa;font-size:0.85rem;"></i></div>
+              <div><div class="label">How It Works</div><div class="desc">3 simple steps</div></div>
+            </a>
+            <a href="index.html#currencies" class="gd-dropdown-item">
+              <div class="icon" style="background:rgba(168,85,247,0.15);"><i class="fas fa-globe" style="color:#c084fc;font-size:0.85rem;"></i></div>
+              <div><div class="label">Global Currencies</div><div class="desc">135+ currencies, 180+ countries</div></div>
+            </a>
+            <a href="index.html#diaspora" class="gd-dropdown-item">
+              <div class="icon" style="background:rgba(251,191,36,0.12);"><i class="fas fa-plane" style="color:#fbbf24;font-size:0.85rem;"></i></div>
+              <div><div class="label">Diaspora Payments</div><div class="desc">UK, USA, UAE → Kenya</div></div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Company dropdown -->
+        <div class="gd-dropdown" style="padding:0 12px;">
+          <div class="gd-dropdown-trigger">
+            <span class="gd-nav-link">Company</span>
+            <i class="fas fa-chevron-down arrow"></i>
+          </div>
+          <div class="gd-dropdown-menu">
+            <a href="about.html" class="gd-dropdown-item">
+              <div class="icon" style="background:rgba(22,163,74,0.15);"><i class="fas fa-heart" style="color:#22c55e;font-size:0.85rem;"></i></div>
+              <div><div class="label">About WhaPay</div><div class="desc">Our story and mission</div></div>
+            </a>
+            <a href="blog.html" class="gd-dropdown-item">
+              <div class="icon" style="background:rgba(59,130,246,0.15);"><i class="fas fa-pen-nib" style="color:#60a5fa;font-size:0.85rem;"></i></div>
+              <div><div class="label">Blog & Insights</div><div class="desc">Payments, fintech, Africa</div></div>
+            </a>
+            <a href="contact.html" class="gd-dropdown-item">
+              <div class="icon" style="background:rgba(168,85,247,0.15);"><i class="fas fa-headset" style="color:#c084fc;font-size:0.85rem;"></i></div>
+              <div><div class="label">Contact & Support</div><div class="desc">24/7 WhatsApp support</div></div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Direct links -->
+        <a href="/directory.html" class="gd-nav-link" style="padding:0 12px;">📂 Directory</a>
+        <a href="/claim-directory.html" class="gd-nav-link" style="padding:0 12px;">📌 Claim Directory</a>
+        <a href="blog.html" class="gd-nav-link" style="padding:0 12px;">Blog</a>
+      </nav>
+
+      <!-- Right side CTAs -->
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span id="navUserDisplay" style="color:rgba(255,255,255,0.5);font-size:0.78rem;"></span>
+        <button id="navLoginBtn" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.7);font-size:0.82rem;font-weight:600;padding:8px 16px;border-radius:6px;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.06)'">
+          Login
+        </button>
+        <button id="logoutBtn" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:#f87171;font-size:0.82rem;font-weight:600;padding:8px 16px;border-radius:6px;cursor:pointer;display:none;">
+          Logout
+        </button>
+        <!-- ✅ CORRECTED: WhatsApp Cloud API number -->
+        <a href="https://wa.me/+15556539447?text=REGISTER"
+          style="background:#16a34a;color:white;font-weight:700;font-size:0.85rem;padding:10px 20px;border-radius:6px;text-decoration:none;display:flex;align-items:center;gap:6px;transition:background 0.2s;"
+          onmouseover="this.style.background='#15803d'" onmouseout="this.style.background='#16a34a'">
+          <i class="fab fa-whatsapp"></i> Register Free
+        </a>
+
+        <!-- ✅ Mobile menu toggle – uses event listener, no inline onclick -->
+        <button id="mobileMenuBtn"
+          style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:white;width:40px;height:40px;border-radius:6px;cursor:pointer;display:none;align-items:center;justify-content:center;"
+          class="md:hidden">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
     </div>
 
-  </div>
-
-  <!-- Mobile menu -->
-  <div id="mobileMenu" style="display:none;background:#080c18;border-top:1px solid rgba(255,255,255,0.06);padding:16px 24px;">
-    <div style="display:flex;flex-direction:column;gap:4px;">
-      <div style="color:rgba(255,255,255,0.3);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;padding:8px 0 4px;">Payments</div>
-      <a href="payment.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">How to Pay</a>
-      <a href="pay-anyone.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">Pay Anyone</a>
-      <a href="first-time-pay.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">Register & Pay</a>
-      <div style="color:rgba(255,255,255,0.3);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;padding:8px 0 4px;margin-top:8px;">Merchants</div>
-      <a href="merchant.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">Merchant Dashboard</a>
-      <a href="registration.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">Register Business</a>
-      <a href="reports.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">Analytics & Reports</a>
-      <a href="pricing.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">Pricing</a>
-      <div style="color:rgba(255,255,255,0.3);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;padding:8px 0 4px;margin-top:8px;">Features</div>
-      <a href="features.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">All Features</a>
-      <a href="process.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">How It Works</a>
-      <div style="color:rgba(255,255,255,0.3);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;padding:8px 0 4px;margin-top:8px;">Company</div>
-      <a href="about.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">About</a>
-      <a href="/claim-directory.html" style="display:block;color:white;padding:8px 0;">📌 Claim Directory</a>
-      <a href="/directory.html" style="display:block;color:white;padding:8px 0;">📂 Directory</a>
-      <a href="blog.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">Blog</a>
-      <a href="contact.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;">Contact</a>
-      <a href="https://wa.me/+15556539447?text=REGISTER" style="display:flex;align-items:center;justify-content:center;gap:8px;background:#16a34a;color:white;font-weight:700;padding:13px;border-radius:6px;text-decoration:none;margin-top:16px;"><i class="fab fa-whatsapp"></i> Register Free</a>
+    <!-- Mobile menu -->
+    <div id="mobileMenu" style="display:none;background:#080c18;border-top:1px solid rgba(255,255,255,0.06);padding:16px 24px;">
+      <div style="display:flex;flex-direction:column;gap:4px;">
+        <div style="color:rgba(255,255,255,0.3);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;padding:8px 0 4px;">Payments</div>
+        <a href="payment.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">How to Pay</a>
+        <a href="pay-anyone.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">Pay Anyone</a>
+        <a href="first-time-pay.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">Register & Pay</a>
+        <div style="color:rgba(255,255,255,0.3);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;padding:8px 0 4px;margin-top:8px;">Merchants</div>
+        <a href="merchant.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">Merchant Dashboard</a>
+        <a href="registration.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">Register Business</a>
+        <a href="reports.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">Analytics & Reports</a>
+        <a href="pricing.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">Pricing</a>
+        <div style="color:rgba(255,255,255,0.3);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;padding:8px 0 4px;margin-top:8px;">Features</div>
+        <a href="features.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">All Features</a>
+        <a href="process.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">How It Works</a>
+        <div style="color:rgba(255,255,255,0.3);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;padding:8px 0 4px;margin-top:8px;">Company</div>
+        <a href="about.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">About</a>
+        <a href="/claim-directory.html" style="display:block;color:white;padding:8px 0;">📌 Claim Directory</a>
+        <a href="/directory.html" style="display:block;color:white;padding:8px 0;">📂 Directory</a>
+        <a href="blog.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">Blog</a>
+        <a href="contact.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;">Contact</a>
+        <a href="https://wa.me/+15556539447?text=REGISTER" style="display:flex;align-items:center;justify-content:center;gap:8px;background:#16a34a;color:white;font-weight:700;padding:13px;border-radius:6px;text-decoration:none;margin-top:16px;"><i class="fab fa-whatsapp"></i> Register Free</a>
+      </div>
     </div>
+  </header>
+
+  <!-- ========================================================== -->
+  <!-- 1.12 TOAST NOTIFICATION SYSTEM                             -->
+  <!-- ========================================================== -->
+  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-900 text-white px-6 py-3 rounded-full shadow-lg text-sm z-50 toast hidden" role="alert" aria-live="polite">
+    <span id="toastMessage"></span>
   </div>
 
-</header>
-<!-- ========================================================== -->
-<!-- 1.12 TOAST NOTIFICATION SYSTEM                             -->
-<!-- ========================================================== -->
-<div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-900 text-white px-6 py-3 rounded-full shadow-lg text-sm z-50 toast hidden" role="alert" aria-live="polite">
-  <span id="toastMessage"></span>
-</div>
+  <!-- ========================================================== -->
+  <!-- 1.13 GLOBAL JAVASCRIPT (Auth, Mobile Menu, Sync, etc.)    -->
+  <!-- ========================================================== -->
+  <script type="module">
+    // =============================================================
+    //  CONFIGURATION
+    // =============================================================
+    const API_BASE = 'https://whapay-backend.onrender.com';
+    const WHATSAPP_NUMBER = '+15556539447';
+    const TWILIO_NUMBER = '+19899434406';
 
-<!-- ========================================================== -->
-<!-- 1.13 GLOBAL JAVASCRIPT                                     -->
-<!-- ========================================================== -->
-<script type="module">
-  // =============================================================
-  //  CONFIGURATION
-  // =============================================================
-  
-  // The backend API base URL – change this when deploying to production.
-  const API_BASE = 'https://whapay-backend.onrender.com';
-  
-  // Standardised phone numbers – these are used in all CTAs.
-  const WHATSAPP_NUMBER = '+15556539447';     // ✅ WhatsApp Cloud API (Meta verified)
-  const TWILIO_NUMBER = '+19899434406';       // ✅ Twilio (SMS & Voice)
+    // =============================================================
+    //  TOAST NOTIFICATIONS
+    // =============================================================
+    const toastEl = document.getElementById('toast');
+    const toastMsg = document.getElementById('toastMessage');
+    let toastTimer;
 
-  // =============================================================
-  //  TOAST NOTIFICATIONS
-  // =============================================================
-  const toastEl = document.getElementById('toast');
-  const toastMsg = document.getElementById('toastMessage');
-  let toastTimer;
+    window.showToast = function(msg, isError = false) {
+      clearTimeout(toastTimer);
+      toastMsg.textContent = msg;
+      toastEl.className = `fixed bottom-6 left-1/2 -translate-x-1/2 px-6 py-3 rounded-full shadow-lg text-sm z-50 toast ${isError ? 'bg-red-600' : 'bg-gray-900'} text-white`;
+      toastEl.classList.remove('hidden');
+      toastTimer = setTimeout(() => toastEl.classList.add('hidden'), 5000);
+    };
 
-  /**
-   * Show a toast notification at the bottom of the screen.
-   * @param {string} msg - The message to display.
-   * @param {boolean} isError - Whether it's an error (red) or success (green).
-   */
-  window.showToast = function(msg, isError = false) {
-    clearTimeout(toastTimer);
-    toastMsg.textContent = msg;
-    toastEl.className = `fixed bottom-6 left-1/2 -translate-x-1/2 px-6 py-3 rounded-full shadow-lg text-sm z-50 toast ${isError ? 'bg-red-600' : 'bg-gray-900'} text-white`;
-    toastEl.classList.remove('hidden');
-    toastTimer = setTimeout(() => toastEl.classList.add('hidden'), 5000);
-  };
+    // =============================================================
+    //  AUTHENTICATION (Demo – ready for Firebase)
+    // =============================================================
+    let currentUser = null;
+    const loginBtn = document.getElementById('loginBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const userDisplay = document.getElementById('userDisplay');
+    const navUserTop = document.getElementById('navUserTop');
 
-  // =============================================================
-  //  AUTHENTICATION (Demo – ready for Firebase)
-  // =============================================================
-  // This is a placeholder that uses localStorage. In production,
-  // you would replace this with Firebase Authentication (phone or email).
-
-  let currentUser = null;
-  const loginBtn = document.getElementById('loginBtn');
-  const logoutBtn = document.getElementById('logoutBtn');
-  const userDisplay = document.getElementById('userDisplay');
-  const navUserTop = document.getElementById('navUserTop');
-
-  // Try to restore session from localStorage
-  const storedUser = localStorage.getItem('whapay_user');
-  if (storedUser) {
-    try {
-      currentUser = JSON.parse(storedUser);
-      updateAuthUI();
-    } catch (e) {
-      localStorage.removeItem('whapay_user');
-    }
-  }
-
-  // Login handler (demo)
-  loginBtn.addEventListener('click', () => {
-    const phone = prompt('Enter your phone number (demo):', '+254712345678');
-    if (phone && phone.trim().length > 0) {
-      currentUser = { 
-        phone: phone.trim(), 
-        name: 'Demo User',
-        email: '',
-        businessName: '',
-        kycVerified: false 
-      };
-      localStorage.setItem('whapay_user', JSON.stringify(currentUser));
-      updateAuthUI();
-      showToast(`✅ Logged in as ${currentUser.name}`);
-    }
-  });
-
-  // Logout handler
-  logoutBtn.addEventListener('click', () => {
-    currentUser = null;
-    localStorage.removeItem('whapay_user');
-    updateAuthUI();
-    showToast('🔒 Logged out');
-  });
-
-  /**
-   * Update the UI to reflect the current authentication state.
-   * Shows/hides login/logout buttons and displays user info.
-   */
-  function updateAuthUI() {
-    if (currentUser) {
-      loginBtn.classList.add('hidden');
-      logoutBtn.classList.remove('hidden');
-      userDisplay.classList.remove('hidden');
-      userDisplay.textContent = `👤 ${currentUser.name || currentUser.phone}`;
-      navUserTop.textContent = currentUser.phone || '';
-    } else {
-      loginBtn.classList.remove('hidden');
-      logoutBtn.classList.add('hidden');
-      userDisplay.classList.add('hidden');
-      navUserTop.textContent = '';
-    }
-  }
-
-  // =============================================================
-  //  MOBILE MENU TOGGLE
-  // =============================================================
-  const menuBtn = document.getElementById('mobileMenuBtn');
-  const mobileMenu = document.getElementById('mobileMenu');
-  let menuOpen = false;
-
-  menuBtn.addEventListener('click', () => {
-    menuOpen = !menuOpen;
-    mobileMenu.classList.toggle('hidden', !menuOpen);
-    menuBtn.innerHTML = menuOpen ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
-    // Update aria-expanded for accessibility
-    menuBtn.setAttribute('aria-expanded', menuOpen ? 'true' : 'false');
-  });
-
-  // =============================================================
-  //  OFFLINE / ONLINE DETECTION
-  // =============================================================
-  // We monitor the network status and show a notification when
-  // connectivity changes. This is important for offline‑first features.
-
-  function updateOnlineStatus() {
-    const status = navigator.onLine ? 'online' : 'offline';
-    if (status === 'offline') {
-      showToast('📡 You are offline. Payments and registrations will be saved locally.', false);
-    } else {
-      showToast('🌐 Back online. Syncing offline data...', false);
-      // Trigger sync if available (will be implemented in Section 9)
-      if (window.triggerOfflineSync) {
-        window.triggerOfflineSync();
+    const storedUser = localStorage.getItem('whapay_user');
+    if (storedUser) {
+      try {
+        currentUser = JSON.parse(storedUser);
+        updateAuthUI();
+      } catch (e) {
+        localStorage.removeItem('whapay_user');
       }
     }
-  }
 
-  window.addEventListener('online', updateOnlineStatus);
-  window.addEventListener('offline', updateOnlineStatus);
-
-  // =============================================================
-  //  ANNOUNCEMENT BAR CLOSE
-  // =============================================================
-  const closeAnnouncementBtn = document.getElementById('closeAnnouncement');
-  const announcementBar = document.getElementById('announcementBar');
-  if (closeAnnouncementBtn && announcementBar) {
-    // Check localStorage to remember if user closed it
-    if (localStorage.getItem('whapay_hide_announcement') === 'true') {
-      announcementBar.style.display = 'none';
-    }
-    closeAnnouncementBtn.addEventListener('click', () => {
-      announcementBar.style.display = 'none';
-      localStorage.setItem('whapay_hide_announcement', 'true');
+    loginBtn.addEventListener('click', () => {
+      const phone = prompt('Enter your phone number (demo):', '+254712345678');
+      if (phone && phone.trim().length > 0) {
+        currentUser = {
+          phone: phone.trim(),
+          name: 'Demo User',
+          email: '',
+          businessName: '',
+          kycVerified: false
+        };
+        localStorage.setItem('whapay_user', JSON.stringify(currentUser));
+        updateAuthUI();
+        showToast(`✅ Logged in as ${currentUser.name}`);
+      }
     });
-  }
 
-  // =============================================================
-  //  SERVICE WORKER REGISTRATION (PWA)
-  // =============================================================
-  // Register the service worker for offline caching and background sync.
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js')
-      .then(reg => console.log('✅ Service Worker registered:', reg))
-      .catch(err => console.warn('❌ Service Worker registration failed:', err));
-  }
+    logoutBtn.addEventListener('click', () => {
+      currentUser = null;
+      localStorage.removeItem('whapay_user');
+      updateAuthUI();
+      showToast('🔒 Logged out');
+    });
 
-  // =============================================================
-  //  EXPOSE GLOBALS FOR OTHER SECTIONS
-  // =============================================================
-  // We attach these to the window object so that other scripts
-  // can access them without having to redefine the numbers.
+    function updateAuthUI() {
+      if (currentUser) {
+        loginBtn.classList.add('hidden');
+        logoutBtn.classList.remove('hidden');
+        userDisplay.classList.remove('hidden');
+        userDisplay.textContent = `👤 ${currentUser.name || currentUser.phone}`;
+        navUserTop.textContent = currentUser.phone || '';
+      } else {
+        loginBtn.classList.remove('hidden');
+        logoutBtn.classList.add('hidden');
+        userDisplay.classList.add('hidden');
+        navUserTop.textContent = '';
+      }
+    }
 
-  window.WHATSAPP_NUMBER = WHATSAPP_NUMBER;
-  window.TWILIO_NUMBER = TWILIO_NUMBER;
-  
-  /**
-   * Format a number as Kenyan Shillings (KES).
-   * @param {number} amount - The amount to format.
-   * @returns {string} Formatted string (e.g., "KES 1,234").
-   */
-  window.formatKES = (amount) => `KES ${Number(amount).toLocaleString()}`;
+    // =============================================================
+    //  MOBILE MENU TOGGLE (Event Listener – no inline onclick)
+    // =============================================================
+    const menuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    let menuOpen = false;
 
-  // =============================================================
-  //  INITIALISATION LOG
-  // =============================================================
-  console.log('✅ Section 1: Head & Header loaded successfully.');
-  console.log(`📱 WhatsApp number: ${WHATSAPP_NUMBER} (Cloud API)`);
-  console.log(`📞 Twilio (SMS/Voice): ${TWILIO_NUMBER} (displayed as 0140933042)`);
-  console.log(`🌐 Current status: ${navigator.onLine ? 'Online' : 'Offline'}`);
-</script>
+    menuBtn.addEventListener('click', () => {
+      menuOpen = !menuOpen;
+      mobileMenu.classList.toggle('hidden', !menuOpen);
+      menuBtn.innerHTML = menuOpen ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+      menuBtn.setAttribute('aria-expanded', menuOpen ? 'true' : 'false');
+    });
 
-<!-- ============================================================ -->
-<!-- END OF SECTION 1                                              -->
-<!-- ============================================================ -->
+    // =============================================================
+    //  ONLINE / OFFLINE DETECTION
+    // =============================================================
+    function updateOnlineStatus() {
+      const status = navigator.onLine ? 'online' : 'offline';
+      if (status === 'offline') {
+        showToast('📡 You are offline. Payments and registrations will be saved locally.', false);
+      } else {
+        showToast('🌐 Back online. Syncing offline data...', false);
+        if (window.triggerOfflineSync) {
+          window.triggerOfflineSync();
+        }
+      }
+    }
+
+    window.addEventListener('online', updateOnlineStatus);
+    window.addEventListener('offline', updateOnlineStatus);
+
+    // =============================================================
+    //  SERVICE WORKER REGISTRATION (PWA)
+    // =============================================================
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js')
+        .then(reg => console.log('✅ Service Worker registered:', reg))
+        .catch(err => console.warn('❌ Service Worker registration failed:', err));
+    }
+
+    // =============================================================
+    //  EXPOSE GLOBALS
+    // =============================================================
+    window.WHATSAPP_NUMBER = WHATSAPP_NUMBER;
+    window.TWILIO_NUMBER = TWILIO_NUMBER;
+    window.formatKES = (amount) => `KES ${Number(amount).toLocaleString()}`;
+
+    // =============================================================
+    //  INIT LOG
+    // =============================================================
+    console.log('✅ Section 1: Head & Header loaded successfully.');
+    console.log(`📱 WhatsApp number: ${WHATSAPP_NUMBER} (Cloud API)`);
+    console.log(`📞 Twilio (SMS/Voice): ${TWILIO_NUMBER} (displayed as 0140933042)`);
+    console.log(`🌐 Current status: ${navigator.onLine ? 'Online' : 'Offline'}`);
+  </script>
+
+  <!-- ============================================================ -->
+  <!-- END OF SECTION 1                                              -->
+  <!-- ============================================================ -->
 <!-- ============================================================ -->
 <!-- SECTION 2: HERO & STATS (COMPLETE, FULLY DETAILED)           -->
 <!-- Place this directly after SECTION 1                           -->

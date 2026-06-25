@@ -1398,6 +1398,507 @@
 <!-- Place this after SECTION 3 (Features)                          -->
 <!-- ============================================================ -->
 
+  <!-- How It Works -->
+<div class="bg-white rounded-2xl shadow-lg p-6 mb-12">
+  <h2 class="text-2xl font-bold text-center mb-4">👆 How WhaPay Works – Simple Steps</h2>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+    <div class="step-card bg-gray-50 p-3 rounded-xl"><div class="text-3xl mb-1">1️⃣</div><i class="fas fa-user-plus text-2xl text-green-600"></i><p class="font-bold mt-1">Get Your Code & QR</p><p class="text-xs">Register online (WhatsApp) or offline (voice/SMS to 0140933042). Receive your unique Member Code and QR code instantly.</p></div>
+    <div class="step-card bg-gray-50 p-3 rounded-xl"><div class="text-3xl mb-1">2️⃣</div><i class="fas fa-hand-holding-usd text-2xl text-green-600"></i><p class="font-bold mt-1">Share or Scan</p><p class="text-xs">Merchant shares their WhatsApp link, QR code, or Member Code. Customer scans or copies the code.</p></div>
+    <div class="step-card bg-gray-50 p-3 rounded-xl"><div class="text-3xl mb-1">3️⃣</div><i class="fas fa-check-circle text-2xl text-green-600"></i><p class="font-bold mt-1">Pay & Confirm</p><p class="text-xs">Pay via M-Pesa or card (online) or Member Code + M-Pesa Paybill (offline). Both receive instant confirmation.</p></div>
+  </div>
+  <p class="text-center text-gray-500 text-sm mt-4"><i class="fas fa-sync-alt"></i> Offline payments sync automatically when you reconnect – send <span class="font-mono bg-gray-100 px-1">SYNC</span> on WhatsApp to update your dashboard.</p>
+</div>
+<!-- Revenue Potential Calculator -->
+<div class="bg-white rounded-2xl shadow-lg p-6 mb-12">
+  <div class="text-center mb-6">
+    <h2 class="text-2xl font-bold text-gray-800">📈 How Much Could You Earn?</h2>
+    <p class="text-gray-500 text-sm mt-1">Enter your daily sales to see your monthly revenue potential with WhaPay</p>
+  </div>
+  <div class="max-w-xl mx-auto">
+    <div class="grid md:grid-cols-2 gap-4 mb-4">
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">Average Daily Sales (KES)</label>
+        <input type="number" id="earnDaily" placeholder="e.g. 5000" oninput="calcEarning()" class="w-full border-2 border-gray-200 focus:border-green-500 rounded-xl px-4 py-3 outline-none transition">
+      </div>
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">% Paid by Card</label>
+        <select id="earnCardPct" onchange="calcEarning()" class="w-full border-2 border-gray-200 focus:border-green-500 rounded-xl px-4 py-3 outline-none transition">
+          <option value="10">10% by card</option>
+          <option value="25">25% by card</option>
+          <option value="50" selected>50% by card</option>
+          <option value="75">75% by card</option>
+          <option value="100">100% by card</option>
+        </select>
+      </div>
+    </div>
+    <div id="earnResult" class="hidden">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+        <div class="bg-green-50 rounded-xl p-4 text-center">
+          <p class="text-xs text-gray-500 mb-1">Monthly Revenue</p>
+          <p id="earnMonthly" class="text-xl font-bold text-green-600">—</p>
+        </div>
+        <div class="bg-blue-50 rounded-xl p-4 text-center">
+          <p class="text-xs text-gray-500 mb-1">Annual Revenue</p>
+          <p id="earnAnnual" class="text-xl font-bold text-blue-600">—</p>
+        </div>
+        <div class="bg-red-50 rounded-xl p-4 text-center">
+          <p class="text-xs text-gray-500 mb-1">Monthly WhaPay Fees</p>
+          <p id="earnFees" class="text-xl font-bold text-red-500">—</p>
+        </div>
+        <div class="bg-emerald-50 rounded-xl p-4 text-center">
+          <p class="text-xs text-gray-500 mb-1">You Keep</p>
+          <p id="earnKeep" class="text-xl font-bold text-emerald-600">—</p>
+        </div>
+      </div>
+      <div class="bg-gray-50 rounded-xl p-4 text-center text-sm text-gray-600">
+        <p id="earnNote"></p>
+      </div>
+      <div class="text-center mt-4">
+        <a href="https://wa.me/+15556539447?text=REGISTER" class="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-bold px-8 py-3 rounded-full transition">
+          <i class="fab fa-whatsapp"></i> Start Accepting Payments
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function calcEarning() {
+  const daily = parseFloat(document.getElementById('earnDaily').value);
+  const cardPct = parseFloat(document.getElementById('earnCardPct').value) / 100;
+  const result = document.getElementById('earnResult');
+  if (!daily || daily <= 0) { result.classList.add('hidden'); return; }
+
+  const monthly = daily * 30;
+  const annual = daily * 365;
+  const cardMonthly = monthly * cardPct;
+  const avgTx = 800;
+  const txCount = cardMonthly / avgTx;
+  const fees = (cardMonthly * 0.015) + (txCount * 20);
+  const keep = monthly - fees;
+
+  document.getElementById('earnMonthly').innerText = `KES ${monthly.toLocaleString(undefined,{maximumFractionDigits:0})}`;
+  document.getElementById('earnAnnual').innerText = `KES ${annual.toLocaleString(undefined,{maximumFractionDigits:0})}`;
+  document.getElementById('earnFees').innerText = `KES ${fees.toLocaleString(undefined,{maximumFractionDigits:0})}`;
+  document.getElementById('earnKeep').innerText = `KES ${keep.toLocaleString(undefined,{maximumFractionDigits:0})}`;
+  document.getElementById('earnNote').innerText = `With KES ${daily.toLocaleString()} in daily sales and ${document.getElementById('earnCardPct').value}% paid by card, WhaPay fees are only KES ${fees.toLocaleString(undefined,{maximumFractionDigits:0})}/month — you keep ${((keep/monthly)*100).toFixed(1)}% of your revenue.`;
+  result.classList.remove('hidden');
+}
+</script>
+<!-- Live Currency Converter -->
+<div class="bg-white rounded-2xl shadow-lg p-6 mb-12">
+  <div class="text-center mb-6">
+    <h2 class="text-2xl font-bold text-gray-800">💱 Pay in Your Currency</h2>
+    <p class="text-gray-500 text-sm mt-1">See exactly what you pay in your local currency and what the merchant receives in KES</p>
+  </div>
+  <div class="max-w-2xl mx-auto">
+    <div class="grid md:grid-cols-3 gap-4 items-end mb-4">
+      <div>
+        <label class="text-sm font-semibold text-gray-700 mb-2 block">Your Currency</label>
+        <select id="currencyFrom" onchange="convertCurrency()" class="w-full border-2 border-gray-200 focus:border-green-500 rounded-xl px-4 py-3 outline-none transition">
+          <option value="USD">🇺🇸 USD – US Dollar</option>
+          <option value="GBP">🇬🇧 GBP – British Pound</option>
+          <option value="EUR">🇪🇺 EUR – Euro</option>
+          <option value="AED">🇦🇪 AED – UAE Dirham</option>
+          <option value="CAD">🇨🇦 CAD – Canadian Dollar</option>
+          <option value="AUD">🇦🇺 AUD – Australian Dollar</option>
+          <option value="INR">🇮🇳 INR – Indian Rupee</option>
+          <option value="SAR">🇸🇦 SAR – Saudi Riyal</option>
+          <option value="NGN">🇳🇬 NGN – Nigerian Naira</option>
+          <option value="ZAR">🇿🇦 ZAR – South African Rand</option>
+          <option value="TZS">🇹🇿 TZS – Tanzania Shilling</option>
+          <option value="UGX">🇺🇬 UGX – Uganda Shilling</option>
+          <option value="GHS">🇬🇭 GHS – Ghanaian Cedi</option>
+          <option value="CNY">🇨🇳 CNY – Chinese Yuan</option>
+          <option value="JPY">🇯🇵 JPY – Japanese Yen</option>
+          <option value="KES" selected>🇰🇪 KES – Kenyan Shilling</option>
+        </select>
+      </div>
+      <div>
+        <label class="text-sm font-semibold text-gray-700 mb-2 block">Amount</label>
+        <input type="number" id="currencyAmount" placeholder="e.g. 100" oninput="convertCurrency()" class="w-full border-2 border-gray-200 focus:border-green-500 rounded-xl px-4 py-3 outline-none transition text-lg">
+      </div>
+      <div>
+        <label class="text-sm font-semibold text-gray-700 mb-2 block">Payment Method</label>
+        <select id="currencyMethod" onchange="convertCurrency()" class="w-full border-2 border-gray-200 focus:border-green-500 rounded-xl px-4 py-3 outline-none transition">
+          <option value="card">💳 Card (Visa/Mastercard)</option>
+          <option value="mpesa">📱 M-Pesa</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="currencyResult" class="hidden bg-green-50 border border-green-200 rounded-2xl p-5">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+        <div><p class="text-xs text-gray-500 mb-1">You Send</p><p id="crSend" class="text-xl font-bold text-gray-800">—</p></div>
+        <div><p class="text-xs text-gray-500 mb-1">In KES</p><p id="crKES" class="text-xl font-bold text-blue-600">—</p></div>
+        <div><p class="text-xs text-gray-500 mb-1">WhaPay Fee</p><p id="crFee" class="text-xl font-bold text-red-500">—</p></div>
+        <div><p class="text-xs text-gray-500 mb-1">Merchant Receives</p><p id="crReceive" class="text-xl font-bold text-green-600">—</p></div>
+      </div>
+      <p id="crNote" class="text-xs text-gray-400 text-center mt-3"></p>
+    </div>
+    <p class="text-xs text-gray-400 text-center mt-3"><i class="fas fa-info-circle"></i> Exchange rates are approximate. Actual rates applied at time of transaction.</p>
+  </div>
+</div>
+
+<script>
+const rates = {
+  USD: 129, GBP: 165, EUR: 140, AED: 35.1, CAD: 95,
+  AUD: 84, INR: 1.55, SAR: 34.4, NGN: 0.085, ZAR: 7.1,
+  TZS: 0.05, UGX: 0.034, GHS: 8.5, CNY: 17.8, JPY: 0.86, KES: 1
+};
+
+function convertCurrency() {
+  const from = document.getElementById('currencyFrom').value;
+  const amount = parseFloat(document.getElementById('currencyAmount').value);
+  const method = document.getElementById('currencyMethod').value;
+  const result = document.getElementById('currencyResult');
+  if (!amount || amount <= 0) { result.classList.add('hidden'); return; }
+  const kes = amount * rates[from];
+  let fee = method === 'card' ? (kes * 0.015) + 20 : 0;
+  const receive = kes - fee;
+  document.getElementById('crSend').innerText = `${from} ${amount.toLocaleString()}`;
+  document.getElementById('crKES').innerText = `KES ${kes.toFixed(0).toLocaleString()}`;
+  document.getElementById('crFee').innerText = fee > 0 ? `KES ${fee.toFixed(2)}` : 'Safaricom rates';
+  document.getElementById('crReceive').innerText = `KES ${receive.toFixed(0).toLocaleString()}`;
+  document.getElementById('crNote').innerText = method === 'card'
+    ? `WhaPay fee: 1.5% + KES 20 on card transactions. Merchant receives KES ${receive.toFixed(0).toLocaleString()}.`
+    : `M-Pesa: WhaPay adds 0% — only Safaricom standard rates apply.`;
+  result.classList.remove('hidden');
+}
+</script>
+<!-- WhaPay for Diaspora -->
+<div class="bg-gradient-to-br from-blue-900 to-blue-700 rounded-2xl shadow-2xl p-8 mb-12 text-white">
+  <div class="text-center mb-8">
+    <span class="inline-block bg-white/20 text-white text-xs font-semibold px-4 py-1.5 rounded-full mb-4">🌍 For the African Diaspora</span>
+    <h2 class="text-3xl font-bold mb-3">Send Money Home.<br>Pay Family Businesses Directly.</h2>
+    <p class="text-blue-200 max-w-xl mx-auto">No more Western Union queues. No more bank transfer delays. Pay Kenyan and African businesses directly from anywhere in the world using your local card.</p>
+  </div>
+  <div class="grid md:grid-cols-3 gap-6 mb-8">
+    <div class="bg-white/10 rounded-xl p-5 text-center">
+      <div class="text-3xl mb-2">🇬🇧</div>
+      <p class="font-bold">From UK</p>
+      <p class="text-blue-200 text-sm mt-1">Pay in GBP using Visa, Mastercard, Google Pay or Apple Pay. Merchant receives KES instantly.</p>
+    </div>
+    <div class="bg-white/10 rounded-xl p-5 text-center">
+      <div class="text-3xl mb-2">🇺🇸</div>
+      <p class="font-bold">From USA</p>
+      <p class="text-blue-200 text-sm mt-1">Pay in USD using any US card or Google Pay. No SWIFT fees. No delays. Instant payment.</p>
+    </div>
+    <div class="bg-white/10 rounded-xl p-5 text-center">
+      <div class="text-3xl mb-2">🇦🇪</div>
+      <p class="font-bold">From UAE</p>
+      <p class="text-blue-200 text-sm mt-1">Pay in AED using UAE Visa or Mastercard. Support family businesses in Kenya from Dubai.</p>
+    </div>
+  </div>
+  <div class="bg-white/10 rounded-xl p-5 mb-6">
+    <h3 class="font-bold mb-3 text-center">💡 How Diaspora Payments Work</h3>
+    <div class="grid md:grid-cols-4 gap-4 text-center text-sm">
+      <div><div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-2 font-bold">1</div><p>Family/merchant shares WhaPay payment link via WhatsApp</p></div>
+      <div><div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-2 font-bold">2</div><p>You click the link from UK/USA/UAE</p></div>
+      <div><div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-2 font-bold">3</div><p>Pay with your local Visa, Mastercard, Google Pay or Apple Pay</p></div>
+      <div><div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-2 font-bold">4</div><p>Merchant in Kenya receives KES instantly via M-Pesa</p></div>
+    </div>
+  </div>
+  <div class="text-center">
+    <a href="https://wa.me/+15556539447?text=I%20want%20to%20pay%20a%20Kenyan%20merchant%20from%20abroad" class="inline-flex items-center gap-2 bg-white text-blue-800 font-bold px-8 py-3 rounded-full hover:bg-blue-50 transition shadow-lg">
+      <i class="fab fa-whatsapp text-green-500"></i> Pay a Kenyan Merchant from Abroad
+    </a>
+  </div>
+</div>
+<!-- WhaPay By Industry -->
+<div class="bg-white rounded-2xl shadow-lg p-6 mb-12">
+  <div class="text-center mb-8">
+    <h2 class="text-2xl font-bold text-gray-800">🏪 WhaPay Works For Every Business</h2>
+    <p class="text-gray-500 text-sm mt-2">From street vendors to enterprise — online and offline</p>
+  </div>
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <div class="bg-green-50 rounded-xl p-4 text-center hover:shadow-md transition cursor-pointer" onclick="showIndustry('grocery')">
+      <div class="text-3xl mb-2">🛒</div>
+      <p class="font-bold text-sm text-gray-800">Grocery & Retail</p>
+      <p class="text-xs text-gray-500 mt-1">Shops, supermarkets, kiosks</p>
+    </div>
+    <div class="bg-blue-50 rounded-xl p-4 text-center hover:shadow-md transition cursor-pointer" onclick="showIndustry('salon')">
+      <div class="text-3xl mb-2">💇</div>
+      <p class="font-bold text-sm text-gray-800">Salons & Beauty</p>
+      <p class="text-xs text-gray-500 mt-1">Hair, nails, spa services</p>
+    </div>
+    <div class="bg-purple-50 rounded-xl p-4 text-center hover:shadow-md transition cursor-pointer" onclick="showIndustry('school')">
+      <div class="text-3xl mb-2">🏫</div>
+      <p class="font-bold text-sm text-gray-800">Schools & Tuition</p>
+      <p class="text-xs text-gray-500 mt-1">Fee collection, subscriptions</p>
+    </div>
+    <div class="bg-yellow-50 rounded-xl p-4 text-center hover:shadow-md transition cursor-pointer" onclick="showIndustry('landlord')">
+      <div class="text-3xl mb-2">🏠</div>
+      <p class="font-bold text-sm text-gray-800">Landlords & Property</p>
+      <p class="text-xs text-gray-500 mt-1">Rent collection, deposits</p>
+    </div>
+    <div class="bg-red-50 rounded-xl p-4 text-center hover:shadow-md transition cursor-pointer" onclick="showIndustry('restaurant')">
+      <div class="text-3xl mb-2">🍽️</div>
+      <p class="font-bold text-sm text-gray-800">Restaurants & Food</p>
+      <p class="text-xs text-gray-500 mt-1">Cafes, food stalls, delivery</p>
+    </div>
+    <div class="bg-orange-50 rounded-xl p-4 text-center hover:shadow-md transition cursor-pointer" onclick="showIndustry('ecommerce')">
+      <div class="text-3xl mb-2">📦</div>
+      <p class="font-bold text-sm text-gray-800">E-commerce & Online</p>
+      <p class="text-xs text-gray-500 mt-1">Online stores, dropshipping</p>
+    </div>
+    <div class="bg-teal-50 rounded-xl p-4 text-center hover:shadow-md transition cursor-pointer" onclick="showIndustry('freelancer')">
+      <div class="text-3xl mb-2">💻</div>
+      <p class="font-bold text-sm text-gray-800">Freelancers & Creatives</p>
+      <p class="text-xs text-gray-500 mt-1">Designers, developers, writers</p>
+    </div>
+    <div class="bg-indigo-50 rounded-xl p-4 text-center hover:shadow-md transition cursor-pointer" onclick="showIndustry('ngo')">
+      <div class="text-3xl mb-2">🤝</div>
+      <p class="font-bold text-sm text-gray-800">NGOs & Charities</p>
+      <p class="text-xs text-gray-500 mt-1">Donations, fundraising</p>
+    </div>
+  </div>
+
+  <div id="industryDetail" class="hidden mt-6 bg-gray-50 rounded-2xl p-6 border border-gray-200">
+    <div id="industryContent"></div>
+  </div>
+</div>
+
+<script>
+const industries = {
+  grocery: {
+    icon: '🛒', title: 'WhaPay for Grocery Shops & Retail',
+    points: ['Accept M-Pesa payments at your counter without a POS machine','Display your QR code — customers scan and pay in seconds','Offline Member Code payments work even when your internet is down','Share your WhatsApp payment link with bulk buyers and regular customers','Export daily sales to CSV for your accounting records','Works for dukas, supermarkets, open-air markets and roadside kiosks'],
+    cta: 'Register Your Shop'
+  },
+  salon: {
+    icon: '💇', title: 'WhaPay for Salons & Beauty Businesses',
+    points: ['Accept card payments from middle-class urban customers who prefer cards','Set up recurring billing for monthly treatment packages','Share WhatsApp payment link on your Instagram and Facebook pages','Accept Google Pay and Apple Pay from international clients','Generate professional invoices for corporate clients','Works for hair salons, nail studios, spas and barber shops'],
+    cta: 'Register Your Salon'
+  },
+  school: {
+    icon: '🏫', title: 'WhaPay for Schools & Tuition Centers',
+    points: ['Collect school fees via M-Pesa, card or offline Member Code','Set up recurring billing for monthly tuition fees','Parents pay from anywhere — even from UK, USA or UAE via card','Generate fee receipts and invoices automatically','No more handling cash — all payments tracked in your dashboard','Works for primary schools, secondary schools, colleges and tuition centers'],
+    cta: 'Register Your School'
+  },
+  landlord: {
+    icon: '🏠', title: 'WhaPay for Landlords & Property Managers',
+    points: ['Collect rent via M-Pesa, card or offline Member Code every month','Set up automatic recurring billing for monthly rent','Tenants pay from anywhere — even overseas via card or PayPal','Export all payments to CSV for your accounting and tax records','Generate rent receipts and deposit invoices automatically','Works for residential, commercial and student accommodation landlords'],
+    cta: 'Register as Landlord'
+  },
+  restaurant: {
+    icon: '🍽️', title: 'WhaPay for Restaurants & Food Businesses',
+    points: ['Accept table payments via QR code scan — no card machine needed','Take online orders and receive payment via WhatsApp link','Accept Google Pay and Apple Pay from urban customers','Delivery payments via WhatsApp link sent to customer phone','Accept cards from international tourists and expats','Works for restaurants, cafes, food stalls, catering and delivery'],
+    cta: 'Register Your Restaurant'
+  },
+  ecommerce: {
+    icon: '📦', title: 'WhaPay for E-commerce & Online Stores',
+    points: ['Accept Visa, Mastercard, M-Pesa and Google Pay on your online store','Share payment links via WhatsApp, Instagram, Facebook and TikTok','Accept payments from customers in USA, UK, UAE and 180+ countries','API integration for custom e-commerce websites and apps','Webhook notifications for instant order confirmation','Works for online shops, dropshipping, digital products and services'],
+    cta: 'Register Your Online Store'
+  },
+  freelancer: {
+    icon: '💻', title: 'WhaPay for Freelancers & Creative Professionals',
+    points: ['Get paid by international clients in USD, GBP, EUR and 135+ currencies','Generate professional invoices and send via WhatsApp','Accept PayPal, Stripe cards and M-Pesa from different clients','Share your payment link on LinkedIn, Upwork profile and portfolio','No monthly fees — only pay when you get paid','Works for designers, developers, writers, photographers and consultants'],
+    cta: 'Register as Freelancer'
+  },
+  ngo: {
+    icon: '🤝', title: 'WhaPay for NGOs & Charitable Organizations',
+    points: ['Accept donations from supporters worldwide in any currency','Share donation link on social media and email campaigns','Accept card donations from diaspora in UK, USA, UAE and beyond','Generate donation receipts automatically for tax purposes','Recurring donations for monthly supporters and patrons','Works for NGOs, churches, community groups and fundraising campaigns'],
+    cta: 'Register Your Organization'
+  }
+};
+
+function showIndustry(key) {
+  const data = industries[key];
+  const detail = document.getElementById('industryDetail');
+  const content = document.getElementById('industryContent');
+  content.innerHTML = `
+    <div class="flex items-center gap-3 mb-4">
+      <span class="text-4xl">${data.icon}</span>
+      <h3 class="text-xl font-bold text-gray-800">${data.title}</h3>
+    </div>
+    <ul class="space-y-2 mb-5">
+      ${data.points.map(p => `<li class="flex items-start gap-2 text-sm text-gray-700"><i class="fas fa-check-circle text-green-500 mt-0.5 flex-shrink-0"></i>${p}</li>`).join('')}
+    </ul>
+    <a href="https://wa.me/+15556539447?text=REGISTER%20${encodeURIComponent(data.cta)}"
+      class="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-bold px-6 py-3 rounded-full transition">
+      <i class="fab fa-whatsapp"></i> ${data.cta}
+    </a>`;
+  detail.classList.remove('hidden');
+  detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+</script>
+<!-- Global Currency & Payment Methods -->
+<div class="bg-white rounded-2xl shadow-lg p-8 mb-12">
+  <div class="text-center mb-8">
+    <h2 class="text-2xl font-bold text-gray-800">💳 Payment Methods & Currencies</h2>
+    <p class="text-gray-500 text-sm mt-2">What's live now and what's coming</p>
+  </div>
+
+  <!-- LIVE NOW -->
+  <div class="mb-8">
+    <div class="flex items-center gap-2 mb-4">
+      <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+      <h3 class="font-bold text-green-700 uppercase text-xs tracking-wider">✅ Live Now</h3>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="border-2 border-green-100 bg-green-50 rounded-xl p-4 text-center">
+        <i class="fas fa-mobile-alt text-2xl text-green-600 mb-2"></i>
+        <p class="font-semibold text-sm">M-PESA</p>
+        <p class="text-xs text-gray-500">STK Push & Paybill</p>
+      </div>
+      <div class="border-2 border-green-100 bg-green-50 rounded-xl p-4 text-center">
+        <i class="fab fa-cc-visa text-2xl text-blue-700 mb-2"></i>
+        <p class="font-semibold text-sm">Visa Card</p>
+        <p class="text-xs text-gray-500">Local & international</p>
+      </div>
+      <div class="border-2 border-green-100 bg-green-50 rounded-xl p-4 text-center">
+        <i class="fab fa-cc-mastercard text-2xl text-orange-600 mb-2"></i>
+        <p class="font-semibold text-sm">Mastercard</p>
+        <p class="text-xs text-gray-500">Local & international</p>
+      </div>
+      <div class="border-2 border-green-100 bg-green-50 rounded-xl p-4 text-center">
+        <i class="fas fa-qrcode text-2xl text-green-600 mb-2"></i>
+        <p class="font-semibold text-sm">QR & Member Code</p>
+        <p class="text-xs text-gray-500">Works offline</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMING SOON -->
+  <div>
+    <div class="flex items-center gap-2 mb-4">
+      <span class="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></span>
+      <h3 class="font-bold text-yellow-600 uppercase text-xs tracking-wider">🔜 Coming Soon — Q3 2026</h3>
+    </div>
+
+    <!-- Mobile Money -->
+    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">📱 Mobile Money</p>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      <div class="border-2 border-yellow-100 bg-yellow-50 rounded-xl p-4 text-center opacity-80">
+        <i class="fas fa-mobile-alt text-2xl text-red-500 mb-2"></i>
+        <p class="font-semibold text-sm">Airtel Money</p>
+        <p class="text-xs text-gray-500">Kenya</p>
+      </div>
+      <div class="border-2 border-yellow-100 bg-yellow-50 rounded-xl p-4 text-center opacity-80">
+        <i class="fas fa-mobile-alt text-2xl text-blue-500 mb-2"></i>
+        <p class="font-semibold text-sm">T-Kash</p>
+        <p class="text-xs text-gray-500">Telkom Kenya</p>
+      </div>
+      <div class="border-2 border-yellow-100 bg-yellow-50 rounded-xl p-4 text-center opacity-80">
+        <i class="fas fa-mobile-alt text-2xl text-purple-500 mb-2"></i>
+        <p class="font-semibold text-sm">Equitel</p>
+        <p class="text-xs text-gray-500">Equity Bank Kenya</p>
+      </div>
+      <div class="border-2 border-yellow-100 bg-yellow-50 rounded-xl p-4 text-center opacity-80">
+        <i class="fas fa-mobile-alt text-2xl text-yellow-500 mb-2"></i>
+        <p class="font-semibold text-sm">MTN MoMo</p>
+        <p class="text-xs text-gray-500">East Africa</p>
+      </div>
+    </div>
+
+    <!-- Digital Wallets -->
+    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">👛 Digital Wallets</p>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      <div class="border-2 border-yellow-100 bg-yellow-50 rounded-xl p-4 text-center opacity-80">
+        <i class="fab fa-google text-2xl text-gray-600 mb-2"></i>
+        <p class="font-semibold text-sm">Google Pay</p>
+        <p class="text-xs text-gray-500">Global</p>
+      </div>
+      <div class="border-2 border-yellow-100 bg-yellow-50 rounded-xl p-4 text-center opacity-80">
+        <i class="fab fa-apple text-2xl text-gray-800 mb-2"></i>
+        <p class="font-semibold text-sm">Apple Pay</p>
+        <p class="text-xs text-gray-500">Global</p>
+      </div>
+      <div class="border-2 border-yellow-100 bg-yellow-50 rounded-xl p-4 text-center opacity-80">
+        <i class="fab fa-paypal text-2xl text-blue-600 mb-2"></i>
+        <p class="font-semibold text-sm">PayPal</p>
+        <p class="text-xs text-gray-500">Global</p>
+      </div>
+      <div class="border-2 border-yellow-100 bg-yellow-50 rounded-xl p-4 text-center opacity-80">
+        <i class="fas fa-wallet text-2xl text-orange-500 mb-2"></i>
+        <p class="font-semibold text-sm">Samsung Pay</p>
+        <p class="text-xs text-gray-500">Global</p>
+      </div>
+    </div>
+
+    <!-- International Currencies -->
+    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">🌍 International Currencies (Diaspora)</p>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      <div class="border-2 border-yellow-100 bg-yellow-50 rounded-xl p-4 text-center opacity-80">
+        <span class="text-2xl mb-2 block">🇺🇸</span>
+        <p class="font-semibold text-sm">USD</p>
+        <p class="text-xs text-gray-500">US Dollar → KES</p>
+      </div>
+      <div class="border-2 border-yellow-100 bg-yellow-50 rounded-xl p-4 text-center opacity-80">
+        <span class="text-2xl mb-2 block">🇬🇧</span>
+        <p class="font-semibold text-sm">GBP</p>
+        <p class="text-xs text-gray-500">British Pound → KES</p>
+      </div>
+      <div class="border-2 border-yellow-100 bg-yellow-50 rounded-xl p-4 text-center opacity-80">
+        <span class="text-2xl mb-2 block">🇪🇺</span>
+        <p class="font-semibold text-sm">EUR</p>
+        <p class="text-xs text-gray-500">Euro → KES</p>
+      </div>
+      <div class="border-2 border-yellow-100 bg-yellow-50 rounded-xl p-4 text-center opacity-80">
+        <span class="text-2xl mb-2 block">🇦🇪</span>
+        <p class="font-semibold text-sm">AED</p>
+        <p class="text-xs text-gray-500">UAE Dirham → KES</p>
+      </div>
+      <div class="border-2 border-yellow-100 bg-yellow-50 rounded-xl p-4 text-center opacity-80">
+        <span class="text-2xl mb-2 block">🇮🇳</span>
+        <p class="font-semibold text-sm">INR</p>
+        <p class="text-xs text-gray-500">Indian Rupee → KES</p>
+      </div>
+      <div class="border-2 border-yellow-100 bg-yellow-50 rounded-xl p-4 text-center opacity-80">
+        <span class="text-2xl mb-2 block">🇨🇦</span>
+        <p class="font-semibold text-sm">CAD</p>
+        <p class="text-xs text-gray-500">Canadian Dollar → KES</p>
+      </div>
+      <div class="border-2 border-yellow-100 bg-yellow-50 rounded-xl p-4 text-center opacity-80">
+        <span class="text-2xl mb-2 block">🇦🇺</span>
+        <p class="font-semibold text-sm">AUD</p>
+        <p class="text-xs text-gray-500">Australian Dollar → KES</p>
+      </div>
+      <div class="border-2 border-yellow-100 bg-yellow-50 rounded-xl p-4 text-center opacity-80">
+        <span class="text-2xl mb-2 block">🇸🇦</span>
+        <p class="font-semibold text-sm">SAR</p>
+        <p class="text-xs text-gray-500">Saudi Riyal → KES</p>
+      </div>
+    </div>
+
+    <!-- Crypto -->
+    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">₿ Cryptocurrency</p>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      <div class="border-2 border-yellow-100 bg-yellow-50 rounded-xl p-4 text-center opacity-80">
+        <i class="fab fa-bitcoin text-2xl text-orange-500 mb-2"></i>
+        <p class="font-semibold text-sm">Bitcoin (BTC)</p>
+        <p class="text-xs text-gray-500">Crypto payment</p>
+      </div>
+      <div class="border-2 border-yellow-100 bg-yellow-50 rounded-xl p-4 text-center opacity-80">
+        <i class="fas fa-coins text-2xl text-green-500 mb-2"></i>
+        <p class="font-semibold text-sm">USDT</p>
+        <p class="text-xs text-gray-500">Stablecoin</p>
+      </div>
+      <div class="border-2 border-yellow-100 bg-yellow-50 rounded-xl p-4 text-center opacity-80">
+        <i class="fas fa-coins text-2xl text-blue-500 mb-2"></i>
+        <p class="font-semibold text-sm">USDC</p>
+        <p class="text-xs text-gray-500">Stablecoin</p>
+      </div>
+      <div class="border-2 border-yellow-100 bg-yellow-50 rounded-xl p-4 text-center opacity-80">
+        <i class="fas fa-coins text-2xl text-purple-500 mb-2"></i>
+        <p class="font-semibold text-sm">Ethereum (ETH)</p>
+        <p class="text-xs text-gray-500">Crypto payment</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notify Me -->
+  <div class="bg-gray-50 rounded-xl p-5 text-center border border-gray-100">
+    <p class="text-gray-700 font-semibold mb-1">🔔 Want to know when a new payment method launches?</p>
+    <p class="text-gray-500 text-sm mb-4">We'll notify you on WhatsApp the moment it goes live.</p>
+    <a href="https://wa.me/+15556539447?text=NOTIFY%20ME%20when%20new%20payment%20methods%20launch" class="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-bold px-6 py-3 rounded-full transition">
+      <i class="fab fa-whatsapp"></i> Notify Me on WhatsApp
+    </a>
+  </div>
+</div>
+
+
 <section id="pricing" class="py-16 md:py-24 bg-gray-50">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     

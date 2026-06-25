@@ -1,1 +1,1718 @@
+<!-- ============================================================ -->
+<!-- SECTION 1: HEAD & HEADER (COMPLETE, FULLY DETAILED)          -->
+<!-- ============================================================ -->
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- ========================================================== -->
+  <!-- 1.1 BASIC META TAGS                                        -->
+  <!-- ========================================================== -->
+  
+  <!-- Character encoding and rendering modes -->
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  
+  <!-- Cache control – ensures users always get the latest version -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+
+  <!-- ========================================================== -->
+  <!-- 1.2 CANONICAL & SEO ESSENTIALS                             -->
+  <!-- ========================================================== -->
+  
+  <!-- Canonical URL – prevents duplicate content issues -->
+  <link rel="canonical" href="https://whapay.space/merchant.html" />
+  
+  <!-- Primary description – appears in search results -->
+  <meta name="description" content="Register your Kenyan business on WhaPay and accept M-Pesa STK push payments, Visa card payments, and offline payments using Member Code without internet. Free merchant registration via WhatsApp, SMS or voice call.">
+  
+  <!-- Keywords – long-tail SEO for merchant-specific searches -->
+  <meta name="keywords" content="how to accept mpesa payments without internet kenya, merchant payment dashboard kenya no monthly fees, register business mpesa paybill whatsapp kenya, accept card payments small business nairobi, offline payment solution kenyan merchants, lipa na mpesa merchant registration via sms, whatsapp payment link for kenyan businesses, qr code payment system for shops in kenya, how to receive mpesa payments without smartphone kenya, payment gateway for small businesses kenya no setup fee">
+  
+  <!-- Theme color – controls browser address bar on mobile -->
+  <meta name="theme-color" content="#16a34a">
+  
+  <!-- Robots meta – allow indexing and following -->
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+
+  <!-- ========================================================== -->
+  <!-- 1.3 OPEN GRAPH & SOCIAL SHARING                            -->
+  <!-- ========================================================== -->
+  
+  <meta property="og:title" content="WhaPay Merchant – Accept M-Pesa & Card Payments Online and Offline in Kenya">
+  <meta property="og:description" content="Kenya's only merchant payment platform that works without internet. Accept M-Pesa, Visa, Mastercard via WhatsApp link, QR code or offline Member Code. Register free via SMS or voice call.">
+  <meta property="og:url" content="https://whapay.space/merchant.html">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="WhaPay Merchant – M-Pesa Payments Online & Offline Kenya">
+  <meta name="twitter:description" content="Accept M-Pesa, cards, and offline payments via Member Code. Free registration for Kenyan merchants. No monthly fees.">
+
+  <!-- ========================================================== -->
+  <!-- 1.4 FAVICON & WEB APP MANIFEST                             -->
+  <!-- ========================================================== -->
+  
+  <link rel="icon" type="image/svg+xml" href="/whapay-logo.svg">
+  <link rel="apple-touch-icon" href="/whapay-logo.svg">
+  <link rel="manifest" href="/manifest.json">
+
+  <!-- ========================================================== -->
+  <!-- 1.5 PERFORMANCE OPTIMISATIONS (Preconnect & Preload)       -->
+  <!-- ========================================================== -->
+  
+  <link rel="preconnect" href="https://cdn.tailwindcss.com">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+
+  <!-- ========================================================== -->
+  <!-- 1.6 CSS FRAMEWORKS & STYLES                                -->
+  <!-- ========================================================== -->
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="global.css">
+
+  <!-- ========================================================== -->
+  <!-- 1.7 CUSTOM STYLES (Global + Dropdowns)                     -->
+  <!-- ========================================================== -->
+  
+  <style>
+    /* ===== RESET & BASE ===== */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #f8fafc;
+      color: #1e293b;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    html { scroll-behavior: smooth; }
+
+    /* ===== TOAST ===== */
+    .toast {
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      max-width: 90%;
+    }
+    .toast.hidden {
+      opacity: 0;
+      transform: translateY(20px) scale(0.95);
+      pointer-events: none;
+    }
+
+    /* ===== LIVE PULSE ===== */
+    .live-pulse {
+      animation: livePulse 2s ease-in-out infinite;
+    }
+    @keyframes livePulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0.4); }
+      50% { box-shadow: 0 0 0 6px rgba(34,197,94,0); }
+    }
+
+    /* ===== GRADIENT TEXT ===== */
+    .gradient-text {
+      background: linear-gradient(135deg, #16a34a, #22c55e);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      display: inline-block;
+    }
+
+    /* ===== SCROLLBAR UTILITY ===== */
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* ===== SKIP LINK (Accessibility) ===== */
+    .skip-link {
+      position: absolute;
+      top: -1000px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #16a34a;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 0 0 8px 8px;
+      z-index: 10000;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .skip-link:focus { top: 0; }
+
+    /* ===== SKELETON LOADING ===== */
+    .skeleton {
+      background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+    }
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* ===== STEP CARDS ===== */
+    .step-card { transition: 0.2s; }
+    .step-card:hover { transform: translateY(-3px); }
+
+    /* ===== FEATURE CARDS ===== */
+    .feature-card { transition: 0.2s; }
+    .feature-card:hover { transform: scale(1.02); background-color: #f0fdf4; }
+
+    /* ===== MERCHANT DASHBOARD SPECIFIC ===== */
+    .animate-ping {
+      animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+    }
+    .delay-500 { animation-delay: 0.5s; }
+    .delay-1000 { animation-delay: 1s; }
+    .group:hover .group-hover\:scale-110 { transform: scale(1.1); }
+    .group:hover .group-hover\:bg-emerald-200 { background-color: #bbf7d0; }
+
+    /* ===== G+D STYLE DROPDOWN NAVIGATION ===== */
+    .gd-nav { font-family: 'Inter', sans-serif; }
+    .gd-nav-link {
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: color 0.2s;
+      padding: 4px 0;
+    }
+    .gd-nav-link:hover { color: white; }
+    .gd-nav-link.active { color: #22c55e; font-weight: 700; }
+
+    .gd-dropdown { position: relative; }
+    .gd-dropdown-menu {
+      position: absolute;
+      top: calc(100% + 12px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #0f1629;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 8px;
+      min-width: 220px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.2s ease;
+      z-index: 100;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+    .gd-dropdown:hover .gd-dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+    }
+    .gd-dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background 0.2s;
+      color: white;
+    }
+    .gd-dropdown-item:hover { background: rgba(255,255,255,0.06); }
+    .gd-dropdown-item .icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .gd-dropdown-item .label { color: white; font-size: 0.82rem; font-weight: 600; }
+    .gd-dropdown-item .desc { color: rgba(255,255,255,0.35); font-size: 0.72rem; margin-top: 1px; }
+    .gd-dropdown-trigger {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+    }
+    .gd-dropdown-trigger i.arrow {
+      font-size: 0.6rem;
+      color: rgba(255,255,255,0.4);
+      transition: transform 0.2s;
+    }
+    .gd-dropdown:hover .gd-dropdown-trigger i.arrow {
+      transform: rotate(180deg);
+    }
+
+    /* ===== RESPONSIVE FOOTER ===== */
+    @media (max-width:768px) {
+      .footer-grid { grid-template-columns: 1fr 1fr !important; gap: 32px !important; }
+    }
+    @media (max-width:480px) {
+      .footer-grid { grid-template-columns: 1fr !important; }
+    }
+  </style>
+
+  <!-- ========================================================== -->
+  <!-- 1.8 STRUCTURED DATA (JSON‑LD)                              -->
+  <!-- ========================================================== -->
+  
+  <!-- Schema 1: WebPage – describes the merchant page -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "WhaPay Merchant Dashboard – Accept M-Pesa Payments Online and Offline in Kenya",
+    "description": "Register your Kenyan business to accept M-Pesa STK push, Visa, Mastercard and offline payments using Member Code without internet. Free registration via WhatsApp, SMS or voice call.",
+    "url": "https://whapay.space/merchant.html",
+    "provider": {
+      "@type": "Organization",
+      "name": "WhaPay",
+      "url": "https://whapay.space",
+      "telephone": "+19899434406",
+      "email": "support@whapay.space"
+    }
+  }
+  </script>
+  
+  <!-- Schema 2: Service – describes the merchant payment service -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "WhaPay Merchant Payment Service",
+    "description": "Online and offline payment acceptance for Kenyan merchants. Accept M-Pesa, Visa, Mastercard via WhatsApp, QR code or offline Member Code. No monthly fees.",
+    "provider": {
+      "@type": "Organization",
+      "name": "WhaPay",
+      "url": "https://whapay.space"
+    },
+    "areaServed": {
+      "@type": "Country",
+      "name": "Kenya"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "KES",
+      "description": "Free registration. 1.5% plus KES 20 per card transaction. Zero fees on M-Pesa."
+    },
+    "serviceType": "Payment Gateway",
+    "availableChannel": {
+      "@type": "ServiceChannel",
+      "serviceUrl": "https://whapay.space/merchant.html",
+      "servicePhone": "+19899434406",
+      "availableLanguage": ["English", "Swahili"]
+    }
+  }
+  </script>
+
+  <!-- ========================================================== -->
+  <!-- 1.9 NOSCRIPT FALLBACK                                       -->
+  <!-- ========================================================== -->
+  <noscript>
+    <style>
+      .no-js{ display: block !important; }
+      #app { display: none; }
+    </style>
+    <div style="background:#fee;border:2px solid #dc2626;padding:20px;text-align:center;margin:20px;">
+      <p><strong>⚠️ JavaScript is disabled.</strong> Please enable it for the full WhaPay experience.</p>
+    </div>
+  </noscript>
+
+</head>
+<body>
+
+  <!-- ========================================================== -->
+  <!-- 1.10 SKIP LINK (Accessibility)                             -->
+  <!-- ========================================================== -->
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <!-- ========================================================== -->
+  <!-- 1.11 HEADER (PERSISTENT NAVIGATION)                        -->
+  <!-- ========================================================== -->
+  <header class="gd-nav" style="background:#080c18;border-bottom:1px solid rgba(255,255,255,0.06);position:sticky;top:0;z-index:999;">
+
+    <!-- Top utility bar -->
+    <div style="background:rgba(22,163,74,0.08);border-bottom:1px solid rgba(22,163,74,0.1);padding:6px 24px;display:flex;justify-content:space-between;align-items:center;font-size:0.72rem;flex-wrap:wrap;gap:8px;">
+      <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+        <!-- ✅ CORRECTED: Twilio number for voice -->
+        <a href="tel:+19899434406" style="color:rgba(255,255,255,0.5);text-decoration:none;display:flex;align-items:center;gap:5px;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">
+          <i class="fas fa-phone-alt" style="color:#22c55e;font-size:0.65rem;"></i> 0140933042
+        </a>
+        <a href="mailto:support@whapay.space" style="color:rgba(255,255,255,0.5);text-decoration:none;display:flex;align-items:center;gap:5px;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">
+          <i class="fas fa-envelope" style="color:#22c55e;font-size:0.65rem;"></i> support@whapay.space
+        </a>
+        <span style="color:rgba(255,255,255,0.3);display:flex;align-items:center;gap:5px;">
+          <i class="fas fa-globe" style="color:#22c55e;font-size:0.65rem;"></i> Serving 180+ countries
+        </span>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span id="navUserTopDisplay" style="color:rgba(255,255,255,0.4);font-size:0.72rem;"></span>
+        <a href="users.html" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.72rem;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">My Account</a>
+      </div>
+    </div>
+
+    <!-- Main nav bar -->
+    <div style="max-width:1280px;margin:0 auto;padding:0 24px;display:flex;justify-content:space-between;align-items:center;height:64px;">
+
+      <!-- Logo -->
+      <a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;">
+        <div style="width:32px;height:32px;background:#16a34a;border-radius:6px;display:flex;align-items:center;justify-content:center;">
+          <i class="fas fa-bolt" style="color:white;font-size:0.85rem;"></i>
+        </div>
+        <span style="color:white;font-size:1.2rem;font-weight:900;letter-spacing:-0.02em;">WhaPay</span>
+      </a>
+
+      <!-- Desktop nav groups with dropdowns -->
+      <nav style="display:flex;align-items:center;gap:4px;" class="hidden md:flex">
+
+        <!-- Payments dropdown -->
+        <div class="gd-dropdown" style="padding:0 12px;">
+          <div class="gd-dropdown-trigger">
+            <span class="gd-nav-link">Payments</span>
+            <i class="fas fa-chevron-down arrow"></i>
+          </div>
+          <div class="gd-dropdown-menu">
+            <a href="payment.html" class="gd-dropdown-item">
+              <div class="icon" style="background:rgba(22,163,74,0.15);"><i class="fas fa-credit-card" style="color:#22c55e;font-size:0.85rem;"></i></div>
+              <div><div class="label">How to Pay</div><div class="desc">WhatsApp, QR, Member Code</div></div>
+            </a>
+            <a href="pay-anyone.html" class="gd-dropdown-item">
+              <div class="icon" style="background:rgba(59,130,246,0.15);"><i class="fas fa-paper-plane" style="color:#60a5fa;font-size:0.85rem;"></i></div>
+              <div><div class="label">Pay Anyone</div><div class="desc">Member Code, Phone, Paybill</div></div>
+            </a>
+            <a href="first-time-pay.html" class="gd-dropdown-item">
+              <div class="icon" style="background:rgba(168,85,247,0.15);"><i class="fas fa-bolt" style="color:#c084fc;font-size:0.85rem;"></i></div>
+              <div><div class="label">Register & Pay</div><div class="desc">One-step payment & signup</div></div>
+            </a>
+            <div style="border-top:1px solid rgba(255,255,255,0.06);margin:6px 0;"></div>
+            <a href="index.html#offline-features" class="gd-dropdown-item">
+              <div class="icon" style="background:rgba(251,191,36,0.12);"><i class="fas fa-wifi-slash" style="color:#fbbf24;font-size:0.85rem;"></i></div>
+              <div><div class="label">Offline Payments</div><div class="desc">No internet needed</div></div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Merchants dropdown -->
+        <div class="gd-dropdown" style="padding:0 12px;">
+          <div class="gd-dropdown-trigger">
+            <span class="gd-nav-link">Merchants</span>
+            <i class="fas fa-chevron-down arrow"></i>
+          </div>
+          <div class="gd-dropdown-menu">
+            <a href="merchant.html" class="gd-dropdown-item">
+              <div class="icon" style="background:rgba(22,163,74,0.15);"><i class="fas fa-store" style="color:#22c55e;font-size:0.85rem;"></i></div>
+              <div><div class="label">Merchant Dashboard</div><div class="desc">QR, links, transactions</div></div>
+            </a>
+            <a href="registration.html" class="gd-dropdown-item">
+              <div class="icon" style="background:rgba(59,130,246,0.15);"><i class="fas fa-user-plus" style="color:#60a5fa;font-size:0.85rem;"></i></div>
+              <div><div class="label">Register Business</div><div class="desc">Free — online or offline</div></div>
+            </a>
+            <a href="reports.html" class="gd-dropdown-item">
+              <div class="icon" style="background:rgba(168,85,247,0.15);"><i class="fas fa-chart-line" style="color:#c084fc;font-size:0.85rem;"></i></div>
+              <div><div class="label">Analytics & Reports</div><div class="desc">Revenue, trends, CSV export</div></div>
+            </a>
+            <a href="pricing.html" class="gd-dropdown-item">
+              <div class="icon" style="background:rgba(251,191,36,0.12);"><i class="fas fa-tag" style="color:#fbbf24;font-size:0.85rem;"></i></div>
+              <div><div class="label">Pricing</div><div class="desc">1.5% + KES 20, KES 0/month</div></div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Features dropdown -->
+        <div class="gd-dropdown" style="padding:0 12px;">
+          <div class="gd-dropdown-trigger">
+            <span class="gd-nav-link">Features</span>
+            <i class="fas fa-chevron-down arrow"></i>
+          </div>
+          <div class="gd-dropdown-menu">
+            <a href="features.html" class="gd-dropdown-item">
+              <div class="icon" style="background:rgba(22,163,74,0.15);"><i class="fas fa-bolt" style="color:#22c55e;font-size:0.85rem;"></i></div>
+              <div><div class="label">All Features</div><div class="desc">Complete platform overview</div></div>
+            </a>
+            <a href="process.html" class="gd-dropdown-item">
+              <div class="icon" style="background:rgba(59,130,246,0.15);"><i class="fas fa-route" style="color:#60a5fa;font-size:0.85rem;"></i></div>
+              <div><div class="label">How It Works</div><div class="desc">3 simple steps</div></div>
+            </a>
+            <a href="index.html#currencies" class="gd-dropdown-item">
+              <div class="icon" style="background:rgba(168,85,247,0.15);"><i class="fas fa-globe" style="color:#c084fc;font-size:0.85rem;"></i></div>
+              <div><div class="label">Global Currencies</div><div class="desc">135+ currencies, 180+ countries</div></div>
+            </a>
+            <a href="index.html#diaspora" class="gd-dropdown-item">
+              <div class="icon" style="background:rgba(251,191,36,0.12);"><i class="fas fa-plane" style="color:#fbbf24;font-size:0.85rem;"></i></div>
+              <div><div class="label">Diaspora Payments</div><div class="desc">UK, USA, UAE → Kenya</div></div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Company dropdown -->
+        <div class="gd-dropdown" style="padding:0 12px;">
+          <div class="gd-dropdown-trigger">
+            <span class="gd-nav-link">Company</span>
+            <i class="fas fa-chevron-down arrow"></i>
+          </div>
+          <div class="gd-dropdown-menu">
+            <a href="about.html" class="gd-dropdown-item">
+              <div class="icon" style="background:rgba(22,163,74,0.15);"><i class="fas fa-heart" style="color:#22c55e;font-size:0.85rem;"></i></div>
+              <div><div class="label">About WhaPay</div><div class="desc">Our story and mission</div></div>
+            </a>
+            <a href="blog.html" class="gd-dropdown-item">
+              <div class="icon" style="background:rgba(59,130,246,0.15);"><i class="fas fa-pen-nib" style="color:#60a5fa;font-size:0.85rem;"></i></div>
+              <div><div class="label">Blog & Insights</div><div class="desc">Payments, fintech, Africa</div></div>
+            </a>
+            <a href="contact.html" class="gd-dropdown-item">
+              <div class="icon" style="background:rgba(168,85,247,0.15);"><i class="fas fa-headset" style="color:#c084fc;font-size:0.85rem;"></i></div>
+              <div><div class="label">Contact & Support</div><div class="desc">24/7 WhatsApp support</div></div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Direct links -->
+        <a href="pricing.html" class="gd-nav-link" style="padding:0 12px;">Pricing</a>
+        <a href="blog.html" class="gd-nav-link" style="padding:0 12px;">Blog</a>
+
+      </nav>
+
+      <!-- Right side CTAs -->
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span id="navUserDisplay" style="color:rgba(255,255,255,0.5);font-size:0.78rem;"></span>
+        <button id="navLoginBtn" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.7);font-size:0.82rem;font-weight:600;padding:8px 16px;border-radius:6px;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.06)'">
+          Login
+        </button>
+        <button id="logoutBtn" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:#f87171;font-size:0.82rem;font-weight:600;padding:8px 16px;border-radius:6px;cursor:pointer;display:none;">
+          Logout
+        </button>
+        <!-- ✅ CORRECTED: WhatsApp Cloud API number -->
+        <a href="https://wa.me/+15556539447?text=REGISTER"
+          style="background:#16a34a;color:white;font-weight:700;font-size:0.85rem;padding:10px 20px;border-radius:6px;text-decoration:none;display:flex;align-items:center;gap:6px;transition:background 0.2s;"
+          onmouseover="this.style.background='#15803d'" onmouseout="this.style.background='#16a34a'">
+          <i class="fab fa-whatsapp"></i> Register Free
+        </a>
+
+        <!-- ✅ CORRECTED: Mobile menu – uses event listener, no inline onclick -->
+        <button id="mobileMenuBtn"
+          style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:white;width:40px;height:40px;border-radius:6px;cursor:pointer;display:none;align-items:center;justify-content:center;"
+          class="md:hidden">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobileMenu" style="display:none;background:#080c18;border-top:1px solid rgba(255,255,255,0.06);padding:16px 24px;">
+      <div style="display:flex;flex-direction:column;gap:4px;">
+        <div style="color:rgba(255,255,255,0.3);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;padding:8px 0 4px;">Payments</div>
+        <a href="payment.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">How to Pay</a>
+        <a href="pay-anyone.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">Pay Anyone</a>
+        <a href="first-time-pay.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">Register & Pay</a>
+        <div style="color:rgba(255,255,255,0.3);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;padding:8px 0 4px;margin-top:8px;">Merchants</div>
+        <a href="merchant.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">Merchant Dashboard</a>
+        <a href="registration.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">Register Business</a>
+        <a href="reports.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">Analytics & Reports</a>
+        <a href="pricing.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">Pricing</a>
+        <div style="color:rgba(255,255,255,0.3);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;padding:8px 0 4px;margin-top:8px;">Features</div>
+        <a href="features.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">All Features</a>
+        <a href="process.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">How It Works</a>
+        <div style="color:rgba(255,255,255,0.3);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;padding:8px 0 4px;margin-top:8px;">Company</div>
+        <a href="about.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">About</a>
+        <a href="blog.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">Blog</a>
+        <a href="contact.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.9rem;padding:8px 0;">Contact</a>
+        <!-- ✅ CORRECTED: WhatsApp Cloud API number -->
+        <a href="https://wa.me/+15556539447?text=REGISTER" style="display:flex;align-items:center;justify-content:center;gap:8px;background:#16a34a;color:white;font-weight:700;padding:13px;border-radius:6px;text-decoration:none;margin-top:16px;"><i class="fab fa-whatsapp"></i> Register Free</a>
+      </div>
+    </div>
+
+  </header>
+
+  <!-- ========================================================== -->
+  <!-- 1.12 TOAST NOTIFICATION SYSTEM                             -->
+  <!-- ========================================================== -->
+  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-900 text-white px-6 py-3 rounded-full shadow-lg text-sm z-50 toast hidden" role="alert" aria-live="polite">
+    <span id="toastMessage"></span>
+  </div>
+
+  <!-- ========================================================== -->
+  <!-- 1.13 GLOBAL JAVASCRIPT                                     -->
+  <!-- ========================================================== -->
+  <script type="module">
+    // =============================================================
+    //  CONFIGURATION
+    // =============================================================
+    
+    // The backend API base URL – change this when deploying to production.
+    const API_BASE = 'https://whapay-backend.onrender.com';
+    
+    // Standardised phone numbers – these are used in all CTAs.
+    const WHATSAPP_NUMBER = '+15556539447';     // ✅ WhatsApp Cloud API (Meta verified)
+    const TWILIO_NUMBER = '+19899434406';       // ✅ Twilio (SMS & Voice)
+
+    // =============================================================
+    //  TOAST NOTIFICATIONS
+    // =============================================================
+    const toastEl = document.getElementById('toast');
+    const toastMsg = document.getElementById('toastMessage');
+    let toastTimer;
+
+    /**
+     * Show a toast notification at the bottom of the screen.
+     * @param {string} msg - The message to display.
+     * @param {boolean} isError - Whether it's an error (red) or success (green).
+     */
+    window.showToast = function(msg, isError = false) {
+      clearTimeout(toastTimer);
+      toastMsg.textContent = msg;
+      toastEl.className = `fixed bottom-6 left-1/2 -translate-x-1/2 px-6 py-3 rounded-full shadow-lg text-sm z-50 toast ${isError ? 'bg-red-600' : 'bg-gray-900'} text-white`;
+      toastEl.classList.remove('hidden');
+      toastTimer = setTimeout(() => toastEl.classList.add('hidden'), 5000);
+    };
+
+    // =============================================================
+    //  AUTHENTICATION (Demo – ready for Firebase)
+    // =============================================================
+    // This is a placeholder that uses localStorage. In production,
+    // you would replace this with Firebase Authentication (phone or email).
+
+    let currentUser = null;
+    const loginBtn = document.getElementById('navLoginBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const userDisplay = document.getElementById('navUserDisplay');
+    const navUserTop = document.getElementById('navUserTopDisplay');
+
+    // Try to restore session from localStorage
+    const storedUser = localStorage.getItem('whapay_user');
+    if (storedUser) {
+      try {
+        currentUser = JSON.parse(storedUser);
+        updateAuthUI();
+      } catch (e) {
+        localStorage.removeItem('whapay_user');
+      }
+    }
+
+    // Login handler (demo)
+    loginBtn.addEventListener('click', () => {
+      const phone = prompt('Enter your phone number (demo):', '+254712345678');
+      if (phone && phone.trim().length > 0) {
+        currentUser = { 
+          phone: phone.trim(), 
+          name: 'Demo Merchant',
+          email: '',
+          businessName: '',
+          kycVerified: false 
+        };
+        localStorage.setItem('whapay_user', JSON.stringify(currentUser));
+        updateAuthUI();
+        showToast(`✅ Logged in as ${currentUser.name}`);
+        // Reload to show merchant-specific content
+        location.reload();
+      }
+    });
+
+    // Logout handler
+    logoutBtn.addEventListener('click', () => {
+      currentUser = null;
+      localStorage.removeItem('whapay_user');
+      updateAuthUI();
+      showToast('🔒 Logged out');
+      location.reload();
+    });
+
+    /**
+     * Update the UI to reflect the current authentication state.
+     * Shows/hides login/logout buttons and displays user info.
+     */
+    function updateAuthUI() {
+      if (currentUser) {
+        loginBtn.classList.add('hidden');
+        logoutBtn.classList.remove('hidden');
+        userDisplay.classList.remove('hidden');
+        userDisplay.textContent = `👤 ${currentUser.name || currentUser.phone}`;
+        navUserTop.textContent = currentUser.phone || '';
+      } else {
+        loginBtn.classList.remove('hidden');
+        logoutBtn.classList.add('hidden');
+        userDisplay.classList.add('hidden');
+        navUserTop.textContent = '';
+      }
+    }
+
+    // =============================================================
+    //  MOBILE MENU TOGGLE
+    // =============================================================
+    const menuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    let menuOpen = false;
+
+    menuBtn.addEventListener('click', () => {
+      menuOpen = !menuOpen;
+      mobileMenu.classList.toggle('hidden', !menuOpen);
+      menuBtn.innerHTML = menuOpen ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+      // Update aria-expanded for accessibility
+      menuBtn.setAttribute('aria-expanded', menuOpen ? 'true' : 'false');
+    });
+
+    // Show mobile button on small screens
+    if (window.innerWidth < 768) {
+      menuBtn.style.display = 'flex';
+    }
+    window.addEventListener('resize', () => {
+      menuBtn.style.display = window.innerWidth < 768 ? 'flex' : 'none';
+    });
+
+    // =============================================================
+    //  OFFLINE / ONLINE DETECTION
+    // =============================================================
+    // We monitor the network status and show a notification when
+    // connectivity changes. This is important for offline‑first features.
+
+    function updateOnlineStatus() {
+      const status = navigator.onLine ? 'online' : 'offline';
+      if (status === 'offline') {
+        showToast('📡 You are offline. Payments and registrations will be saved locally.', false);
+      } else {
+        showToast('🌐 Back online. Syncing offline data...', false);
+        // Trigger sync if available (will be implemented in Section 9)
+        if (window.triggerOfflineSync) {
+          window.triggerOfflineSync();
+        }
+      }
+    }
+
+    window.addEventListener('online', updateOnlineStatus);
+    window.addEventListener('offline', updateOnlineStatus);
+
+    // =============================================================
+    //  SERVICE WORKER REGISTRATION (PWA)
+    // =============================================================
+    // Register the service worker for offline caching and background sync.
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js')
+        .then(reg => console.log('✅ Service Worker registered:', reg))
+        .catch(err => console.warn('❌ Service Worker registration failed:', err));
+    }
+
+    // =============================================================
+    //  EXPOSE GLOBALS FOR OTHER SECTIONS
+    // =============================================================
+    // We attach these to the window object so that other scripts
+    // can access them without having to redefine the numbers.
+
+    window.WHATSAPP_NUMBER = WHATSAPP_NUMBER;
+    window.TWILIO_NUMBER = TWILIO_NUMBER;
+    
+    /**
+     * Format a number as Kenyan Shillings (KES).
+     * @param {number} amount - The amount to format.
+     * @returns {string} Formatted string (e.g., "KES 1,234").
+     */
+    window.formatKES = (amount) => `KES ${Number(amount).toLocaleString()}`;
+
+    // =============================================================
+    //  INITIALISATION LOG
+    // =============================================================
+    console.log('✅ Section 1: Head & Header loaded successfully.');
+    console.log(`📱 WhatsApp number: ${WHATSAPP_NUMBER} (Cloud API)`);
+    console.log(`📞 Twilio (SMS/Voice): ${TWILIO_NUMBER} (displayed as 0140933042)`);
+    console.log(`🌐 Current status: ${navigator.onLine ? 'Online' : 'Offline'}`);
+  </script>
+
+  <!-- ============================================================ -->
+  <!-- END OF SECTION 1                                              -->
+  <!-- ============================================================ -->
+<!-- ============================================================ -->
+<!-- SECTION 2: HERO & STATS (COMPLETE, FULLY DETAILED)           -->
+<!-- Place this directly after SECTION 1                           -->
+<!-- ============================================================ -->
+
+<main class="max-w-7xl mx-auto px-4 py-6" id="main-content">
+
+  <!-- ========================================================== -->
+  <!-- 2.1 MERCHANT PAGE HERO                                     -->
+  <!-- ========================================================== -->
+  <div style="position:relative;border-radius:24px;overflow:hidden;margin-bottom:48px;height:480px;">
+    <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1600&q=85" alt="Kenyan merchant accepting mobile payments at their shop" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;" onerror="this.src='https://images.unsplash.com/photo-1607863680198-23d4b2565df0?w=1600&q=85'">
+    <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(10,15,30,0.96) 0%,rgba(10,15,30,0.78) 55%,rgba(10,15,30,0.35) 100%);"></div>
+    <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(22,163,74,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(22,163,74,0.04) 1px,transparent 1px);background-size:40px 40px;"></div>
+    <div style="position:absolute;top:-80px;right:-80px;width:450px;height:450px;background:radial-gradient(circle,rgba(22,163,74,0.12) 0%,transparent 70%);border-radius:50%;"></div>
+    <div style="position:absolute;inset:0;display:flex;align-items:center;padding:48px;">
+      <div style="max-width:1280px;margin:0 auto;width:100%;display:flex;justify-content:space-between;align-items:center;gap:40px;flex-wrap:wrap;">
+        <div style="max-width:520px;">
+          <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(22,163,74,0.12);border:1px solid rgba(22,163,74,0.25);color:#86efac;padding:6px 16px;border-radius:999px;font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:20px;">
+            <span style="width:6px;height:6px;background:#22c55e;border-radius:50%;animation:livePulse 2s ease infinite;box-shadow:0 0 0 3px rgba(34,197,94,0.25);"></span>
+            500+ Active Merchants
+          </div>
+          <h1 style="font-size:clamp(2rem,4vw,3.2rem);font-weight:900;color:white;line-height:1.1;letter-spacing:-0.02em;margin-bottom:16px;font-family:sans-serif;">
+            Your Business.<br>
+            <span style="background:linear-gradient(135deg,#22c55e,#86efac);-webkit-background-clip:text;background-clip:text;color:transparent;">Your Dashboard.</span><br>
+            <span style="font-weight:300;color:rgba(255,255,255,0.5);">Your Payment Link.</span>
+          </h1>
+          <p style="color:rgba(255,255,255,0.55);font-size:1rem;line-height:1.8;margin-bottom:28px;">
+            Accept M-Pesa, Visa, Mastercard and Google Pay from your merchant dashboard. Share your WhatsApp payment link, print your QR code, track revenue — all in one place. Free forever.
+          </p>
+          <div style="display:flex;flex-wrap:wrap;gap:10px;">
+            <!-- ✅ CORRECTED: WhatsApp Cloud API number -->
+            <a href="https://wa.me/+15556539447?text=REGISTER" style="display:inline-flex;align-items:center;gap:8px;background:#16a34a;color:white;font-weight:700;padding:13px 24px;border-radius:6px;text-decoration:none;font-size:0.9rem;">
+              <i class="fab fa-whatsapp"></i> Register Free
+            </a>
+            <!-- ✅ CORRECTED: Twilio number for voice -->
+            <a href="tel:+19899434406" style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.8);font-weight:600;padding:13px 24px;border-radius:6px;text-decoration:none;font-size:0.9rem;">
+              <i class="fas fa-phone-alt"></i> Call 0140933042
+            </a>
+            <!-- ✅ CORRECTED: Twilio number for SMS -->
+            <a href="sms:+19899434406?body=REG%20MyBusiness" style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.8);font-weight:600;padding:13px 24px;border-radius:6px;text-decoration:none;font-size:0.9rem;">
+              <i class="fas fa-envelope"></i> SMS to Register
+            </a>
+          </div>
+        </div>
+        <!-- Right — Dashboard feature cards -->
+        <div style="display:flex;flex-direction:column;gap:12px;min-width:280px;max-width:320px;">
+          <div style="background:rgba(255,255,255,0.06);backdrop-filter:blur(20px);border:1px solid rgba(22,163,74,0.2);border-radius:12px;padding:16px;display:flex;align-items:center;gap:14px;">
+            <div style="width:42px;height:42px;background:rgba(22,163,74,0.2);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fab fa-whatsapp" style="color:#22c55e;font-size:1.1rem;"></i></div>
+            <div><div style="color:white;font-weight:700;font-size:0.88rem;margin-bottom:3px;">WhatsApp Payment Link</div><div style="color:rgba(255,255,255,0.4);font-size:0.75rem;">Share and get paid in 30 seconds</div></div>
+            <span style="margin-left:auto;color:#22c55e;font-size:0.7rem;font-weight:700;background:rgba(22,163,74,0.1);padding:3px 8px;border-radius:999px;">Free</span>
+          </div>
+          <div style="background:rgba(255,255,255,0.06);backdrop-filter:blur(20px);border:1px solid rgba(59,130,246,0.2);border-radius:12px;padding:16px;display:flex;align-items:center;gap:14px;">
+            <div style="width:42px;height:42px;background:rgba(59,130,246,0.2);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fas fa-qrcode" style="color:#60a5fa;font-size:1.1rem;"></i></div>
+            <div><div style="color:white;font-weight:700;font-size:0.88rem;margin-bottom:3px;">QR Code — Print & Display</div><div style="color:rgba(255,255,255,0.4);font-size:0.75rem;">Customers scan and pay instantly</div></div>
+            <span style="margin-left:auto;color:#60a5fa;font-size:0.7rem;font-weight:700;background:rgba(59,130,246,0.1);padding:3px 8px;border-radius:999px;">Free</span>
+          </div>
+          <div style="background:rgba(255,255,255,0.06);backdrop-filter:blur(20px);border:1px solid rgba(168,85,247,0.2);border-radius:12px;padding:16px;display:flex;align-items:center;gap:14px;">
+            <div style="width:42px;height:42px;background:rgba(168,85,247,0.2);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fas fa-wifi-slash" style="color:#c084fc;font-size:1rem;"></i></div>
+            <div><div style="color:white;font-weight:700;font-size:0.88rem;margin-bottom:3px;">Offline Member Code</div><div style="color:rgba(255,255,255,0.4);font-size:0.75rem;">Accept M-Pesa with no internet</div></div>
+            <span style="margin-left:auto;color:#c084fc;font-size:0.7rem;font-weight:700;background:rgba(168,85,247,0.1);padding:3px 8px;border-radius:999px;">Unique</span>
+          </div>
+          <div style="background:rgba(255,255,255,0.06);backdrop-filter:blur(20px);border:1px solid rgba(251,191,36,0.2);border-radius:12px;padding:16px;display:flex;align-items:center;gap:14px;">
+            <div style="width:42px;height:42px;background:rgba(251,191,36,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fas fa-chart-line" style="color:#fbbf24;font-size:1rem;"></i></div>
+            <div><div style="color:white;font-weight:700;font-size:0.88rem;margin-bottom:3px;">Live Analytics Dashboard</div><div style="color:rgba(255,255,255,0.4);font-size:0.75rem;">Revenue, trends, CSV export</div></div>
+            <span style="margin-left:auto;color:#fbbf24;font-size:0.7rem;font-weight:700;background:rgba(251,191,36,0.1);padding:3px 8px;border-radius:999px;">Free</span>
+          </div>
+          <div style="background:rgba(22,163,74,0.08);border:1px solid rgba(22,163,74,0.18);border-radius:12px;padding:13px 16px;display:flex;justify-content:space-between;align-items:center;">
+            <div style="display:flex;align-items:center;gap:8px;"><i class="fas fa-tag" style="color:#22c55e;font-size:0.9rem;"></i><span style="color:rgba(255,255,255,0.6);font-size:0.78rem;">Card fee</span></div>
+            <span style="color:#22c55e;font-weight:800;font-size:0.9rem;font-family:monospace;">1.5% + KES 20</span>
+            <div style="width:1px;height:20px;background:rgba(255,255,255,0.1);"></div>
+            <div style="display:flex;align-items:center;gap:8px;"><i class="fas fa-calendar" style="color:#22c55e;font-size:0.9rem;"></i><span style="color:rgba(255,255,255,0.6);font-size:0.78rem;">Monthly</span></div>
+            <span style="color:#22c55e;font-weight:800;font-size:0.9rem;font-family:monospace;">KES 0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    @keyframes livePulse { 0%,100% { box-shadow: 0 0 0 3px rgba(34,197,94,0.25); } 50% { box-shadow: 0 0 0 6px rgba(34,197,94,0.1); } }
+  </style>
+
+  <!-- ========================================================== -->
+  <!-- 2.2 DASHBOARD HERO CARD                                   -->
+  <!-- ========================================================== -->
+  <div class="relative overflow-hidden bg-gradient-to-br from-emerald-900 via-emerald-700 to-emerald-500 rounded-2xl shadow-2xl mb-8">
+    <div class="absolute inset-0 opacity-10">
+      <div class="absolute top-0 left-0 w-64 h-64 bg-white rounded-full blur-3xl animate-pulse"></div>
+      <div class="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl animate-pulse delay-1000"></div>
+      <div class="absolute top-1/2 left-1/2 w-48 h-48 bg-white rounded-full blur-3xl animate-pulse delay-500"></div>
+    </div>
+    <div class="absolute inset-0 opacity-5" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 1px); background-size: 40px 40px;"></div>
+    <div class="relative px-6 py-10 md:py-12">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+        <div class="flex-1">
+          <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-3 py-1.5 rounded-full text-sm mb-4 border border-white/30">
+            <span class="relative flex h-2 w-2">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+            </span>
+            <span class="font-medium">Dashboard Active</span>
+            <i class="fas fa-shield-alt text-xs ml-1"></i>
+          </div>
+          <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 leading-tight">
+            Welcome Back, 
+            <span class="bg-gradient-to-r from-yellow-300 via-amber-200 to-yellow-300 bg-clip-text text-transparent">Merchant</span>
+          </h1>
+          <p class="text-emerald-100 text-base md:text-lg max-w-xl mb-4">
+            Accept payments online via WhatsApp links & QR codes, or offline using Member Code with M-Pesa Paybill.
+          </p>
+          <div class="flex flex-wrap gap-3">
+            <div class="flex items-center gap-2 bg-white/15 rounded-full px-3 py-1.5 text-sm">
+              <i class="fas fa-check-circle text-green-300"></i>
+              <span>1.5% + KES 20 per card</span>
+            </div>
+            <div class="flex items-center gap-2 bg-white/15 rounded-full px-3 py-1.5 text-sm">
+              <i class="fas fa-mobile-alt text-green-300"></i>
+              <span>M-Pesa: 0% extra</span>
+            </div>
+            <div class="flex items-center gap-2 bg-white/15 rounded-full px-3 py-1.5 text-sm">
+              <i class="fas fa-wifi-slash text-green-300"></i>
+              <span>Offline payments</span>
+            </div>
+          </div>
+        </div>
+        <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-4 border border-white/20 text-center min-w-[180px]">
+          <p class="text-emerald-200 text-xs uppercase tracking-wider mb-1">Today's Activity</p>
+          <p class="text-3xl font-bold text-white" id="todayStats">KES 0</p>
+          <p class="text-emerald-200 text-xs mt-1">from <span id="todayCount">0</span> transactions</p>
+        </div>
+      </div>
+      <div class="mt-6 bg-white/15 rounded-xl p-3 text-sm text-white flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-2">
+          <i class="fas fa-info-circle text-emerald-200"></i>
+          <span>Your customers can pay offline by sending SMS to <strong class="font-mono bg-white/20 px-2 py-0.5 rounded">0140933042</strong> with your Member Code</span>
+        </div>
+        <a href="#" class="text-white hover:text-emerald-200 text-sm underline">Learn more →</a>
+      </div>
+    </div>
+    <div class="absolute bottom-0 left-0 right-0">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 60" class="w-full h-auto text-gray-100" fill="currentColor">
+        <path d="M0,32L80,37.3C160,43,320,53,480,48C640,43,800,21,960,21.3C1120,21,1280,43,1360,53.3L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
+      </svg>
+    </div>
+  </div>
+
+  <!-- ========================================================== -->
+  <!-- 2.3 OFFLINE SYNC PANEL                                    -->
+  <!-- ========================================================== -->
+  <div class="bg-white rounded-xl shadow p-4 mb-6">
+    <div class="flex justify-between items-center flex-wrap gap-2">
+      <div>
+        <h3 class="font-bold text-lg">📡 Offline Payment Sync</h3>
+        <p class="text-sm text-gray-600"><span id="pendingCount">0</span> pending offline transactions.</p>
+      </div>
+      <button id="syncOfflineBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm">Sync Now</button>
+    </div>
+    <div id="syncStatus" class="text-xs text-gray-500 mt-2 hidden"></div>
+  </div>
+
+  <!-- ========================================================== -->
+  <!-- 2.4 QR CODE & PAYMENT LINK GENERATOR                      -->
+  <!-- ========================================================== -->
+  <div class="grid md:grid-cols-2 gap-6">
+    <!-- QR Code Card -->
+    <div class="bg-white rounded-xl shadow p-6">
+      <h2 class="text-xl font-bold"><i class="fas fa-qrcode text-green-600"></i> Your QR Code</h2>
+      <div id="merchantQR" class="flex justify-center my-3"></div>
+      <button id="downloadQRBtn" class="bg-gray-200 text-gray-800 px-3 py-1 rounded text-sm">Download QR</button>
+      <p class="text-xs text-gray-500 mt-2">Customers can scan this QR to pay you instantly via WhatsApp.</p>
+    </div>
+    <!-- Payment Link Generator -->
+    <div class="bg-white rounded-xl shadow p-6">
+      <h2 class="text-xl font-bold"><i class="fas fa-link text-green-600"></i> Payment Link Generator</h2>
+      <div class="flex flex-wrap gap-2 mt-2">
+        <input type="text" id="mcode" placeholder="Your Member Code" class="border p-2 rounded flex-1">
+        <input type="number" id="mamount" placeholder="Amount" class="border p-2 rounded w-28">
+        <button id="genLinkBtn" class="bg-green-600 text-white px-4 py-2 rounded">Create Link</button>
+      </div>
+      <div id="linkOut" class="mt-3 text-sm bg-gray-100 p-2 rounded hidden"></div>
+      <p class="text-xs text-gray-500 mt-2">Share this link on WhatsApp, SMS, or display at your shop.</p>
+    </div>
+  </div>
+
+  <!-- ========================================================== -->
+  <!-- 2.5 REGISTRATION FORM                                      -->
+  <!-- ========================================================== -->
+  <div id="registrationSection" class="max-w-xl mx-auto mt-6">
+    <div class="bg-white rounded-2xl shadow-xl p-6">
+      <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Register Your Business</h2>
+      <form id="merchantForm" class="space-y-4">
+        <div><label class="block text-sm font-medium text-gray-700 mb-1">Business Name *</label><input type="text" id="businessName" placeholder="e.g., Green Grocers" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-green-500"></div>
+        <div><label class="block text-sm font-medium text-gray-700 mb-1">Phone Number (WhatsApp) *</label><input type="tel" id="regPhone" placeholder="+254712345678" required class="w-full border border-gray-300 rounded-lg px-4 py-2"><p class="text-xs text-gray-500 mt-1">We'll send your merchant code and QR via WhatsApp to <strong class="font-mono">0140933042</strong>.</p></div>
+        <button type="submit" id="registerBtn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition shadow"><i class="fas fa-qrcode mr-2"></i> Generate My Merchant Code</button>
+      </form>
+      <div id="status" class="text-center text-sm mt-4 text-gray-600"></div>
+      <div id="result" class="hidden mt-6 text-center border-t pt-6">
+        <h3 class="text-lg font-bold text-gray-800 mb-2">✅ Registration Successful!</h3>
+        <p class="text-gray-600 mb-2">Your Merchant Code:</p>
+        <p id="codeDisplay" class="text-3xl font-bold text-green-600 mb-4"></p>
+        <div class="flex justify-center mb-4"><canvas id="qrCanvas" class="border rounded-lg p-2 bg-white"></canvas></div>
+        <div class="flex flex-wrap gap-3 justify-center"><button id="copyBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg"><i class="fas fa-copy mr-1"></i> Copy Code</button><button id="shareBtn" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg"><i class="fab fa-whatsapp mr-1"></i> Share on WhatsApp</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================== -->
+  <!-- 2.6 SUBSCRIPTION PLAN                                     -->
+  <!-- ========================================================== -->
+  <div class="bg-white rounded-xl shadow p-6 mb-6 mt-6">
+    <h2 class="text-xl font-bold mb-3">📦 Your Subscription Plan</h2>
+    <div id="planDisplay" class="mb-3 text-lg"></div>
+    <div class="flex gap-3 flex-wrap">
+      <button onclick="changePlan('basic')" class="bg-green-600 text-white px-4 py-2 rounded-lg">Basic (KES 499/mo)</button>
+      <button onclick="changePlan('pro')" class="bg-green-600 text-white px-4 py-2 rounded-lg">Pro (KES 999/mo)</button>
+    </div>
+    <div id="planMsg" class="text-sm text-gray-500 mt-2"></div>
+  </div>
+
+  <!-- ========================================================== -->
+  <!-- 2.7 RETAIL CHECKOUT                                       -->
+  <!-- ========================================================== -->
+  <div class="bg-white rounded-xl shadow p-6 mb-6">
+    <h2 class="text-xl font-bold mb-3">🏪 Retail Checkout</h2>
+    <p class="text-sm text-gray-500 mb-3">Customer forgot card? Charge using their Member Code</p>
+    <div class="grid gap-3">
+      <input type="text" id="customerMemberCode" placeholder="Customer Member Code (e.g., DK005)" class="border p-2 rounded">
+      <input type="text" id="storeTill" placeholder="Your Till/Paybill Number" class="border p-2 rounded">
+      <input type="number" id="storeAmount" placeholder="Amount (KES)" class="border p-2 rounded">
+      <button onclick="chargeCustomer()" class="bg-green-600 text-white py-2 rounded-lg">Charge Customer</button>
+    </div>
+    <div id="retailMsg" class="text-sm mt-2"></div>
+  </div>
+
+  <!-- ========================================================== -->
+  <!-- 2.8 REVENUE CALCULATOR                                     -->
+  <!-- ========================================================== -->
+  <div class="bg-white rounded-2xl shadow-lg p-6 mb-12">
+    <div class="text-center mb-6">
+      <h2 class="text-2xl font-bold text-gray-800">📈 How Much Could You Earn?</h2>
+      <p class="text-gray-500 text-sm mt-1">Enter your daily sales to see your monthly revenue potential with WhaPay</p>
+    </div>
+    <div class="max-w-xl mx-auto">
+      <div class="grid md:grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">Average Daily Sales (KES)</label>
+          <input type="number" id="earnDaily" placeholder="e.g. 5000" oninput="calcEarning()" class="w-full border-2 border-gray-200 focus:border-green-500 rounded-xl px-4 py-3 outline-none transition">
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">% Paid by Card</label>
+          <select id="earnCardPct" onchange="calcEarning()" class="w-full border-2 border-gray-200 focus:border-green-500 rounded-xl px-4 py-3 outline-none transition">
+            <option value="10">10% by card</option>
+            <option value="25">25% by card</option>
+            <option value="50" selected>50% by card</option>
+            <option value="75">75% by card</option>
+            <option value="100">100% by card</option>
+          </select>
+        </div>
+      </div>
+      <div id="earnResult" class="hidden">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+          <div class="bg-green-50 rounded-xl p-4 text-center"><p class="text-xs text-gray-500 mb-1">Monthly Revenue</p><p id="earnMonthly" class="text-xl font-bold text-green-600">—</p></div>
+          <div class="bg-blue-50 rounded-xl p-4 text-center"><p class="text-xs text-gray-500 mb-1">Annual Revenue</p><p id="earnAnnual" class="text-xl font-bold text-blue-600">—</p></div>
+          <div class="bg-red-50 rounded-xl p-4 text-center"><p class="text-xs text-gray-500 mb-1">Monthly WhaPay Fees</p><p id="earnFees" class="text-xl font-bold text-red-500">—</p></div>
+          <div class="bg-emerald-50 rounded-xl p-4 text-center"><p class="text-xs text-gray-500 mb-1">You Keep</p><p id="earnKeep" class="text-xl font-bold text-emerald-600">—</p></div>
+        </div>
+        <div class="bg-gray-50 rounded-xl p-4 text-center text-sm text-gray-600"><p id="earnNote"></p></div>
+        <div class="text-center mt-4">
+          <a href="https://wa.me/+15556539447?text=REGISTER" class="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-bold px-8 py-3 rounded-full transition">
+            <i class="fab fa-whatsapp"></i> Start Accepting Payments
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================== -->
+  <!-- 2.9 WHATSAPP STOREFRONT                                   -->
+  <!-- ========================================================== -->
+  <div class="bg-white rounded-xl shadow p-6 mt-6">
+    <h2 class="text-xl font-bold mb-3">🛍️ WhatsApp Storefront</h2>
+    <label class="flex items-center gap-2 mb-4">
+      <input type="checkbox" id="enableStorefront"> Enable storefront on WhatsApp
+    </label>
+    <div id="storefrontProducts" class="hidden">
+      <div class="mb-4">
+        <h3 class="font-semibold mb-2">Add Product</h3>
+        <div class="grid grid-cols-2 gap-2">
+          <input type="text" id="prodName" placeholder="Product name" class="border p-2 rounded">
+          <input type="number" id="prodPrice" placeholder="Price (KES)" class="border p-2 rounded">
+          <input type="text" id="prodDesc" placeholder="Description" class="col-span-2 border p-2 rounded">
+          <button id="addProdBtn" class="bg-green-600 text-white px-4 py-2 rounded">Add Product</button>
+        </div>
+      </div>
+      <div><h3 class="font-semibold mb-2">Your Products</h3><div id="productsList" class="space-y-2"></div></div>
+    </div>
+  </div>
+
+  <!-- ========================================================== -->
+  <!-- 2.10 MERCHANT FEE CALCULATOR                              -->
+  <!-- ========================================================== -->
+  <div class="bg-white rounded-2xl shadow-lg p-6 mb-6 border border-green-100">
+    <h3 class="font-bold text-lg text-gray-800 mb-3">💰 Calculate Your Earnings</h3>
+    <div class="flex flex-col md:flex-row gap-4 items-end">
+      <div class="flex-1">
+        <label class="text-sm text-gray-500 mb-1 block">Transaction Amount (KES)</label>
+        <input type="number" id="merchantCalcAmount" placeholder="e.g. 1000" class="w-full border-2 border-gray-200 focus:border-green-500 rounded-xl px-4 py-3 outline-none transition" oninput="calcMerchantFee()">
+      </div>
+      <div class="flex-1">
+        <label class="text-sm text-gray-500 mb-1 block">Payment Method</label>
+        <select id="merchantCalcMethod" onchange="calcMerchantFee()" class="w-full border-2 border-gray-200 focus:border-green-500 rounded-xl px-4 py-3 outline-none transition">
+          <option value="mpesa">M-Pesa</option>
+          <option value="card">Card (Visa/Mastercard)</option>
+        </select>
+      </div>
+    </div>
+    <div id="merchantCalcResult" class="hidden mt-4 bg-green-50 border border-green-200 rounded-xl p-4">
+      <div class="grid grid-cols-3 gap-4 text-center">
+        <div><p class="text-xs text-gray-500">Customer Pays</p><p id="mcalcTotal" class="text-xl font-bold text-gray-800">—</p></div>
+        <div><p class="text-xs text-gray-500">WhaPay Fee</p><p id="mcalcFee" class="text-xl font-bold text-red-500">—</p></div>
+        <div><p class="text-xs text-gray-500">You Receive</p><p id="mcalcReceive" class="text-xl font-bold text-green-600">—</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================== -->
+  <!-- 2.11 GLOBAL FEATURES                                      -->
+  <!-- ========================================================== -->
+  <div class="mb-8">
+    <div class="text-center mb-6">
+      <span class="text-emerald-600 font-semibold text-sm uppercase tracking-wider">Global Capabilities</span>
+      <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mt-2">Accept Payments <span class="text-emerald-600">From Anywhere</span></h2>
+      <div class="w-20 h-1 bg-gradient-to-r from-emerald-500 to-emerald-300 mx-auto mt-3 rounded-full"></div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div class="group bg-white rounded-xl p-4 text-center shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100">
+        <div class="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:bg-emerald-200 transition-colors"><i class="fab fa-cc-visa text-xl text-emerald-600"></i></div>
+        <h3 class="font-semibold text-gray-800 mb-1">Global Cards</h3>
+        <p class="text-xs text-gray-500">Accept Visa/Mastercard from 180+ countries</p>
+      </div>
+      <div class="group bg-white rounded-xl p-4 text-center shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100">
+        <div class="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:bg-emerald-200 transition-colors"><i class="fas fa-globe text-xl text-emerald-600"></i></div>
+        <h3 class="font-semibold text-gray-800 mb-1">Multi-Currency</h3>
+        <p class="text-xs text-gray-500">Settle in USD, EUR, GBP, or KES</p>
+      </div>
+      <div class="group bg-white rounded-xl p-4 text-center shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100">
+        <div class="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:bg-emerald-200 transition-colors"><i class="fas fa-exchange-alt text-xl text-emerald-600"></i></div>
+        <h3 class="font-semibold text-gray-800 mb-1">Cross-Border</h3>
+        <p class="text-xs text-gray-500">Send & receive payments internationally</p>
+      </div>
+      <div class="group bg-white rounded-xl p-4 text-center shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100">
+        <div class="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:bg-emerald-200 transition-colors"><i class="fas fa-shield-alt text-xl text-emerald-600"></i></div>
+        <h3 class="font-semibold text-gray-800 mb-1">AI Fraud Protection</h3>
+        <p class="text-xs text-gray-500">Enterprise-grade security included</p>
+      </div>
+    </div>
+    <div class="relative my-6">
+      <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-gray-200"></div></div>
+      <div class="relative flex justify-center"><span class="bg-gray-100 px-4 text-xs text-gray-400">Global payment infrastructure</span></div>
+    </div>
+  </div>
+
+  <!-- ========================================================== -->
+  <!-- 2.12 TRANSACTIONS SECTION                                 -->
+  <!-- ========================================================== -->
+  <div class="bg-white rounded-2xl shadow-lg p-6 mt-6">
+    <div class="flex flex-wrap justify-between items-center mb-5">
+      <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2"><i class="fas fa-receipt text-emerald-600"></i> Your Payments</h2>
+      <div class="flex gap-2 flex-wrap">
+        <div class="relative"><i class="fas fa-calendar absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm"></i><input type="date" id="filterDateStart" class="pl-9 pr-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"></div>
+        <div class="relative"><i class="fas fa-calendar absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm"></i><input type="date" id="filterDateEnd" class="pl-9 pr-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"></div>
+        <button id="exportCsvBtn" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm transition flex items-center gap-2"><i class="fas fa-download"></i> Export CSV</button>
+      </div>
+    </div>
+    <div class="overflow-x-auto rounded-xl border border-gray-100">
+      <table class="min-w-full">
+        <thead><tr class="bg-gray-50 border-b border-gray-200"><th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Customer</th><th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Amount</th><th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th><th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Date</th><th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Receipt</th></tr></thead>
+        <tbody id="merchantTxBody" class="divide-y divide-gray-100"><tr><td colspan="5" class="text-center py-8"><div class="skeleton h-8 w-48 mx-auto rounded"></div></td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ========================================================== -->
+  <!-- 2.13 OFFLINE FEATURES SECTION                             -->
+  <!-- ========================================================== -->
+  <section id="offline-features" class="py-16 px-4 max-w-4xl mx-auto mt-8">
+    <div class="text-center mb-10"><h2 class="text-3xl font-bold text-green-700 mb-3">Use WhaPay Even Without Internet</h2><p class="text-gray-600 text-lg">Register, pay, and complete transactions anytime — even offline.</p></div>
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="bg-white rounded-2xl shadow-lg p-5 border-t-4 border-green-500 step-card"><i class="fas fa-user-plus text-3xl text-green-600 mb-3"></i><h3 class="text-xl font-bold text-gray-800 mb-2">Offline Registration</h3><p class="text-gray-600 text-sm mb-3">Register without internet – via SMS or WhatsApp.</p><ul class="text-sm space-y-2 text-gray-700"><li><strong>SMS:</strong> Send <span class="font-mono bg-gray-100 px-1">REG Your Name</span> to <strong class="font-mono">0140933042</strong></li><li><strong>WhatsApp:</strong> Send "REGISTER" to <strong class="font-mono">0140933042</strong></li><li>You receive a <strong>Temporary Code</strong> → activate via WhatsApp</li><li>Get permanent <strong>Member Code + QR</strong></li></ul></div>
+      <div class="bg-white rounded-2xl shadow-lg p-5 border-t-4 border-green-500 step-card"><i class="fas fa-money-bill-wave text-3xl text-green-600 mb-3"></i><h3 class="text-xl font-bold text-gray-800 mb-2">Offline Payment (Code)</h3><p class="text-gray-600 text-sm mb-3">Pay using merchant's code – no internet required.</p><ul class="text-sm space-y-2 text-gray-700"><li>Customer gets merchant code (e.g., DK10245)</li><li>M-PESA → Lipa na M-PESA → Paybill/Till</li><li>Enter Account = Merchant Code, amount, confirm</li><li>Both receive SMS – keep as proof</li><li>When online: send <span class="font-mono bg-gray-100 px-1">SYNC</span> via WhatsApp to <strong class="font-mono">0140933042</strong></li></ul></div>
+      <div class="bg-white rounded-2xl shadow-lg p-5 border-t-4 border-green-500 step-card"><i class="fas fa-qrcode text-3xl text-green-600 mb-3"></i><h3 class="text-xl font-bold text-gray-800 mb-2">Printed QR Code</h3><p class="text-gray-600 text-sm mb-3">Display your QR – customers scan and pay, even offline.</p><ul class="text-sm space-y-2 text-gray-700"><li>Print your unique QR (sent after registration)</li><li>Customer scans → sees merchant code + Till</li><li>Opens M-PESA manually (no internet)</li><li>Pays using the details shown</li><li>SMS receipt saved; sync later via WhatsApp</li></ul></div>
+    </div>
+    <div class="mt-10 bg-green-50 rounded-xl p-6 text-center border border-green-200">
+      <h3 class="font-bold text-green-800 text-lg mb-2">💡 Why Offline Matters</h3>
+      <p class="text-green-700">With WhaPay, you are not limited by internet connection. Register via voice call or SMS to <strong class="font-mono">0140933042</strong>, pay using M-PESA's SMS network, and sync automatically when back online.</p>
+      <div class="flex justify-center gap-3 mt-4">
+        <a href="tel:+19899434406" class="bg-blue-600 text-white px-4 py-2 rounded-lg">📞 Voice Registration</a>
+        <a href="sms:+19899434406?body=REG%20YourName" class="bg-purple-600 text-white px-4 py-2 rounded-lg">📱 SMS Registration</a>
+        <a href="https://wa.me/+15556539447?text=REGISTER" target="_blank" class="bg-green-600 text-white px-4 py-2 rounded-lg"><i class="fab fa-whatsapp mr-1"></i> WhatsApp</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================== -->
+  <!-- 2.14 REGISTER & PAY ONE-STEP                              -->
+  <!-- ========================================================== -->
+  <section class="py-16 bg-gray-50 rounded-2xl mb-8">
+    <div class="max-w-xl mx-auto px-4">
+      <div class="bg-white rounded-2xl shadow-xl p-6">
+        <h2 class="text-2xl font-bold text-center text-green-700 mb-2">Register & Pay in One Step</h2>
+        <p class="text-center text-gray-600 text-sm mb-6">Enter your details, complete payment, and optionally get your permanent WhaPay Member Code.</p>
+        <form id="oneStepForm" class="space-y-4">
+          <div><label class="block text-sm font-medium mb-1">Full Name *</label><input type="text" id="osName" required class="w-full border rounded-lg px-4 py-2"></div>
+          <div><label class="block text-sm font-medium mb-1">Phone Number (WhatsApp) *</label><input type="tel" id="osPhone" required placeholder="+254712345678" class="w-full border rounded-lg px-4 py-2"><p class="text-xs text-gray-500 mt-1">We'll send confirmation to <strong class="font-mono">0140933042</strong> via WhatsApp.</p></div>
+          <div><label class="block text-sm font-medium mb-1">Amount to Pay (KES) *</label><input type="number" id="osAmount" required placeholder="e.g., 500" class="w-full border rounded-lg px-4 py-2"></div>
+          <div><label class="block text-sm font-medium mb-1">Payment Method</label><select id="osMethod" class="w-full border rounded-lg px-4 py-2"><option value="mpesa">M-Pesa (STK Push)</option><option value="card">Credit / Debit Card (Stripe)</option></select></div>
+          <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg"><input type="checkbox" id="osRegister" checked class="w-5 h-5 text-green-600 rounded"><label for="osRegister" class="text-sm font-medium text-gray-700">Register me as a WhaPay user (get Member Code + QR for future payments)</label></div>
+          <button type="submit" id="osSubmitBtn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition">Pay Now</button>
+          <div id="osErrorMsg" class="text-red-500 text-sm text-center"></div>
+        </form>
+        <div id="osResult" class="hidden mt-6 text-center border-t pt-4"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================== -->
+  <!-- 2.15 MERCHANT ONBOARDING CHECKLIST                        -->
+  <!-- ========================================================== -->
+  <div class="bg-white rounded-2xl shadow-lg p-6 mb-8 border border-green-100">
+    <h3 class="font-bold text-lg text-gray-800 mb-4">✅ Your WhaPay Setup Checklist</h3>
+    <p class="text-gray-500 text-sm mb-4">Complete these steps to start receiving payments today</p>
+    <div class="space-y-3" id="checklistItems">
+      <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl cursor-pointer" onclick="toggleCheck(this)">
+        <div class="w-6 h-6 border-2 border-gray-300 rounded-full flex-shrink-0 flex items-center justify-center check-circle"></div>
+        <div><p class="font-semibold text-sm text-gray-800">Get your Member Code & QR code</p><p class="text-xs text-gray-500">Register via WhatsApp REGISTER to 0140933042</p></div>
+      </div>
+      <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl cursor-pointer" onclick="toggleCheck(this)">
+        <div class="w-6 h-6 border-2 border-gray-300 rounded-full flex-shrink-0 flex items-center justify-center check-circle"></div>
+        <div><p class="font-semibold text-sm text-gray-800">Print and display your QR code</p><p class="text-xs text-gray-500">Put it at your counter, on your door, or table</p></div>
+      </div>
+      <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl cursor-pointer" onclick="toggleCheck(this)">
+        <div class="w-6 h-6 border-2 border-gray-300 rounded-full flex-shrink-0 flex items-center justify-center check-circle"></div>
+        <div><p class="font-semibold text-sm text-gray-800">Generate your WhatsApp payment link</p><p class="text-xs text-gray-500">Use the link generator in your dashboard</p></div>
+      </div>
+      <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl cursor-pointer" onclick="toggleCheck(this)">
+        <div class="w-6 h-6 border-2 border-gray-300 rounded-full flex-shrink-0 flex items-center justify-center check-circle"></div>
+        <div><p class="font-semibold text-sm text-gray-800">Share your payment link on WhatsApp Status</p><p class="text-xs text-gray-500">Post it daily so customers can pay you easily</p></div>
+      </div>
+      <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl cursor-pointer" onclick="toggleCheck(this)">
+        <div class="w-6 h-6 border-2 border-gray-300 rounded-full flex-shrink-0 flex items-center justify-center check-circle"></div>
+        <div><p class="font-semibold text-sm text-gray-800">Receive your first payment</p><p class="text-xs text-gray-500">Test it yourself or ask a customer to try</p></div>
+      </div>
+      <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl cursor-pointer" onclick="toggleCheck(this)">
+        <div class="w-6 h-6 border-2 border-gray-300 rounded-full flex-shrink-0 flex items-center justify-center check-circle"></div>
+        <div><p class="font-semibold text-sm text-gray-800">Tell 3 other merchants about WhaPay</p><p class="text-xs text-gray-500">Earn KES 500 credit for every merchant you refer</p></div>
+      </div>
+    </div>
+    <div id="checklistComplete" class="hidden mt-4 bg-green-50 border border-green-200 rounded-xl p-4 text-center">
+      <p class="text-green-700 font-bold">🎉 You're all set! You're ready to receive payments.</p>
+      <a href="https://wa.me/+15556539447?text=I%20completed%20my%20WhaPay%20setup" class="inline-flex items-center gap-2 bg-green-600 text-white font-bold px-5 py-2 rounded-full mt-2 text-sm hover:bg-green-700 transition">
+        <i class="fab fa-whatsapp"></i> Tell Us You're Ready
+      </a>
+    </div>
+  </div>
+
+  <!-- ========================================================== -->
+  <!-- 2.16 MERCHANT TIPS                                        -->
+  <!-- ========================================================== -->
+  <section class="max-w-4xl mx-auto mb-12">
+    <div class="bg-gradient-to-r from-green-50 to-blue-50 rounded-2xl p-6">
+      <h3 class="text-xl font-bold text-center text-gray-800 mb-4"><i class="fas fa-chart-line text-green-600"></i> Merchant Tips</h3>
+      <div class="grid md:grid-cols-3 gap-4 text-sm">
+        <div class="bg-white p-3 rounded-lg"><i class="fas fa-print text-blue-500 mr-2"></i> Print your QR code and display it at your counter for instant scan payments.</div>
+        <div class="bg-white p-3 rounded-lg"><i class="fab fa-whatsapp text-green-500 mr-2"></i> Share your payment link on WhatsApp status daily to remind customers.</div>
+        <div class="bg-white p-3 rounded-lg"><i class="fas fa-phone-volume text-purple-500 mr-2"></i> Customers without internet can pay using your Member Code via M-Pesa Paybill.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================== -->
+  <!-- 2.17 FAQ SECTION                                           -->
+  <!-- ========================================================== -->
+  <div class="bg-white rounded-2xl shadow-lg p-6 mt-8 mb-8" itemscope itemtype="https://schema.org/FAQPage">
+    <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">❓ Frequently Asked Questions by Kenyan Merchants</h2>
+    <div class="space-y-5 max-w-3xl mx-auto">
+      <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question" class="border-b border-gray-100 pb-5">
+        <h3 itemprop="name" class="font-bold text-green-700">How do I register my business to accept M-Pesa payments without internet in Kenya?</h3>
+        <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+          <p itemprop="text" class="text-gray-600 text-sm mt-2">Three ways — no internet needed. Dial <strong>0140933042</strong> and follow the voice prompts, send <strong>REG YourBusinessName</strong> via SMS to the same number, or send <strong>REGISTER</strong> on WhatsApp. You receive your Merchant Code and QR instantly via SMS.</p>
+        </div>
+      </div>
+      <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question" class="border-b border-gray-100 pb-5">
+        <h3 itemprop="name" class="font-bold text-green-700">How much does it cost for a Kenyan small business to accept card payments?</h3>
+        <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+          <p itemprop="text" class="text-gray-600 text-sm mt-2">Only <strong>1.5% + KES 20</strong> per successful card transaction. No monthly fees, no setup fees. M-Pesa payments have zero extra platform fees. The lowest-cost payment gateway for small businesses in Kenya.</p>
+        </div>
+      </div>
+      <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question" class="border-b border-gray-100 pb-5">
+        <h3 itemprop="name" class="font-bold text-green-700">Can my customers pay me via M-Pesa Paybill when they have no internet?</h3>
+        <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+          <p itemprop="text" class="text-gray-600 text-sm mt-2">Yes. Customers open M-PESA → Lipa na M-PESA → Paybill → enter your <strong>Member Code</strong> as account number → enter amount → PIN. No internet needed by either party. Both receive SMS confirmation instantly.</p>
+        </div>
+      </div>
+      <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question" class="border-b border-gray-100 pb-5">
+        <h3 itemprop="name" class="font-bold text-green-700">How do I send a WhatsApp payment link to customers in Kenya?</h3>
+        <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+          <p itemprop="text" class="text-gray-600 text-sm mt-2">Use the Payment Link Generator in your dashboard. Enter your Member Code and amount, click Create Link, and share via WhatsApp. Customers click the link and pay via M-Pesa STK push or card in seconds — no app download needed.</p>
+        </div>
+      </div>
+      <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question" class="border-b border-gray-100 pb-5">
+        <h3 itemprop="name" class="font-bold text-green-700">Does WhaPay work for street vendors and small shops in rural Kenya without smartphones?</h3>
+        <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+          <p itemprop="text" class="text-gray-600 text-sm mt-2">Yes. WhaPay was built for low-connectivity areas. Register via voice call or basic SMS, accept payments via M-Pesa Paybill using your offline Member Code, print your QR to display at your counter, and sync records when internet is available.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================== -->
+  <!-- 2.18 SEO CONTENT BLOCK                                    -->
+  <!-- ========================================================== -->
+  <div class="max-w-3xl mx-auto px-4 py-8 text-gray-500 text-sm leading-relaxed">
+    <h2 class="text-lg font-bold text-gray-700 mb-3">WhaPay Merchant Dashboard – Kenya's Offline-First Payment Platform</h2>
+    <p class="mb-3">WhaPay is the only payment gateway in Kenya that allows merchants to <strong>register a business and accept M-Pesa payments without internet</strong>. Whether you run a grocery shop in Kisumu, a salon in Nairobi, a hardware store in Eldoret, or a market stall in Mombasa, WhaPay gives you a complete payment system that works on any phone — even a basic feature phone.</p>
+    <p class="mb-3">Our <strong>offline merchant registration via SMS and voice call</strong> means you don't need a smartphone or internet connection to get started. Simply dial <strong>0140933042</strong> or send an SMS with your business name, and receive your unique <strong>Merchant Code and QR code instantly</strong>.</p>
+    <p class="mb-3">Customers can pay you using <strong>M-Pesa Paybill with your Member Code</strong>, by scanning your printed QR code, or by clicking your personalized WhatsApp payment link. All three methods work without internet on the customer's side.</p>
+    <p class="mb-3">For merchants who want to accept <strong>Visa and Mastercard payments from international customers</strong>, WhaPay processes card payments at just <strong>1.5% + KES 20 per transaction</strong> — significantly lower than Pesapal's 2.5%–3.5% or Paystack's 2.9% + KES 10.</p>
+    <p>WhaPay is trusted by <strong>500+ Kenyan merchants</strong> across Nairobi, Mombasa, Kisumu, Nakuru, Eldoret, and rural counties. Join Kenya's fastest-growing offline-first payment network today — <a href="https://wa.me/+15556539447?text=REGISTER" class="text-green-600 hover:underline">register free via WhatsApp</a> or call <strong>0140933042</strong>.</p>
+  </div>
+
+  <!-- ========================================================== -->
+  <!-- 2.19 GLOBAL COMPARISON TABLE                              -->
+  <!-- ========================================================== -->
+  <div class="bg-white rounded-2xl shadow-lg p-6 mb-12 overflow-x-auto">
+    <div class="text-center mb-6">
+      <h2 class="text-2xl font-bold text-gray-800">🌍 WhaPay vs The World's Biggest Payment Platforms</h2>
+      <p class="text-gray-500 text-sm mt-2">See how WhaPay compares to Stripe, PayPal, Square, Adyen and Kenya's top platforms</p>
+    </div>
+    <table class="min-w-full border-collapse text-sm">
+      <thead class="bg-gray-100">
+        <tr>
+          <th class="px-4 py-3 text-left">Feature</th>
+          <th class="px-4 py-3 text-center bg-green-100 text-green-800">WhaPay</th>
+          <th class="px-4 py-3 text-center">Stripe</th>
+          <th class="px-4 py-3 text-center">PayPal</th>
+          <th class="px-4 py-3 text-center">Square</th>
+          <th class="px-4 py-3 text-center">Adyen</th>
+          <th class="px-4 py-3 text-center">Pesapal</th>
+          <th class="px-4 py-3 text-center">Paystack</th>
+          <th class="px-4 py-3 text-center">Flutterwave</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100">
+        <tr>
+          <td class="px-4 py-3 font-semibold">Monthly Fee</td>
+          <td class="px-4 py-3 text-center text-green-600 font-bold bg-green-50">KES 0</td>
+          <td class="px-4 py-3 text-center">$0 (basic)</td>
+          <td class="px-4 py-3 text-center">$0 (basic)</td>
+          <td class="px-4 py-3 text-center">$0 (basic)</td>
+          <td class="px-4 py-3 text-center">Custom</td>
+          <td class="px-4 py-3 text-center">KES 1,999+</td>
+          <td class="px-4 py-3 text-center">$0</td>
+          <td class="px-4 py-3 text-center">$0</td>
+        </tr>
+        <tr class="bg-gray-50">
+          <td class="px-4 py-3 font-semibold">Card Transaction Fee</td>
+          <td class="px-4 py-3 text-center text-green-600 font-bold bg-green-50">1.5% + KES 20</td>
+          <td class="px-4 py-3 text-center">2.9% + $0.30</td>
+          <td class="px-4 py-3 text-center">3.49% + $0.49</td>
+          <td class="px-4 py-3 text-center">2.6% + $0.10</td>
+          <td class="px-4 py-3 text-center">0.3%–0.8%</td>
+          <td class="px-4 py-3 text-center">2.9% + KES 20</td>
+          <td class="px-4 py-3 text-center">2.9% + KES 30</td>
+          <td class="px-4 py-3 text-center">1.4%–3.8%</td>
+        </tr>
+        <tr>
+          <td class="px-4 py-3 font-semibold">M-Pesa Integration</td>
+          <td class="px-4 py-3 text-center text-green-600 font-bold bg-green-50">✅ 0% extra</td>
+          <td class="px-4 py-3 text-center text-red-500">❌ No</td>
+          <td class="px-4 py-3 text-center text-red-500">❌ No</td>
+          <td class="px-4 py-3 text-center text-red-500">❌ No</td>
+          <td class="px-4 py-3 text-center text-red-500">❌ No</td>
+          <td class="px-4 py-3 text-center text-yellow-600">⚠️ Yes + fee</td>
+          <td class="px-4 py-3 text-center text-yellow-600">⚠️ Yes + fee</td>
+          <td class="px-4 py-3 text-center text-yellow-600">⚠️ Yes + fee</td>
+        </tr>
+        <tr class="bg-gray-50">
+          <td class="px-4 py-3 font-semibold">Offline Registration (SMS/Voice)</td>
+          <td class="px-4 py-3 text-center text-green-600 font-bold bg-green-50">✅ Free</td>
+          <td class="px-4 py-3 text-center text-red-500">❌ No</td>
+          <td class="px-4 py-3 text-center text-red-500">❌ No</td>
+          <td class="px-4 py-3 text-center text-red-500">❌ No</td>
+          <td class="px-4 py-3 text-center text-red-500">❌ No</td>
+          <td class="px-4 py-3 text-center text-red-500">❌ No</td>
+          <td class="px-4 py-3 text-center text-red-500">❌ No</td>
+          <td class="px-4 py-3 text-center text-red-500">❌ No</td>
+        </tr>
+        <tr>
+          <td class="px-4 py-3 font-semibold">Offline Payments (No Internet)</td>
+          <td class="px-4 py-3 text-center text-green-600 font-bold bg-green-50">✅ Member Code</td>
+          <td class="px-4 py-3 text-center text-red-500">❌ No</td>
+          <td class="px-4 py-3 text-center text-red-500">❌ No</td>
+          <td class="px-4 py-3 text-center text-red-500">❌ No</td>
+          <td class="px-4 py-3 text-center text-red-500">❌ No</td>
+          <td class="px-4 py-3 text-center text-red-500">❌ No</td>
+          <td class="px-4 py-3 text-center text-red-500">❌ No</td>
+          <td class="px-4 py-3 text-center text-red-500">❌ No</td>
+        </tr>
+        <!-- Continue remaining rows... -->
+      </tbody>
+    </table>
+    <p class="text-xs text-gray-400 text-center mt-4">*Fees approximate and subject to change. WhaPay is the only platform with full offline registration and payment capability globally.</p>
+    <div class="mt-6 text-center">
+      <a href="https://wa.me/+15556539447?text=REGISTER" class="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-bold px-8 py-3 rounded-full transition shadow-lg">
+        <i class="fab fa-whatsapp"></i> Register Free on WhaPay
+      </a>
+    </div>
+  </div>
+
+  <!-- ========================================================== -->
+  <!-- 2.20 REVENUE CHART                                        -->
+  <!-- ========================================================== -->
+  <div class="bg-white rounded-2xl shadow-lg p-6 mt-6 mb-6">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="font-bold text-lg text-gray-800">📈 Revenue Overview</h3>
+      <select id="chartPeriod" onchange="updateChart()" class="border border-gray-200 rounded-lg px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-green-500">
+        <option value="7">Last 7 days</option>
+        <option value="30">Last 30 days</option>
+      </select>
+    </div>
+    <div class="grid grid-cols-3 gap-4 mb-6">
+      <div class="bg-green-50 rounded-xl p-4 text-center"><p class="text-xs text-gray-500">Total Revenue</p><p id="statTotalRevenue" class="text-2xl font-bold text-green-600">KES 0</p></div>
+      <div class="bg-blue-50 rounded-xl p-4 text-center"><p class="text-xs text-gray-500">Transactions</p><p id="statTotalTx" class="text-2xl font-bold text-blue-600">0</p></div>
+      <div class="bg-purple-50 rounded-xl p-4 text-center"><p class="text-xs text-gray-500">Avg. Transaction</p><p id="statAvgTx" class="text-2xl font-bold text-purple-600">KES 0</p></div>
+    </div>
+    <div id="revenueChart" class="flex items-end gap-1 h-32 bg-gray-50 rounded-xl p-3"><p class="text-xs text-gray-400 m-auto">Login to see your revenue chart</p></div>
+  </div>
+
+  <!-- ========================================================== -->
+  <!-- 2.21 INVOICE GENERATOR                                    -->
+  <!-- ========================================================== -->
+  <div class="bg-white rounded-2xl shadow-lg p-6 mt-6 mb-6">
+    <h3 class="font-bold text-lg text-gray-800 mb-4">🧾 Generate Invoice</h3>
+    <div class="grid md:grid-cols-2 gap-4">
+      <div><label class="text-sm text-gray-500 mb-1 block">Customer Name</label><input type="text" id="invCustomer" placeholder="e.g. John Kamau" class="w-full border-2 border-gray-200 focus:border-green-500 rounded-xl px-4 py-2.5 outline-none transition"></div>
+      <div><label class="text-sm text-gray-500 mb-1 block">Customer Phone</label><input type="tel" id="invPhone" placeholder="+254712345678" class="w-full border-2 border-gray-200 focus:border-green-500 rounded-xl px-4 py-2.5 outline-none transition"></div>
+      <div><label class="text-sm text-gray-500 mb-1 block">Item / Service</label><input type="text" id="invItem" placeholder="e.g. Groceries" class="w-full border-2 border-gray-200 focus:border-green-500 rounded-xl px-4 py-2.5 outline-none transition"></div>
+      <div><label class="text-sm text-gray-500 mb-1 block">Amount (KES)</label><input type="number" id="invAmount" placeholder="e.g. 1500" class="w-full border-2 border-gray-200 focus:border-green-500 rounded-xl px-4 py-2.5 outline-none transition"></div>
+    </div>
+    <div class="flex gap-3 mt-4">
+      <button onclick="generateInvoice()" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl transition flex items-center justify-center gap-2"><i class="fas fa-file-invoice"></i> Generate & Download Invoice</button>
+      <button onclick="sendInvoiceWhatsApp()" class="flex-1 bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-xl transition flex items-center justify-center gap-2"><i class="fab fa-whatsapp"></i> Send via WhatsApp</button>
+    </div>
+  </div>
+
+  <!-- ========================================================== -->
+  <!-- 2.22 DISPUTE / REFUND REQUEST                             -->
+  <!-- ========================================================== -->
+  <div class="bg-white rounded-2xl shadow-lg p-6 mt-6 mb-6">
+    <h3 class="font-bold text-lg text-gray-800 mb-1">⚠️ Dispute or Refund Request</h3>
+    <p class="text-gray-500 text-sm mb-4">If a customer disputes a payment or you need to issue a refund, submit here and we'll resolve within 24 hours.</p>
+    <div class="space-y-3">
+      <input type="text" id="disputeTxId" placeholder="Transaction ID (from your payments table)" class="w-full border-2 border-gray-200 focus:border-red-400 rounded-xl px-4 py-2.5 outline-none transition">
+      <input type="number" id="disputeAmount" placeholder="Amount in dispute (KES)" class="w-full border-2 border-gray-200 focus:border-red-400 rounded-xl px-4 py-2.5 outline-none transition">
+      <select id="disputeType" class="w-full border-2 border-gray-200 focus:border-red-400 rounded-xl px-4 py-2.5 outline-none transition">
+        <option value="">Select dispute type</option>
+        <option value="refund">Customer wants refund</option>
+        <option value="duplicate">Duplicate payment</option>
+        <option value="notreceived">Payment not received</option>
+        <option value="wrong">Wrong amount charged</option>
+        <option value="other">Other</option>
+      </select>
+      <textarea id="disputeDetails" placeholder="Describe the issue..." class="w-full border-2 border-gray-200 focus:border-red-400 rounded-xl px-4 py-2.5 outline-none transition h-24 resize-none"></textarea>
+      <button onclick="submitDispute()" class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 rounded-xl transition flex items-center justify-center gap-2"><i class="fas fa-exclamation-triangle"></i> Submit Dispute</button>
+    </div>
+    <p class="text-xs text-gray-400 mt-3 text-center">Or WhatsApp us directly at <a href="https://wa.me/+15556539447?text=DISPUTE" class="text-green-600 font-semibold">+15556539447</a> with the word DISPUTE</p>
+  </div>
+
+</main>
+
+<!-- ============================================================ -->
+<!-- END OF SECTION 2                                              -->
+<!-- ============================================================ -->
+<!-- ============================================================ -->
+<!-- SECTION 3: FOOTER (COMPLETE, FULLY DETAILED)                  -->
+<!-- Place this at the bottom of the page, after all content       -->
+<!-- ============================================================ -->
+
+<footer style="background:#080c18;padding:0;margin-top:48px;">
+
+  <!-- ========================================================== -->
+  <!-- 3.1 TOP IMAGE STRIP (Quick Links)                          -->
+  <!-- ========================================================== -->
+  <!-- Five visual tiles with background images and overlay text.
+       Each tile is a clickable link to a key page.                -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:0;border-bottom:1px solid rgba(255,255,255,0.06);">
+
+    <!-- Tile 1: Register Free -->
+    <!-- ✅ CORRECTED: WhatsApp Cloud API number -->
+    <a href="https://wa.me/+15556539447?text=REGISTER" 
+       style="position:relative;height:160px;overflow:hidden;display:block;text-decoration:none;" 
+       onmouseover="this.querySelector('img').style.transform='scale(1.08)'" 
+       onmouseout="this.querySelector('img').style.transform='scale(1)'">
+      <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400&q=80" 
+           alt="Register on WhaPay" 
+           style="width:100%;height:100%;object-fit:cover;transition:transform 0.5s ease;">
+      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,15,30,0.92) 0%,rgba(10,15,30,0.4) 100%);"></div>
+      <div style="position:absolute;bottom:0;left:0;right:0;padding:16px;">
+        <div style="color:#22c55e;font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:3px;">Get Started</div>
+        <div style="color:white;font-weight:800;font-size:0.9rem;">Register Free</div>
+      </div>
+    </a>
+
+    <!-- Tile 2: Pay Anyone -->
+    <a href="pay-anyone.html" 
+       style="position:relative;height:160px;overflow:hidden;display:block;text-decoration:none;" 
+       onmouseover="this.querySelector('img').style.transform='scale(1.08)'" 
+       onmouseout="this.querySelector('img').style.transform='scale(1)'">
+      <img src="https://images.unsplash.com/photo-1580048915913-4f8f5cb481c4?w=400&q=80" 
+           alt="Pay Anyone with WhaPay" 
+           style="width:100%;height:100%;object-fit:cover;transition:transform 0.5s ease;">
+      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,15,30,0.92) 0%,rgba(10,15,30,0.4) 100%);"></div>
+      <div style="position:absolute;bottom:0;left:0;right:0;padding:16px;">
+        <div style="color:#60a5fa;font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:3px;">Payments</div>
+        <div style="color:white;font-weight:800;font-size:0.9rem;">Pay Anyone</div>
+      </div>
+    </a>
+
+    <!-- Tile 3: How It Works -->
+    <a href="process.html" 
+       style="position:relative;height:160px;overflow:hidden;display:block;text-decoration:none;" 
+       onmouseover="this.querySelector('img').style.transform='scale(1.08)'" 
+       onmouseout="this.querySelector('img').style.transform='scale(1)'">
+      <img src="https://images.unsplash.com/photo-1586936893354-362ad6ae47ba?w=400&q=80" 
+           alt="How WhaPay works" 
+           style="width:100%;height:100%;object-fit:cover;transition:transform 0.5s ease;">
+      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,15,30,0.92) 0%,rgba(10,15,30,0.4) 100%);"></div>
+      <div style="position:absolute;bottom:0;left:0;right:0;padding:16px;">
+        <div style="color:#c084fc;font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:3px;">Guide</div>
+        <div style="color:white;font-weight:800;font-size:0.9rem;">How It Works</div>
+      </div>
+    </a>
+
+    <!-- Tile 4: Analytics & Reports -->
+    <a href="reports.html" 
+       style="position:relative;height:160px;overflow:hidden;display:block;text-decoration:none;" 
+       onmouseover="this.querySelector('img').style.transform='scale(1.08)'" 
+       onmouseout="this.querySelector('img').style.transform='scale(1)'">
+      <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&q=80" 
+           alt="WhaPay reports and analytics" 
+           style="width:100%;height:100%;object-fit:cover;transition:transform 0.5s ease;">
+      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,15,30,0.92) 0%,rgba(10,15,30,0.4) 100%);"></div>
+      <div style="position:absolute;bottom:0;left:0;right:0;padding:16px;">
+        <div style="color:#fbbf24;font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:3px;">Dashboard</div>
+        <div style="color:white;font-weight:800;font-size:0.9rem;">Analytics & Reports</div>
+      </div>
+    </a>
+
+    <!-- Tile 5: Terms & Privacy -->
+    <a href="terms.html" 
+       style="position:relative;height:160px;overflow:hidden;display:block;text-decoration:none;" 
+       onmouseover="this.querySelector('img').style.transform='scale(1.08)'" 
+       onmouseout="this.querySelector('img').style.transform='scale(1)'">
+      <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=400&q=80" 
+           alt="WhaPay terms and privacy policy" 
+           style="width:100%;height:100%;object-fit:cover;transition:transform 0.5s ease;">
+      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,15,30,0.92) 0%,rgba(10,15,30,0.4) 100%);"></div>
+      <div style="position:absolute;bottom:0;left:0;right:0;padding:16px;">
+        <div style="color:#f87171;font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:3px;">Legal</div>
+        <div style="color:white;font-weight:800;font-size:0.9rem;">Terms & Privacy</div>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- ========================================================== -->
+  <!-- 3.2 MAIN FOOTER CONTENT                                   -->
+  <!-- ========================================================== -->
+  <div style="max-width:1280px;margin:0 auto;padding:64px 24px 40px;">
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px;" class="footer-grid">
+
+      <!-- --- Column 1: Brand & Contact --- -->
+      <div>
+        <!-- Logo -->
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+          <div style="width:36px;height:36px;background:#16a34a;border-radius:8px;display:flex;align-items:center;justify-content:center;">
+            <i class="fas fa-bolt" style="color:white;font-size:0.9rem;"></i>
+          </div>
+          <span style="color:white;font-size:1.3rem;font-weight:900;font-family:sans-serif;">WhaPay</span>
+        </div>
+
+        <!-- Tagline -->
+        <p style="color:rgba(255,255,255,0.35);font-size:0.85rem;line-height:1.7;margin-bottom:20px;max-width:280px;">
+          Kenya's offline-first global payment platform. Accept M-Pesa, Visa, Mastercard and 135+ currencies — online or offline. Trusted by 500+ merchants in 180+ countries.
+        </p>
+
+        <!-- Social Media Icons -->
+        <div style="display:flex;gap:10px;margin-bottom:20px;">
+          <!-- ✅ CORRECTED: WhatsApp Cloud API number -->
+          <a href="https://wa.me/+15556539447" 
+             style="width:36px;height:36px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:8px;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:all 0.2s;" 
+             onmouseover="this.style.background='rgba(34,197,94,0.2)';this.style.borderColor='rgba(34,197,94,0.4)'" 
+             onmouseout="this.style.background='rgba(255,255,255,0.06)';this.style.borderColor='rgba(255,255,255,0.1)'">
+            <i class="fab fa-whatsapp" style="color:#22c55e;font-size:0.9rem;"></i>
+          </a>
+          <a href="https://twitter.com/whapay" 
+             style="width:36px;height:36px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:8px;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:all 0.2s;" 
+             onmouseover="this.style.background='rgba(29,161,242,0.2)';this.style.borderColor='rgba(29,161,242,0.4)'" 
+             onmouseout="this.style.background='rgba(255,255,255,0.06)';this.style.borderColor='rgba(255,255,255,0.1)'">
+            <i class="fab fa-twitter" style="color:#1da1f2;font-size:0.9rem;"></i>
+          </a>
+          <a href="https://facebook.com/whapay" 
+             style="width:36px;height:36px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:8px;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:all 0.2s;" 
+             onmouseover="this.style.background='rgba(24,119,242,0.2)';this.style.borderColor='rgba(24,119,242,0.4)'" 
+             onmouseout="this.style.background='rgba(255,255,255,0.06)';this.style.borderColor='rgba(255,255,255,0.1)'">
+            <i class="fab fa-facebook" style="color:#1877f2;font-size:0.9rem;"></i>
+          </a>
+          <a href="https://linkedin.com/company/whapay" 
+             style="width:36px;height:36px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:8px;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:all 0.2s;" 
+             onmouseover="this.style.background='rgba(10,102,194,0.2)';this.style.borderColor='rgba(10,102,194,0.4)'" 
+             onmouseout="this.style.background='rgba(255,255,255,0.06)';this.style.borderColor='rgba(255,255,255,0.1)'">
+            <i class="fab fa-linkedin" style="color:#0a66c2;font-size:0.9rem;"></i>
+          </a>
+        </div>
+
+        <!-- Contact Details (✅ CORRECTED NUMBERS) -->
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <!-- ✅ CORRECTED: Twilio Voice Number -->
+          <a href="tel:+19899434406" 
+             style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.4);font-size:0.8rem;text-decoration:none;" 
+             onmouseover="this.style.color='#22c55e'" 
+             onmouseout="this.style.color='rgba(255,255,255,0.4)'">
+            <i class="fas fa-phone-alt" style="color:#22c55e;width:14px;"></i> 0140933042
+          </a>
+          <!-- Email -->
+          <a href="mailto:support@whapay.space" 
+             style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.4);font-size:0.8rem;text-decoration:none;" 
+             onmouseover="this.style.color='#22c55e'" 
+             onmouseout="this.style.color='rgba(255,255,255,0.4)'">
+            <i class="fas fa-envelope" style="color:#22c55e;width:14px;"></i> support@whapay.space
+          </a>
+          <!-- ✅ CORRECTED: WhatsApp Cloud API Number -->
+          <a href="https://wa.me/+15556539447" 
+             style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.4);font-size:0.8rem;text-decoration:none;" 
+             onmouseover="this.style.color='#22c55e'" 
+             onmouseout="this.style.color='rgba(255,255,255,0.4)'">
+            <i class="fab fa-whatsapp" style="color:#22c55e;width:14px;"></i> WhatsApp: +15556539447
+          </a>
+          <!-- Address -->
+          <span style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.4);font-size:0.8rem;">
+            <i class="fas fa-map-marker-alt" style="color:#22c55e;width:14px;"></i> Moi Avenue, Nairobi, Kenya
+          </span>
+        </div>
+      </div>
+
+      <!-- --- Column 2: Product --- -->
+      <div>
+        <h4 style="color:white;font-weight:800;font-size:0.85rem;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:20px;">Product</h4>
+        <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
+          <li><a href="features.html" style="color:rgba(255,255,255,0.4);font-size:0.85rem;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">Features</a></li>
+          <li><a href="pricing.html" style="color:rgba(255,255,255,0.4);font-size:0.85rem;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">Pricing</a></li>
+          <li><a href="payment.html" style="color:rgba(255,255,255,0.4);font-size:0.85rem;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">How to Pay</a></li>
+          <li><a href="pay-anyone.html" style="color:rgba(255,255,255,0.4);font-size:0.85rem;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">Pay Anyone</a></li>
+          <li><a href="merchant.html" style="color:rgba(255,255,255,0.4);font-size:0.85rem;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">Merchant Dashboard</a></li>
+          <li><a href="reports.html" style="color:rgba(255,255,255,0.4);font-size:0.85rem;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">Analytics & Reports</a></li>
+          <li><a href="registration.html" style="color:rgba(255,255,255,0.4);font-size:0.85rem;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">Register & Pay</a></li>
+          <li><a href="process.html" style="color:rgba(255,255,255,0.4);font-size:0.85rem;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">How It Works</a></li>
+        </ul>
+      </div>
+
+      <!-- --- Column 3: Solutions --- -->
+      <div>
+        <h4 style="color:white;font-weight:800;font-size:0.85rem;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:20px;">Solutions</h4>
+        <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
+          <li><a href="merchant.html" style="color:rgba(255,255,255,0.4);font-size:0.85rem;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">For Merchants</a></li>
+          <li><a href="payment.html" style="color:rgba(255,255,255,0.4);font-size:0.85rem;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">For Customers</a></li>
+          <li><a href="index.html#diaspora" style="color:rgba(255,255,255,0.4);font-size:0.85rem;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">For Diaspora</a></li>
+          <li><a href="features.html" style="color:rgba(255,255,255,0.4);font-size:0.85rem;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">Offline Payments</a></li>
+          <li><a href="features.html" style="color:rgba(255,255,255,0.4);font-size:0.85rem;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">Global Currencies</a></li>
+          <li><a href="merchant.html" style="color:rgba(255,255,255,0.4);font-size:0.85rem;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">Recurring Billing</a></li>
+          <li><a href="merchant.html" style="color:rgba(255,255,255,0.4);font-size:0.85rem;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">Invoice Generator</a></li>
+        </ul>
+      </div>
+
+      <!-- --- Column 4: Company --- -->
+      <div>
+        <h4 style="color:white;font-weight:800;font-size:0.85rem;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:20px;">Company</h4>
+        <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
+          <li><a href="about.html" style="color:rgba(255,255,255,0.4);font-size:0.85rem;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">About WhaPay</a></li>
+          <li><a href="blog.html" style="color:rgba(255,255,255,0.4);font-size:0.85rem;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">Blog & News</a></li>
+          <li><a href="contact.html" style="color:rgba(255,255,255,0.4);font-size:0.85rem;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">Contact Us</a></li>
+          <li><a href="mailto:pr@whapay.space" style="color:rgba(255,255,255,0.4);font-size:0.85rem;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">Press & Media</a></li>
+          <li><a href="mailto:careers@whapay.space" style="color:rgba(255,255,255,0.4);font-size:0.85rem;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">Careers</a></li>
+          <li><a href="https://wa.me/+15556539447?text=PARTNER" style="color:rgba(255,255,255,0.4);font-size:0.85rem;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">Partnerships</a></li>
+        </ul>
+      </div>
+
+      <!-- --- Column 5: Legal --- -->
+      <div>
+        <h4 style="color:white;font-weight:800;font-size:0.85rem;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:20px;">Legal</h4>
+        <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
+          <li><a href="privacy.html" style="color:rgba(255,255,255,0.4);font-size:0.85rem;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">Privacy Policy</a></li>
+          <li><a href="terms.html" style="color:rgba(255,255,255,0.4);font-size:0.85rem;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">Terms of Service</a></li>
+          <li><a href="privacy.html#kyc" style="color:rgba(255,255,255,0.4);font-size:0.85rem;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">KYC/AML Policy</a></li>
+          <li><a href="privacy.html#cookies" style="color:rgba(255,255,255,0.4);font-size:0.85rem;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">Cookie Policy</a></li>
+          <li><a href="contact.html" style="color:rgba(255,255,255,0.4);font-size:0.85rem;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">Dispute Support</a></li>
+          <li><a href="privacy.html#data" style="color:rgba(255,255,255,0.4);font-size:0.85rem;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">Data Protection</a></li>
+        </ul>
+        <!-- Trust Badges -->
+        <div style="margin-top:24px;display:flex;flex-direction:column;gap:6px;">
+          <div style="display:flex;align-items:center;gap:6px;color:rgba(255,255,255,0.25);font-size:0.7rem;">
+            <i class="fas fa-lock" style="color:#22c55e;font-size:0.65rem;"></i> SSL Encrypted
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;color:rgba(255,255,255,0.25);font-size:0.7rem;">
+            <i class="fas fa-university" style="color:#22c55e;font-size:0.65rem;"></i> CBK Compliant
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;color:rgba(255,255,255,0.25);font-size:0.7rem;">
+            <i class="fas fa-shield-alt" style="color:#22c55e;font-size:0.65rem;"></i> Data Protection Act 2019
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- 3.3 PAYMENT METHODS STRIP                                 -->
+    <!-- ========================================================== -->
+    <div style="border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06);padding:20px 0;margin-bottom:32px;">
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:16px;justify-content:center;">
+        <span style="color:rgba(255,255,255,0.2);font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;">Accepted Payments</span>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;">
+          <span style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:6px 12px;display:flex;align-items:center;gap:6px;">
+            <i class="fas fa-mobile-alt" style="color:#22c55e;font-size:0.8rem;"></i>
+            <span style="color:rgba(255,255,255,0.4);font-size:0.75rem;">M-Pesa</span>
+          </span>
+          <span style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:6px 12px;display:flex;align-items:center;gap:6px;">
+            <i class="fab fa-cc-visa" style="color:#3b82f6;font-size:0.8rem;"></i>
+            <span style="color:rgba(255,255,255,0.4);font-size:0.75rem;">Visa</span>
+          </span>
+          <span style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:6px 12px;display:flex;align-items:center;gap:6px;">
+            <i class="fab fa-cc-mastercard" style="color:#f97316;font-size:0.8rem;"></i>
+            <span style="color:rgba(255,255,255,0.4);font-size:0.75rem;">Mastercard</span>
+          </span>
+          <span style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:6px 12px;display:flex;align-items:center;gap:6px;">
+            <i class="fab fa-google" style="color:#ea4335;font-size:0.8rem;"></i>
+            <span style="color:rgba(255,255,255,0.4);font-size:0.75rem;">Google Pay</span>
+          </span>
+          <span style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:6px 12px;display:flex;align-items:center;gap:6px;">
+            <i class="fab fa-apple" style="color:rgba(255,255,255,0.6);font-size:0.8rem;"></i>
+            <span style="color:rgba(255,255,255,0.4);font-size:0.75rem;">Apple Pay</span>
+          </span>
+          <span style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:6px 12px;display:flex;align-items:center;gap:6px;">
+            <i class="fab fa-paypal" style="color:#0070ba;font-size:0.8rem;"></i>
+            <span style="color:rgba(255,255,255,0.4);font-size:0.75rem;">PayPal</span>
+          </span>
+          <span style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:6px 12px;display:flex;align-items:center;gap:6px;">
+            <i class="fas fa-globe" style="color:#22c55e;font-size:0.8rem;"></i>
+            <span style="color:rgba(255,255,255,0.4);font-size:0.75rem;">135+ Currencies</span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- 3.4 BUSINESS REGISTRATION + LEGAL DISCLAIMER               -->
+    <!-- ========================================================== -->
+    <div style="text-align:center;margin-bottom:24px;">
+      <p style="color:rgba(255,255,255,0.3);font-size:0.7rem;">
+        Registered Business: <strong>WHAPAY DIGITAL SOLUTION</strong> | Registration No: <strong>BN-VZSEMLZB</strong>
+      </p>
+      <p style="color:rgba(255,255,255,0.2);font-size:0.65rem;margin-top:4px;">
+        Certificate issued under the Registration of Business Names Act (Cap. 499)
+      </p>
+      <p style="color:rgba(255,255,255,0.15);font-size:0.6rem;margin-top:8px;max-width:600px;margin-left:auto;margin-right:auto;">
+        <i class="fas fa-university mr-1"></i> WhaPay is a technology platform – not a bank or payment processor. We never hold customer funds. Payments go directly from customer to merchant.
+      </p>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- 3.5 BOTTOM BAR (Copyright & Quick Links)                  -->
+    <!-- ========================================================== -->
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px;border-top:1px solid rgba(255,255,255,0.05);padding-top:16px;">
+      <p style="color:rgba(255,255,255,0.2);font-size:0.78rem;">
+        © 2026 WhaPay. All rights reserved. | Nairobi, Kenya | Serving merchants in 180+ countries worldwide.
+      </p>
+      <div style="display:flex;flex-wrap:wrap;gap:16px;">
+        <a href="privacy.html" style="color:rgba(255,255,255,0.2);font-size:0.78rem;text-decoration:none;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.2)'">Privacy</a>
+        <a href="terms.html" style="color:rgba(255,255,255,0.2);font-size:0.78rem;text-decoration:none;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.2)'">Terms</a>
+        <a href="contact.html" style="color:rgba(255,255,255,0.2);font-size:0.78rem;text-decoration:none;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.2)'">Contact</a>
+        <a href="sitemap.xml" style="color:rgba(255,255,255,0.2);font-size:0.78rem;text-decoration:none;" onmouseover="this.style.color='#22c55e'" onmouseout="this.style.color='rgba(255,255,255,0.2)'">Sitemap</a>
+      </div>
+    </div>
+
+  </div>
+</footer>
+
+<!-- ============================================================ -->
+<!-- END OF SECTION 3                                              -->
+<!-- ============================================================ -->
